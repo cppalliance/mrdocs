@@ -44,6 +44,9 @@ add_test(NAME mrdocs-warn-filtered-in-public-api
     COMMAND ${MRDOCS_FILTERED_API_COMMAND})
 set_tests_properties(mrdocs-warn-filtered-in-public-api PROPERTIES WILL_FAIL TRUE)
 
+add_test(NAME mrdocs-quiet-filtered-in-public-api
+    COMMAND ${MRDOCS_FILTERED_API_COMMAND} --warn-if-filtered-in-public-api=false)
+
 add_test(NAME mrdocs-ignore-filtered-outside-inputs
     COMMAND mrdocs
         "--config=${CMAKE_CURRENT_SOURCE_DIR}/diagnostics/filtered-outside-inputs/mrdocs.yml"

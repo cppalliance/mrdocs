@@ -2147,6 +2147,7 @@ void
 DocCommentFinalizer::
 warnFilteredInPublicApi()
 {
+    MRDOCS_CHECK_OR(config_.warnIfFilteredInPublicApi);
     for (std::unique_ptr<Symbol> const& I : corpus_.info_)
     {
         MRDOCS_ASSERT(I);
