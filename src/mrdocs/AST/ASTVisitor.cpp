@@ -3338,7 +3338,25 @@ checkFilters(
     // This filters symbols supported by MrDocs and
     // symbol types whitelisted in the configuration,
     // such as private members and anonymous namespaces.
-    MRDOCS_CHECK_OR(checkTypeFilters(D, access), ExtractionMode::Dependency);
+    if (!checkTypeFilters(D, access))
+    {
+        // Consider the case of a public function returning
+        // a private nested type marked
+        // `@implementationdefined`. Dropping the type here
+        // (for being private) would cause the type name to
+        // be printed normally in the function signature,
+        // with no trace of "implementation-defined". So,
+        // make the command decide. (An implicit declaration
+        // has no doc-comment to carry the command.)
+        //
+        // See tests/golden/fixtures/filters/symbol-type/private-implementation-defined.cpp.
+        MRDOCS_CHECK_OR(!D->isImplicit(), ExtractionMode::Dependency);
+        auto const [declared, declaredKind] = checkSymbolFilters(D);
+        MRDOCS_CHECK_OR(
+            declared == ExtractionMode::ImplementationDefined ||
+            declared == ExtractionMode::SeeBelow,
+            ExtractionMode::Dependency);
+    }
 
     // Check if this symbol should be extracted according
     // to its qualified name. This checks if it matches
