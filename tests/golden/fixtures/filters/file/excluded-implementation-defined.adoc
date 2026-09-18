@@ -1,0 +1,37 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#acquire[`acquire`] 
+| Acquire the widget&period;
+|===
+
+
+[#acquire]
+== acquire
+
+Acquire the widget&period;
+
+=== Synopsis
+
+Declared in `&lt;excluded&hyphen;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+acquire();
+----
+
+=== Return Value
+
+A token that releases the widget when destroyed&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
