@@ -375,6 +375,39 @@ private:
 
     void
     warnUnnamedParams(FunctionSymbol const& I);
+
+    /*  Report the filtered symbols named by the documented declarations
+
+        The filters leave a symbol without a page, so a signature naming
+        it sends the reader nowhere. The author can widen the filters,
+        change the signature, or mark the symbol `@implementationdefined`,
+        which prints a placeholder in place of the name and ends the
+        report.
+
+        Only the project's own symbols are reported, which is to say those
+        declared in one of the inputs. A symbol from anywhere else, such as
+        a standard library installed under `source-root`, belongs to
+        someone else and gives the author nothing to answer.
+     */
+    void
+    warnFilteredInPublicApi();
+
+    void
+    warnFilteredInPublicApi(Symbol const& I);
+
+    void
+    warnIfFiltered(Symbol const& referrer, Polymorphic<Type> const& type);
+
+    void
+    warnIfFiltered(Symbol const& referrer, Name const& name);
+
+    void
+    warnIfFiltered(
+        Symbol const& referrer,
+        std::vector<Polymorphic<TArg>> const& args);
+
+    void
+    warnIfFiltered(Symbol const& referrer, SymbolID const& id);
 };
 
 } // mrdocs

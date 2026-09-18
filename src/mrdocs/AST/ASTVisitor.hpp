@@ -1181,14 +1181,6 @@ private:
     bool
     checkInputFilters(clang::Decl const* D);
 
-    /* Check whether a file is one of the inputs
-
-       True when the file lies in an input directory and matches the
-       file patterns, whatever the exclusions say.
-    */
-    bool
-    isInputFile(std::string_view filePath) const;
-
     /* Check whether the configuration excludes a file
 
        True when the file lies in an excluded directory or matches one
