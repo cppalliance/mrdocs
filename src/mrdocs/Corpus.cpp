@@ -522,8 +522,7 @@ Corpus::build(
         {
             return Unexpected(err);
         }
-        report::warn(
-            "Warning: mapping failed because ", err);
+        report::warn("Mapping failed: {}", err);
     }
 
     MRDOCS_TRY(auto results, context.results());
