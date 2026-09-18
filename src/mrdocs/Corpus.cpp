@@ -772,7 +772,7 @@ Corpus::finalize(Config const& config)
 
     // Report the filtered symbols the documented API still names. This
     // only reads the corpus, so it runs once everything else has settled.
-    if (config.warnings)
+    if (config.warnings && config.warnIfFilteredInPublicApi)
     {
         report::debug("  - Reporting filtered symbols in the public API");
         FilteredSymbolFinalizer finalizer(*this, config);
