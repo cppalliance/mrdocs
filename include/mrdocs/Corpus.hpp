@@ -397,6 +397,7 @@ private:
     friend class DerivedFinalizer;
     friend class FunctionObjectFinalizer;
     friend class SpecializationFinalizer;
+    friend class FilteredSymbolFinalizer;
 
 public:
 

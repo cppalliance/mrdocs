@@ -23,6 +23,7 @@
 #include "TypeBuilder.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
+#include <mrdocs/Support/InputFiles.hpp>
 #include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/AST.h>
@@ -3459,67 +3460,7 @@ bool
 ASTVisitor::
 checkFileFilters(std::string_view const symbolPath) const
 {
-    return isInputFile(symbolPath) && !isExcludedFile(symbolPath);
-}
-
-bool
-ASTVisitor::
-isInputFile(std::string_view const filePath) const
-{
-    // Inclusion is generous: a file counts as being inside an input
-    // directory when its path matches as written or by its real
-    // (symlink-resolved) location. This recognizes files reached through a
-    // symlinked directory without dropping anything that
-    // already matched as written.
-    if (config_.recursive)
-    {
-        MRDOCS_CHECK_OR(
-            config_.input.empty() ||
-            std::ranges::any_of(config_.input,
-                [&](std::string const& inputDir)
-                {
-                    return files::isResolvedSubpathOf(filePath, inputDir);
-                }),
-            false);
-    }
-    else
-    {
-        // Resolve the file's parent lazily: the filesystem lookup only
-        // happens when a literal match fails, so a tree with no symlinks
-        // pays no extra cost.
-        std::string_view const fileParentDir = files::getParentDir(filePath);
-        Optional<std::string> fileParentDirReal;
-        auto parentDirReal = [&]() -> std::string const&
-        {
-            if (!fileParentDirReal)
-            {
-                fileParentDirReal = files::makeRealPath(fileParentDir);
-            }
-            return *fileParentDirReal;
-        };
-        MRDOCS_CHECK_OR(
-            config_.input.empty() ||
-            std::ranges::any_of(config_.input,
-                [&](std::string const& inputDir)
-                {
-                    return inputDir == fileParentDir
-                        || files::makeRealPath(inputDir) == parentDirReal();
-                }),
-            false);
-    }
-
-    // Don't extract declarations that fail the file pattern filter
-    MRDOCS_CHECK_OR(
-        config_.filePatterns.empty() ||
-        std::ranges::any_of(config_.filePatterns,
-        [fileName = files::getFileName(filePath)]
-        (PathGlobPattern const& pattern)
-            {
-                return pattern.match(fileName);
-            }),
-        false);
-
-    return true;
+    return isInputFile(config_, symbolPath) && !isExcludedFile(symbolPath);
 }
 
 bool
@@ -3551,7 +3492,7 @@ checkInputFilters(clang::Decl const* D)
 
     FileInfo const* fileInfo = findFileInfo(D);
     MRDOCS_CHECK_OR(fileInfo, false);
-    return isInputFile(fileInfo->full_path);
+    return isInputFile(config_, fileInfo->full_path);
 }
 
 std::optional<ExtractionMode>

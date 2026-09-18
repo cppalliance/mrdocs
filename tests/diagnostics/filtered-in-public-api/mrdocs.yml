@@ -1,0 +1,8 @@
+# The situation the warning is about: `detail` is filtered out, and the
+# documented API names a symbol from it anyway, as a base class and as a
+# return type.
+source-root: .
+input:
+  - .
+exclude-symbols:
+  - 'detail::**'

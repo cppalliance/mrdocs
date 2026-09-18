@@ -1,0 +1,8 @@
+# A documented declaration names a symbol that lives under `source-root`
+# but outside the inputs, the way an installed or vendored header can. That
+# symbol belongs to someone else, so naming it is not reported.
+source-root: .
+input:
+  - api
+includes:
+  - vendor
