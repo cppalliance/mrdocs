@@ -25,6 +25,7 @@ Set `multipage: false` to fold every symbol into a single HTML file. The file is
 
 For embedding inside an outer document, set xref:configuration/reference.adoc#embedded_option[`embedded`] to `true`; it strips the surrounding `<html>`/`<head>`/`<body>` wrapper and emits just the symbol-level markup. The Mr.Docs website uses this on its landing page: the panels that show what a rendered symbol looks like are produced by running Mr.Docs with `embedded: true` and dropping the resulting fragment into the page next to the source it documents.
 
+[#stylesheet-options]
 == Stylesheet options
 
 The HTML output ships with a bundled CSS file inlined into each page. You can replace or layer styles through the following options:

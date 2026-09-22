@@ -45,7 +45,7 @@ mrdocs --config=path/to/mrdocs.yml --generator=html
 
 == Choosing between formats
 
-Each format trades *redundancy* (how much duplicated or unstructured information lives in the output) against *convenience* (how readily the output is usable without further tooling).
+Each format trades *redundancy* (how much duplicated or unstructured information lives in the output) against *convenience* (how readily the output is usable without further tooling). The built-in generators are the starting point. When none of them is the right fit, you customize only as far as you need: each step below reaches deeper than the previous one, and each is covered in the xref:extensions/index.adoc[Extensions] section.
 
 [mermaid]
 ....
@@ -58,17 +58,18 @@ quadrantChart
     AsciiDoc: [0.78, 0.84]
     Custom Templates: [0.64, 0.73]
     Data-Driven Generators: [0.5, 0.61]
-    Custom Generators: [0.36, 0.48]
+    Custom Generator: [0.36, 0.48]
     JSON: [0.08, 0.08]
     XML: [0.15, 0.23]
     Clang AST: [0.88, 0.06] radius: 5, color: #f1c7c7, stroke-color: #f1c7c7, stroke-width: 1px
 ....
 
-- *xref:generators/adoc.adoc[AsciiDoc]* and *xref:generators/html.adoc[HTML]* cluster in the top-right: high convenience (Antora consumes the AsciiDoc natively, the HTML opens straight in a browser) at the cost of more structural overhead per symbol.
-- *xref:extensions/handlebars-extensions.adoc[Custom Templates]* let you sit anywhere along the diagonal without leaving the built-in formats: keep the `html` or `adoc` generator and write the Handlebars overrides that move the trade-off to where your project needs it.
-- *xref:extensions/data-driven-generators.adoc[Data-Driven Generators]* sit close to Custom Templates on the chart: the same Handlebars machinery, but pointed at a *new* output format declared by a manifest (Markdown, RST, anything else you want a generator for) instead of customizing the built-in `html` or `adoc` output.
-- *xref:extensions/script-generators.adoc[Custom Generators]* go further down toward XML: a generator implemented entirely in code (C++ or a script), with full control over the bytes it writes. Useful when the format you need does not fit a Handlebars-and-manifest description, at the cost of being the most work to build and maintain.
+- *xref:generators/adoc.adoc[AsciiDoc]* and *xref:generators/html.adoc[HTML]* cluster in the top-right: high convenience (Antora consumes the AsciiDoc natively, the HTML opens straight in a browser) at the cost of more structural overhead per symbol. When the look is all you need to change, the HTML generator takes xref:generators/html.adoc#stylesheet-options[your own stylesheets] and no template is touched.
+- *xref:extensions/handlebars-extensions.adoc[Custom Templates]* let you sit anywhere along the diagonal without leaving the built-in formats: keep the `html` or `adoc` generator and override the templates you need. You can also define helper functions to be called from these templates.
+- *xref:extensions/data-driven-generators.adoc[Data-driven generator extensions]* are close to Handlebars extensions: the same Handlebars machinery defining a *new* output format declared by a manifest (Markdown, RST, anything else you want a generator for) instead of customizing the built-in `html` or `adoc` output.
+- *Custom generator extensions* are implemented entirely in code, either as a xref:extensions/script-generators.adoc[Lua or JavaScript script] or in {cpp} against xref:extensions/as-library.adoc[the library], with full control over the output. Useful when the format you need does not fit a Handlebars-and-manifest description, or when the output depends on multi-pass analysis or on comparing corpora, at the cost of being the most work to build and maintain.
 - *xref:generators/json.adoc[JSON]* convenient low-redundancy corpus dump in a format most languages know how to parse. The right choice when you render the documentation templates yourself or post-process the corpus.
 - *xref:generators/xml.adoc[XML]* sits in the bottom-left: low redundancy (one terse element per field) and low convenience for direct consumption. The right choice when a downstream tool wants every symbol field.
-- *https://clang.llvm.org/docs/IntroductionToTheClangAST.html[Clang AST^]* (bottom-right) and the *Ideal* marker (top-left) frame the chart, neither is something Mr.Docs ships. The AST is what Mr.Docs reads, dense but unworkable on its own. The Ideal point is the theoretical "low redundancy and high convenience" target no single format reaches.
+
+*https://clang.llvm.org/docs/IntroductionToTheClangAST.html[Clang AST^]* (bottom-right) and the *Ideal* marker (top-left) frame the chart, neither is something Mr.Docs ships. The AST is what Mr.Docs reads, dense but unworkable on its own. The Ideal point is the theoretical "low redundancy and high convenience" target no single format reaches.
 

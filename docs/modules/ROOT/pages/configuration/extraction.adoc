@@ -1,5 +1,7 @@
 = Extraction
 
+MrDocs parses {cpp} with https://clang.llvm.org/docs/LibTooling.html[Clang's libtooling API^], so anything that compiles is in the corpus, including https://en.cppreference.com/w/cpp/language/templates[templates^], https://en.cppreference.com/w/cpp/language/constraints[concepts^], https://en.cppreference.com/w/cpp/language/partial_specialization[partial specializations^], and https://en.cppreference.com/w/cpp/language/coroutines[coroutines^]. Getting a construct into the corpus is the easy part. Rendering it the way a reader expects is where the options on this page come in.
+
 The xref:configuration/filters.adoc[filters] are the gate at the front of the pipeline. They decide which symbols enter the corpus. The options on this page are the next stage: they decide how MrDocs interprets and arranges the symbols that survived the filters. Which inherited members appear on a class page, the order members are listed in, how related declarations are grouped (overload sets, SFINAE expressions, function objects), what MrDocs infers from doc comments (briefs, relations, function metadata), and the escape hatches for headers the compiler cannot find. The xref:configuration/reference.adoc#_extraction_options_reference[Extraction reference] lists every option.
 
 == Ordering members
@@ -27,7 +29,7 @@ The other sort switches (xref:configuration/reference.adoc#sort-members-ctors-1s
 
 == Overload sets
 
-A C++ overload set is many functions sharing a name. xref:configuration/reference.adoc#overloads_option[`overloads`] merges them into a single page so the reader sees the whole set at once instead of one page per signature:
+A C++ overload set is many functions sharing a name. xref:configuration/reference.adoc#overloads_option[`overloads`] merges them into a single page so the reader sees the whole set at once instead of one page per signature. MrDocs picks a canonical signature for the page title and lists each overload underneath with its own parameters. The documentation shared by the page is the union of the metadata the overloads agree on:
 
 .Example
 [source,cpp]
@@ -48,7 +50,7 @@ include::example$snippets/options/overloads/overloads.adoc[tags=!footer]
 
 == SFINAE constraints
 
-xref:configuration/reference.adoc#sfinae_option[`sfinae`] rewrites SFINAE constraints into a readable form instead of the raw `enable_if` machinery:
+A function constrained with https://en.cppreference.com/w/cpp/types/enable_if[`enable_if`^] has a different signature from its unconstrained sibling, but readers care about the constraint, not about the spelling of `typename std::enable_if<...>::type`. xref:configuration/reference.adoc#sfinae_option[`sfinae`] inspects the primary template and its specializations to recover the result type and the controlling expression, lifts the constraint into a "Requires" entry attached to the signature, and renders the return type as if the constraint were not there:
 
 .Example
 [source,cpp]
@@ -69,7 +71,7 @@ include::example$snippets/options/sfinae/sfinae.adoc[tags=!footer]
 
 == Algorithm function objects
 
-xref:configuration/reference.adoc#auto-function-objects_option[`auto-function-objects`] detects the https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)^] idiom and presents the variable's page as if it were a function, using the call operator's doc comment, parameters, and return type:
+An https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)^] is a https://en.cppreference.com/w/cpp/language/constexpr[`constexpr`^] variable of an unnamed type whose only public members are `operator()` overloads. The variable is what the caller invokes; the type is an implementation detail. xref:configuration/reference.adoc#auto-function-objects_option[`auto-function-objects`] detects the idiom and presents the variable's page as if it were a function, using the call operator's doc comment, parameters, and return type. When `operator()` is undocumented, the variable's own comment is used instead; the type's comment never is:
 
 .`include/numerics/clamp.hpp`
 [source,cpp]
