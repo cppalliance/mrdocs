@@ -76,6 +76,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <jerryscript.h>
+#include <jerryscript-port.h>
 #include <limits>
 #include <memory>
 #include <mutex>
@@ -114,9 +115,9 @@
 //
 // The context port functions are excluded from jerry-port when building
 // with JERRY_EXTERNAL_CONTEXT=ON (see utils/bootstrap/patches/jerryscript/
-// CMakeLists.txt), so mrdocs provides the only implementations. All other
-// port functions (jerry_port_fatal, jerry_port_log, etc.) use the default
-// implementations from jerry-port.
+// CMakeLists.txt), so mrdocs provides the only implementations. Of the other
+// port functions, jerry_port_fatal is ours too (see below); the rest
+// (jerry_port_log, etc.) use the default implementations from jerry-port.
 
 // ------------------------------------------------------------
 // Thread-Local Storage for JerryScript Context
@@ -263,6 +264,37 @@ extern "C" struct jerry_context_t*
 jerry_port_context_get(void)
 {
     return static_cast<jerry_context_t*>(get_tls_jerry_context());
+}
+
+// Reports why the interpreter is stopping, and stops the process.
+//
+// JerryScript calls this when it cannot continue, above all when its heap
+// is full: an allocation there does not fail and return, it ends the
+// engine.
+//
+// Leaving through `_Exit` is deliberate, as the interpreter's state is gone,
+// so there is nothing to carry on with.
+extern "C" void
+jerry_port_fatal(jerry_fatal_code_t code)
+{
+    if (code == JERRY_FATAL_OUT_OF_MEMORY)
+    {
+        mrdocs::report::error(
+            "JavaScript: out of memory. The interpreter has a heap of {} KiB, "
+            "which everything a script holds at one time has to fit in. Read "
+            "what you need and let go of it as you go, rather than collecting "
+            "the corpus first.",
+            JERRY_HEAP_SIZE / 1024);
+    }
+    else
+    {
+        mrdocs::report::error(
+            "JavaScript: the interpreter stopped and cannot continue "
+            "(code {}).",
+            static_cast<int>(code));
+    }
+    std::fflush(nullptr);
+    std::_Exit(EXIT_FAILURE);
 }
 
 namespace mrdocs::js {
