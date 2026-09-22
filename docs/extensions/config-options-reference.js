@@ -126,11 +126,15 @@ function renderFixtureHtml(optionName) {
     }
     if (f.adoc) {
         try {
-            // `leveloffset=2` so the embedded symbol page's `==` headings
-            // render as `<h4>` instead of `<h2>`. That stops the embedded
-            // title from colliding with the absolute-positioned preview
-            // label and matches the `.adoc-preview h4/h5/h6` rules in
-            // `adoc-preview.css`.
+            // `leveloffset=3` so the embedded symbol page's `==` headings
+            // render as `<h5>` and its `===` subsections as `<h6>`. That
+            // stops the embedded title from colliding with the
+            // absolute-positioned preview label, and matches both
+            // `adoc-preview-extension.js` (which maps 2 -> h5, 3 -> h6)
+            // and the intent stated in `adoc-preview.css`: the symbol
+            // name is the dominant h5, its subsections the subordinate
+            // h6. At `+2` the subsections landed on h5 and rendered at
+            // the same weight as the symbol name.
             let html = asciidoctorCore().convert(f.adoc, {
                 standalone: false,
                 // `source-highlighter` is what makes Asciidoctor emit
@@ -141,7 +145,7 @@ function renderFixtureHtml(optionName) {
                 // playbook -- without it these blocks render unstyled
                 // while the hand-built ones above, which hardcode the
                 // same classes, do not.
-                attributes: { leveloffset: '+2', 'source-highlighter': 'highlightjs' },
+                attributes: { leveloffset: '+3', 'source-highlighter': 'highlightjs' },
             })
             // Tag every section heading inside the preview with
             // `class="discrete"`. The convert() output emits plain
