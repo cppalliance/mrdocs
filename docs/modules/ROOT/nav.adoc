@@ -41,4 +41,3 @@
 ** xref:contribute/codebase-tour.adoc[]
 ** xref:contribute/docs.adoc[]
 * xref:design-notes.adoc[]
-* xref:license.adoc[]
