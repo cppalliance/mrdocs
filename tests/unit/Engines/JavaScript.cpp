@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -2124,6 +2125,46 @@ struct JavaScript_test
         b.set("next", nullptr);
     }
 
+    void
+    test_large_arrays()
+    {
+        // Test that a large array is readable with exhausting the
+        // interpreter heap.
+        js::Context ctx;
+        js::Scope scope(ctx);
+
+        std::size_t const count = 50'000;
+        dom::Array large;
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            dom::Object elem;
+            elem.set("i", static_cast<std::int64_t>(i));
+            large.push_back(dom::Value(elem));
+        }
+        scope.setGlobal("large", dom::Value(large));
+
+        auto read = scope.eval(
+            "(function() {"
+            "  let seen = 0;"
+            "  for (let i = 0; i < large.length; ++i) { seen += large[i].i; }"
+            "  return seen;"
+            "})()");
+        BOOST_TEST(read);
+        if (read)
+        {
+            BOOST_TEST(read->isNumber());
+            BOOST_TEST(read->getDom() ==
+                static_cast<std::int64_t>(count * (count - 1) / 2));
+        }
+
+        auto len = scope.eval("large.length");
+        BOOST_TEST(len);
+        if (len)
+        {
+            BOOST_TEST(len->getDom() == static_cast<std::int64_t>(count));
+        }
+    }
+
     void run()
     {
         test_context();
@@ -2150,6 +2191,7 @@ struct JavaScript_test
         test_utility_file_globals();
         test_empty_script();
         test_large_strings();
+        test_large_arrays();
         test_function_round_trip();
         test_operator_bracket_edge_cases();
         test_deep_circular_stress();

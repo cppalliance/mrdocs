@@ -58,7 +58,8 @@
 //
 // - DOM → JS (toJsValue): Objects use lazy Proxy wrappers to avoid
 //   infinite recursion from circular references (e.g., Handlebars symbol
-//   contexts). Arrays are converted eagerly. Functions wrap dom::Function.
+//   contexts). Arrays use them too, so that an element is converted only
+//   when a script reads it. Functions wrap dom::Function.
 //
 // - JS → DOM (toDomValue): Proxies unwrap to their original dom::Value.
 //   JS functions become callable from C++. Arrays/objects convert
@@ -71,8 +72,10 @@
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <algorithm>
 #include <atomic>
 #include <cctype>
+#include <charconv>
 #include <cmath>
 #include <cstdlib>
 #include <jerryscript.h>
