@@ -13,6 +13,9 @@ struct Detail
 
     /// A member of the detail base.
     int hidden() const;
+
+    /// Indexed access.
+    int operator[](int i) const;
 };
 
 /// A base excluded from extraction.
@@ -23,6 +26,9 @@ struct Excluded
 
     /// A member of the excluded base.
     int gone() const;
+
+    /// Convert to bool.
+    explicit operator bool() const;
 };
 
 /// Re-export members of each.
@@ -39,6 +45,23 @@ struct Reexport : private Detail, private Excluded
 
     /// Re-exported from the excluded base.
     using Excluded::gone;
+
+    /// Indexed access, re-exported from the implementation-defined base.
+    using Detail::operator[];
+
+    /// Conversion, re-exported from the excluded base.
+    using Excluded::operator bool;
 };
+
+/// Implementation details.
+namespace detail {
+
+/// A literal operator for lengths in kilometers.
+int operator""_km(unsigned long long);
+
+} // namespace detail
+
+/// A literal operator re-exported from the implementation-defined namespace.
+using detail::operator""_km;
 
 } // namespace ns
