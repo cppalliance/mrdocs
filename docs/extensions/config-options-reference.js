@@ -133,7 +133,15 @@ function renderFixtureHtml(optionName) {
             // `adoc-preview.css`.
             let html = asciidoctorCore().convert(f.adoc, {
                 standalone: false,
-                attributes: { leveloffset: '+2' },
+                // `source-highlighter` is what makes Asciidoctor emit
+                // `class="highlightjs highlight"` / `class="... hljs"`,
+                // which is the opt-in the theme's highlight bundle
+                // selects on (`pre code.hljs[data-lang]`). This is a
+                // standalone converter, so it inherits nothing from the
+                // playbook -- without it these blocks render unstyled
+                // while the hand-built ones above, which hardcode the
+                // same classes, do not.
+                attributes: { leveloffset: '+2', 'source-highlighter': 'highlightjs' },
             })
             // Tag every section heading inside the preview with
             // `class="discrete"`. The convert() output emits plain
