@@ -88,33 +88,56 @@
 }
 
 /*
- * The card is a self-contained visual context, so its headings are
- * sized to read on their own rather than relative to the host page's
- * section depth. The symbol name (h5) is the dominant element and
- * its subsections (h6) are clearly subordinate.
+ * The card renders the same symbol panels the landing page shows, so it
+ * follows the landing page's spec rather than inventing its own scale:
+ * the symbol title is gold at 36px, the section titles (Synopsis,
+ * Description) blue at 24px, both with the 1.5px-OUTSIDE ink edge, the
+ * hard comic shadow and 120% leading. See `docs/website/styles.css`
+ * `.side-by-side > .documentation-panel h2/h3`.
+ *
+ * The sizes are load-bearing, not decorative. The ink edge is a centred
+ * `-webkit-text-stroke`, so it eats a fixed amount off each glyph edge
+ * no matter how small the type gets. At the 14.4px this block used to
+ * set, a 2px stroke is 13.9% of the size and closes Bangers' counters --
+ * the label renders as a solid blob. At the landing page's 24px the same
+ * edge is proportionate and reads cleanly.
+ *
+ * Structure: h5 is the symbol name, h6 its sections -- matching
+ * `adoc-preview-extension.js` (2 -> h5, 3 -> h6) and the `leveloffset=3`
+ * in `config-options-reference.js`.
  */
 
 .doc .adoc-preview h4,
 .doc .adoc-preview h5,
 .doc .adoc-preview h6 {
   margin: 1.1rem 0 0.5rem;
-  font-weight: 600;
   border: none;
-  color: inherit;
+  /* Landing runs these at 120%; `.doc h1-h6` sets 0.9, which clips the
+     descenders on a stroked face. */
+  line-height: 1.2;
 }
 
+/* Symbol name -- landing `.documentation-panel h2`: gold, 36px. */
 .doc .adoc-preview h4,
 .doc .adoc-preview h5 {
-  font-size: 1.35rem;
-  color: var(--heading-font-color);
+  --doc-heading-fill: var(--gold-surface);
+  --doc-heading-stroke: 3px; /* Figma 1.5px OUTSIDE */
+  --doc-heading-drop: drop-shadow(1.5px 1.5px 0 var(--outline));
+
+  font-size: calc(36 / var(--rem-base) * 1rem);
 }
 
+/* Section titles -- landing `.documentation-panel h3`: blue, 24px, and
+   uppercased there via `text-transform`. Same ink edge as the symbol
+   name, not the thinner one `.doc h6` would otherwise apply. */
 .doc .adoc-preview h6 {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-weight: 700;
+  --doc-heading-fill: var(--blue-surface);
+  --doc-heading-stroke: 3px; /* Figma 1.5px OUTSIDE */
+  --doc-heading-drop: drop-shadow(1.5px 1.5px 0 var(--outline));
+
+  font-size: calc(24 / var(--rem-base) * 1rem);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.4px;
   margin-top: 1.25rem;
 }
 
