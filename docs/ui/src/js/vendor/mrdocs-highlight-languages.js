@@ -396,6 +396,24 @@ function handlebarsOver (hostLang) {
   }
 }
 
+// highlight.js's AsciiDoc grammar knows blocks, lists and inline
+// formatting but not inline macros, so `xref:page.html[text]` is left
+// plain and an underscore inside the target (`from_polar`) opens a
+// bogus emphasis span. This adds the macro shape `name:target[text]`
+// ahead of the upstream rules: the target as a link, the bracket text
+// as a string.
+function makeRichAsciidoc (asciidocLangDef) {
+  return function (hl) {
+    var def = asciidocLangDef(hl)
+    def.contains = [{
+      className: 'link',
+      begin: /\b(?:xref|link|image|include|mailto|https?|ftp|irc|cpp):[^[\s]*(?=\[)/,
+      starts: { className: 'string', begin: /\[/, end: /\]/ },
+    }].concat(def.contains || [])
+    return def
+  }
+}
+
 // Register every language the docs and landing page use on the given
 // highlight.js instance.
 function register (hljs) {
@@ -422,7 +440,8 @@ function register (hljs) {
   // AsciiDoc is the host language for adoc-handlebars and is also
   // useful on its own for the few `[source,asciidoc]` blocks the
   // docs already use.
-  hljs.registerLanguage('asciidoc', require('highlight.js/lib/languages/asciidoc'))
+  var richAsciidoc = makeRichAsciidoc(require('highlight.js/lib/languages/asciidoc'))
+  hljs.registerLanguage('asciidoc', richAsciidoc)
   // Handlebars templates: `handlebars` (and `hbs`/`html-handlebars`)
   // for HTML-flavoured templates such as `code-block.html.hbs`,
   // `adoc-handlebars` for AsciiDoc-flavoured templates such as
@@ -437,7 +456,7 @@ function register (hljs) {
   // is a fresh `registerLanguage` call against the same definition.
   var plainDef = require('highlight.js/lib/languages/plaintext')
   hljs.registerLanguage('c++', richCpp)
-  hljs.registerLanguage('adoc', require('highlight.js/lib/languages/asciidoc'))
+  hljs.registerLanguage('adoc', richAsciidoc)
   hljs.registerLanguage('text', plainDef)
   hljs.registerLanguage('txt', plainDef)
   hljs.registerLanguage('none', plainDef)
@@ -451,4 +470,4 @@ function create () {
   return register(require('highlight.js/lib/highlight'))
 }
 
-module.exports = { register: register, create: create, makeRichCpp: makeRichCpp }
+module.exports = { register: register, create: create, makeRichCpp: makeRichCpp, makeRichAsciidoc: makeRichAsciidoc }

@@ -128,12 +128,25 @@ Run that against a small fixture:
 include::example$snippets/extensions/override-code-block/override-code-block.cpp[]
 ----
 
-The base addons still provide every other partial; only `markup/code-block.<format>.hbs` is replaced. The rendered AsciiDoc page now shows the `Listing` caption above each synopsis block; the HTML page would carry the copy-button wrapper through the same mechanism:
+The base addons still provide every other partial; only `markup/code-block.<format>.hbs` is replaced. The rendered AsciiDoc page now shows the `Listing` caption above each synopsis block, and the HTML page wraps each synopsis block in the copy-button wrapper:
 
+[tabs]
+======
+AsciiDoc::
++
 [.adoc-preview]
 ========
 include::example$snippets/extensions/override-code-block/override-code-block.adoc[tags=!footer]
 ========
+
+HTML::
++
+.`override-code-block.html`
+[source,html]
+----
+include::example$snippets/extensions/override-code-block/override-code-block.html[]
+----
+======
 
 === Reordering the Main Template
 
