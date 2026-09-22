@@ -5,6 +5,7 @@ Alan Freitas <alandefreitas@gmail.com>
 :url-repo: https://github.com/cppalliance/mrdocs
 :page-tags: mrdocs
 :navtitle: Home
+:page-aliases: design-notes.adoc
 
 Mr.Docs is a C++ reference documentation generator built on Clang/LLVM. It reads your project's source through a compilation database, builds a complete symbol corpus from the real Clang AST, and emits documentation in several formats. The same corpus feeds rendered documents intended for human readers and structured data intended for downstream tools.
 
@@ -63,6 +64,36 @@ include::example$snippets/landing/sqrt.adoc[tags=!footer]
 [.caption]
 What Mr.Docs makes of the declaration above.
 ========
+
+[#why-generate-from-source]
+== Why generate from source
+
+C++ API design is hard, and the moment you write a function signature is usually the moment you know the most about what it is supposed to do. Wait a week, and the details start to fade. Wait a month, and you reconstruct them from the call sites. Writing the documentation now, next to the declaration, captures what you already have in your head.
+
+Keeping the docs next to the code does two things at once:
+
+* It makes them easier to update when a signature changes (you see them in the same diff), and
+* It makes them more likely to be written in the first place (no separate file to open).
+
+It also pays off before any site is generated. Editors show the same `/** ... */` comment on hover and in signature help, and AI coding assistants read it as context while editing the same file. One comment written next to the declaration serves the reader of the reference, the developer at the call site, and the assistant working alongside them.
+
+Handwritten reference documentation works for small libraries. It stops scaling as soon as the codebase outgrows what one developer can hold in memory, and it drifts the moment a signature changes without an edit to the matching prose.
+
+Generating the reference from the headers fixes the drift, but only if the generator reads those headers as the compiler does. Other tools often cannot do that, and the workaround is to keep a parallel ill-formed declaration just for the documentation tool. That defeats the point: the source code no longer reflects what is compiled. The xref:migration-notes.adoc[Migration Notes] walk through the C++ idioms where this happens.
+
+|===
+|  | Mr.Docs | Other Tools | Manual | No Reference
+
+| Reader-friendly output | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Stays in sync with source | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| IDE friendly | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| AI friendly | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| No source-code workarounds | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Low author overhead | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16]
+| Single source of truth | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+|===
+
+Mr.Docs gives readers a presentable reference without extra work for developers, so the documented C++ code remains the compiled C++ code.
 
 == See it in action
 

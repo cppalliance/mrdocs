@@ -268,7 +268,7 @@ Notice in this example that `s.doc.sees` receives a list of polymorphic types th
 [#reading-files]
 == Reading files
 
-After being presented with the xref:design-notes.adoc[arguments for generated reference documentation], a common objection is that the prose should be mostly written by technical writers, not developers. The rationale is not to clutter the headers, and that technical writers can focus on use cases the users are interested in and dedicate themselves to long tutorials.
+After being presented with the xref:index.adoc#why-generate-from-source[arguments for generated reference documentation], a common objection is that the prose should be mostly written by technical writers, not developers. The rationale is not to clutter the headers, and that technical writers can focus on use cases the users are interested in and dedicate themselves to long tutorials.
 
 A transform extension can bridge the two by also reading documentation from external sources. While developers write documentation in code that is verifiably correct and guaranteed never to drift, a writer keeps the extra documentation alongside the project. The ghostwrite transform extension fills in each symbol's description from the corresponding file. A complete, runnable example lives at `examples/extensions/ghostwriter/`.
 
