@@ -138,6 +138,67 @@ underlyingConversion(clang::NamedDecl const* D)
     return dyn_cast<clang::CXXConversionDecl>(target);
 }
 
+// The name of a class type, without any template arguments: `Base` for
+// both `Base` and `Base<T>`, which is how a constructor of either is
+// spelled. Empty if the type is not a class, or has no name of its own.
+std::string
+classNameOf(clang::Type const& T)
+{
+    std::string result;
+    clang::NamedDecl const* ND = nullptr;
+    if (clang::TypedefType const* TT = dyn_cast<clang::TypedefType>(&T))
+    {
+        ND = TT->getDecl();
+    }
+    else if (clang::TemplateSpecializationType const* TST =
+                 T.getAs<clang::TemplateSpecializationType>())
+    {
+        // A class that depends on a template parameter, such as `Base<T>`,
+        // has no record behind it; the template it specializes has the name.
+        ND = TST->getTemplateName().getAsTemplateDecl();
+    }
+    else
+    {
+        ND = T.getAsCXXRecordDecl();
+    }
+    if (ND && ND->getIdentifier())
+    {
+        result = ND->getIdentifier()->getName();
+    }
+    return result;
+}
+
+// The class an inheriting constructor declaration names, if it is one.
+//
+// `using Base::Base;` declares the constructors of `Base`, but Clang
+// stores the name as a constructor of the derived class, and, where the
+// base depends on a template parameter, as a constructor of a type with
+// no class behind it.
+std::string
+inheritedConstructorClassName(clang::NamedDecl const* D)
+{
+    std::string result;
+    if (D->getDeclName().getNameKind() ==
+        clang::DeclarationName::CXXConstructorName)
+    {
+        clang::NestedNameSpecifier NNS(std::nullopt);
+        if (clang::UsingDecl const* UD = dyn_cast<clang::UsingDecl>(D))
+        {
+            NNS = UD->getQualifier();
+        }
+        else if (clang::UnresolvedUsingValueDecl const* UUD =
+                     dyn_cast<clang::UnresolvedUsingValueDecl>(D))
+        {
+            NNS = UUD->getQualifier();
+        }
+        if (NNS.getKind() == clang::NestedNameSpecifier::Kind::Type)
+        {
+            result = classNameOf(*NNS.getAsType());
+        }
+    }
+    return result;
+}
+
 } // unnamed namespace
 
 void
@@ -1410,10 +1471,7 @@ populate(
     auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
-    if (clang::CXXConversionDecl const* CD = underlyingConversion(D))
-    {
-        I.IntroducedName->Identifier = conversionNameAsWritten(CD);
-    }
+    I.IntroducedName->Identifier = extractName(D);
     for (clang::UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
@@ -1442,6 +1500,7 @@ populateDependentUsing(
     auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
+    I.IntroducedName->Identifier = extractName(D);
 }
 
 void
@@ -2427,7 +2486,11 @@ extractName(clang::NamedDecl const* D)
     }
     else
     {
-        result = extractName(D->getDeclName());
+        result = inheritedConstructorClassName(D);
+        if (result.empty())
+        {
+            result = extractName(D->getDeclName());
+        }
     }
     return result;
 }
