@@ -54,13 +54,13 @@ quadrantChart
     x-axis Low redundancy --> High redundancy
     y-axis Low convenience --> High convenience
     Ideal: [0.04, 0.96] radius: 4, color: #cccccc, stroke-color: #cccccc, stroke-width: 1px
-    HTML: [0.88, 0.94]
-    AsciiDoc: [0.78, 0.78]
-    Custom Templates: [0.5, 0.6]
-    Data-Driven Generators: [0.36, 0.5]
-    Custom Generators: [0.2, 0.3]
-    JSON: [0.05, 0.12]
-    XML: [0.1, 0.12]
+    HTML: [0.92, 0.94]
+    AsciiDoc: [0.78, 0.84]
+    Custom Templates: [0.64, 0.73]
+    Data-Driven Generators: [0.5, 0.61]
+    Custom Generators: [0.36, 0.48]
+    JSON: [0.08, 0.08]
+    XML: [0.15, 0.23]
     Clang AST: [0.88, 0.06] radius: 5, color: #f1c7c7, stroke-color: #f1c7c7, stroke-width: 1px
 ....
 
