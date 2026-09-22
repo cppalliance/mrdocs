@@ -75,6 +75,11 @@ target_compile_options(
     $<$<BOOL:${MRDOCS_CLANG}>:-Wno-unused-value>
     PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/permissive- /W4 /MP>
+    # C4251 and C4275: MRDOCS_DECL now marks the exported types, whose standard
+    # library members and bases carry no export marker of their own. LLVM's own
+    # copies of these suppressions are stripped from the global flags in
+    # setup-llvm.cmake, so name them where the exporting happens.
+    $<$<CXX_COMPILER_ID:MSVC>:/wd4251 /wd4275>
     $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<STREQUAL:${CMAKE_GENERATOR_PLATFORM},Win64>>:/arch:AMD64>
     $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Debug>>:/Oy->  # Disable frame pointer omission
     $<$<BOOL:${MRDOCS_CLANG}>:-Wno-covered-switch-default>

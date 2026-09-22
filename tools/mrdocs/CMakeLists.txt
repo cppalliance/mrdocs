@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
@@ -19,6 +20,7 @@ add_executable(mrdocs ${TOOL_SOURCES})
 target_include_directories(mrdocs
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/include"
@@ -26,7 +28,27 @@ target_include_directories(mrdocs
 )
 
 target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
-target_link_libraries(mrdocs PUBLIC mrdocs-core)
+# The core is linked privately so that a plugin, which links the tool, does not
+# link the core as well: a second copy of a static core would give the plugin
+# its own generator and transform registries.
+target_link_libraries(mrdocs PRIVATE mrdocs-core)
+
+set_target_properties(mrdocs PROPERTIES ENABLE_EXPORTS ON)
+
+target_include_directories(mrdocs INTERFACE
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/polyfill/include>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/dom/include>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/handlebars/include>")
+
+# What a plugin needs to compile the public headers. Since the tool links
+# mrdocs-core privately, so that a plugin does not link the core itself, the
+# usage requirements mrdocs-core states PUBLIC do not reach a plugin and are
+# repeated here: /Zc:__cplusplus for Platform.hpp, and /Zc:preprocessor for the
+# variadic macros in Describe.hpp and MRDOCS_TRY, which the traditional
+# preprocessor expands into something that does not compile. /wd4251 and
+# /wd4275 accept the standard library members and bases of the exported types.
+target_compile_options(mrdocs PUBLIC
+    "$<$<CXX_COMPILER_ID:MSVC>:/EHs;/Zc:__cplusplus;/Zc:preprocessor;/wd4251;/wd4275>")
 # The command-line frontend uses a few LLVM utilities directly (pretty stack
 # traces, host triple), so the tool links LLVM rather than reaching it only
 # through mrdocs-core.

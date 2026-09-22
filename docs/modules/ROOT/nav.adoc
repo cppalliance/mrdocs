@@ -31,6 +31,7 @@
 ** xref:extensions/data-driven-generators.adoc[Data-Driven Generators]
 ** xref:extensions/corpus-transforms.adoc[Corpus Transforms]
 ** xref:extensions/script-generators.adoc[Script Generators]
+** xref:extensions/plugins.adoc[Plugins]
 ** xref:extensions/antora.adoc[Antora Extensions]
 ** xref:extensions/as-library.adoc[Mr.Docs as a Library]
 ** xref:reference:index.adoc[Library Reference]

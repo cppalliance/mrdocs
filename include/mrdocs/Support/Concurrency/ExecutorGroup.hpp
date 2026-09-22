@@ -35,7 +35,7 @@ class MRDOCS_DECL ExecutorGroupBase
 protected:
     /** Type-erased agent holder used by the base class.
     */
-    struct MRDOCS_DECL AnyAgent
+    struct AnyAgent
     {
         /** Virtual destructor to allow deleting through the base pointer.
         */
