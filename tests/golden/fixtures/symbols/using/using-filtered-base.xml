@@ -60,10 +60,295 @@
   <keyKind>struct</keyKind>
   <interface>
     <public>
-      <functions>2pZPcSxiLCTW81Ep9WcR6CSNvBe7</functions>
+      <functions>3yhiTTQBtLW1uvaK5JkQisLQff6b 2pZPcSxiLCTW81Ep9WcR6CSNvBe7</functions>
     </public>
   </interface>
 </record>
+<overloads>
+  <name>Detail</name>
+  <anchor>2constructor-0d</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>using-filtered-base.cpp</shortPath>
+      <sourcePath>using-filtered-base.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>8</columnNumber>
+      <documented/>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>overloads</kind>
+  <id>3yhiTTQBtLW1uvaK5JkQisLQff6b</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>3SGcYLppJA2rdQ8vTWo5rKV22sPK</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Constructors</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <funcClass>constructor</funcClass>
+  <members>25QYJmCVGUJ193ynvbDgb6gTh7cy hhHVAaaxpAPw5zLwZkh8xSFifqd 2FQUaDnVistFkBzg32eg37ZVrWuD</members>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+</overloads>
+<function>
+  <name>Detail</name>
+  <anchor>2constructor-04</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>using-filtered-base.cpp</shortPath>
+      <sourcePath>using-filtered-base.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>8</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>25QYJmCVGUJ193ynvbDgb6gTh7cy</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>3SGcYLppJA2rdQ8vTWo5rKV22sPK</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A base marked as an implementation detail.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to copy construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3SGcYLppJA2rdQ8vTWo5rKV22sPK</id>
+                  <identifier>Detail</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
+      <name>other</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isDefaulted/>
+  <constexpr>constexpr</constexpr>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>Detail</name>
+  <anchor>2constructor-03</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>using-filtered-base.cpp</shortPath>
+      <sourcePath>using-filtered-base.cpp</sourcePath>
+      <lineNumber>9</lineNumber>
+      <columnNumber>8</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>hhHVAaaxpAPw5zLwZkh8xSFifqd</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>3SGcYLppJA2rdQ8vTWo5rKV22sPK</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A base marked as an implementation detail.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The object to move construct from</literal>
+          </text>
+        </children>
+        <name>other</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <rValueReference>
+          <kind>rvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <id>3SGcYLppJA2rdQ8vTWo5rKV22sPK</id>
+                  <identifier>Detail</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </rValueReference>
+      </type>
+      <name>other</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isDefaulted/>
+  <constexpr>constexpr</constexpr>
+  <isRecordMethod/>
+</function>
+<function>
+  <name>Detail</name>
+  <anchor>2constructor-05</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>12</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2FQUaDnVistFkBzg32eg37ZVrWuD</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>3SGcYLppJA2rdQ8vTWo5rKV22sPK</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Construct from a count.</literal>
+        </text>
+      </children>
+    </brief>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value to construct from</literal>
+          </text>
+        </children>
+        <name>value</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>value</name>
+    </param>
+  </params>
+  <funcClass>constructor</funcClass>
+  <isRecordMethod/>
+</function>
 <function>
   <name>hidden</name>
   <anchor>hidden</anchor>
@@ -72,7 +357,7 @@
       <location>
         <shortPath>using-filtered-base.cpp</shortPath>
         <sourcePath>using-filtered-base.cpp</sourcePath>
-        <lineNumber>12</lineNumber>
+        <lineNumber>15</lineNumber>
         <columnNumber>5</columnNumber>
         <documented/>
       </location>
@@ -117,7 +402,7 @@
     <defLoc>
       <shortPath>using-filtered-base.cpp</shortPath>
       <sourcePath>using-filtered-base.cpp</sourcePath>
-      <lineNumber>23</lineNumber>
+      <lineNumber>29</lineNumber>
       <columnNumber>1</columnNumber>
       <documented/>
     </defLoc>
@@ -132,7 +417,7 @@
       <children>
         <text>
           <kind>text</kind>
-          <literal>Re-export a member of each.</literal>
+          <literal>Re-export members of each.</literal>
         </text>
       </children>
     </brief>
@@ -140,10 +425,100 @@
   <keyKind>struct</keyKind>
   <interface>
     <public>
-      <usings>npRa45X8z2orh68KkLG7cQmGXz1 3a9zMXoj73M9zQcYYmsCqtCxtEE4</usings>
+      <usings>3cF5rVRHGaz8c3pRdjTbmftK8jFK 2L4rQr1ZEKwSCSeK9UHJVVQb1FT9 npRa45X8z2orh68KkLG7cQmGXz1 3a9zMXoj73M9zQcYYmsCqtCxtEE4</usings>
     </public>
   </interface>
 </record>
+<using>
+  <name>Detail</name>
+  <anchor>Detail</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>32</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>3cF5rVRHGaz8c3pRdjTbmftK8jFK</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3D3Ncqr4SiKkKtsbeUAFYeJcB64v</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The constructors of the implementation-defined base.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>Detail</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3SGcYLppJA2rdQ8vTWo5rKV22sPK</id>
+          <identifier>Detail</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+</using>
+<using>
+  <name>Excluded</name>
+  <anchor>Excluded</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>using-filtered-base.cpp</shortPath>
+        <sourcePath>using-filtered-base.cpp</sourcePath>
+        <lineNumber>35</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>using</kind>
+  <id>2L4rQr1ZEKwSCSeK9UHJVVQb1FT9</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3D3Ncqr4SiKkKtsbeUAFYeJcB64v</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>The constructors of the excluded base.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <class>normal</class>
+  <introducedName>
+    <identifier>
+      <kind>identifier</kind>
+      <identifier>Excluded</identifier>
+      <prefix>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3c5RuWKWcxGpq8T1Vzzp41kueCYr</id>
+          <identifier>Excluded</identifier>
+        </identifier>
+      </prefix>
+    </identifier>
+  </introducedName>
+</using>
 <using>
   <name>gone</name>
   <anchor>gone</anchor>
@@ -152,7 +527,7 @@
       <location>
         <shortPath>using-filtered-base.cpp</shortPath>
         <sourcePath>using-filtered-base.cpp</sourcePath>
-        <lineNumber>29</lineNumber>
+        <lineNumber>41</lineNumber>
         <columnNumber>5</columnNumber>
         <documented/>
       </location>
@@ -197,7 +572,7 @@
       <location>
         <shortPath>using-filtered-base.cpp</shortPath>
         <sourcePath>using-filtered-base.cpp</sourcePath>
-        <lineNumber>26</lineNumber>
+        <lineNumber>38</lineNumber>
         <columnNumber>5</columnNumber>
         <documented/>
       </location>

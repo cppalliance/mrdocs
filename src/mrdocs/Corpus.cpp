@@ -59,6 +59,17 @@ isTransparent(Symbol const& info)
     });
 }
 
+// Whether `U` inherits constructors: within a class, `using Base::Base;`
+// names the constructors of `Base`, because the name repeats the last
+// component of the qualifier.
+bool
+isInheritingConstructor(UsingSymbol const& U)
+{
+    Name const& introduced = *U.IntroducedName;
+    return introduced.Prefix &&
+           (*introduced.Prefix)->Identifier == introduced.Identifier;
+}
+
 SymbolID
 findFirstParentInfo(
     detail::SymbolSet const& info,
@@ -1002,6 +1013,14 @@ lookupImpl(
             }
             else
             {
+                if constexpr (std::same_as<MInfoTy, UsingSymbol>)
+                {
+                    // An inheriting constructor is named after its base,
+                    // and the name still means the base class.
+                    MRDOCS_CHECK_OR(
+                        !(context.isRecord() && isInheritingConstructor(M)),
+                        matchRes);
+                }
                 MRDOCS_CHECK_OR(member.Name == component.Name, matchRes);
             }
             matchRes = MatchLevel::Name;

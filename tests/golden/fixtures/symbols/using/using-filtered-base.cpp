@@ -8,6 +8,9 @@ namespace ns {
 /// A base marked as an implementation detail.
 struct Detail
 {
+    /// Construct from a count.
+    explicit Detail(int);
+
     /// A member of the detail base.
     int hidden() const;
 };
@@ -15,13 +18,22 @@ struct Detail
 /// A base excluded from extraction.
 struct Excluded
 {
+    /// Construct from a string.
+    explicit Excluded(char const*);
+
     /// A member of the excluded base.
     int gone() const;
 };
 
-/// Re-export a member of each.
+/// Re-export members of each.
 struct Reexport : private Detail, private Excluded
 {
+    /// The constructors of the implementation-defined base.
+    using Detail::Detail;
+
+    /// The constructors of the excluded base.
+    using Excluded::Excluded;
+
     /// Re-exported from the implementation-defined base.
     using Detail::hidden;
 
