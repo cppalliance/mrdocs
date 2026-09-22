@@ -190,12 +190,14 @@ static void set_tls_context_alloc_failed(bool val)
 static constexpr std::size_t JERRY_HEAP_SIZE = 512 * 1024;
 
 // Allocates memory for a new JerryScript context and its heap.
-// Called internally by jerry_init(). The returned block contains the context
+// Called internally by jerry_init(). The block contains the context
 // structure followed by JERRY_HEAP_SIZE bytes for the JavaScript heap.
 // Temporarily stores the pointer in TLS so jerry_port_context_get() works
 // during initialization; Context::Impl captures it and restores TLS afterward.
-extern "C" void*
-jerry_port_context_alloc(jerry_size_t context_size)
+//
+// Note that this returns the size of the block, not a pointer the block.
+extern "C" std::size_t
+jerry_port_context_alloc(std::size_t context_size)
 {
     // Allocate context structure + heap in one contiguous block.
     // JerryScript uses the excess space beyond context_size as the JS heap.
@@ -222,17 +224,17 @@ jerry_port_context_alloc(jerry_size_t context_size)
     {
         // Signal allocation failure via TLS flag. The Context::Impl constructor
         // will check this flag and throw a C++ exception for graceful error handling.
-        // We return nullptr here; JerryScript may fail, but Context::Impl will
+        // We return 0 here; JerryScript may fail, but Context::Impl will
         // detect the failure before any operations are attempted.
         set_tls_context_alloc_failed(true);
-        return nullptr;
+        return 0;
     }
 
     // Store in TLS so jerry_port_context_get() returns this during jerry_init().
     // The Context::Impl constructor will capture this and restore previous TLS.
     set_tls_jerry_context(ptr);
 
-    return ptr;
+    return total_size;
 }
 
 // Frees context memory. Called internally by jerry_cleanup().
