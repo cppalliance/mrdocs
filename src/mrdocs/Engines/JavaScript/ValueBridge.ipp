@@ -211,6 +211,253 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
     return proxy;
 }
 
+// The element index a property name denotes, or `nullopt` when the name is
+// not an array index (`length`, `map`, a symbol, ...).
+static std::optional<std::size_t>
+elementIndex(std::string_view name)
+{
+    std::optional<std::size_t> result;
+    if (!name.empty() &&
+        std::ranges::all_of(name, [](char c)
+            { return c >= '0' && c <= '9'; }))
+    {
+        std::size_t i = 0;
+        auto const [ptr, ec] =
+            std::from_chars(name.data(), name.data() + name.size(), i);
+        if (ec == std::errc() && ptr == name.data() + name.size())
+        {
+            result = i;
+        }
+    }
+    return result;
+}
+
+// Whether `obj` carries `key` itself, as opposed to inheriting it.
+static bool
+hasOwn(jerry_value_t obj, jerry_value_t key)
+{
+    jerry_value_t const res = jerry_object_has_own(obj, key);
+    bool const result = jerry_value_is_true(res);
+    jerry_value_free(res);
+    return result;
+}
+
+// The length a wrapped array presents: the DOM array's, unless a script
+// wrote past its end.
+static std::size_t
+arrayLength(jerry_value_t written, dom::Array const& a)
+{
+    return std::max<std::size_t>(a.size(), jerry_array_length(written));
+}
+
+// A property descriptor for one element, as the `getOwnPropertyDescriptor`
+// trap must return it.
+static jerry_value_t
+makeElementDescriptor(jerry_value_t value, bool configurable)
+{
+    jerry_value_t desc = jerry_object();
+    auto const setField = [&](char const* name, jerry_value_t v)
+    {
+        jerry_value_t key = makeString(name);
+        jerry_value_t res = jerry_object_set(desc, key, v);
+        jerry_value_free(res);
+        jerry_value_free(key);
+    };
+    setField("value", value);
+    setField("writable", jerry_boolean(true));
+    setField("enumerable", jerry_boolean(configurable));
+    setField("configurable", jerry_boolean(configurable));
+    return desc;
+}
+
+/*  Wrap a `dom::Array` in a JavaScript proxy.
+
+    The proxy converts an element when the script reads it. It wraps a real
+    (empty) array, so `Array.isArray` still answers `true` and everything on
+    `Array.prototype` still resolves. Those methods read `length` and the
+    indices, which the traps answer from the DOM array.
+*/
+static jerry_value_t
+makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
+{
+    auto* holder = new DomValueHolder();
+    holder->impl = impl;
+    holder->value = dom::Value(std::move(arr));
+    impl->registerHolder(holder);
+
+    jerry_value_t target = jerry_array(0);
+    jerry_value_t handler = jerry_object();
+
+    auto const setTrap = [&](char const* name, jerry_external_handler_t fn)
+    {
+        jerry_value_t key = makeString(name);
+        jerry_value_t trap = jerry_function_external(fn);
+        jerry_value_t res = jerry_object_set(handler, key, trap);
+        jerry_value_free(res);
+        jerry_value_free(trap);
+        jerry_value_free(key);
+    };
+
+    // 'get' trap: handler.get(target, prop, receiver)
+    setTrap("get",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+            {
+                return jerry_undefined();
+            }
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+            {
+                return jerry_undefined();
+            }
+            std::string const propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            dom::Array const& a = h->value.getArray();
+
+            if (propName == "length")
+            {
+                return jerry_number(static_cast<double>(
+                    arrayLength(args_p[0], a)));
+            }
+            if (hasOwn(args_p[0], args_p[1]))
+            {
+                return jerry_object_get(args_p[0], args_p[1]);
+            }
+            if (std::optional<std::size_t> const i = elementIndex(propName))
+            {
+                if (*i >= a.size())
+                {
+                    return jerry_undefined();
+                }
+                return toJsValue(a.get(*i), h->impl);
+            }
+            // Anything else is a method or a symbol, which the wrapped
+            // array resolves through `Array.prototype`.
+            return jerry_object_get(args_p[0], args_p[1]);
+        });
+
+    // 'has' trap: handler.has(target, prop)
+    setTrap("has",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+            {
+                return jerry_boolean(false);
+            }
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+            {
+                return jerry_boolean(false);
+            }
+            std::string const propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            if (propName == "length" || hasOwn(args_p[0], args_p[1]))
+            {
+                return jerry_boolean(true);
+            }
+            if (std::optional<std::size_t> const i = elementIndex(propName))
+            {
+                return jerry_boolean(*i < h->value.getArray().size());
+            }
+            jerry_value_t const res = jerry_object_has(args_p[0], args_p[1]);
+            bool const found = jerry_value_is_true(res);
+            jerry_value_free(res);
+            return jerry_boolean(found);
+        });
+
+    // 'ownKeys' trap: handler.ownKeys(target). `length` is an own property
+    // of the wrapped array and the proxy may not hide it.
+    setTrap("ownKeys",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t) -> jerry_value_t
+        {
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+            {
+                return jerry_array(0);
+            }
+            auto lock = lockContext(h->impl);
+            std::size_t const n =
+                arrayLength(args_p[0], h->value.getArray());
+            jerry_value_t keys = jerry_array(static_cast<uint32_t>(n) + 1);
+            for (std::size_t i = 0; i < n; ++i)
+            {
+                jerry_value_t key = makeString(std::to_string(i));
+                jerry_value_t res = jerry_object_set_index(
+                    keys, static_cast<uint32_t>(i), key);
+                jerry_value_free(res);
+                jerry_value_free(key);
+            }
+            jerry_value_t lengthKey = makeString("length");
+            jerry_value_t res = jerry_object_set_index(
+                keys, static_cast<uint32_t>(n), lengthKey);
+            jerry_value_free(res);
+            jerry_value_free(lengthKey);
+            return keys;
+        });
+
+    // 'getOwnPropertyDescriptor' trap, which `ownKeys` needs to be usable.
+    setTrap("getOwnPropertyDescriptor",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+            {
+                return jerry_undefined();
+            }
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+            {
+                return jerry_undefined();
+            }
+            std::string const propName = toString(args_p[1]);
+            auto lock = lockContext(h->impl);
+            dom::Array const& a = h->value.getArray();
+            if (propName == "length")
+            {
+                // The wrapped array's own `length` cannot be reported as
+                // configurable, or the engine rejects the descriptor.
+                return makeElementDescriptor(
+                    jerry_number(static_cast<double>(arrayLength(args_p[0], a))),
+                    false);
+            }
+            if (hasOwn(args_p[0], args_p[1]))
+            {
+                return makeElementDescriptor(
+                    jerry_object_get(args_p[0], args_p[1]), true);
+            }
+            std::optional<std::size_t> const i = elementIndex(propName);
+            if (!i || *i >= a.size())
+            {
+                return jerry_undefined();
+            }
+            return makeElementDescriptor(toJsValue(a.get(*i), h->impl), true);
+        });
+
+    // There is no 'set' trap: an assignment goes to the wrapped array, so
+    // a script's own writes stay in JavaScript.
+
+    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
+
+    jerry_value_t proxy = jerry_proxy(target, handler);
+    jerry_value_free(target);
+    jerry_value_free(handler);
+
+    if (jerry_value_is_exception(proxy))
+    {
+        jerry_value_free(proxy);
+        return jerry_array(0);
+    }
+    return proxy;
+}
+
 // Holder for wrapped dom::Function, inherits NativeHolder for cleanup tracking.
 struct FunctionHolder : NativeHolder {
     std::shared_ptr<Context::Impl> impl;
@@ -309,21 +556,8 @@ toJsValue(dom::Value const& v, std::shared_ptr<Context::Impl> const& impl)
         return makeString(s);
     }
     case dom::Kind::Array:
-    {
-        // Arrays are converted eagerly since they don't have the circular
-        // reference problem that objects have (Handlebars options objects
-        // contain symbol contexts with parent references, but arrays don't).
-        jerry_value_t arr = jerry_array(v.getArray().size());
-        uint32_t idx = 0;
-        for (auto const& elem: v.getArray())
-        {
-            jerry_value_t je = toJsValue(elem, impl);
-            jerry_value_t sr = jerry_object_set_index(arr, idx++, je);
-            jerry_value_free(sr);
-            jerry_value_free(je);
-        }
-        return arr;
-    }
+        // Use a lazy proxy for arrays too - elements converted on access.
+        return makeArrayProxy(v.getArray(), impl);
     case dom::Kind::Object:
         // Use lazy proxy for objects - properties converted on access.
         // This avoids infinite recursion from circular references in
