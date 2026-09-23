@@ -18,6 +18,7 @@
       "options": [
         "-DJERRY_PROFILE=es.next",
         "-DJERRY_EXTERNAL_CONTEXT=ON",
+        "-DJERRY_CPOINTER_32_BIT=ON",
         "-DJERRY_PORT=ON",
         "-DJERRY_DEBUGGER=OFF",
         "-DJERRY_SNAPSHOT_SAVE=OFF",

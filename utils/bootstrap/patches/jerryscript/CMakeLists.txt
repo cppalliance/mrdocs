@@ -54,16 +54,18 @@ add_custom_target(amalgam)
 # Build jerry-core using upstream CMakeLists
 add_subdirectory(jerry-core)
 
-# Build jerry-port ourselves to exclude context functions when JERRY_EXTERNAL_CONTEXT=ON.
-# When external context is enabled, the host application must provide its own
-# implementations of jerry_port_context_alloc, jerry_port_context_free, and
-# jerry_port_context_get. By excluding jerry-port-context.c from the library,
-# we avoid ODR violations and make the design explicit.
+# Build jerry-port ourselves to exclude the port functions the host provides
+# when JERRY_EXTERNAL_CONTEXT=ON: jerry_port_context_alloc,
+# jerry_port_context_free and jerry_port_context_get (jerry-port-context.c),
+# plus jerry_port_fatal and the non-Windows jerry_port_init
+# (jerry-port-process.c) so the host can report an out-of-memory condition
+# with its own diagnostics. Upstream marks these weak, but MSVC has no weak
+# symbols, so excluding the files is the only portable way to override them
+# without ODR violations.
 if (JERRY_PORT)
     set(JERRY_PORT_SOURCES
         jerry-port/common/jerry-port-fs.c
         jerry-port/common/jerry-port-io.c
-        jerry-port/common/jerry-port-process.c
         jerry-port/unix/jerry-port-unix-date.c
         jerry-port/unix/jerry-port-unix-fs.c
         jerry-port/unix/jerry-port-unix-process.c
@@ -72,9 +74,12 @@ if (JERRY_PORT)
         jerry-port/win/jerry-port-win-process.c
     )
 
-    # Include context functions only when NOT using external context
+    # Include the host-replaceable port functions only when NOT using an
+    # external context
     if (NOT JERRY_EXTERNAL_CONTEXT)
-        list(APPEND JERRY_PORT_SOURCES jerry-port/common/jerry-port-context.c)
+        list(APPEND JERRY_PORT_SOURCES
+            jerry-port/common/jerry-port-context.c
+            jerry-port/common/jerry-port-process.c)
     endif()
 
     add_library(jerry-port ${JERRY_PORT_SOURCES})
