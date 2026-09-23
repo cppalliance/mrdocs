@@ -84,11 +84,6 @@ MrDocs uses the same two-phase parsing model as the https://spec.commonmark.org/
 [mermaid]
 ....
 graph LR
-  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
-  classDef common fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
-  classDef mrdocs fill:#F3D1FF,stroke:#8000C0,stroke-width:2;
-  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
-
   PRE["Pre-step<br/>strip markers,<br/>fix indentation"]
   B1["Phase 1<br/>group lines<br/>into blocks"]
   B2["Metadata blocks<br/>@param, @returns…"]

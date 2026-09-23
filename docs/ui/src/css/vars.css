@@ -351,6 +351,20 @@
      #FF4C4C), but that rule reaches every code span in a cell, not just the
      names: magenta and red read as dead links beside the live blue ones, and
      measure 3.00:1 / 3.71:1 on this ground. They inherit instead. */
+  /* Flowchart diagram roles. The page sources bind semantic classes
+     (input, stage, output, ext...) but no longer carry colours, so the two
+     themes are free to differ. Each role tints the theme's own surface, so
+     dark gets dark nodes with light ink rather than light nodes pasted onto
+     the page. --mr-green is new and only used here. */
+  --mr-green: #22c55e;
+  --diagram-surface: var(--surface-2);
+  --diagram-ink: var(--text-strong);
+  --diagram-line: var(--text-muted);
+  --diagram-cluster-bg: var(--surface-tint);
+  --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 22%, var(--mr-white));
+  --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 30%, var(--mr-white));
+  --diagram-output: color-mix(in sRGB, var(--mr-green) 22%, var(--mr-white));
+  --diagram-accent: color-mix(in sRGB, var(--mr-pink) 18%, var(--mr-white));
   --table-border-color: var(--ds-color-code-body);
   --table-frame-color: var(--outline);
   --table-frame-background: var(--surface-tint);
@@ -446,6 +460,11 @@
   --border-strong: rgba(148, 163, 184, 0.32);
   /* DERIVED -- see the note in the prefers-color-scheme block below. */
   --outline: #000;
+  --diagram-surface: var(--surface-2);
+  --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 30%, var(--bg));
+  --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 24%, var(--bg));
+  --diagram-output: color-mix(in sRGB, var(--mr-green) 26%, var(--bg));
+  --diagram-accent: color-mix(in sRGB, var(--mr-pink) 24%, var(--bg));
   --table-link-color: var(--mr-blue-300);
   --table-link-hover-color: var(--mr-blue-200);
   --navbar-surface: var(--mr-navy-750);
@@ -523,6 +542,11 @@
     --border-strong: rgba(148, 163, 184, 0.32);
     /* DERIVED -- the frame is light only. Revisit with a dark frame. */
     --outline: #000;
+    --diagram-surface: var(--surface-2);
+    --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 30%, var(--bg));
+    --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 24%, var(--bg));
+    --diagram-output: color-mix(in sRGB, var(--mr-green) 26%, var(--bg));
+    --diagram-accent: color-mix(in sRGB, var(--mr-pink) 24%, var(--bg));
     --table-link-color: var(--mr-blue-300);
     --table-link-hover-color: var(--mr-blue-200);
     --navbar-surface: var(--mr-navy-750);
