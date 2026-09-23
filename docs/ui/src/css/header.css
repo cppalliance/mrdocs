@@ -83,52 +83,66 @@ body {
   outline: none;
 }
 
+/* 316:335019 and 316:334241 both place the same 24x24 "Close remove - Iconly
+   Pro" component here, so the docs and the landing page now draw the identical
+   glyph. This was three 17x2 square-ended spans rotating into a 13x13 cross --
+   a different mark to the landing's 17.5x1.5 rounded bars and 12x12 1.5-stroke
+   cross, and neither matched the frame. */
 .navbar-burger {
   background: none;
   border: none;
   outline: none;
   line-height: 1;
   position: relative;
-  width: 3rem;
+  width: 24px;
+  height: 24px;
   padding: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-left: auto;
-  min-width: 0;
+  /* 24 exactly: `min-width: 0` plus flex shrink was pulling the button to 23
+     and squashing the glyph with it. */
+  flex: 0 0 24px;
+  min-width: 24px;
+  color: var(--navbar-font-color);
 }
 
-.navbar-burger span {
-  background-color: var(--navbar-font-color);
-  height: 2px;
-  width: 1rem;
-  transform-origin: center;
-  backface-visibility: hidden;
-  transition:
-    transform 0.25s ease,
-    opacity 0.25s ease,
-    margin-top 0.25s ease;
+/* The colour is set on the icons, not just the button: something between the
+   two resolves `color` to transparent, which left `currentColor` invisible on
+   light. Same trap as the landing page's bar.
+
+   `--text-strong`, not `--navbar-font-color`: the frame draws this glyph
+   #0F172A on light and #FFFFFF on dark, which is exactly what that token
+   flips between. The bar's own font colour is #24303F / a 92%-opaque
+   off-white, so the mark sat softer than the landing page's. */
+.navbar-burger .burger-icon,
+.navbar-burger .close-icon {
+  display: none;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  color: var(--text-strong);
 }
 
-.navbar-burger span + span {
-  margin-top: 0.25rem;
+.navbar-burger .burger-icon {
+  display: block;
 }
 
-.navbar-burger.is-active span + span {
-  margin-top: -2px;
+.navbar-burger .burger-icon path {
+  fill: currentColor;
 }
 
-.navbar-burger.is-active span:nth-child(1) {
-  transform: rotate(45deg) translateY(0.5px);
+.navbar-burger .close-icon path {
+  stroke: currentColor;
 }
 
-.navbar-burger.is-active span:nth-child(2) {
-  opacity: 0;
+.navbar-burger.is-active .burger-icon {
+  display: none;
 }
 
-.navbar-burger.is-active span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-0.5px);
+.navbar-burger.is-active .close-icon {
+  display: block;
 }
 
 .navbar-item,
