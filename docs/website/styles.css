@@ -255,15 +255,13 @@
    * token, so the whole burst scales from one declaration.
    *
    *   mobile   assets/mrdocs-cta-rays-mobile.webp    804x1734, 9.7KB
-   *   desktop  assets/mrdocs-cta-rays-desktop.webp  2000x1182,  49KB
    *
-   * Both are exact 1:1 exports of their Figma frame -- mobile is 402x867 at
-   * 2x, desktop 1440x851 -- so PAINTING ONE AT ITS FRAME WIDTH, top left of
-   * the container, is the entire placement. That alone lands each burst's
-   * origin on the mascot's chest (desktop: the artwork's own centre falls at
-   * (1066, 294) against the .fig's (1068.5, 292.5)); the mascot is laid out
-   * against the same container with a fixed offset at both breakpoints, so
-   * the two track each other without an origin coordinate on either side. */
+   * Mobile only: desktop has no burst. The file is a 1:1 export of the
+   * Figma frame (402x867 at 2x), so PAINTING IT AT ITS FRAME WIDTH, top
+   * left of the container, is the entire placement. That alone lands the
+   * burst's origin on the mascot's chest; the mascot is laid out against
+   * the same container with a fixed offset, so the two track each other
+   * without an origin coordinate on either side. */
   --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-mobile.webp");
   --ds-cta-burst-art-width: 402px;
   --ds-cta-burst-art-color: var(--ds-black);
@@ -5801,7 +5799,7 @@ header {
  *            Even pitch is where the resemblance ends: the rays taper, run
  *            to different lengths, start at different radii and cluster
  *            hard by direction. This layer is therefore not drawn at all
- *            but masked from Figma's own export, one per breakpoint --
+ *            but masked from Figma's own export, on mobile only --
  *            see --ds-cta-burst-art.
  *
  * The dot masks were then swept against the mockup and scored on mean ink
@@ -5861,11 +5859,10 @@ header {
 
    The pseudo-element is inset:0 on that container, so anchoring the mask
    top-left is all the placement there is; --ds-cta-burst-art-width picks the
-   frame the export was drawn at and @media 992 swaps both tokens. Each
-   artwork is taller than the panel it sits in (mobile 867 against ~870 of
-   content, desktop 851 against 768) and the desktop one is wider than the
-   container past 1440, so the bottom and right run under the panel's
-   overflow:hidden. The .fig clips them at the same frame. */
+   frame the export was drawn at, and @media 992 drops the layer. The
+   artwork is about as tall as the panel (867 against ~870 of content), so
+   any excess runs under the panel's overflow:hidden. The .fig clips it at
+   the same frame. */
 .cta-panel-inner::before {
     background-color: var(--ds-cta-burst-art-color);
     -webkit-mask-image: var(--ds-cta-burst-art);
@@ -6157,9 +6154,11 @@ footer {
             rgba(0, 0, 0, 0.1) 0, transparent 25%,
             transparent 45%, #000 80%
         );
-        /* Same layer, the desktop frame's export -- see the burst block. */
-        --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-desktop.webp");
-        --ds-cta-burst-art-width: 1440px;
+    }
+
+    /* No speed lines on desktop. */
+    .cta-panel-inner::before {
+        content: none;
     }
 
     .cta-panel-inner {
