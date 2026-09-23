@@ -689,6 +689,13 @@ struct Context::Impl {
     // from ever running), so Context counts its references here.
     std::atomic<int> context_refs{0};
 
+    // Proxy handler objects shared by every DOM proxy of this context, one
+    // for objects and one for arrays (see ValueBridge.ipp). Built on first
+    // use; released in cleanup() before the engine is torn down.
+    jerry_value_t objectProxyHandler = 0;
+    jerry_value_t arrayProxyHandler = 0;
+    bool haveProxyHandlers = false;
+
     // Track all native holders (DomValueHolder, FunctionHolder) so we can
     // delete them during cleanup if JerryScript's GC doesn't finalize them.
     // This handles the case where objects are still referenced from globals.
@@ -738,6 +745,13 @@ struct Context::Impl {
         // (via jerry_port_context_get) to find the context to tear down.
         void* prev_ctx = get_tls_jerry_context();
         set_tls_jerry_context(jerry_ctx);
+
+        if (haveProxyHandlers)
+        {
+            jerry_value_free(objectProxyHandler);
+            jerry_value_free(arrayProxyHandler);
+            haveProxyHandlers = false;
+        }
 
         // Optional optimization: run GC to finalize unreferenced objects and
         // trigger their free_cb callbacks, which unregister them from our
@@ -959,14 +973,13 @@ makeString(std::string_view s)
 // Definition of kDomProxyInfo (declared earlier as extern)
 jerry_object_native_info_t const kDomProxyInfo{ DomValueHolder::free_cb, 0, 0 };
 
-// Retrieve the DomValueHolder from a proxy trap's handler object.
-// Returns nullptr if the holder is not found or invalid.
+// Retrieve the DomValueHolder from a DOM proxy's target object, which
+// carries it as a native pointer. Returns nullptr for any other object.
 static DomValueHolder*
-getHolderFromHandler(jerry_value_t thisValue)
+getHolderFromTarget(jerry_value_t target)
 {
-    // The native pointer is stored directly on the handler object.
     return static_cast<DomValueHolder*>(
-        jerry_object_get_native_ptr(thisValue, &kDomProxyInfo));
+        jerry_object_get_native_ptr(target, &kDomProxyInfo));
 }
 
 // The public symbols are defined in per-symbol impl fragments below;

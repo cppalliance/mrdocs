@@ -172,19 +172,18 @@ Value::type() const noexcept
     // proxy is classified here rather than above.
     if (jerry_value_is_proxy(v))
     {
-        jerry_value_t handler = jerry_proxy_handler(v);
-        if (!jerry_value_is_exception(handler))
+        jerry_value_t target = jerry_proxy_target(v);
+        if (!jerry_value_is_exception(target))
         {
-            // Native pointer is stored directly on the handler object.
-            auto* holder = static_cast<DomValueHolder*>(
-                jerry_object_get_native_ptr(handler, &kDomProxyInfo));
+            // The native pointer lives on the proxy target.
+            auto* holder = getHolderFromTarget(target);
             if (holder)
             {
-                jerry_value_free(handler);
+                jerry_value_free(target);
                 return holder->value.isArray() ? Type::array : Type::object;
             }
         }
-        jerry_value_free(handler);
+        jerry_value_free(target);
     }
     return Type::object;
 }
