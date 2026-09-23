@@ -1,0 +1,11 @@
+# MemorySanitizer ignorelist for the JerryScript build (Clang
+# -fsanitize-ignorelist syntax). Findings that originate inside these
+# sources are upstream's to fix, not the host's, so they are not
+# reported. The code is still instrumented: values are still tracked as
+# they flow into mrdocs, where a real problem would surface.
+#
+# Known upstream finding this hides: the parser reads an uninitialized
+# field of its stack-allocated context while parsing a `let` declaration
+# (parser_check_anonymous_function_declaration, jerry-core 3.0.0).
+src:*/jerry-core/*
+src:*/jerry-port/*
