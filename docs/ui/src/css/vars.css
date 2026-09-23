@@ -240,9 +240,17 @@
 
   /* Tabbed code cards (AsciiDoc tabs). Light paints solid surfaces set off
      from the cream content; dark keeps the white/black overlays it had. */
-  --tab-surface: var(--surface-2);
-  --tab-inactive-bg: var(--slate-200);
-  --tab-inactive-color: var(--text-muted);
+  /* 300:364: the visible panel face is the innermost node -- the page
+     ground with the same 10% blue wash the inactive tabs carry, which is
+     why the two read as one surface in the mock. The outer containers
+     (#FDFAF5 / #FFFFFF) never show. */
+  --tab-surface: var(--surface-tint);
+  /* Figma 300:349: the inactive tab is the page ground with a 10% blue
+     wash, which `--surface-tint` already mixes; the label keeps full ink.
+     The old `--text-muted` + `opacity: .5` in `tabs.css` put it at
+     1.93:1. */
+  --tab-inactive-bg: var(--surface-tint);
+  --tab-inactive-color: var(--text-strong);
 
   /* admonitions (brand accents; readable on both themes) */
   --caution-color: var(--mr-pink);
@@ -464,9 +472,13 @@
      white here made the nav column read lighter than the content and
      contents panes either side of it. */
   --nav-panel-overlay: transparent;
-  --tab-surface: rgba(255, 255, 255, 0.12);
-  --tab-inactive-bg: rgba(0, 0, 0, 0.25);
-  --tab-inactive-color: rgba(255, 255, 255, 0.5);
+  /* Tab tokens are NOT overridden per theme: `--surface-tint` and
+     `--text-strong` already flip, so the light definitions resolve
+     correctly here. The Figma's dark inactive tab is solid `#3D8BFF`
+     (300:749), but that puts its white label at 3.32:1 -- under AA -- and
+     makes the inactive tabs louder than the panel. Matching the page
+     surface instead mirrors what light already does, where inactive tab
+     and panel are the same tinted ground. */
 }
 
 /* ---- Small-screen chrome (Figma 316:335067 / 316:334667, 402) ---------- */
@@ -539,8 +551,12 @@
        white here made the nav column read lighter than the content and
        contents panes either side of it. */
     --nav-panel-overlay: transparent;
-    --tab-surface: rgba(255, 255, 255, 0.12);
-    --tab-inactive-bg: rgba(0, 0, 0, 0.25);
-    --tab-inactive-color: rgba(255, 255, 255, 0.5);
+    /* Tab tokens are NOT overridden per theme: `--surface-tint` and
+       `--text-strong` already flip, so the light definitions resolve
+       correctly here. The Figma's dark inactive tab is solid `#3D8BFF`
+       (300:749), but that puts its white label at 3.32:1 -- under AA -- and
+       makes the inactive tabs louder than the panel. Matching the page
+       surface instead mirrors what light already does, where inactive tab
+       and panel are the same tinted ground. */
   }
 }

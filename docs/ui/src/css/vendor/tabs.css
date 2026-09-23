@@ -1,25 +1,68 @@
 @import "@asciidoctor/tabs";
 
+/*
+ * Figma 300:349 (light) / 300:749 (dark). Tabs are discrete outlined
+ * boxes standing on an outlined panel: the selected one is gold, the
+ * rest carry the blue state fill, and every edge is the comic outline
+ * rather than the hairline `--border` grey this used to draw.
+ */
+
 .tabpanel {
   background-color: var(--tab-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
+  /* Figma strokes the panel at 2 and each tab at 1. Both are OUTSIDE,
+     but these are box borders rather than `-webkit-text-stroke`, so
+     they map across at face value -- no doubling. */
+  border: 2px solid var(--outline);
+  /* Figma puts the same hard comic shadow on the panel and on every tab:
+     DROP_SHADOW, radius 0, offset 2/2, `--outline`. */
+  box-shadow: var(--outline-shadow);
 }
 
 .tablist > ul li {
-  background-color: var(--tab-surface);
+  background-color: var(--gold-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
+  /* 2, not 1: `borderStrokeWeightsIndependent` is set on the tab, so the
+     per-side `borderTopWeight`/etc (all 2.0) govern and the legacy
+     `strokeWeight: 1.0` is ignored. */
+  border: 2px solid var(--outline);
+  /* Ink, not `--text-strong`: that flips to white in dark, and the
+     selected tab is gold in both themes. */
+  color: var(--outline);
+  box-shadow: var(--outline-shadow);
+  /* Open at the bottom, so the tab reads as continuous with the panel it
+     controls rather than as a closed box parked above it. `300:354` does
+     carry a bottom weight, but there it butts an OUTSIDE stroke against
+     the panel's own OUTSIDE stroke -- a stacking the CSS box model has no
+     equivalent for, which here just doubles into one thick rule. */
+  border-bottom: 0;
 }
 
+/* Figma sets the row gap to 10 (300:353); 6 here. The mock's tabs are
+   four equal 70px boxes with two-word labels, where 10 reads as an even
+   rhythm; the real labels are uneven and much wider, and at that size the
+   same gap opens the row up too much. Upstream ships 0.25em. */
+.tablist.ulist > ul li + li {
+  margin-left: 6px;
+}
+
+/* No `opacity` here. It composites the whole tab -- label, surface and
+   border alike -- against the page, which left the label at 1.93:1,
+   well under the 4.5:1 AA wants. The Figma puts its 10% blue on the
+   background only and keeps the label at full strength; the tokens
+   carry that on their own, and measure 4.73:1. */
 .tabs.is-loading .tablist li:not(:first-child),
 .tabs:not(.is-loading) .tablist li:not(.is-selected) {
   background-color: var(--tab-inactive-bg);
   backdrop-filter: blur(10px);
   color: var(--tab-inactive-color);
-  opacity: 0.5;
 }
 
+/* Upstream paints this 1px strip -- `bottom: -1px`, so it lands on the
+   panel's top border -- with the panel background, merging the selected
+   tab into the panel. The Figma doesn't do that: all four tabs are
+   closed boxes and the panel keeps its own edge, so the strip stays
+   transparent. */
 .tabs.is-loading .tablist li:first-child::after,
 .tabs:not(.is-loading) .tablist li.is-selected::after {
   background-color: transparent;
