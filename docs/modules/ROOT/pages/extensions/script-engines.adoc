@@ -1,0 +1,127 @@
+= Script Engines
+
+Corpus transforms and script generators run in one of two engines built into Mr.Docs: *Lua* and *JavaScript*. Both see the same `ctx` object and the same `mrdocs` API. The xref:extensions/corpus-transforms.adoc[corpus transforms] and xref:extensions/script-generators.adoc[script generators] pages show examples in both languages.
+
+This page is about what differs in practice between the engines: how fast each engine runs, what a symbol costs a script, how each engine uses memory, and what happens when it runs out.
+
+The short version: Lua is faster, 2 to 20 times on the same work, and has no memory limit of its own. JavaScript is reasonable for any real codebase, with a fixed heap of at most 4 GB per engine and the language's own built-ins but no module system.
+
+[cols="1,2,2"]
+|===
+| | Lua | JavaScript
+
+| Engine
+| https://www.lua.org/[Lua] 5.4.8
+| https://github.com/jerryscript-project/jerryscript[JerryScript] 3.0.0, `es.next` profile
+
+| Speed on the corpus
+| Better: a loop costs a microsecond or less per symbol
+| Good: a loop costs a few microseconds per symbol
+
+| Symbols
+| Lazy userdata, under 100 bytes each while alive
+| Lazy proxies, about 50 bytes each while alive
+
+| Memory
+| The system allocator, as needed
+| One fixed block per engine, up to 4 GB
+
+| Standard Library
+| The whole Lua standard library
+| The ECMAScript built-ins
+
+| Out of memory
+| A Lua error a script can catch with `pcall`
+| The engine halts for good and Mr.Docs exits with an error. A script cannot catch it
+|===
+
+== Performance
+
+The table below compares six transforms, each written once in JavaScript and once in Lua and run over the Mr.Docs corpus (6414 symbols):
+
+[cols="3,1,1,1"]
+|===
+| Task | Lua | JavaScript | Ratio
+
+| Count symbols
+| 3 ms
+| 7 ms
+| 2×
+
+| Collect names
+| 4 ms
+| 15 ms
+| 4×
+
+| Read a nested property
+| 4 ms
+| 32 ms
+| 8×
+
+| Build text per symbol
+| 4 ms
+| 66 ms
+| 15×
+
+| Keep every symbol in an array
+| 1 ms
+| 19 ms
+| 17×
+
+| Number loop, no symbols involved
+| 17 ms
+| 157 ms
+| 9×
+|===
+
+Each transform timed itself from inside the script, so extraction and rendering are excluded. The figures are the average of 30 runs. The scripts and the runner live in `tests/benchmarks/script-engines/`, and `cmake --build build/<preset> --target mrdocs-benchmark-script-engines` prints the table for your machine.
+
+Lua wins every row:
+
+* The number loop, which touches no symbols, shows the interpreters themselves: Lua's register machine with native integers runs about nine times faster than JerryScript's stack machine with 32-bit tagged values.
+* On the symbol tasks, the gap is smaller where a script only reads, and larger where it builds things. Reading a property costs about a microsecond in JavaScript. Every symbol a script touches is a `Proxy`, and every read goes through a trap that converts the property name and locks the engine. Lua does the same work through a metatable on a small userdata, at a fraction of the cost.
+* Building a string one piece at a time is where JavaScript falls furthest behind: JerryScript copies on every concatenation, while Lua's `table.concat` builds the result once.
+* For a corpus of 100,000 symbols, a JavaScript transform that reads two properties of every symbol takes well under a second. The same Lua transform takes a tenth of that.
+
+== Symbols as values
+
+In both engines `ctx.corpus.symbols` is lazy. Reading it costs nothing, and each element becomes a script value when the script reaches it. A loop over every symbol of any corpus works, and so does keeping the ones you filtered out. On the Mr.Docs corpus, keeping 102,624 JavaScript symbol proxies alive at once took 129 ms and added 5.4 MB, about 53 bytes each. Lua kept all 6414 symbols in 579 KB.
+
+Each read builds a fresh value, in both engines, so two reads of the same element are not the same object. Compare symbols by `id`, not by identity. Do not rely on `indexOf`, `includes` or a `Set` to find or remove duplicate symbol objects in JavaScript, or on table keys in Lua.
+
+== Memory
+
+=== Lua
+
+Lua stores native (typically 64-bit) pointers and takes every value from the system allocator, one call at a time, so its values can live anywhere in memory and there is no block to run out of. JerryScript stores 32-bit offsets into one block instead, which is where its 4 GB comes from. Lua frees a value when its garbage collector finds it is no longer used.
+
+Thus, a Lua script is limited by the machine's memory, like the rest of Mr.Docs. If an allocation does fail, Lua raises a "not enough memory" error that a script can catch with `pcall`. If the script does not catch it, it ends the transform with that message.
+
+=== JavaScript
+
+JerryScript stores 32-bit offsets into one block instead of native pointers, so each object costs less, and that block is where its values live. The block grows as a script creates objects and can reach just under 4 GB, the most a 32-bit offset can address. A script that keeps 50 MB alive costs about 50 MB. If a script exhausts the block, the engine stops and Mr.Docs exits with an error that names the size. A script cannot catch it, since there is no JavaScript exception for this case.
+
+== Standard libraries
+
+=== Lua
+
+Mr.Docs opens the whole standard library: `string`, `table`, `math`, `io`, `os`, `utf8`, `coroutine`, `debug` and `package`. `require` finds those by name. It does not find module files of your own: `package.path` is Lua's default (system paths and the current directory), not the addon directory, so `require "helper"` for a `helper.lua` next to the script fails. Keep a Lua extension in one file, or set `package.path` yourself at the top of the script.
+
+=== JavaScript
+
+The engine implements the language and the ECMAScript built-ins, and nothing beyond that.
+
+* It provides `Object`, `Array`, `String`, `Number`, `BigInt`, `Math`, `JSON`, `RegExp`, `Date`, `Map`, `Set`, `WeakMap`, `WeakRef`, `Promise`, `Symbol`, `Proxy`, `Reflect`, `ArrayBuffer` with the typed arrays, generators, and `async` functions.
+* It does not provide `Intl`, `setTimeout`, `queueMicrotask`, `TextEncoder`, `fetch`, `structuredClone`, or anything Node or a browser would add (`fs`, `path`, `process`, `require`).
+
+There is no module system: `import` and `export` are syntax errors, so a script is one file.
+
+Mr.Docs adds two host objects: `console`, with `log` and `error`, and `mrdocs`, with `register_transform`, `register_generator` and `report`. Everything else a script needs comes through the `ctx` object it is handed.
+
+== Choosing a language
+
+Pick Lua when the script runs over a large codebase, keeps many symbols alive, or runs on every build. It has no memory limit of its own, runs faster on the same work, and has the whole Lua standard library, including `io` and `os`. You should also use Lua for scripts you're intenting to reuse across many projects.
+
+Pick JavaScript when its authors already write JavaScript, or when the work is a few lookups per run. You get the language and its built-ins: `JSON`, regular expressions, `Map`, `Set`, `Promise` and the array methods. It handles any corpus that fits in 4 GB, which is enough for most real codebases.
+
+Whichever you pick, the `ctx` object, the `mrdocs.register_transform` and `mrdocs.register_generator` calls, and the symbol fields at xref:generators/reference.adoc[the DOM reference] are the same.

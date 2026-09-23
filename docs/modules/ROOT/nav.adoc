@@ -33,6 +33,7 @@
 ** xref:extensions/script-generators.adoc[Script Generators]
 ** xref:extensions/antora.adoc[Antora Extensions]
 ** xref:extensions/as-library.adoc[Mr.Docs as a Library]
+** xref:extensions/script-engines.adoc[Script Engines]
 ** xref:reference:index.adoc[Library Reference]
 * Contribute
 ** xref:contribute/quickstart.adoc[]

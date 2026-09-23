@@ -1,0 +1,30 @@
+# The script engine benchmarks run over MrDocs's own corpus, the same
+# input as docs/mrdocs.yml, with the two bench transforms loaded from
+# ./addons and no generator, so the timing is the scripts' own.
+addons-supplemental:
+  - addons
+source-root: ../../..
+input:
+  - ../../../include
+  - ../../../libs/dom/include
+  - ../../../libs/handlebars/include
+  - ../../../libs/polyfill/include
+file-patterns:
+  - '*.hpp'
+include-symbols:
+  - 'mrdocs::**'
+exclude-symbols:
+  - 'mrdocs::*Finalizer'
+exclude-macros:
+  - 'MRDOCS_*'
+  - 'INFO'
+  - 'LOG'
+  - 'F'
+  - 'FMT_CONSTEVAL'
+implementation-defined:
+  - '**::detail'
+  - '**mrdocs_*_descriptor_fn'
+multipage: false
+generator: noop
+warn-if-undocumented: false
+cmake: '-D MRDOCS_MRDOCS_BUILD=ON'

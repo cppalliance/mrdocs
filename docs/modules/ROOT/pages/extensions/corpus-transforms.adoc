@@ -17,6 +17,8 @@ Both scripting languages reach the same `mrdocs` API. The choice is a trade-off:
 
 * *JavaScript* is more familiar to most developers. The runtime Mr.Docs embeds is a small ES engine, so scripts have the language proper (closures, destructuring, regex, classes) but not a Node-style standard library. There is no `fs`, no `path`, no `process`. Scripts that only manipulate the corpus do not miss any of that.
 * *Lua* is the language designed to be embedded. Mr.Docs links it whole, so scripts have access to the entire Lua standard library (`string`, `table`, `math`, `io`, `os`) and can do filesystem work or text munging without leaving the script. The cost is that fewer people read Lua at a glance than read JavaScript. If you're already familiar with Lua, it is the more powerful choice.
+
+Lua is also faster, 2 to 20 times on the same work, and has no memory limit of its own, while each JavaScript engine has a fixed 4 GB heap. The xref:extensions/script-engines.adoc[Script Engines] page has the measurements and the details.
 ====
 
 [#corpus-transforms]
