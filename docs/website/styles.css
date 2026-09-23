@@ -4578,6 +4578,11 @@ header .header-content > p:not(.row-label) {
     display: block;
     width: 100%;
     height: auto;
+    /* The art is cropped at the thigh, so it ends on a hard horizontal edge.
+       Fade the last stretch out rather than letting that edge sit on the
+       page ground, where it reads as a cut rather than a figure. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 99%);
 }
 
 /* =====================================================================
@@ -4694,19 +4699,25 @@ header .header-content > p:not(.row-label) {
     /* The mascot is wider than its own column in the mockup -- it reads as
        an overlay that the copy and panel columns sit either side of, so it
        is sized absolutely and allowed to spill over the column edges. */
+    /* 486 wide against a 382 gap at 1440, so the figure has to cross one of
+       its neighbours. It spills right, over the code panel, and never over
+       the copy: the panel is a flat slab that reads fine behind a figure,
+       where the headline does not. Anchored to the column start so the left
+       edge tracks the copy rather than the centre of a gap that changes
+       width. The caped art was biased the other way, which is what drove the
+       book through the headline once the wider lab coat replaced it. */
     .header-image {
-        justify-self: center;
-        /* Scaled so the cape matches the mockup's 388px span -- measured
-           on the cape because it is the only saturated red in the art;
-           the tan armour pollutes any gold/hex-badge measurement. */
+        justify-self: start;
         width: 486px;
         max-width: none;
         /* Figma tops the mascot at y285, i.e. 96px below the eyebrow. */
         margin-top: 96px;
-        /* Biased left of its own column: in the mockup the figure sits
-           closer to the copy than to the panel, overlapping the copy
-           column rather than centring in the gap. */
-        transform: translateX(-66px);
+        /* Over the panel, not under it. */
+        position: relative;
+        z-index: 2;
+        /* Nudged left of the column start, into the art's transparent
+           margin, without reaching the headline. */
+        left: -12px;
     }
 }
 
@@ -5880,12 +5891,18 @@ header {
 .cta-mascot {
     display: block;
     position: absolute;
+    /* Cropped at the thigh like the hero art, so the same fade keeps it from
+       ending on a hard horizontal edge. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent 99%);
     /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
        against the container's padding box, which the panel's 2px border
        has already pushed in by 2. */
     top: 7px;
     left: -37px;
-    width: 564px;
+    /* Same ratio correction as the desktop rule: 564x440 framed the old
+       landscape cutout. */
+    width: auto;
     height: 440px;
     /* Fixed width past the viewport edge: the art is a cutout on
        transparency, so the overflow is empty pixels, not a visible crop. */
@@ -6151,12 +6168,26 @@ footer {
     }
 
     .cta-mascot {
-        /* Figma x=656 y=-31, 964x753, measured from the frame's outer
-           edge; the container's padding box starts 2px inside it. */
-        top: -33px;
-        left: 654px;
-        width: 964px;
-        height: 753px;
+        /* Height-driven, width from the art's own ratio. The 964x753 box
+           here framed the old landscape cutout (1928x1506); this pose is
+           portrait (1247x1533), so a fixed box of those dimensions scaled it
+           up until the head and right shoulder left the panel. Anchored to
+           the right edge rather than a left offset measured for wider art. */
+        top: auto;
+        bottom: 0;
+        left: auto;
+        right: 40px;
+        width: auto;
+        /* Inside the 768 panel, not bleeding past it. At 820 the crown left
+           the top edge and the right shoulder met the panel's right border.
+           Standing on the panel floor keeps the whole figure in frame.
+
+           Height follows the space left beside the copy, which is a fixed
+           560 column ending at 640, so the gap shrinks with the viewport
+           while a fixed height did not: at 1024 the figure ran 227 into the
+           headline. The art is 0.813 wide per unit of height, so trading
+           height for width keeps it clear down to 992. */
+        height: min(700px, calc((100vw - 700px) * 1.22));
     }
 
     .cta-content {
