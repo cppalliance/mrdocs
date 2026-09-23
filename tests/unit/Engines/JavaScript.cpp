@@ -1463,6 +1463,56 @@ struct JavaScript_test
     }
 
     void
+    test_large_heap()
+    {
+        // The engine heap is reserved per context far beyond the 512 KB
+        // that 16-bit compressed pointers allowed. A script can keep tens
+        // of megabytes alive, and several contexts can do so at once.
+        auto fill = [](Context& context, int megabytes)
+        {
+            Scope scope(context);
+            std::string const code =
+                "var chunk = 'x'; while (chunk.length < 65536) chunk += chunk;"
+                "var keep = [];"
+                "for (var i = 0; i < " + std::to_string(megabytes * 16) + "; ++i)"
+                "    keep.push(chunk + i);"
+                "var kept = keep.length; var total = kept * chunk.length;";
+            auto r = scope.eval(code);
+            BOOST_TEST(r);
+            auto exp = scope.getGlobal("kept");
+            BOOST_TEST(exp);
+            if (exp)
+            {
+                BOOST_TEST(exp->getDom() == megabytes * 16);
+            }
+            exp = scope.getGlobal("total");
+            BOOST_TEST(exp);
+            if (exp)
+            {
+                BOOST_TEST(exp->getDom() >= (std::int64_t(megabytes) << 20));
+            }
+        };
+
+        {
+            Context context;
+            fill(context, 32);
+        }
+
+        // Several live contexts, each holding a few MB
+        {
+            std::vector<std::unique_ptr<Context>> contexts;
+            for (int i = 0; i < 4; ++i)
+            {
+                contexts.push_back(std::make_unique<Context>());
+            }
+            for (auto& c : contexts)
+            {
+                fill(*c, 4);
+            }
+        }
+    }
+
+    void
     test_hbs_helpers()
     {
         handlebars::Handlebars hbs;
@@ -2418,6 +2468,7 @@ struct JavaScript_test
         test_cpp_object();
         test_cpp_array();
         test_large_arrays();
+        test_large_heap();
         test_hbs_helpers();
         test_helper_error_propagation();
         test_value_lifetime_and_apply_errors();

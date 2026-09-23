@@ -21,7 +21,9 @@ namespace js {
 /** An isolated JavaScript interpreter instance.
 
     Each Context owns an independent JerryScript interpreter with its own
-    512KB heap. Multiple Contexts can exist simultaneously, allowing parallel
+    heap, reserved lazily up to 4 GB, so a script can keep every symbol
+    of a large corpus alive. Multiple Contexts can exist
+    simultaneously, allowing parallel
     JavaScript execution across threads (each thread should use its own Context).
 
     To execute scripts or create values, construct a @ref Scope from the Context.
@@ -58,7 +60,7 @@ public:
 
     /** Constructor.
 
-        Creates a new JavaScript interpreter with its own 512KB heap.
+        Creates a new JavaScript interpreter with its own heap.
         The interpreter is initialized but inactive until a Scope is created.
     */
     Context();

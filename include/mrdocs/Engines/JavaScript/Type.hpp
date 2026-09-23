@@ -26,7 +26,8 @@ namespace mrdocs {
 
     ### Context Isolation
     Each @ref Context owns an independent JerryScript interpreter with its own
-    512KB heap. This allows multiple threads to execute JavaScript in parallel
+    heap (reserved lazily, up to 4 GB). This allows multiple threads to
+    execute JavaScript in parallel
     by giving each thread its own Context. The `JERRY_EXTERNAL_CONTEXT` build
     flag enables this multi-context support.
 
@@ -67,9 +68,11 @@ namespace mrdocs {
     We use the default jerry-port library (JERRY_PORT=ON) for most functions
     (logging, time, fatal errors, etc.), but provide custom implementations
     of the context management functions:
-    - `jerry_port_context_alloc`: Allocates context + heap memory
+    - `jerry_port_context_alloc`: Reserves context + heap memory
     - `jerry_port_context_free`: Frees context memory
     - `jerry_port_context_get`: Returns current thread's active context
+    - `jerry_port_fatal`: Reports an out-of-memory or internal engine
+      failure with a diagnostic before terminating
 
     The default jerry-port context functions use a static global pointer,
     limiting all threads to a single shared context. When building with

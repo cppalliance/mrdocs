@@ -21,8 +21,9 @@
 //
 // Key Components:
 //
-// - Context: Owns an isolated JerryScript interpreter with its own 512KB
-//   heap. Multiple Contexts can exist simultaneously—the count is not
+// - Context: Owns an isolated JerryScript interpreter with its own heap
+//   (see "JerryScript heap" below). Multiple Contexts can exist
+//   simultaneously; the count is not
 //   limited by thread count. Each Context has a mutex for thread-safe
 //   access; a thread activates a Context before performing operations,
 //   then releases it for other threads to use.
@@ -56,10 +57,12 @@
 //
 // DOM Conversion:
 //
-// - DOM → JS (toJsValue): Objects use lazy Proxy wrappers to avoid
-//   infinite recursion from circular references (e.g., Handlebars symbol
-//   contexts). Arrays use them too, so that an element is converted only
-//   when a script reads it. Functions wrap dom::Function.
+// - DOM → JS (toJsValue): Objects and arrays use lazy Proxy wrappers, so
+//   properties and elements are converted only when a script reads them.
+//   This avoids infinite recursion from circular references (e.g.,
+//   Handlebars symbol contexts) and keeps a loop over a large array (every
+//   symbol in a corpus) from materializing it on the small JerryScript
+//   heap. Functions wrap dom::Function.
 //
 // - JS → DOM (toDomValue): Proxies unwrap to their original dom::Value.
 //   JS functions become callable from C++. Arrays/objects convert
@@ -75,8 +78,9 @@
 #include <algorithm>
 #include <atomic>
 #include <cctype>
-#include <charconv>
 #include <cmath>
+#include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <jerryscript.h>
 #include <jerryscript-port.h>
@@ -90,6 +94,17 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#if defined(_WIN32)
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#else
+#include <sys/mman.h>
+#endif
 
 #ifndef _WIN32
 #    include <pthread.h>
@@ -116,11 +131,11 @@
 // multiple contexts can exist and any thread can use any context (one at
 // a time per context, enforced by the mutex).
 //
-// The context port functions are excluded from jerry-port when building
-// with JERRY_EXTERNAL_CONTEXT=ON (see utils/bootstrap/patches/jerryscript/
-// CMakeLists.txt), so mrdocs provides the only implementations. Of the other
-// port functions, jerry_port_fatal is ours too (see below); the rest
-// (jerry_port_log, etc.) use the default implementations from jerry-port.
+// The context port functions and jerry_port_fatal are excluded from
+// jerry-port when building with JERRY_EXTERNAL_CONTEXT=ON (see
+// utils/bootstrap/patches/jerryscript/CMakeLists.txt), so mrdocs provides
+// the only implementations. All other port functions (jerry_port_log,
+// jerry_port_sleep, etc.) use the default implementations from jerry-port.
 
 // ------------------------------------------------------------
 // Thread-Local Storage for JerryScript Context
@@ -136,25 +151,20 @@
 #ifdef _WIN32
 // Windows: use C++ thread_local (works correctly with MSVC)
 static thread_local void* tls_jerry_context = nullptr;
-static thread_local bool tls_context_alloc_failed = false;
 
 static void* get_tls_jerry_context() { return tls_jerry_context; }
 static void set_tls_jerry_context(void* ptr) { tls_jerry_context = ptr; }
-static bool get_tls_context_alloc_failed() { return tls_context_alloc_failed; }
-static void set_tls_context_alloc_failed(bool val) { tls_context_alloc_failed = val; }
 
 #else
 // POSIX: use pthread TLS for compatibility with static linking on Linux/GCC
 
-// TLS keys for context pointer and allocation failure flag
+// TLS key for the active context pointer
 static pthread_key_t tls_jerry_context_key;
-static pthread_key_t tls_context_alloc_failed_key;
 static pthread_once_t tls_keys_init_once = PTHREAD_ONCE_INIT;
 
 static void init_tls_keys()
 {
     pthread_key_create(&tls_jerry_context_key, nullptr);
-    pthread_key_create(&tls_context_alloc_failed_key, nullptr);
 }
 
 static void ensure_tls_keys_initialized()
@@ -174,89 +184,246 @@ static void set_tls_jerry_context(void* ptr)
     pthread_setspecific(tls_jerry_context_key, ptr);
 }
 
-static bool get_tls_context_alloc_failed()
-{
-    ensure_tls_keys_initialized();
-    // Use pointer value as bool (nullptr = false, non-null = true)
-    return pthread_getspecific(tls_context_alloc_failed_key) != nullptr;
-}
-
-static void set_tls_context_alloc_failed(bool val)
-{
-    ensure_tls_keys_initialized();
-    // Store bool as pointer (nullptr = false, (void*)1 = true)
-    pthread_setspecific(tls_context_alloc_failed_key, val ? (void*)1 : nullptr);
-}
 #endif
 
-// Heap size per context. 512KB is JerryScript's typical maximum when built
-// with 16-bit compressed pointers (JERRY_CPOINTER_32_BIT=OFF).
-static constexpr std::size_t JERRY_HEAP_SIZE = 512 * 1024;
-
-// Allocates memory for a new JerryScript context and its heap.
-// Called internally by jerry_init(). The block contains the context
-// structure followed by JERRY_HEAP_SIZE bytes for the JavaScript heap.
-// Temporarily stores the pointer in TLS so jerry_port_context_get() works
-// during initialization; Context::Impl captures it and restores TLS afterward.
+// ------------------------------------------------------------
+// JerryScript heap
+// ------------------------------------------------------------
 //
-// Note that this returns the size of the block, not a pointer the block.
-extern "C" std::size_t
-jerry_port_context_alloc(std::size_t context_size)
+// JerryScript manages its own arena: one contiguous block handed to it by
+// jerry_port_context_alloc at jerry_init, addressed through 32-bit
+// compressed pointers (offsets from the block start in 8-byte units). The
+// engine never asks the OS for more, so the block's size is the hard limit
+// on what a script can keep alive, and because the engine stores the size
+// in a uint32_t the ceiling is 4 GB.
+//
+// Reserving the block is not the same as consuming it. On POSIX the block
+// comes from mmap with MAP_NORESERVE: the pages are demand-zero and cost
+// physical memory only when the engine first writes to them, and heap
+// initialization writes a single free-list header. So every context
+// reserves the maximum the engine can address and pays only for what its
+// scripts allocate. Collection frequency does not depend on the block
+// size either: the engine collects every JERRY_GC_LIMIT bytes of net
+// growth, 8 KB by default, and that default is the right one here. The
+// allocator keeps one address-ordered free list and inserts each freed
+// block by walking it, so a large step (an 8 MB step was tried) frees
+// thousands of blocks per collection into a long list and makes every
+// symbol loop several times slower. Windows has no
+// demand-zero pages of that kind: memory must be committed before it can
+// be written, and a commit is charged in full against the system-wide
+// commit limit at VirtualAlloc time. So on Windows the block is only
+// reserved (address space, no commit), and a vectored exception handler
+// commits it 1 MB at a time when the engine first touches a page (see
+// jerryCommitOnDemand). The engine gives its host no other notice before
+// it writes, so this is the one way to get the same lazy behavior there
+// without an upstream change. On any platform a reservation can still
+// fail in a restricted environment (a process address-space limit such
+// as ulimit -v, Linux strict overcommit which ignores MAP_NORESERVE); the
+// size is then halved until it succeeds, down to the 512 KB the engine
+// used before compressed pointers were widened.
+//
+// When a script does exhaust the block, JerryScript retries garbage
+// collection under rising pressure and then calls jerry_port_fatal, which
+// cannot return. There is no JavaScript exception for that case and no
+// allocation hook, so the best the host can do is say what happened (see
+// jerry_port_fatal below).
+
+// Just under 4 GB, the most the engine's uint32_t heap size can express
+// once the context structure is subtracted.
+static constexpr std::size_t kMaxJerryHeapSize =
+    (std::size_t(4) << 30) - (std::size_t(1) << 20);
+static constexpr std::size_t kMinJerryHeapSize = std::size_t(512) << 10;
+
+// The heap size to try first for a new context: the maximum, since it is
+// reserved lazily on every platform and costs virtual address space only.
+// A failed reservation is halved from here (see jerry_port_context_alloc).
+static std::size_t
+defaultJerryHeapSize()
 {
-    // Allocate context structure + heap in one contiguous block.
-    // JerryScript uses the excess space beyond context_size as the JS heap.
-    std::size_t total_size = context_size + JERRY_HEAP_SIZE;
-
-    // aligned_alloc on glibc requires the size to be a multiple of the
-    // alignment. Round up to satisfy that requirement to avoid
-    // heap-corruption crashes (observed as munmap_chunk/free() errors with
-    // GCC static builds).
-    std::size_t const align = alignof(std::max_align_t);
-    if (std::size_t const rem = total_size % align)
-    {
-        total_size += align - rem;
-    }
-
-    // Use aligned allocation for proper pointer alignment
-    void* ptr = nullptr;
-#if defined(_MSC_VER)
-    ptr = _aligned_malloc(total_size, alignof(std::max_align_t));
-#else
-    ptr = std::aligned_alloc(alignof(std::max_align_t), total_size);
-#endif
-    if (!ptr)
-    {
-        // Signal allocation failure via TLS flag. The Context::Impl constructor
-        // will check this flag and throw a C++ exception for graceful error handling.
-        // We return 0 here; JerryScript may fail, but Context::Impl will
-        // detect the failure before any operations are attempted.
-        set_tls_context_alloc_failed(true);
-        return 0;
-    }
-
-    // Store in TLS so jerry_port_context_get() returns this during jerry_init().
-    // The Context::Impl constructor will capture this and restore previous TLS.
-    set_tls_jerry_context(ptr);
-
-    return total_size;
+    return kMaxJerryHeapSize;
 }
 
-// Frees context memory. Called internally by jerry_cleanup().
-// JerryScript declares this as jerry_port_context_free(void) — no parameters.
-// The implementation must retrieve the context pointer itself (via TLS).
+// Reserve `size` bytes of zeroed, page-aligned address space, or nullptr.
+// Nothing is committed up front: POSIX pages are demand-zero, and on
+// Windows jerryCommitOnDemand commits pages as they are first touched.
+static void*
+reserveJerryBlock(std::size_t size)
+{
+#if defined(_WIN32)
+    return VirtualAlloc(nullptr, size, MEM_RESERVE, PAGE_NOACCESS);
+#else
+    int flags = MAP_PRIVATE | MAP_ANONYMOUS;
+#if defined(MAP_NORESERVE)
+    flags |= MAP_NORESERVE;
+#endif
+    void* p = mmap(nullptr, size, PROT_READ | PROT_WRITE, flags, -1, 0);
+    return p == MAP_FAILED ? nullptr : p;
+#endif
+}
+
+static void
+releaseJerryBlock(void* p, std::size_t size)
+{
+#if defined(_WIN32)
+    (void) size;
+    VirtualFree(p, 0, MEM_RELEASE);
+#else
+    munmap(p, size);
+#endif
+}
+
+// Size of every live block, keyed by its address. jerry_port_context_free
+// takes no arguments and jerry_port_fatal wants to report the size of the
+// heap that ran out, so both look it up here.
+static std::mutex&
+jerryBlocksMutex()
+{
+    static std::mutex m;
+    return m;
+}
+
+static std::unordered_map<void*, std::size_t>&
+jerryBlocks()
+{
+    static std::unordered_map<void*, std::size_t> blocks;
+    return blocks;
+}
+
+static std::size_t
+jerryBlockSize(void* p)
+{
+    std::lock_guard<std::mutex> lock(jerryBlocksMutex());
+    auto it = jerryBlocks().find(p);
+    return it == jerryBlocks().end() ? 0 : it->second;
+}
+
+#if defined(_WIN32)
+// How much to commit per first-touch fault. Larger chunks mean fewer
+// faults (4 GB / 1 MB = 4096 at most); smaller ones waste less on a
+// script that barely uses its heap.
+static constexpr std::size_t kJerryCommitChunk = std::size_t(1) << 20;
+
+// The reserved block that contains `addr`, or {nullptr, 0}.
+static std::pair<void*, std::size_t>
+jerryBlockContaining(void const* addr)
+{
+    auto const a = reinterpret_cast<std::uintptr_t>(addr);
+    std::lock_guard<std::mutex> lock(jerryBlocksMutex());
+    for (auto const& [base, size]: jerryBlocks())
+    {
+        auto const b = reinterpret_cast<std::uintptr_t>(base);
+        if (a >= b && a < b + size)
+            return {base, size};
+    }
+    return {nullptr, 0};
+}
+
+// Vectored exception handler that turns the first touch of a reserved
+// but uncommitted page of a JerryScript block into a commit of the 1 MB
+// chunk around it, then resumes the faulting instruction. Faults outside
+// our blocks, and every other exception, pass through untouched. Runs on
+// the faulting thread with normal stack and locks, so taking the registry
+// mutex here is fine: nothing holds it while touching block memory.
+// Under a debugger each first touch shows up as a first-chance access
+// violation before the handler runs; that is expected.
+static LONG WINAPI
+jerryCommitOnDemand(PEXCEPTION_POINTERS info)
+{
+    auto const* rec = info->ExceptionRecord;
+    if (rec->ExceptionCode != EXCEPTION_ACCESS_VIOLATION
+        || rec->NumberParameters < 2)
+        return EXCEPTION_CONTINUE_SEARCH;
+    auto const fault = static_cast<std::uintptr_t>(rec->ExceptionInformation[1]);
+    auto const [base, size] = jerryBlockContaining(
+        reinterpret_cast<void const*>(fault));
+    if (!base)
+        return EXCEPTION_CONTINUE_SEARCH;
+    auto const begin = reinterpret_cast<std::uintptr_t>(base);
+    auto const chunkStart = fault - ((fault - begin) % kJerryCommitChunk);
+    auto const chunkEnd = std::min(chunkStart + kJerryCommitChunk, begin + size);
+    if (!VirtualAlloc(reinterpret_cast<void*>(chunkStart),
+            chunkEnd - chunkStart, MEM_COMMIT, PAGE_READWRITE))
+    {
+        // The system commit limit is exhausted. There is no way to hand
+        // this back to the engine as an allocation failure, so stop with
+        // a message rather than let the access violation propagate.
+        mrdocs::report::error(
+            "JavaScript engine out of memory: Windows could not commit more "
+            "memory for a script's heap (system commit limit reached). "
+            "Keep fewer symbol objects alive at once, or move the work to Lua.");
+        std::fflush(nullptr);
+        std::_Exit(static_cast<int>(JERRY_FATAL_OUT_OF_MEMORY));
+    }
+    return EXCEPTION_CONTINUE_EXECUTION;
+}
+
+static void
+ensureCommitOnDemandHandler()
+{
+    static std::once_flag once;
+    std::call_once(once, []{ AddVectoredExceptionHandler(1, jerryCommitOnDemand); });
+}
+#endif
+
+// Reserves the block for a new JerryScript context: the context structure
+// followed by the heap. Called by jerry_init(), which reads the returned
+// total size to compute the heap size and then finds the block through
+// jerry_port_context_get(), so the pointer is published in TLS here.
+// Context::Impl captures it and restores the previous TLS value afterward.
+extern "C" size_t
+jerry_port_context_alloc(size_t context_size)
+{
+#if defined(_WIN32)
+    ensureCommitOnDemandHandler();
+#endif
+    std::size_t heap = defaultJerryHeapSize();
+    for (;;)
+    {
+        std::size_t const total = context_size + heap;
+        if (void* p = reserveJerryBlock(total))
+        {
+            {
+                std::lock_guard<std::mutex> lock(jerryBlocksMutex());
+                jerryBlocks()[p] = total;
+            }
+            set_tls_jerry_context(p);
+            return total;
+        }
+        if (heap <= kMinJerryHeapSize)
+        {
+            break;
+        }
+        heap /= 2;
+    }
+    // jerry_init() would dereference a null context next, so stop here
+    // with a message rather than crash. Not even 512 KB could be reserved.
+    mrdocs::report::error(
+        "JavaScript engine: cannot reserve memory for a new context");
+    std::exit(EXIT_FAILURE);
+}
+
+// Frees the block of the current context. Called internally by
+// jerry_cleanup(), which passes no arguments; the block is the one in TLS.
 extern "C" void
 jerry_port_context_free(void)
 {
     void* ctx = get_tls_jerry_context();
     if (!ctx) // LCOV_EXCL_LINE
         return; // LCOV_EXCL_LINE
-    // MSVC's jerry_port_context_alloc uses _aligned_malloc,
-    // which requires _aligned_free (std::free is undefined behavior).
-#if defined(_MSC_VER)
-    _aligned_free(ctx);
-#else
-    std::free(ctx);
-#endif
+    std::size_t size = 0;
+    {
+        std::lock_guard<std::mutex> lock(jerryBlocksMutex());
+        auto it = jerryBlocks().find(ctx);
+        if (it != jerryBlocks().end())
+        {
+            size = it->second;
+            jerryBlocks().erase(it);
+        }
+    }
+    if (size != 0)
+    {
+        releaseJerryBlock(ctx, size);
+    }
     set_tls_jerry_context(nullptr);
 }
 
@@ -269,36 +436,45 @@ jerry_port_context_get(void)
     return static_cast<jerry_context_t*>(get_tls_jerry_context());
 }
 
-// Reports why the interpreter is stopping, and stops the process.
-//
-// JerryScript calls this when it cannot continue, above all when its heap
-// is full: an allocation there does not fail and return, it ends the
-// engine.
-//
-// Leaving through `_Exit` is deliberate, as the interpreter's state is gone,
-// so there is nothing to carry on with.
+// Terminal engine failure. JerryScript calls this after garbage collection
+// could not free enough heap (JERRY_FATAL_OUT_OF_MEMORY) or on an internal
+// error, and it must not return: the engine state is inconsistent and
+// unwinding a C++ exception through the engine's C frames is undefined.
+// The upstream default exits silently with the code, which is how a
+// script that outgrew its heap used to look like a hang or a crash with no
+// message. Report what happened and how big the heap was, then exit.
 extern "C" void
 jerry_port_fatal(jerry_fatal_code_t code)
 {
     if (code == JERRY_FATAL_OUT_OF_MEMORY)
     {
+        std::size_t const bytes = jerryBlockSize(get_tls_jerry_context());
         mrdocs::report::error(
-            "JavaScript: out of memory. The interpreter has a heap of {} KiB, "
-            "which everything a script holds at one time has to fit in. Read "
-            "what you need and let go of it as you go, rather than collecting "
-            "the corpus first.",
-            JERRY_HEAP_SIZE / 1024);
+            "JavaScript engine out of memory: a script exhausted its "
+            "{} MB heap, the most the engine can address. Keep fewer "
+            "symbol objects alive at once, or move the work to Lua, "
+            "which has no such limit.",
+            bytes >> 20);
     }
     else
     {
-        mrdocs::report::error(
-            "JavaScript: the interpreter stopped and cannot continue "
-            "(code {}).",
+        mrdocs::report::error("JavaScript engine fatal error (code {})",
             static_cast<int>(code));
     }
+    // Leave through _Exit: the engine state is gone, and running static
+    // destructors (which tear down live Contexts) would call back into it.
     std::fflush(nullptr);
-    std::_Exit(EXIT_FAILURE);
+    std::_Exit(code == JERRY_FATAL_OUT_OF_MEMORY ? static_cast<int>(code) : EXIT_FAILURE);
 }
+
+#if !defined(_WIN32)
+// The non-Windows jerry_port_init lives in the same upstream file as
+// jerry_port_fatal and is excluded with it. Nothing to initialize.
+extern "C" void
+jerry_port_init(void)
+{
+}
+#endif
 
 namespace mrdocs::js {
 
@@ -530,50 +706,13 @@ struct Context::Impl {
 
     Impl()
     {
-        // Temporarily set TLS so jerry_init() can find the context.
-        // jerry_init() calls jerry_port_context_alloc() internally.
-        // We need a two-phase init: first allocate, then init.
-        //
-        // Actually, jerry_init() itself calls jerry_port_context_alloc(),
-        // so we set TLS *after* the allocation returns and before jerry_init()
-        // uses the context. The trick is jerry_port_context_get() is called
-        // *during* jerry_init() after allocation.
-        //
-        // Approach: jerry_init() allocates via jerry_port_context_alloc(),
-        // stores the pointer internally, then calls jerry_port_context_get()
-        // for subsequent operations. We capture the allocated pointer.
-
-        // For external context, jerry_init behavior:
-        // 1. Calls jerry_port_context_alloc() to get memory
-        // 2. Stores pointer and calls jerry_port_context_get() for future ops
-        //
-        // We need to ensure jerry_port_context_get() returns the right pointer.
-        // Since jerry_init() doesn't give us the pointer back directly,
-        // we use a temporary TLS approach during init.
-
-        // Clear any previous allocation failure flag
-        set_tls_context_alloc_failed(false);
-
-        // Set a sentinel so we know init is in progress
+        // jerry_init() calls jerry_port_context_alloc(), which reserves the
+        // block and publishes it through TLS so jerry_port_context_get()
+        // finds it during initialization. Capture that pointer, then
+        // restore whatever context this thread had active before.
         void* prev_ctx = get_tls_jerry_context();
-
-        // During jerry_init(), JerryScript will:
-        // 1. Call jerry_port_context_alloc() - we allocate and save in TLS
-        // 2. Call jerry_port_context_get() - returns our TLS value
         jerry_init(JERRY_INIT_EMPTY);
-
-        // Check if allocation failed during jerry_init()
-        if (get_tls_context_alloc_failed())
-        {
-            set_tls_context_alloc_failed(false);
-            set_tls_jerry_context(prev_ctx);
-            throw std::bad_alloc();
-        }
-
-        // After init, TLS contains the allocated context
         jerry_ctx = get_tls_jerry_context();
-
-        // Restore previous TLS (likely nullptr)
         set_tls_jerry_context(prev_ctx);
     }
 
