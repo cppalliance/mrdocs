@@ -4314,6 +4314,14 @@ header::before,
 /* Headline: three lines, line 1 blue and the rest gold. */
 header .header-content h1 .title-line {
     display: block;
+    /* Bangers ships no italic cut, so the oblique is synthesised. WebKit does
+       not grow the ink overflow rect to cover that skew, and this span's box
+       ends exactly at the text advance, so it clipped the last glyph: the Y of
+       "Full-fidelity" lost 15px of its arm on iOS while Chromium drew it whole.
+       The padding gives the glyph room and the negative margin takes the space
+       back, leaving layout identical. */
+    padding-right: 0.45em;
+    margin-right: -0.45em;
 }
 
 header .header-content h1 .title-line--alt {
