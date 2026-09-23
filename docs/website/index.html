@@ -309,10 +309,6 @@
 <h3>Description</h3>
 <p>This function returns the distance between two points according to the Euclidean distance formula.</p>
 </div><!-- /description -->
-<div class="return-value">
-<h3>Return Value</h3>
-<p>The distance between the two points</p>
-</div><!-- /return-value -->
 <div class="parameters">
 <h3>Parameters</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -327,6 +323,10 @@
 </tbody>
 </table>
 </div><!-- /parameters -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The distance between the two points</p>
+</div><!-- /return-value -->
 </div><!-- /symbol -->
 
                         </div>
@@ -382,6 +382,18 @@ insert_sorted(
     <span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; v,
     <span class="hljs-keyword">int</span> value);</code></pre>
 </div><!-- /synopsis -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>v</strong></td><td>The sorted vector to insert into.</td></tr>
+<tr><td><strong>value</strong></td><td>The value to insert.</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
 <div class="exceptions">
 <h3>Exceptions</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -397,18 +409,6 @@ insert_sorted(
 <h3>Return Value</h3>
 <p>An iterator to the inserted element.</p>
 </div><!-- /return-value -->
-<div class="parameters">
-<h3>Parameters</h3>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr><th>Name</th><th>Description</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>v</strong></td><td>The sorted vector to insert into.</td></tr>
-<tr><td><strong>value</strong></td><td>The value to insert.</td></tr>
-</tbody>
-</table>
-</div><!-- /parameters -->
 <div class="preconditions">
 <h3>Preconditions</h3>
 <ul>
@@ -482,21 +482,6 @@ T
 <h3>Description</h3>
 <p>This function calculates the square root of a given integral value using bit manipulation, in \(O(\log value)\) time.</p>
 </div><!-- /description -->
-<div class="exceptions">
-<h3>Exceptions</h3>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr><th>Name</th><th>Thrown on</th></tr>
-</thead>
-<tbody>
-<tr><td><code>std::invalid_argument</code></td><td>If the input value is negative.</td></tr>
-</tbody>
-</table>
-</div><!-- /exceptions -->
-<div class="return-value">
-<h3>Return Value</h3>
-<p>The square root of the input value.</p>
-</div><!-- /return-value -->
 <div class="template-parameters">
 <h3>Template Parameters</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -519,6 +504,21 @@ T
 </tbody>
 </table>
 </div><!-- /parameters -->
+<div class="exceptions">
+<h3>Exceptions</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Thrown on</th></tr>
+</thead>
+<tbody>
+<tr><td><code>std::invalid_argument</code></td><td>If the input value is negative.</td></tr>
+</tbody>
+</table>
+</div><!-- /exceptions -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The square root of the input value.</p>
+</div><!-- /return-value -->
 </div><!-- /symbol -->
 
                         </div>
@@ -576,10 +576,6 @@ T
 <p>This function is defined as an <a href="https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects">Algorithm Function Object (AFO)</a>.</p>
 </div>
 </div>
-<div class="return-value">
-<h3>Return Value</h3>
-<p>The absolute value of x.</p>
-</div><!-- /return-value -->
 <div class="parameters">
 <h3>Parameters</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -591,6 +587,10 @@ T
 </tbody>
 </table>
 </div><!-- /parameters -->
+<div class="return-value">
+<h3>Return Value</h3>
+<p>The absolute value of x.</p>
+</div><!-- /return-value -->
 </div><!-- /symbol -->
 
                         </div>
@@ -675,6 +675,17 @@ lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem
 <h3>Description</h3>
 <p>The lock is held until the returned object is destroyed.</p>
 </div><!-- /description -->
+<div class="parameters">
+<h3>Parameters</h3>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr><th>Name</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>path</strong></td><td>The path of the file to lock.</td></tr>
+</tbody>
+</table>
+</div><!-- /parameters -->
 <div class="exceptions">
 <h3>Exceptions</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -695,17 +706,6 @@ lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem
 <p>The return value <a href="https://en.cppreference.com/cpp/language/attributes/nodiscard" target="_blank" rel="noopener">should not be discarded</a>.</p>
 </div>
 </div></div><!-- /return-value -->
-<div class="parameters">
-<h3>Parameters</h3>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr><th>Name</th><th>Description</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>path</strong></td><td>The path of the file to lock.</td></tr>
-</tbody>
-</table>
-</div><!-- /parameters -->
 </div><!-- /symbol -->
 
                         </div>

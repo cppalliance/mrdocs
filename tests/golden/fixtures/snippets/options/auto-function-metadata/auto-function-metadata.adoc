@@ -176,10 +176,6 @@ link:#vec2[vec2]&
 operator&equals;(link:#vec2[vec2] const& other);
 ----
 
-=== Return Value
-
-Reference to the current object
-
 === Parameters
 
 [cols="1,4"]
@@ -188,6 +184,10 @@ Reference to the current object
 | *other*
 | The object to copy assign from
 |===
+
+=== Return Value
+
+Reference to the current object
 
 [#vec2-magnitude]
 == link:#vec2[vec2]::magnitude
@@ -223,10 +223,6 @@ link:#vec2[vec2]
 translated(link:#vec2[vec2] const& delta) const;
 ----
 
-=== Return Value
-
-A 2D vector&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -235,6 +231,10 @@ A 2D vector&period;
 | *delta*
 | A 2D vector&period;
 |===
+
+=== Return Value
+
+A 2D vector&period;
 
 [#vec2-operator_eq]
 == link:#vec2[vec2]::operator&equals;&equals;
@@ -251,10 +251,6 @@ bool
 operator&equals;&equals;(link:#vec2[vec2] const& rhs) const;
 ----
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -263,6 +259,10 @@ operator&equals;&equals;(link:#vec2[vec2] const& rhs) const;
 | *rhs*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

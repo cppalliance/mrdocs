@@ -117,10 +117,6 @@ bool
 operator&equals;&equals;(link:#version[version] const& other) const noexcept;
 ----
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -129,6 +125,10 @@ operator&equals;&equals;(link:#version[version] const& other) const noexcept;
 | *other*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 [#version-operator_not_eq]
 == link:#version[version]::operator!&equals;
@@ -145,10 +145,6 @@ bool
 operator!&equals;(link:#version[version] const& other) const noexcept;
 ----
 
-=== Return Value
-
-`true` if the objects are not equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -157,6 +153,10 @@ operator!&equals;(link:#version[version] const& other) const noexcept;
 | *other*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are not equal, `false` otherwise
 
 [#version-major]
 == link:#version[version]::major

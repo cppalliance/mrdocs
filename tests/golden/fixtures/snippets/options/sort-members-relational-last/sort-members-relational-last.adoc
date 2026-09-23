@@ -63,10 +63,6 @@ bool
 operator&equals;&equals;(link:#value[value] const& rhs) const;
 ----
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -75,6 +71,10 @@ operator&equals;&equals;(link:#value[value] const& rhs) const;
 | *rhs*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 [#value-operator_lt]
 == link:#value[value]::operator&lt;
@@ -91,10 +91,6 @@ bool
 operator&lt;(link:#value[value] const& rhs) const;
 ----
 
-=== Return Value
-
-`true` if the left object is less than the right object, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -103,6 +99,10 @@ operator&lt;(link:#value[value] const& rhs) const;
 | *rhs*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the left object is less than the right object, `false` otherwise
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
