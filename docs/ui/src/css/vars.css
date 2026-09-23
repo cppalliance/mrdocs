@@ -34,6 +34,13 @@
   --mr-blue-300: #93c5fd;
   --mr-blue-450: #1e78ff; /* Figma exact: theme-toggle fill, note blocks */
   --mr-blue-600: #2563eb;
+  /* One step past 600, for links on the tinted table ground where 600
+     measures 4.39:1. */
+  --mr-blue-700: #1d4fd7;
+  /* Hover steps for table links -- one further in each theme's direction, so
+     the state is never dimmer than the rest state. */
+  --mr-blue-800: #1e40af;
+  --mr-blue-200: #bfdbfe;
   --mr-yellow: #facc15;
   --mr-yellow-300: #f1d874;
   --mr-amber-700: #b45309;
@@ -343,14 +350,24 @@
      1.00:1, i.e. no visible grid and no visible header at all.
      The framed variant's ground is the brand blue at 10% over the page
      (#E7EDF6 light / #263552 dark), which is exactly --surface-tint.
-     Names in the first column are Menlo in the label colour (#EC4899 light /
-     #FF4C4C dark) -- --ds-color-label already carries both. */
+     The frame draws the first-column names in the label colour (#EC4899
+     light / #FF4C4C dark), but that rule reaches every code span in a cell,
+     not just the names -- and those spans are not links. Magenta and, on
+     dark, outright red read as a visited or dead link sitting beside the
+     live blue ones, and they measure 3.00:1 and 3.71:1 on the frame ground.
+     They take the cell's own colour instead. */
   --table-border-color: var(--ds-color-code-body);
   --table-frame-color: var(--outline);
   --table-frame-background: var(--surface-tint);
+  /* Links sit on that tinted frame, not the page. `--link` (#2563EB) is
+     4.96:1 on the page but 4.39:1 here, and the dark blue 3.68:1 -- both
+     under AA. One step darker clears it at 5.66:1; dark goes the other way,
+     to the 300, at 6.80:1. */
+  --table-link-color: var(--mr-blue-700);
+  --table-link-hover-color: var(--mr-blue-800);
   --table-header-background: var(--ds-color-code-body);
   --table-header-color: var(--mr-white);
-  --table-name-color: var(--ds-color-label);
+  --table-name-color: inherit;
   --table-stripe-background: var(--surface-2);
   --table-footer-background:
     linear-gradient(
@@ -435,6 +452,9 @@
   --border-strong: rgba(148, 163, 184, 0.32);
   /* DERIVED -- see the note in the prefers-color-scheme block below. */
   --outline: #000;
+  /* Dark inverts the direction: the 300 clears the tinted frame at 6.80:1. */
+  --table-link-color: var(--mr-blue-300);
+  --table-link-hover-color: var(--mr-blue-200);
   --navbar-surface: var(--mr-navy-750);
   --nav-title-background: var(--mr-red);
   --gold-surface: var(--mr-yellow);
@@ -514,6 +534,8 @@
     --border-strong: rgba(148, 163, 184, 0.32);
     /* DERIVED -- the frame is light only. Revisit with a dark frame. */
     --outline: #000;
+    --table-link-color: var(--mr-blue-300);
+    --table-link-hover-color: var(--mr-blue-200);
     --navbar-surface: var(--mr-navy-750);
     --nav-title-background: var(--mr-red);
     --gold-surface: var(--mr-yellow);

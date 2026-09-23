@@ -437,6 +437,37 @@ html {
   background: none;
 }
 
+/* Table links carry an underline and their own blue.
+
+   Underline, because nothing else marked them: links and inline code in a
+   cell are both Menlo at 400 with no decoration, so in the Type column
+   `Attribute[]` (a link) and `string` (not one) differed by hue alone --
+   WCAG 1.4.1. The mock draws no underline, but it also doesn't put the two
+   side by side in a column.
+
+   Their own blue, because the cell ground is `--table-frame-background`
+   (`--surface-tint`), darker than the page. `--link` measures 4.96:1 on the
+   page but 4.39:1 here, and its dark counterpart 3.68:1 -- both under the
+   4.5 AA wants. `--table-link-color` is the ramp step either side: 5.66:1
+   light, 6.80:1 dark. */
+.doc table.tableblock a {
+  color: var(--table-link-color);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Hover belongs to the link, not the cell. The cell-wide rule this replaces
+   washed 30% black over the whole `td` -- which dropped the link it was
+   advertising from 5.66:1 to 2.72:1, and put a pointer cursor over prose that
+   wasn't clickable. Here the colour steps one further in each theme's own
+   direction, so the hover state is always the stronger of the two, and the
+   rule thickens rather than appears, since the underline is already on. */
+.doc table.tableblock a:hover,
+.doc table.tableblock a:focus-visible {
+  color: var(--table-link-hover-color);
+  text-decoration-thickness: 2px;
+}
+
 .doc table.tableblock thead ~ tbody tr:first-child {
   background-color: transparent;
 }
@@ -449,8 +480,11 @@ html {
   font-size: calc(14 / var(--rem-base) * 1rem);
 }
 
-/* Figma: names are Menlo 14 in the label pink -- .doc code's 0.95em would
-   render them at 13.3. */
+/* Menlo 14 -- `.doc code`'s 0.95em would render these at 13.3. The colour is
+   inherited rather than the frame's label pink: this selector catches every
+   code span in a cell, none of which are links, and the pink read as a broken
+   one next to the real links in the same column. A link nested inside a code
+   span still takes `--table-link-color` from the rule above. */
 .doc table.tableblock td code {
   color: var(--table-name-color);
   background: none;
@@ -1358,11 +1392,6 @@ html {
 .doc table.tableblock a img[src*="asciidoc.svg"] {
   width: 20px !important;
   height: 20px !important;
-}
-
-.doc table.tableblock td:has(a):hover {
-  background-color: rgba(0, 0, 0, 0.3);
-  cursor: pointer;
 }
 
 .doc table.tableblock td:has(a) p {
