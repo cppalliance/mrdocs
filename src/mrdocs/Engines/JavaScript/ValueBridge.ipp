@@ -66,20 +66,23 @@ newDomValueHolder(dom::Value value, std::shared_ptr<Context::Impl> const& impl)
     return holder;
 }
 
-// Attach `holder` to `handler` and wrap `target` in a Proxy. Takes
-// ownership of `target` and `handler`; the proxy owns the handler from
-// here on, and the handler's native pointer owns the holder, so
-// `DomValueHolder::free_cb` deletes it once the proxy is collected.
+// Attach `holder` to `target` and wrap `target` in a Proxy whose handler
+// is one of the two shared by the context (see sharedProxyHandler).
+// Takes ownership of `target`; the handler stays owned by the context.
+// The target's native pointer owns the holder, so `DomValueHolder::
+// free_cb` deletes it once the proxy, and with it the target, is
+// collected. A proxy therefore costs two engine objects, the target
+// and the proxy itself, instead of a handler and a trap function set
+// of its own.
 static jerry_value_t
 finishDomProxy(
     jerry_value_t target,
     jerry_value_t handler,
     DomValueHolder* holder)
 {
-    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
+    jerry_object_set_native_ptr(target, &kDomProxyInfo, holder);
     jerry_value_t proxy = jerry_proxy(target, handler);
     jerry_value_free(target);
-    jerry_value_free(handler);
 
     // If proxy creation fails, the handler was still freed above, which
     // triggers free_cb to delete the holder. Return an empty object.
@@ -124,20 +127,17 @@ parseArrayIndex(std::string_view s)
 // ------------------------------------------------------------
 // Lazy Object Proxy
 // ------------------------------------------------------------
-// Creates a JavaScript Proxy that wraps a dom::Object. Properties are
-// converted lazily when accessed, avoiding infinite recursion from
-// circular references (e.g., symbols that reference parent symbols in
-// Handlebars options objects).
+// A JavaScript Proxy that wraps a dom::Object. Properties are converted
+// lazily when accessed, avoiding infinite recursion from circular
+// references (e.g., symbols that reference parent symbols in Handlebars
+// options objects). Every trap finds the wrapped value through the
+// native pointer on the proxy target (its first argument), which is
+// what lets one handler serve every object proxy of a context.
 
+// Build the handler shared by every object proxy of a context.
 static jerry_value_t
-makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
+makeObjectProxyHandler()
 {
-    auto* holder = newDomValueHolder(dom::Value(std::move(obj)), impl);
-
-    // Create an empty target object (the proxy intercepts all access)
-    jerry_value_t target = jerry_object();
-
-    // Create handler object with traps
     jerry_value_t handler = jerry_object();
 
     // 'get' trap: handler.get(target, prop, receiver)
@@ -148,7 +148,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_undefined();
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_undefined();
 
@@ -166,7 +166,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_boolean(false);
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_boolean(false);
 
@@ -178,10 +178,12 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
     // 'ownKeys' trap: handler.ownKeys(target)
     setHandlerTrap(handler, "ownKeys",
         [](jerry_call_info_t const* call_info_p,
-           jerry_value_t const[],
-           jerry_length_t) -> jerry_value_t
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
         {
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (argc < 1)
+                return jerry_array(0);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_array(0);
 
@@ -211,7 +213,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_undefined();
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_undefined();
 
@@ -243,7 +245,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 3)
                 return jerry_boolean(false);
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_boolean(false);
 
@@ -262,7 +264,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             return jerry_boolean(true);
         });
 
-    return finishDomProxy(target, handler, holder);
+    return handler;
 }
 
 // ------------------------------------------------------------
@@ -277,7 +279,8 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
 // front, which on a corpus of a few thousand symbols exhausted the
 // fixed-size heap and left the engine thrashing in the collector.
 //
-// The target is a real (empty) `Array`, so `Array.isArray` and
+// The target is a real (empty) `Array` carrying the holder as its native
+// pointer, so `Array.isArray` and
 // `JSON.stringify` treat the proxy as an array, and every property that
 // is not an index or `length` (`map`, `forEach`, `join`, `push`,
 // `Symbol.iterator`, ...) is forwarded to the target and resolves through
@@ -299,12 +302,10 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
 // instead of leaving the array with a stale length or duplicated tail.
 // Scripts that need to trim or reorder copy the array with `slice()`.
 
+// Build the handler shared by every array proxy of a context.
 static jerry_value_t
-makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
+makeArrayProxyHandler()
 {
-    auto* holder = newDomValueHolder(dom::Value(std::move(arr)), impl);
-
-    jerry_value_t target = jerry_array(0);
     jerry_value_t handler = jerry_object();
 
     // 'get' trap: handler.get(target, prop, receiver)
@@ -315,7 +316,7 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_undefined();
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_undefined();
             jerry_value_t const target = args_p[0];
@@ -345,7 +346,7 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_boolean(false);
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_boolean(false);
             jerry_value_t const target = args_p[0];
@@ -368,10 +369,12 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
     // non-configurable, and a Proxy must list all such keys.
     setHandlerTrap(handler, "ownKeys",
         [](jerry_call_info_t const* call_info_p,
-           jerry_value_t const[],
-           jerry_length_t) -> jerry_value_t
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
         {
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (argc < 1)
+                return jerry_array(0);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_array(0);
 
@@ -404,7 +407,7 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_undefined();
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_undefined();
             if (!jerry_value_is_string(args_p[1]))
@@ -444,7 +447,7 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 3)
                 return jerry_boolean(false);
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_boolean(false);
             jerry_value_t const target = args_p[0];
@@ -503,7 +506,7 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
         {
             if (argc < 2)
                 return jerry_boolean(false);
-            auto* h = getHolderFromHandler(call_info_p->this_value);
+            auto* h = getHolderFromTarget(args_p[0]);
             if (!h)
                 return jerry_boolean(false);
             jerry_value_t const target = args_p[0];
@@ -519,7 +522,40 @@ makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
             return jerry_object_delete(target, prop);
         });
 
-    return finishDomProxy(target, handler, holder);
+    return handler;
+}
+
+// The two handlers of a context, built on first use and released by
+// Context::Impl::cleanup(). Traps read the wrapped value from the proxy
+// target, so nothing in a handler is specific to one proxy.
+static jerry_value_t
+sharedProxyHandler(std::shared_ptr<Context::Impl> const& impl, bool forArray)
+{
+    if (!impl->haveProxyHandlers)
+    {
+        impl->objectProxyHandler = makeObjectProxyHandler();
+        impl->arrayProxyHandler = makeArrayProxyHandler();
+        impl->haveProxyHandlers = true;
+    }
+    return forArray ? impl->arrayProxyHandler : impl->objectProxyHandler;
+}
+
+static jerry_value_t
+makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
+{
+    auto* holder = newDomValueHolder(dom::Value(std::move(obj)), impl);
+    // An empty target: the proxy intercepts all access
+    jerry_value_t target = jerry_object();
+    return finishDomProxy(target, sharedProxyHandler(impl, false), holder);
+}
+
+static jerry_value_t
+makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
+{
+    auto* holder = newDomValueHolder(dom::Value(std::move(arr)), impl);
+    // A real, empty Array as target (see above)
+    jerry_value_t target = jerry_array(0);
+    return finishDomProxy(target, sharedProxyHandler(impl, true), holder);
 }
 
 // Holder for wrapped dom::Function, inherits NativeHolder for cleanup tracking.
@@ -651,19 +687,18 @@ toDomValue(jerry_value_t v, std::shared_ptr<Context::Impl> const& impl)
     // remain arrays instead of being converted to objects).
     if (jerry_value_is_proxy(v))
     {
-        jerry_value_t handler = jerry_proxy_handler(v);
-        if (!jerry_value_is_exception(handler))
+        jerry_value_t target = jerry_proxy_target(v);
+        if (!jerry_value_is_exception(target))
         {
-            // Native pointer is stored directly on the handler object.
-            auto* holder = static_cast<DomValueHolder*>(
-                jerry_object_get_native_ptr(handler, &kDomProxyInfo));
+            // The native pointer lives on the proxy target.
+            auto* holder = getHolderFromTarget(target);
             if (holder)
             {
-                jerry_value_free(handler);
+                jerry_value_free(target);
                 return holder->value;
             }
         }
-        jerry_value_free(handler);
+        jerry_value_free(target);
     }
 
     if (jerry_value_is_undefined(v) || jerry_value_is_null(v))
