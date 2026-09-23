@@ -106,10 +106,6 @@
 #include <sys/mman.h>
 #endif
 
-#ifndef _WIN32
-#    include <pthread.h>
-#endif
-
 // ------------------------------------------------------------
 // JerryScript External Context Port Functions
 // ------------------------------------------------------------
@@ -141,50 +137,39 @@
 // Thread-Local Storage for JerryScript Context
 // ------------------------------------------------------------
 //
-// We use POSIX pthread TLS on non-Windows platforms instead of C++ thread_local
-// because GCC with static linking (-static) has known issues with C++ thread_local
-// variables accessed from extern "C" functions. The pthread TLS API is more
-// portable and works reliably with static linking.
+// With JERRY_EXTERNAL_CONTEXT every access the engine makes to its own
+// state goes through jerry_port_context_get(): each JERRY_CONTEXT(field)
+// read is a call to it. The engine makes that call several times per
+// bytecode instruction, so it has to be as cheap as a memory load. A
+// constant-initialized thread_local pointer is exactly that: no dynamic
+// initializer, no destructor, so the compiler emits no TLS wrapper
+// function and no atexit registration, and the access compiles to one
+// thread-pointer-relative load on every platform, including GCC static
+// executables. Anything heavier here (a key lookup behind a once-guard,
+// for instance) slows every JavaScript workload by about 3x.
 //
-// On Windows, we use C++ thread_local which works correctly with MSVC.
-
-#ifdef _WIN32
-// Windows: use C++ thread_local (works correctly with MSVC)
-static thread_local void* tls_jerry_context = nullptr;
-
-static void* get_tls_jerry_context() { return tls_jerry_context; }
-static void set_tls_jerry_context(void* ptr) { tls_jerry_context = ptr; }
-
+// The engine itself does not even call jerry_port_context_get: the
+// JerryScript build force-includes utils/bootstrap/patches/jerryscript/
+// mrdocs-context.h, which defines that call as a macro reading
+// `jerry_port_context_tls`, so an engine field access is one TLS load with
+// no call at all. The port function stays for the API and returns the same
+// pointer, so an engine built without the header behaves the same, slower.
+#if defined(_MSC_VER)
+#define MRDOCS_JERRY_THREAD_LOCAL __declspec(thread)
 #else
-// POSIX: use pthread TLS for compatibility with static linking on Linux/GCC
-
-// TLS key for the active context pointer
-static pthread_key_t tls_jerry_context_key;
-static pthread_once_t tls_keys_init_once = PTHREAD_ONCE_INIT;
-
-static void init_tls_keys()
-{
-    pthread_key_create(&tls_jerry_context_key, nullptr);
+#define MRDOCS_JERRY_THREAD_LOCAL __thread
+#endif
+extern "C" {
+extern MRDOCS_JERRY_THREAD_LOCAL jerry_context_t* jerry_port_context_tls;
 }
-
-static void ensure_tls_keys_initialized()
-{
-    pthread_once(&tls_keys_init_once, init_tls_keys);
-}
-
-static void* get_tls_jerry_context()
-{
-    ensure_tls_keys_initialized();
-    return pthread_getspecific(tls_jerry_context_key);
-}
-
+// The definition takes C linkage from the declaration above. GCC rejects
+// an initializer on a declaration spelled `extern "C" ... = nullptr`.
+MRDOCS_JERRY_THREAD_LOCAL jerry_context_t* jerry_port_context_tls = nullptr;
+static void* get_tls_jerry_context() { return jerry_port_context_tls; }
 static void set_tls_jerry_context(void* ptr)
 {
-    ensure_tls_keys_initialized();
-    pthread_setspecific(tls_jerry_context_key, ptr);
+    jerry_port_context_tls = static_cast<jerry_context_t*>(ptr);
 }
-
-#endif
 
 // ------------------------------------------------------------
 // JerryScript heap
