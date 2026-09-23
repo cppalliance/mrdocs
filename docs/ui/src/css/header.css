@@ -83,11 +83,8 @@ body {
   outline: none;
 }
 
-/* 316:335019 and 316:334241 both place the same 24x24 "Close remove - Iconly
-   Pro" component here, so the docs and the landing page now draw the identical
-   glyph. This was three 17x2 square-ended spans rotating into a 13x13 cross --
-   a different mark to the landing's 17.5x1.5 rounded bars and 12x12 1.5-stroke
-   cross, and neither matched the frame. */
+/* Both frames place the same 24x24 "Close remove - Iconly
+   Pro" component here, so docs and landing draw the identical glyph. */
 .navbar-burger {
   background: none;
   border: none;
@@ -101,21 +98,18 @@ body {
   align-items: center;
   justify-content: center;
   margin-left: auto;
-  /* 24 exactly: `min-width: 0` plus flex shrink was pulling the button to 23
-     and squashing the glyph with it. */
+  /* Pinned to 24: flex shrink otherwise squashes the glyph. */
   flex: 0 0 24px;
   min-width: 24px;
   color: var(--navbar-font-color);
 }
 
-/* The colour is set on the icons, not just the button: something between the
-   two resolves `color` to transparent, which left `currentColor` invisible on
-   light. Same trap as the landing page's bar.
+/* Colour is set on the icons, not just the button: something between the two
+   resolves `color` to transparent, leaving `currentColor` invisible on light.
+   Same trap as the landing page's bar.
 
    `--text-strong`, not `--navbar-font-color`: the frame draws this glyph
-   #0F172A on light and #FFFFFF on dark, which is exactly what that token
-   flips between. The bar's own font colour is #24303F / a 92%-opaque
-   off-white, so the mark sat softer than the landing page's. */
+   #0F172A light / #FFFFFF dark, which is what that token flips between. */
 .navbar-burger .burger-icon,
 .navbar-burger .close-icon {
   display: none;

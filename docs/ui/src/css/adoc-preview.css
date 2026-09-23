@@ -88,23 +88,18 @@
 }
 
 /*
- * The card renders the same symbol panels the landing page shows, so it
- * follows the landing page's spec rather than inventing its own scale:
- * the symbol title is gold at 36px, the section titles (Synopsis,
- * Description) blue at 24px, both with the 1.5px-OUTSIDE ink edge, the
- * hard comic shadow and 120% leading. See `docs/website/styles.css`
+ * The card renders the same symbol panels as the landing page, so it follows
+ * that spec: symbol title gold at 36px, section titles blue at 24px, both with
+ * the 1.5px-OUTSIDE ink edge. See `docs/website/styles.css`
  * `.side-by-side > .documentation-panel h2/h3`.
  *
- * The sizes are load-bearing, not decorative. The ink edge is a centred
- * `-webkit-text-stroke`, so it eats a fixed amount off each glyph edge
- * no matter how small the type gets. At the 14.4px this block used to
- * set, a 2px stroke is 13.9% of the size and closes Bangers' counters --
- * the label renders as a solid blob. At the landing page's 24px the same
- * edge is proportionate and reads cleanly.
+ * The sizes are load-bearing: the ink edge is a centred `-webkit-text-stroke`
+ * of fixed width, so at small sizes it closes Bangers' counters and the label
+ * renders as a blob.
  *
- * Structure: h5 is the symbol name, h6 its sections -- matching
- * `adoc-preview-extension.js` (2 -> h5, 3 -> h6) and the `leveloffset=3`
- * in `config-options-reference.js`.
+ * h5 is the symbol name, h6 its sections -- matching
+ * `adoc-preview-extension.js` and the `leveloffset=3` in
+ * `config-options-reference.js`.
  */
 
 .doc .adoc-preview h4,
@@ -127,9 +122,8 @@
   font-size: calc(36 / var(--rem-base) * 1rem);
 }
 
-/* Section titles -- landing `.documentation-panel h3`: blue, 24px, and
-   uppercased there via `text-transform`. Same ink edge as the symbol
-   name, not the thinner one `.doc h6` would otherwise apply. */
+/* Section titles -- landing `.documentation-panel h3`: blue, 24px, uppercased.
+   Same ink edge as the symbol name, not the thinner one `.doc h6` applies. */
 .doc .adoc-preview h6 {
   --doc-heading-fill: var(--blue-surface);
   --doc-heading-stroke: 3px; /* Figma 1.5px OUTSIDE */

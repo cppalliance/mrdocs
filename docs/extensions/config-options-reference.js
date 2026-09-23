@@ -127,24 +127,16 @@ function renderFixtureHtml(optionName) {
     if (f.adoc) {
         try {
             // `leveloffset=3` so the embedded symbol page's `==` headings
-            // render as `<h5>` and its `===` subsections as `<h6>`. That
-            // stops the embedded title from colliding with the
-            // absolute-positioned preview label, and matches both
-            // `adoc-preview-extension.js` (which maps 2 -> h5, 3 -> h6)
-            // and the intent stated in `adoc-preview.css`: the symbol
-            // name is the dominant h5, its subsections the subordinate
-            // h6. At `+2` the subsections landed on h5 and rendered at
-            // the same weight as the symbol name.
+            // render as `<h5>` and its `===` subsections as `<h6>`, matching
+            // `adoc-preview-extension.js` and the `.adoc-preview h5/h6` rules.
+            // Keeps the embedded title clear of the absolute-positioned
+            // preview label.
             let html = asciidoctorCore().convert(f.adoc, {
                 standalone: false,
-                // `source-highlighter` is what makes Asciidoctor emit
-                // `class="highlightjs highlight"` / `class="... hljs"`,
-                // which is the opt-in the theme's highlight bundle
-                // selects on (`pre code.hljs[data-lang]`). This is a
-                // standalone converter, so it inherits nothing from the
-                // playbook -- without it these blocks render unstyled
-                // while the hand-built ones above, which hardcode the
-                // same classes, do not.
+                // `source-highlighter` makes Asciidoctor emit the
+                // `highlightjs`/`hljs` classes the theme's highlight bundle
+                // selects on. Standalone converter, so it inherits nothing
+                // from the playbook and has to be set here.
                 attributes: { leveloffset: '+3', 'source-highlighter': 'highlightjs' },
             })
             // Tag every section heading inside the preview with

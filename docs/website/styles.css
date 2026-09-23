@@ -3342,9 +3342,8 @@ footer a:focus {
     /* default = dark. 316:256650, the dark Home frame's Navbar. */
     --navc-bg: #171c26;
     --navc-ink: #e9edf2;
-    /* 316:282463 strokes the dark bar, its buttons and their shadows in pure
-       #000000 -- not the slate edge and near-black shadow this carried, which
-       read softer than the same controls on the docs side. */
+    /* The frame strokes the dark bar, its buttons and their shadows in pure
+       #000000, not the slate edge the docs side never uses. */
     --navc-border: #000000;
     --navc-gold: var(--ds-gold-450);
     --navc-shadow: #000000;
@@ -3356,15 +3355,13 @@ footer a:focus {
     --navc-toggle-edge: #000000;
     --navc-toggle-icon: #ffffff;
 
-    /* 316:282487, the dark Menu Container: pure #FFFFFF, not --navc-ink.
-       The bar's ink is a blue-grey (#E9EDF2), which left the glyph a shade
-       under the mock against the same ground. Light is #0F172A (316:334266). */
+    /* The dark Menu Container is pure #FFFFFF, not the bar's
+       blue-grey `--navc-ink`. Light is #0F172A. */
     --navc-menu-icon: #ffffff;
 
-    /* 316:334241 / 316:282462: the open panel is the page ground under a 10%
-       blue wash -- #FDFAF5 light, #272E3F dark, both of which are
-       `--body-background`, so one mix covers both themes. The bar above it
-       stays `--navc-bg`. */
+    /* In both themes the open panel is the page ground under a 10%
+       blue wash, in both themes, so one mix off `--body-background` covers
+       them. The bar above it stays `--navc-bg`. */
     --navc-menu-bg: color-mix(in srgb, var(--ds-blue-450) 10%, var(--body-background));
 }
 :root[data-theme="light"] {
@@ -3472,11 +3469,9 @@ footer a:focus {
 
 /* Hamburger — shown only on mobile */
 .nav { position: relative; }
-/* 316:334266 "Menu Container" is a bare 24x24 with no fill and no stroke,
-   so the glyph stands on its own -- the boxed button this used to draw gave
-   the burger a weight the mock never gives it, and one the neighbouring
-   38x38 toggle already owns. The three <span> bars are now the supplied
-   icon, drawn in `currentColor` so it inverts with the bar. */
+/* The frame's "Menu Container" is a bare 24x24 with no fill and no stroke, so
+   the glyph stands on its own -- the neighbouring 38x38 toggle already owns
+   that weight. */
 .nav .nav-hamburger {
     display: none;
     align-items: center;
@@ -3492,9 +3487,9 @@ footer a:focus {
     color: var(--navc-ink);
     cursor: pointer;
 }
-/* Both icons carry the bar's ink explicitly. `currentColor` alone was
-   resolving to a blue further up the cascade, which painted the glyph as
-   though it were a link. */
+/* Both icons carry the bar's ink explicitly: `currentColor` alone resolves to
+   a blue further up the cascade and paints the glyph as though it were a
+   link. */
 .nav .nav-hamburger .burger-icon,
 .nav .nav-hamburger .close-icon {
     display: none;
@@ -3505,30 +3500,28 @@ footer a:focus {
 .nav .nav-hamburger .burger-icon path { fill: currentColor; }
 .nav .nav-hamburger .close-icon path { stroke: currentColor; }
 
-/* 316:334267 "Close remove - Iconly Pro": the open menu swaps the bars for
+/* Per "Close remove - Iconly Pro": the open menu swaps the bars for
    a cross, so the control says how to dismiss what it opened. */
 .nav .nav-hamburger .burger-icon { display: block; }
 .nav.nav-open .nav-hamburger .burger-icon { display: none; }
 .nav.nav-open .nav-hamburger .close-icon { display: block; }
 
 @media (max-width: 767px) {
-    /* 316:334242: the mobile bar is 59.4 -- a 35.4 logo inside 12/20 padding
-       -- not the 79 the desktop bar carries. The docs bar next to it is 57,
-       so the two products sat 22px apart on the same phone. */
+    /* The frame makes the mobile bar 59.4 (a 35.4 logo inside 12/20 padding),
+       not the 79 the desktop bar carries -- the docs bar beside it is 57. */
     .nav {
         min-height: 59px;
         padding: 0 20px;
     }
     .nav .logo-link .brand-lockup { height: 35px; }
     .nav .nav-hamburger { display: inline-flex; }
-    /* 316:334241 "Navbar Menu [Open]": the open panel is a 30px-padded row --
-       the links stacked left on a 32 gap, the toggle held at the top right --
-       and it hugs its content rather than running to the fold. The rules
-       between items are not in the mock; the 32 gap is what separates them. */
+    /* Per "Navbar Menu [Open]": 30px padding, the links stacked left on
+       a 32 gap, the toggle at the top right. No rules between items -- the 32
+       gap is what separates them. */
     .nav ul.nav-menu {
         display: none;
         /* Fixed and run to the bottom, like the docs drawer: the mock's panel
-           is a full screen, and an absolute one scrolled away with the page.
+           is a full screen, and an absolute one scrolls away with the page.
            `--nav-h` is published by the toggle script. */
         position: fixed;
         top: var(--nav-h, 79px); left: 0; right: 0; bottom: 0;
@@ -3552,9 +3545,9 @@ footer a:focus {
         font-size: 14px;
         border-bottom: 0;
     }
-    /* 157x38 in the mock, left-aligned -- not stretched to the panel. */
-    /* Specificity: the link reset above is (0,3,3) and was zeroing the
-       button's own padding, collapsing it to 131 against the mock's 157. */
+    /* 157x38 in the mock, left-aligned, not stretched to the panel. The
+       padding is restated because the link reset above is (0,3,3) and would
+       otherwise zero it. */
     .nav ul.nav-menu > li.nav-link > a.nav-btn--gh {
         width: auto;
         justify-content: center;
@@ -4647,8 +4640,8 @@ header .header-content > p:not(.row-label) {
     }
 
     .hero-code {
-        /* Figma tops the painted panel at y256, i.e. 67px below the eyebrow
-           (its 2px OUTSIDE stroke puts the box 2px above the y258 node). */
+        /* Figma tops the painted panel at y256, 67px below the eyebrow (its
+           2px OUTSIDE stroke puts the box 2px above the y258 node). */
         margin-top: 67px;
     }
 
@@ -4665,25 +4658,23 @@ header .header-content > p:not(.row-label) {
 
 @media (min-width: 992px) {
     /* Figma opens the hero 110px below the navbar (eyebrow pill painted at
-       y189 against a 79px navbar), not 127. The banner's top edge carries
-       the mascot and code panel with it, so their own offsets below are
-       re-derived from y189 rather than from the old position. */
+       y189 against a 79px navbar). The mascot and code panel offsets below are
+       derived from that y189. */
     header .container {
         padding-top: 30px;
     }
 
-    /* Holds the band's bottom edge at Figma's y1025: the mascot bottoms out
-       at y932 and the frame leaves ~93px of city below it. Set explicitly
-       because the 17px removed above would otherwise shorten the whole
-       section and pull the principles block up with it. */
+    /* Holds the band's bottom edge at Figma's y1025: the mascot bottoms out at
+       y932 and the frame leaves ~93px of city below it. Explicit so the
+       section height does not track `padding-top`. */
     header {
         padding-bottom: 93px;
     }
 
-    /* Hero vertical rhythm at desktop -- the base rules above are tuned for
-       the 402 frame and must stay untouched. Figma's Text Container stacks
-       at a uniform gap32: pill (bottom y221) -> title y251 -> description
-       y541 -> buttons y677. */
+    /* Hero vertical rhythm at desktop; the base rules above are tuned for the
+       402 frame and must stay untouched. Figma's Text Container stacks at a
+       uniform gap32: pill (bottom y221) -> title y251 -> description y541 ->
+       buttons y677. */
     header .header-content h1 {
         margin-block: 30px 0;
     }
@@ -5378,12 +5369,10 @@ header {
    against the heading at y3310) -- which a single flattened export cannot
    reproduce. That needs the rays and clouds exported separately. */
 @media (min-width: 992px) {
-    /* Figma leaves 164px between the hero band's bottom edge (y1025) and
-       this heading (`Frame 15` at y1189); the default section padding gives
-       only 80, which pulled the whole principles block up by ~82px and
-       compressed the rhythm between the hero and the cards.
-       Bottom padding is deliberately left at the default 80: `#features`
-       below derives its own 237 from that figure. */
+    /* Figma leaves 164px between the hero band's bottom edge (y1025) and this
+       heading (`Frame 15` at y1189); the default section padding gives 80.
+       Bottom padding is deliberately left at that default 80: `#features`
+       below derives its own 237 from it. */
     .principles {
         padding-top: 164px;
     }

@@ -247,15 +247,12 @@
 
   /* Tabbed code cards (AsciiDoc tabs). Light paints solid surfaces set off
      from the cream content; dark keeps the white/black overlays it had. */
-  /* 300:364: the visible panel face is the innermost node -- the page
-     ground with the same 10% blue wash the inactive tabs carry, which is
-     why the two read as one surface in the mock. The outer containers
-     (#FDFAF5 / #FFFFFF) never show. */
+  /* The visible panel face is the innermost node in the frame: the page ground
+     with the same 10% blue wash the inactive tabs carry, which is why the two
+     read as one surface. The outer containers never show. */
   --tab-surface: var(--surface-tint);
-  /* Figma 300:349: the inactive tab is the page ground with a 10% blue
-     wash, which `--surface-tint` already mixes; the label keeps full ink.
-     The old `--text-muted` + `opacity: .5` in `tabs.css` put it at
-     1.93:1. */
+  /* The frame gives the inactive tab the page ground with a 10% blue wash,
+     which `--surface-tint` already mixes; the label keeps full ink. */
   --tab-inactive-bg: var(--surface-tint);
   --tab-inactive-color: var(--text-strong);
 
@@ -350,19 +347,16 @@
      1.00:1, i.e. no visible grid and no visible header at all.
      The framed variant's ground is the brand blue at 10% over the page
      (#E7EDF6 light / #263552 dark), which is exactly --surface-tint.
-     The frame draws the first-column names in the label colour (#EC4899
-     light / #FF4C4C dark), but that rule reaches every code span in a cell,
-     not just the names -- and those spans are not links. Magenta and, on
-     dark, outright red read as a visited or dead link sitting beside the
-     live blue ones, and they measure 3.00:1 and 3.71:1 on the frame ground.
-     They take the cell's own colour instead. */
+     The frame draws the first-column names in the label colour (#EC4899 /
+     #FF4C4C), but that rule reaches every code span in a cell, not just the
+     names: magenta and red read as dead links beside the live blue ones, and
+     measure 3.00:1 / 3.71:1 on this ground. They inherit instead. */
   --table-border-color: var(--ds-color-code-body);
   --table-frame-color: var(--outline);
   --table-frame-background: var(--surface-tint);
-  /* Links sit on that tinted frame, not the page. `--link` (#2563EB) is
-     4.96:1 on the page but 4.39:1 here, and the dark blue 3.68:1 -- both
-     under AA. One step darker clears it at 5.66:1; dark goes the other way,
-     to the 300, at 6.80:1. */
+  /* Links sit on that tinted frame, not the page, where `--link` measures
+     4.39:1 (3.68:1 dark), under AA. One step darker clears it at 5.66:1; dark
+     steps the other way, to the 300, at 6.80:1. */
   --table-link-color: var(--mr-blue-700);
   --table-link-hover-color: var(--mr-blue-800);
   --table-header-background: var(--ds-color-code-body);
@@ -452,7 +446,6 @@
   --border-strong: rgba(148, 163, 184, 0.32);
   /* DERIVED -- see the note in the prefers-color-scheme block below. */
   --outline: #000;
-  /* Dark inverts the direction: the 300 clears the tinted frame at 6.80:1. */
   --table-link-color: var(--mr-blue-300);
   --table-link-hover-color: var(--mr-blue-200);
   --navbar-surface: var(--mr-navy-750);
@@ -492,13 +485,9 @@
      white here made the nav column read lighter than the content and
      contents panes either side of it. */
   --nav-panel-overlay: transparent;
-  /* Tab tokens are NOT overridden per theme: `--surface-tint` and
-     `--text-strong` already flip, so the light definitions resolve
-     correctly here. The Figma's dark inactive tab is solid `#3D8BFF`
-     (300:749), but that puts its white label at 3.32:1 -- under AA -- and
-     makes the inactive tabs louder than the panel. Matching the page
-     surface instead mirrors what light already does, where inactive tab
-     and panel are the same tinted ground. */
+  /* Tab tokens are deliberately NOT overridden per theme: `--surface-tint`
+     and `--text-strong` already flip. Figma's dark inactive tab is solid
+     #3D8BFF, but that puts its white label at 3.32:1, under AA. */
 }
 
 /* ---- Small-screen chrome (Figma 316:335067 / 316:334667, 402) ---------- */
@@ -573,12 +562,8 @@
        white here made the nav column read lighter than the content and
        contents panes either side of it. */
     --nav-panel-overlay: transparent;
-    /* Tab tokens are NOT overridden per theme: `--surface-tint` and
-       `--text-strong` already flip, so the light definitions resolve
-       correctly here. The Figma's dark inactive tab is solid `#3D8BFF`
-       (300:749), but that puts its white label at 3.32:1 -- under AA -- and
-       makes the inactive tabs louder than the panel. Matching the page
-       surface instead mirrors what light already does, where inactive tab
-       and panel are the same tinted ground. */
+    /* Tab tokens are deliberately NOT overridden per theme: `--surface-tint`
+       and `--text-strong` already flip. Figma's dark inactive tab is solid
+       #3D8BFF, but that puts its white label at 3.32:1, under AA. */
   }
 }

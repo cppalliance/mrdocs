@@ -58,24 +58,17 @@
     })
   }
 
-  /* The clipped mobile list hides everything but its first few top-level
-     entries, so the scroll spy's own target is usually a hidden row and the
-     mark lands on nothing -- on generators/reference that is 95 of 104
-     positions. Each hidden anchor therefore records the section that governs
-     it, and the visible section row carries the mark instead.
+  /* The clipped mobile list hides all but its first few top-level entries, so
+     the scroll spy's own target is usually a hidden row. Each hidden anchor
+     therefore records the section that governs it, and the visible section row
+     carries the mark instead.
 
-     WORTH KNOWING BEFORE YOU TRUST IT: on mobile this is currently correct but
-     UNOBSERVABLE. The list sits at the top of the page in normal flow, so
-     seeing it means scrolling to the top -- which makes the FIRST section
-     active again. A reader can therefore only ever find "Symbols" marked. It
-     would light up if the list were ever reachable while scrolled (sticky
-     block, or a control in the navbar); a floating contents nav was considered
-     for that on 2026-09-16 and deliberately NOT built -- only six of the 3745
-     pages carrying a contents list are long enough to want one.
-
-     Kept rather than deleted because the invariant is real: a clipped list
-     must not leave the reader unmarked. Delete it only along with the
-     clipping. */
+     Currently correct but UNOBSERVABLE: the list sits at the top of the page
+     in normal flow, so seeing it means scrolling to the top, which makes the
+     FIRST section active again. It would light up if the list were ever
+     reachable while scrolled (sticky block, or a navbar control). Kept because
+     the invariant is real -- a clipped list must not leave the reader
+     unmarked. Delete it only along with the clipping. */
   var clippedList = null
 
   function syncClippedSection () {
@@ -99,26 +92,17 @@
     syncClippedSection()
   }
 
-  /* Clip the mobile contents list past this many entries, rather than letting
-     it run to full length above the page title.
-
-     Measured over the built site: 3745 pages carry a contents list and the
-     MEDIAN is 2 entries, so the open block the frame draws (316:334667
-     Sidebar, 402x206) is right for almost all of them and must not change.
-     Six pages (0.16%) reach this threshold. It is where the list would push
-     the title off the first mobile screen: the list is ~88px of chrome plus
-     ~30px per entry and the title sits directly below, so the title lands at
-     roughly 285 + 88 + 30n, against ~700px of usable viewport on a 402x874
-     phone once browser chrome is off -- clear only to n = 10.
-
-     On generators/reference the full list ran 3303px and put the title at
-     y3588 against a 285 baseline. */
+  /* Clip the mobile contents list past this many entries. The median page
+     carries 2, so the open block the frame draws (its Sidebar, 402x206)
+     is right for almost all of them and must not change; six of 3745 reach
+     this. 11 is where the list stops leaving room for the title on a 402x874
+     phone: ~88px of chrome plus ~30px per entry, against ~700px of viewport. */
   var EMBEDDED_CLIP_MIN = 11
 
   /* How many entries the clipped list shows before "Show all". Top-level only:
-     the long pages are shallow and wide -- reference is 9 h2 against 95 h3 --
-     so the first few h2s orient the reader, where the first few entries of the
-     flat list would just be one section and its children. */
+     the long pages are shallow and wide (reference is 9 h2 against 95 h3), so
+     the first few h2s orient the reader where the first few flat entries would
+     just be one section and its children. */
   var EMBEDDED_CLIP_SHOW = 5
 
   function clipEmbedded (aside, embeddedMenu) {
@@ -156,15 +140,12 @@
 
     /* Per-section disclosure. Same reasoning as .nav-item-toggle in the tree:
        the section labels are links, so tapping one navigates rather than
-       expanding, which leaves a separate control as the only way to see what a
-       section holds without opening all of them.
+       expanding.
 
-       It is NOT the tree's left gutter: that reserves 32px on every row to keep
-       parents and leaves aligned, which would re-lay out the mobile list the
-       frame specifies (316:334668 insets entries 9 past the rule). Right-hand
-       placement leaves the alignment alone; the glyph is smaller and muted
-       against the panel chevron above it, so the two read as different levels
-       rather than the same control twice. */
+       It is NOT the tree's left gutter: that reserves 32px on every row, which
+       would re-lay out the mobile list the frame specifies (it insets
+       entries 9 past the rule). Right-hand placement leaves the alignment
+       alone. */
     find('li', list).forEach(function (li) {
       var anchor = li.querySelector('a')
       if (!anchor || parseInt(li.dataset.level, 10) !== top) return
@@ -188,10 +169,10 @@
     })
 
     /* Same disclosure idiom as the nav drawer's section chips: the chevron
-       sits at the far end of the row and the WHOLE row is the hit target, not
-       the 16x16 glyph. Unlike .nav-section-toggle this button carries an
-       aria-label -- a button whose only content is a ::after glyph has no
-       accessible name, so a screen reader would announce it as just "button". */
+       sits at the far end of the row and the WHOLE row is the hit target.
+       Unlike .nav-section-toggle this button carries an aria-label -- its only
+       content is a ::after glyph, so it would otherwise have no accessible
+       name. */
     var head = document.createElement('div')
     head.className = 'toc-head'
     var toggle = document.createElement('button')

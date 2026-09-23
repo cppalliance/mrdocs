@@ -141,11 +141,9 @@ html {
 .doc > h1.page:first-child,
 .doc > aside.toc.embedded + h1.page {
   font-size: calc(62 / var(--rem-base) * 1rem);
-  /* `auto`, NOT 0. This selector is (0,3,1) and so outranks the
-     `.doc > * { margin-inline: auto }` below at (0,1,0), regardless of source
-     order. With `0` the title kept the 779 measure but lost the centring and
-     anchored to the left edge of the content box -- off the band's centre by
-     (content width - 779) / 2, which is 15.5px at 1440 and 255.5px at 1920. */
+  /* `auto`, NOT 0. This selector is (0,3,1) and outranks the
+     `.doc > * { margin-inline: auto }` below at (0,1,0) whatever the source
+     order, so `0` left-anchors the title inside its 779 measure. */
   margin: 1.5rem auto;
 }
 
@@ -437,31 +435,21 @@ html {
   background: none;
 }
 
-/* Table links carry an underline and their own blue.
-
-   Underline, because nothing else marked them: links and inline code in a
-   cell are both Menlo at 400 with no decoration, so in the Type column
-   `Attribute[]` (a link) and `string` (not one) differed by hue alone --
-   WCAG 1.4.1. The mock draws no underline, but it also doesn't put the two
-   side by side in a column.
-
-   Their own blue, because the cell ground is `--table-frame-background`
-   (`--surface-tint`), darker than the page. `--link` measures 4.96:1 on the
-   page but 4.39:1 here, and its dark counterpart 3.68:1 -- both under the
-   4.5 AA wants. `--table-link-color` is the ramp step either side: 5.66:1
-   light, 6.80:1 dark. */
+/* Underlined because nothing else marks them: links and inline code in a cell
+   are both Menlo 400 with no decoration, so they differed by hue alone (WCAG
+   1.4.1). The mock draws no underline, but never puts the two side by side in
+   a column. `--table-link-color` is the contrast-safe blue for the tinted cell
+   ground -- see vars.css. */
 .doc table.tableblock a {
   color: var(--table-link-color);
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
-/* Hover belongs to the link, not the cell. The cell-wide rule this replaces
-   washed 30% black over the whole `td` -- which dropped the link it was
-   advertising from 5.66:1 to 2.72:1, and put a pointer cursor over prose that
-   wasn't clickable. Here the colour steps one further in each theme's own
-   direction, so the hover state is always the stronger of the two, and the
-   rule thickens rather than appears, since the underline is already on. */
+/* Hover belongs to the link, not the cell: a cell-wide wash dims the link it
+   is advertising and puts a pointer over prose that is not clickable. The
+   colour steps one further in each theme's own direction, so hover is never
+   the dimmer of the two. */
 .doc table.tableblock a:hover,
 .doc table.tableblock a:focus-visible {
   color: var(--table-link-hover-color);
@@ -480,11 +468,9 @@ html {
   font-size: calc(14 / var(--rem-base) * 1rem);
 }
 
-/* Menlo 14 -- `.doc code`'s 0.95em would render these at 13.3. The colour is
-   inherited rather than the frame's label pink: this selector catches every
-   code span in a cell, none of which are links, and the pink read as a broken
-   one next to the real links in the same column. A link nested inside a code
-   span still takes `--table-link-color` from the rule above. */
+/* Menlo 14 -- `.doc code`'s 0.95em would render these at 13.3. Colour is
+   inherited, not the frame's label pink: this catches every code span in a
+   cell, and pink read as a dead link beside the real ones. */
 .doc table.tableblock td code {
   color: var(--table-name-color);
   background: none;

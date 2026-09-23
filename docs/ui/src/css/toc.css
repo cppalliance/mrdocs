@@ -203,26 +203,21 @@
   }
 
   /* ---- Long contents lists (02-on-this-page.js, >= 11 entries) ------------
-     Six pages of the 3745 that carry a contents list reach this -- the
-     threshold is where the list would otherwise push the page title off the
-     first mobile screen. The median page has 2 entries and keeps the open
+     The threshold is where the list would otherwise push the page title off
+     the first mobile screen; the median page has 2 entries and keeps the open
      block the frame draws, untouched.
 
-     The list is CLIPPED, not folded: the first five top-level entries stay
-     visible so the reader is oriented without tapping anything, and the rest
-     is one tap away on the same chevron idiom the nav drawer's section chips
-     use. On generators/reference the full list ran 3303px and put the title at
-     y3588 against a 285 baseline; clipped it is 279px with the title at 564. */
-  /* `:not(.is-section)` is what keeps the CURRENT section on screen even when
-     it falls past the clip -- section seven of nine would otherwise be hidden
-     and the reader would see no marker at all while reading it. */
+     CLIPPED, not folded: the first five top-level entries stay visible so the
+     reader is oriented without tapping, and the rest is one tap away on the
+     same chevron idiom the nav drawer's section chips use. */
+  /* `:not(.is-section)` keeps the CURRENT section on screen when it falls past
+     the clip, so the reader is never left with no marker at all. */
   .toc.embedded.toc--long:not(.is-deep) .is-extra:not(.is-section):not(.is-shown) {
     display: none;
   }
 
-  /* Section rows carry their own disclosure at the right -- caret.svg, the
-     theme's ITEM-level glyph, against chevron.svg at panel level above. 12px
-     and muted so it sits under the 16px panel chevron in the hierarchy. */
+  /* Section rows carry their own disclosure: caret.svg, the theme's ITEM-level
+     glyph, at 12px and muted so it sits under the 16px panel chevron above. */
   .toc.embedded .toc-menu li {
     position: relative;
   }
@@ -235,12 +230,10 @@
     color: var(--text-muted);
     cursor: pointer;
     display: flex;
-    /* NOT centred in its own button: the glyph has to sit on the same vertical
-       axis as the panel chevron above it, and the two are different sizes. The
-       panel's 16 is pinned to the row's right edge, so its centre is 8 in; this
-       12 therefore needs its right edge 2 in for its centre to land on the same
-       8. Centring it in the 32 target instead put it 7.6px adrift. The 32
-       remains the touch target -- only the glyph moves. */
+    /* NOT centred in its own button: this 12 glyph has to share the vertical
+       axis of the 16 panel chevron above, whose centre sits 8 in from the row's
+       right edge, so this one's right edge sits 2 in. The 32 stays the touch
+       target -- only the glyph moves. */
     justify-content: flex-end;
     padding: 0 calc(2 / var(--rem-base) * 1rem) 0 0;
     position: absolute;
@@ -279,15 +272,15 @@
     }
   }
 
-  /* The section row carries the marker while the real target is clipped away,
-     so the reader keeps a sense of place. Same treatment as .is-active -- it
-     IS the active section, just not the active heading. */
+  /* The section row carries the marker while the real target is clipped away.
+     Same treatment as .is-active: it IS the active section, just not the
+     active heading. */
   .toc.embedded .toc-menu li.is-section > a {
     border-left-color: var(--gold-surface);
     color: var(--text-strong);
   }
 
-  /* The chip keeps its own width (316:334669 is a 96x21 pill, not a full-width
+  /* The chip keeps its own width (the frame draws a 96x21 pill, not a full-width
      bar), so the row it sits in carries the chevron at the far end. */
   .toc.embedded .toc-head {
     align-items: center;
@@ -296,9 +289,8 @@
   }
 
   /* The WHOLE row toggles, as in .nav-section-toggle: the button is stretched
-     over the row and the chevron drawn on its ::after, so the hit area is the
-     full width rather than a 16x16 corner.
-     color is set explicitly because a <button> does not inherit it, so
+     over the row and the chevron drawn on its ::after.
+     `color` is set explicitly -- a <button> does not inherit it, so
      currentColor in the mask would resolve to the default button ink. */
   .toc.embedded .toc-toggle {
     background: transparent;

@@ -72,10 +72,9 @@
          Show the matching one and recolor its parts to the nav. Inlined so it
          applies even if styles.css is cached stale. */
       .nav .logo-link .brand-lockup { height: 47px; width: auto; display: none; }
-      /* 316:334242: the mobile bar is 59.4 around a 35.4 lockup. The override
-         has to live here as well as in styles.css -- this block is later in
-         document order, so at equal specificity it wins, and the 47 above was
-         beating the stylesheet's mobile rule. */
+      /* The mobile bar is 59.4 around a 35.4 lockup in the frame. The override
+         has to live here too -- this block is later in document order, so the
+         47 above beats the stylesheet's mobile rule at equal specificity. */
       @media (max-width: 767px) {
         .nav .logo-link .brand-lockup { height: 35px; }
       }
@@ -279,9 +278,8 @@
                 var burger = document.getElementById('nav-hamburger');
                 var navEl = document.querySelector('.nav');
                 // The open menu runs from under the bar to the bottom of the
-                // viewport, so it needs the bar's height. Percentages in the
-                // stylesheet can't get it: the menu's containing block is the
-                // bar itself, whose height is auto.
+                // viewport, so it needs the bar's height; a percentage cannot
+                // get it, the containing block being the auto-height bar.
                 var setNavH = function () {
                     if (navEl) document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
                 };
@@ -297,10 +295,9 @@
                     var open = navEl.classList.toggle('nav-open');
                     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
                 });
-                // Following a link has to dismiss the panel. It covers the
-                // viewport, so an in-page jump would otherwise land behind it
-                // and look like the link did nothing. Links only: the theme
-                // toggle sits in here too and should leave the menu open.
+                // Following a link dismisses the panel -- it covers the
+                // viewport, so an in-page jump would land behind it. Links
+                // only: the theme toggle sits in here and should not close it.
                 var menuEl = document.getElementById('nav-menu');
                 if (menuEl) menuEl.addEventListener('click', function (e) {
                     if (e.target.closest('a')) closeMenu();

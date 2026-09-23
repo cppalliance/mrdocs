@@ -36,10 +36,9 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    /* px, not rem: the root drops 18 -> 17 under 768, which is exactly where
-       this menu lives, so every rem-derived figure here landed at 94% of the
-       frame -- the 38 buttons at 36, the 14 label at 13.2. The frame's numbers
-       are fixed control sizes, so they are pinned. */
+    /* px, not rem: the root drops 18 -> 17 under 768, exactly where this menu
+       lives, so every rem-derived figure landed at 94% of the frame. These are
+       fixed control sizes, so they are pinned. */
     gap: 32px;
     padding: 30px;
   }
@@ -104,9 +103,8 @@
   .site-menu-theme.theme-toggle {
     align-self: flex-start;
     /* Top-aligned, as both frames draw it (links and toggle each at y=30).
-       This previously lifted the button 12 to centre it on the first link's
-       line, which put it 16 above where the landing page's identical control
-       sits -- the two read as different components side by side. */
+       Centring it on the first link's line instead put it 16 above the landing
+       page's identical control. */
     background: color-mix(in sRGB, var(--mr-blue-450) 10%, transparent);
     border: 2px solid var(--outline);
     border-radius: 0;

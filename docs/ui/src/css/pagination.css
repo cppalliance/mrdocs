@@ -1,15 +1,8 @@
-/* `auto` on the sides, NOT -1rem. This selector is (0,1,1) and outranks
-   the `.doc > * { margin-inline: auto }` in `doc.css` at (0,1,0), so the
-   -1rem this used to set re-anchored the bar to the left edge of the
-   content box while the text stayed centred on its 779 measure. The gap
-   is (content width - 779) / 2: 33.5px at 1440 and 273.5px at 1920, and
-   0 at 1024 where the measure doesn't bind -- which is why it only
-   showed on wide screens.
-
-   The 1rem side padding went with it. It paired with the negative margin
-   to bleed the rule 1rem past the text on each side; with the margins
-   centred, that padding would instead inset the links 1rem from the text
-   they sit under. The rule now spans exactly the measure. */
+/* `auto` on the sides, NOT -1rem. This selector is (0,1,1) and outranks the
+   `.doc > * { margin-inline: auto }` in `doc.css` at (0,1,0), so a negative
+   margin re-anchors the bar left while the text stays centred on its measure.
+   The 1rem side padding went with it: it only existed to bleed the rule past
+   the text, and would now inset the links instead. */
 nav.pagination {
   display: flex;
   border-top: 1px solid var(--toolbar-border-color);
