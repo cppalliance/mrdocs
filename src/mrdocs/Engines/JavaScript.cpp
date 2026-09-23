@@ -830,15 +830,6 @@ getHolderFromHandler(jerry_value_t thisValue)
         jerry_object_get_native_ptr(thisValue, &kDomProxyInfo));
 }
 
-// ------------------------------------------------------------
-// Lazy Object Proxy
-// ------------------------------------------------------------
-// Creates a JavaScript Proxy that wraps a dom::Object. Properties are
-// converted lazily when accessed, avoiding infinite recursion from circular
-// references (e.g., symbols that reference parent symbols in Handlebars
-// options objects).
-
-
 // The public symbols are defined in per-symbol impl fragments below;
 // this file owns the shared engine machinery and aggregates them.
 #include "JavaScript/Context.ipp"

@@ -167,9 +167,9 @@ Value::type() const noexcept
     {
         return Type::array;
     }
-    // Check if this is one of our DOM proxies - if so, report what it
-    // wraps. `jerry_value_is_array` does not see through a proxy, so an
-    // array has to be recognized here.
+    // A DOM proxy reports the kind of the value it wraps. The C API's
+    // jerry_value_is_array does not see through a Proxy, so an array
+    // proxy is classified here rather than above.
     if (jerry_value_is_proxy(v))
     {
         jerry_value_t handler = jerry_proxy_handler(v);
@@ -180,9 +180,8 @@ Value::type() const noexcept
                 jerry_object_get_native_ptr(handler, &kDomProxyInfo));
             if (holder)
             {
-                bool const wrapsArray = holder->value.isArray();
                 jerry_value_free(handler);
-                return wrapsArray ? Type::array : Type::object;
+                return holder->value.isArray() ? Type::array : Type::object;
             }
         }
         jerry_value_free(handler);

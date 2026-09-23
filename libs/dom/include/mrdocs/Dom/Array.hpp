@@ -187,6 +187,9 @@ public:
 
     /** Set the i-th element, without bounds checking.
 
+        If the array is read-only, an exception
+        is thrown.
+
         @param i The zero-based index of the element.
         @param v The value to set.
     */
@@ -338,6 +341,9 @@ public:
     virtual value_type get(size_type i) const = 0;
 
     /** Set the i-th element, without bounds checking.
+
+        The default implementation throws an exception,
+        making the array effectively read-only.
     */
     virtual void set(size_type index, Value value);
 

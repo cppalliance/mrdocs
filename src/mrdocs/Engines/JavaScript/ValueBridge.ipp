@@ -2,13 +2,137 @@
 // (proxies + toJsValue/toDomValue; forward-declared near the top of the file).
 // Included within `namespace mrdocs::js {`. Not a standalone header.
 
+// ------------------------------------------------------------
+// Proxy plumbing shared by the object and array proxies
+// ------------------------------------------------------------
+
+// Set `obj[name] = value` and release the temporaries. Ownership of
+// `value` stays with the caller.
+static void
+setNamedProperty(jerry_value_t obj, char const* name, jerry_value_t value)
+{
+    jerry_value_t key = makeString(name);
+    jerry_value_t sr = jerry_object_set(obj, key, value);
+    jerry_value_free(sr);
+    jerry_value_free(key);
+}
+
+// Install `fn` as the `name` trap of a Proxy handler object.
+static void
+setHandlerTrap(
+    jerry_value_t handler,
+    char const* name,
+    jerry_external_handler_t fn)
+{
+    jerry_value_t trap = jerry_function_external(fn);
+    setNamedProperty(handler, name, trap);
+    jerry_value_free(trap);
+}
+
+// Build the `{ value, writable, enumerable, configurable }` data
+// descriptor a `getOwnPropertyDescriptor` trap returns. Takes ownership
+// of `value`.
 static jerry_value_t
-makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
+makeDataDescriptor(
+    jerry_value_t value,
+    bool writable,
+    bool enumerable,
+    bool configurable)
+{
+    jerry_value_t desc = jerry_object();
+    setNamedProperty(desc, "value", value);
+    jerry_value_free(value);
+    jerry_value_t flag = jerry_boolean(writable);
+    setNamedProperty(desc, "writable", flag);
+    jerry_value_free(flag);
+    flag = jerry_boolean(enumerable);
+    setNamedProperty(desc, "enumerable", flag);
+    jerry_value_free(flag);
+    flag = jerry_boolean(configurable);
+    setNamedProperty(desc, "configurable", flag);
+    jerry_value_free(flag);
+    return desc;
+}
+
+// Allocate the holder that keeps `value` alive for a proxy and register
+// it with the context so cleanup() can reclaim it if the GC never does.
+static DomValueHolder*
+newDomValueHolder(dom::Value value, std::shared_ptr<Context::Impl> const& impl)
 {
     auto* holder = new DomValueHolder();
     holder->impl = impl;
-    holder->value = dom::Value(std::move(obj));
+    holder->value = std::move(value);
     impl->registerHolder(holder);
+    return holder;
+}
+
+// Attach `holder` to `handler` and wrap `target` in a Proxy. Takes
+// ownership of `target` and `handler`; the proxy owns the handler from
+// here on, and the handler's native pointer owns the holder, so
+// `DomValueHolder::free_cb` deletes it once the proxy is collected.
+static jerry_value_t
+finishDomProxy(
+    jerry_value_t target,
+    jerry_value_t handler,
+    DomValueHolder* holder)
+{
+    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
+    jerry_value_t proxy = jerry_proxy(target, handler);
+    jerry_value_free(target);
+    jerry_value_free(handler);
+
+    // If proxy creation fails, the handler was still freed above, which
+    // triggers free_cb to delete the holder. Return an empty object.
+    if (jerry_value_is_exception(proxy))
+    {
+        jerry_value_free(proxy);
+        return jerry_object();
+    }
+    return proxy;
+}
+
+// Parse a canonical array index as defined by ECMAScript: the decimal
+// form of an integer in [0, 2^32 - 2] with no sign and no leading zeros.
+// Anything else ("length", "map", "01", "-1") is an ordinary property.
+static std::optional<std::uint32_t>
+parseArrayIndex(std::string_view s)
+{
+    if (s.empty() || s.size() > 10)
+    {
+        return std::nullopt;
+    }
+    if (s.size() > 1 && s[0] == '0')
+    {
+        return std::nullopt;
+    }
+    std::uint64_t n = 0;
+    for (char c: s)
+    {
+        if (c < '0' || c > '9')
+        {
+            return std::nullopt;
+        }
+        n = n * 10 + static_cast<std::uint64_t>(c - '0');
+    }
+    if (n >= 0xFFFFFFFFull)
+    {
+        return std::nullopt;
+    }
+    return static_cast<std::uint32_t>(n);
+}
+
+// ------------------------------------------------------------
+// Lazy Object Proxy
+// ------------------------------------------------------------
+// Creates a JavaScript Proxy that wraps a dom::Object. Properties are
+// converted lazily when accessed, avoiding infinite recursion from
+// circular references (e.g., symbols that reference parent symbols in
+// Handlebars options objects).
+
+static jerry_value_t
+makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
+{
+    auto* holder = newDomValueHolder(dom::Value(std::move(obj)), impl);
 
     // Create an empty target object (the proxy intercepts all access)
     jerry_value_t target = jerry_object();
@@ -17,7 +141,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
     jerry_value_t handler = jerry_object();
 
     // 'get' trap: handler.get(target, prop, receiver)
-    jerry_value_t get_fn = jerry_function_external(
+    setHandlerTrap(handler, "get",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
@@ -34,14 +158,8 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             return toJsValue(val, h->impl);
         });
 
-    jerry_value_t get_key = makeString("get");
-    jerry_value_t sr = jerry_object_set(handler, get_key, get_fn);
-    jerry_value_free(sr);
-    jerry_value_free(get_key);
-    jerry_value_free(get_fn);
-
     // 'has' trap: handler.has(target, prop)
-    jerry_value_t has_fn = jerry_function_external(
+    setHandlerTrap(handler, "has",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
@@ -57,14 +175,8 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             return jerry_boolean(h->value.getObject().exists(propName));
         });
 
-    jerry_value_t has_key = makeString("has");
-    sr = jerry_object_set(handler, has_key, has_fn);
-    jerry_value_free(sr);
-    jerry_value_free(has_key);
-    jerry_value_free(has_fn);
-
     // 'ownKeys' trap: handler.ownKeys(target)
-    jerry_value_t ownKeys_fn = jerry_function_external(
+    setHandlerTrap(handler, "ownKeys",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const[],
            jerry_length_t) -> jerry_value_t
@@ -91,14 +203,8 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             return arr;
         });
 
-    jerry_value_t ownKeys_key = makeString("ownKeys");
-    sr = jerry_object_set(handler, ownKeys_key, ownKeys_fn);
-    jerry_value_free(sr);
-    jerry_value_free(ownKeys_key);
-    jerry_value_free(ownKeys_fn);
-
     // 'getOwnPropertyDescriptor' trap (needed for ownKeys to work properly)
-    jerry_value_t getOwnPropDesc_fn = jerry_function_external(
+    setHandlerTrap(handler, "getOwnPropertyDescriptor",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
@@ -114,40 +220,12 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             if (!h->value.getObject().exists(propName))
                 return jerry_undefined();
 
-            // Return a property descriptor
-            jerry_value_t desc = jerry_object();
-            jerry_value_t val = toJsValue(h->value.getObject().get(propName), h->impl);
-            jerry_value_t setRes;
-
-            jerry_value_t valueKey = makeString("value");
-            setRes = jerry_object_set(desc, valueKey, val);
-            jerry_value_free(setRes);
-            jerry_value_free(valueKey);
-            jerry_value_free(val);
-
-            jerry_value_t writableKey = makeString("writable");
-            setRes = jerry_object_set(desc, writableKey, jerry_boolean(true));
-            jerry_value_free(setRes);
-            jerry_value_free(writableKey);
-
-            jerry_value_t enumKey = makeString("enumerable");
-            setRes = jerry_object_set(desc, enumKey, jerry_boolean(true));
-            jerry_value_free(setRes);
-            jerry_value_free(enumKey);
-
-            jerry_value_t configKey = makeString("configurable");
-            setRes = jerry_object_set(desc, configKey, jerry_boolean(true));
-            jerry_value_free(setRes);
-            jerry_value_free(configKey);
-
-            return desc;
+            return makeDataDescriptor(
+                toJsValue(h->value.getObject().get(propName), h->impl),
+                /*writable=*/true,
+                /*enumerable=*/true,
+                /*configurable=*/true);
         });
-
-    jerry_value_t getOwnPropDesc_key = makeString("getOwnPropertyDescriptor");
-    sr = jerry_object_set(handler, getOwnPropDesc_key, getOwnPropDesc_fn);
-    jerry_value_free(sr);
-    jerry_value_free(getOwnPropDesc_key);
-    jerry_value_free(getOwnPropDesc_fn);
 
     // 'set' trap: handler.set(target, prop, value, receiver) -> boolean
     //
@@ -158,7 +236,7 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
     // from that override propagates back here and is rethrown as a JS
     // `TypeError` so the script sees a real error instead of a silent
     // assignment.
-    jerry_value_t set_fn = jerry_function_external(
+    setHandlerTrap(handler, "set",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
@@ -184,278 +262,264 @@ makeObjectProxy(dom::Object obj, std::shared_ptr<Context::Impl> impl)
             return jerry_boolean(true);
         });
 
-    jerry_value_t set_key = makeString("set");
-    sr = jerry_object_set(handler, set_key, set_fn);
-    jerry_value_free(sr);
-    jerry_value_free(set_key);
-    jerry_value_free(set_fn);
-
-    // Store the holder directly on the handler object via native pointer.
-    // When the handler is garbage collected (after the proxy is collected),
-    // DomValueHolder::free_cb will be called to delete the holder.
-    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
-
-    // Create the proxy
-    jerry_value_t proxy = jerry_proxy(target, handler);
-    jerry_value_free(target);
-    jerry_value_free(handler);  // proxy now owns handler (and its native pointer)
-
-    // If proxy creation fails, handler was still freed above, which triggers
-    // free_cb to delete the holder. Return empty object.
-    if (jerry_value_is_exception(proxy))
-    {
-        jerry_value_free(proxy);
-        return jerry_object();
-    }
-
-    return proxy;
+    return finishDomProxy(target, handler, holder);
 }
 
-// The element index a property name denotes, or `nullopt` when the name is
-// not an array index (`length`, `map`, a symbol, ...).
-static std::optional<std::size_t>
-elementIndex(std::string_view name)
-{
-    std::optional<std::size_t> result;
-    if (!name.empty() &&
-        std::ranges::all_of(name, [](char c)
-            { return c >= '0' && c <= '9'; }))
-    {
-        std::size_t i = 0;
-        auto const [ptr, ec] =
-            std::from_chars(name.data(), name.data() + name.size(), i);
-        if (ec == std::errc() && ptr == name.data() + name.size())
-        {
-            result = i;
-        }
-    }
-    return result;
-}
+// ------------------------------------------------------------
+// Lazy Array Proxy
+// ------------------------------------------------------------
+// Creates a JavaScript Proxy that wraps a dom::Array. Elements are
+// converted one at a time when a script reads them, so exposing a large
+// array (e.g. `ctx.corpus.symbols`, one entry per symbol in the corpus)
+// costs nothing until an element is visited, and a loop over it keeps
+// only the current element alive on the JerryScript heap. Converting the
+// array eagerly instead used to build one object proxy per element up
+// front, which on a corpus of a few thousand symbols exhausted the
+// fixed-size heap and left the engine thrashing in the collector.
+//
+// The target is a real (empty) `Array`, so `Array.isArray` and
+// `JSON.stringify` treat the proxy as an array, and every property that
+// is not an index or `length` (`map`, `forEach`, `join`, `push`,
+// `Symbol.iterator`, ...) is forwarded to the target and resolves through
+// `Array.prototype`. Those methods are generic: called with the proxy as
+// `this`, they read `length` and the elements through the traps below.
+//
+// Reads see the live `dom::Array`, and index writes go through
+// `dom::Array::set`, so a script mutation is visible from C++ and vice
+// versa. A read-only implementation (the `dom::ArrayImpl` default, used
+// by `ctx.corpus.symbols`) throws from `set`, which surfaces as a JS
+// `TypeError`, so `sort` or an index assignment on such an array fails
+// loudly instead of silently doing nothing.
+//
+// The array cannot be resized from a script, because `dom::Array` has
+// no way to shrink. A write to `length` is accepted only when it equals
+// the current size, which is what `Array.prototype.push` writes after
+// storing the new element; any other value throws a `TypeError`, and so
+// does deleting an element. `pop`, `shift` and `splice` therefore throw
+// instead of leaving the array with a stale length or duplicated tail.
+// Scripts that need to trim or reorder copy the array with `slice()`.
 
-// Whether `obj` carries `key` itself, as opposed to inheriting it.
-static bool
-hasOwn(jerry_value_t obj, jerry_value_t key)
-{
-    jerry_value_t const res = jerry_object_has_own(obj, key);
-    bool const result = jerry_value_is_true(res);
-    jerry_value_free(res);
-    return result;
-}
-
-// The length a wrapped array presents: the DOM array's, unless a script
-// wrote past its end.
-static std::size_t
-arrayLength(jerry_value_t written, dom::Array const& a)
-{
-    return std::max<std::size_t>(a.size(), jerry_array_length(written));
-}
-
-// A property descriptor for one element, as the `getOwnPropertyDescriptor`
-// trap must return it.
-static jerry_value_t
-makeElementDescriptor(jerry_value_t value, bool configurable)
-{
-    jerry_value_t desc = jerry_object();
-    auto const setField = [&](char const* name, jerry_value_t v)
-    {
-        jerry_value_t key = makeString(name);
-        jerry_value_t res = jerry_object_set(desc, key, v);
-        jerry_value_free(res);
-        jerry_value_free(key);
-    };
-    setField("value", value);
-    setField("writable", jerry_boolean(true));
-    setField("enumerable", jerry_boolean(configurable));
-    setField("configurable", jerry_boolean(configurable));
-    return desc;
-}
-
-/*  Wrap a `dom::Array` in a JavaScript proxy.
-
-    The proxy converts an element when the script reads it. It wraps a real
-    (empty) array, so `Array.isArray` still answers `true` and everything on
-    `Array.prototype` still resolves. Those methods read `length` and the
-    indices, which the traps answer from the DOM array.
-*/
 static jerry_value_t
 makeArrayProxy(dom::Array arr, std::shared_ptr<Context::Impl> impl)
 {
-    auto* holder = new DomValueHolder();
-    holder->impl = impl;
-    holder->value = dom::Value(std::move(arr));
-    impl->registerHolder(holder);
+    auto* holder = newDomValueHolder(dom::Value(std::move(arr)), impl);
 
     jerry_value_t target = jerry_array(0);
     jerry_value_t handler = jerry_object();
 
-    auto const setTrap = [&](char const* name, jerry_external_handler_t fn)
-    {
-        jerry_value_t key = makeString(name);
-        jerry_value_t trap = jerry_function_external(fn);
-        jerry_value_t res = jerry_object_set(handler, key, trap);
-        jerry_value_free(res);
-        jerry_value_free(trap);
-        jerry_value_free(key);
-    };
-
     // 'get' trap: handler.get(target, prop, receiver)
-    setTrap("get",
+    setHandlerTrap(handler, "get",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
         {
             if (argc < 2)
-            {
                 return jerry_undefined();
-            }
             auto* h = getHolderFromHandler(call_info_p->this_value);
             if (!h)
-            {
                 return jerry_undefined();
-            }
-            std::string const propName = toString(args_p[1]);
-            auto lock = lockContext(h->impl);
-            dom::Array const& a = h->value.getArray();
+            jerry_value_t const target = args_p[0];
+            jerry_value_t const prop = args_p[1];
+            if (!jerry_value_is_string(prop))
+                return jerry_object_get(target, prop);
 
+            std::string propName = toString(prop);
+            auto lock = lockContext(h->impl);
+            dom::Array const arr = h->value.getArray();
             if (propName == "length")
+                return jerry_number(static_cast<double>(arr.size()));
+            if (auto idx = parseArrayIndex(propName))
             {
-                return jerry_number(static_cast<double>(
-                    arrayLength(args_p[0], a)));
-            }
-            if (hasOwn(args_p[0], args_p[1]))
-            {
-                return jerry_object_get(args_p[0], args_p[1]);
-            }
-            if (std::optional<std::size_t> const i = elementIndex(propName))
-            {
-                if (*i >= a.size())
-                {
+                if (*idx >= arr.size())
                     return jerry_undefined();
-                }
-                return toJsValue(a.get(*i), h->impl);
+                return toJsValue(arr.get(*idx), h->impl);
             }
-            // Anything else is a method or a symbol, which the wrapped
-            // array resolves through `Array.prototype`.
-            return jerry_object_get(args_p[0], args_p[1]);
+            return jerry_object_get(target, prop);
         });
 
     // 'has' trap: handler.has(target, prop)
-    setTrap("has",
+    setHandlerTrap(handler, "has",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
         {
             if (argc < 2)
-            {
                 return jerry_boolean(false);
-            }
             auto* h = getHolderFromHandler(call_info_p->this_value);
             if (!h)
-            {
                 return jerry_boolean(false);
-            }
-            std::string const propName = toString(args_p[1]);
+            jerry_value_t const target = args_p[0];
+            jerry_value_t const prop = args_p[1];
+            if (!jerry_value_is_string(prop))
+                return jerry_object_has(target, prop);
+
+            std::string propName = toString(prop);
             auto lock = lockContext(h->impl);
-            if (propName == "length" || hasOwn(args_p[0], args_p[1]))
-            {
+            if (propName == "length")
                 return jerry_boolean(true);
-            }
-            if (std::optional<std::size_t> const i = elementIndex(propName))
-            {
-                return jerry_boolean(*i < h->value.getArray().size());
-            }
-            jerry_value_t const res = jerry_object_has(args_p[0], args_p[1]);
-            bool const found = jerry_value_is_true(res);
-            jerry_value_free(res);
-            return jerry_boolean(found);
+            if (auto idx = parseArrayIndex(propName))
+                return jerry_boolean(*idx < h->value.getArray().size());
+            return jerry_object_has(target, prop);
         });
 
-    // 'ownKeys' trap: handler.ownKeys(target). `length` is an own property
-    // of the wrapped array and the proxy may not hide it.
-    setTrap("ownKeys",
+    // 'ownKeys' trap: handler.ownKeys(target)
+    //
+    // Reports every index plus `length`. The target's own `length` is
+    // non-configurable, and a Proxy must list all such keys.
+    setHandlerTrap(handler, "ownKeys",
         [](jerry_call_info_t const* call_info_p,
-           jerry_value_t const args_p[],
+           jerry_value_t const[],
            jerry_length_t) -> jerry_value_t
         {
             auto* h = getHolderFromHandler(call_info_p->this_value);
             if (!h)
-            {
                 return jerry_array(0);
-            }
+
             auto lock = lockContext(h->impl);
-            std::size_t const n =
-                arrayLength(args_p[0], h->value.getArray());
-            jerry_value_t keys = jerry_array(static_cast<uint32_t>(n) + 1);
-            for (std::size_t i = 0; i < n; ++i)
+            auto const n = static_cast<uint32_t>(h->value.getArray().size());
+            jerry_value_t keys = jerry_array(n + 1);
+            for (uint32_t i = 0; i < n; ++i)
             {
                 jerry_value_t key = makeString(std::to_string(i));
-                jerry_value_t res = jerry_object_set_index(
-                    keys, static_cast<uint32_t>(i), key);
-                jerry_value_free(res);
+                jerry_value_t setRes = jerry_object_set_index(keys, i, key);
+                jerry_value_free(setRes);
                 jerry_value_free(key);
             }
             jerry_value_t lengthKey = makeString("length");
-            jerry_value_t res = jerry_object_set_index(
-                keys, static_cast<uint32_t>(n), lengthKey);
-            jerry_value_free(res);
+            jerry_value_t setRes = jerry_object_set_index(keys, n, lengthKey);
+            jerry_value_free(setRes);
             jerry_value_free(lengthKey);
             return keys;
         });
 
-    // 'getOwnPropertyDescriptor' trap, which `ownKeys` needs to be usable.
-    setTrap("getOwnPropertyDescriptor",
+    // 'getOwnPropertyDescriptor' trap: handler.getOwnPropertyDescriptor(target, prop)
+    //
+    // `length` mirrors a real array's descriptor (writable, non-enumerable,
+    // non-configurable); reporting it configurable would violate the Proxy
+    // invariant against the target's own non-configurable `length`.
+    setHandlerTrap(handler, "getOwnPropertyDescriptor",
         [](jerry_call_info_t const* call_info_p,
            jerry_value_t const args_p[],
            jerry_length_t argc) -> jerry_value_t
         {
             if (argc < 2)
-            {
                 return jerry_undefined();
-            }
             auto* h = getHolderFromHandler(call_info_p->this_value);
             if (!h)
-            {
                 return jerry_undefined();
-            }
-            std::string const propName = toString(args_p[1]);
+            if (!jerry_value_is_string(args_p[1]))
+                return jerry_undefined();
+
+            std::string propName = toString(args_p[1]);
             auto lock = lockContext(h->impl);
-            dom::Array const& a = h->value.getArray();
+            dom::Array const arr = h->value.getArray();
             if (propName == "length")
             {
-                // The wrapped array's own `length` cannot be reported as
-                // configurable, or the engine rejects the descriptor.
-                return makeElementDescriptor(
-                    jerry_number(static_cast<double>(arrayLength(args_p[0], a))),
-                    false);
+                return makeDataDescriptor(
+                    jerry_number(static_cast<double>(arr.size())),
+                    /*writable=*/true,
+                    /*enumerable=*/false,
+                    /*configurable=*/false);
             }
-            if (hasOwn(args_p[0], args_p[1]))
-            {
-                return makeElementDescriptor(
-                    jerry_object_get(args_p[0], args_p[1]), true);
-            }
-            std::optional<std::size_t> const i = elementIndex(propName);
-            if (!i || *i >= a.size())
-            {
+            auto idx = parseArrayIndex(propName);
+            if (!idx || *idx >= arr.size())
                 return jerry_undefined();
-            }
-            return makeElementDescriptor(toJsValue(a.get(*i), h->impl), true);
+            return makeDataDescriptor(
+                toJsValue(arr.get(*idx), h->impl),
+                /*writable=*/true,
+                /*enumerable=*/true,
+                /*configurable=*/true);
         });
 
-    // There is no 'set' trap: an assignment goes to the wrapped array, so
-    // a script's own writes stay in JavaScript.
+    // 'set' trap: handler.set(target, prop, value, receiver) -> boolean
+    //
+    // Index writes go to `dom::Array::set`, and a `std::exception` from
+    // the implementation (read-only array) becomes a JS `TypeError`.
+    // `length` is accepted only when unchanged (see above). Anything
+    // else lands on the target as an ordinary expando property.
+    setHandlerTrap(handler, "set",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 3)
+                return jerry_boolean(false);
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_boolean(false);
+            jerry_value_t const target = args_p[0];
+            jerry_value_t const prop = args_p[1];
+            jerry_value_t const value = args_p[2];
 
-    jerry_object_set_native_ptr(handler, &kDomProxyInfo, holder);
+            std::optional<std::uint32_t> idx;
+            std::string propName;
+            if (jerry_value_is_string(prop))
+            {
+                propName = toString(prop);
+                if (propName == "length")
+                {
+                    auto lock = lockContext(h->impl);
+                    auto const size = static_cast<double>(
+                        h->value.getArray().size());
+                    if (jerry_value_is_number(value)
+                        && jerry_value_as_number(value) == size)
+                        return jerry_boolean(true);
+                    return jerry_throw_sz(JERRY_ERROR_TYPE,
+                        "cannot resize a DOM array from a script; "
+                        "copy it with slice() first");
+                }
+                idx = parseArrayIndex(propName);
+            }
+            if (!idx)
+            {
+                jerry_value_t r = jerry_object_set(target, prop, value);
+                bool const ok = !jerry_value_is_exception(r)
+                    && jerry_value_to_boolean(r);
+                jerry_value_free(r);
+                return jerry_boolean(ok);
+            }
 
-    jerry_value_t proxy = jerry_proxy(target, handler);
-    jerry_value_free(target);
-    jerry_value_free(handler);
+            auto lock = lockContext(h->impl);
+            dom::Value val = toDomValue(value, h->impl);
+            try
+            {
+                h->value.getArray().set(*idx, std::move(val));
+            }
+            catch (std::exception const& ex)
+            {
+                return jerry_throw_sz(JERRY_ERROR_TYPE, ex.what());
+            }
+            return jerry_boolean(true);
+        });
 
-    if (jerry_value_is_exception(proxy))
-    {
-        jerry_value_free(proxy);
-        return jerry_array(0);
-    }
-    return proxy;
+    // 'deleteProperty' trap: handler.deleteProperty(target, prop) -> boolean
+    //
+    // Elements and `length` cannot be removed (see above). Other keys are
+    // expandos on the target and delete normally.
+    setHandlerTrap(handler, "deleteProperty",
+        [](jerry_call_info_t const* call_info_p,
+           jerry_value_t const args_p[],
+           jerry_length_t argc) -> jerry_value_t
+        {
+            if (argc < 2)
+                return jerry_boolean(false);
+            auto* h = getHolderFromHandler(call_info_p->this_value);
+            if (!h)
+                return jerry_boolean(false);
+            jerry_value_t const target = args_p[0];
+            jerry_value_t const prop = args_p[1];
+            if (jerry_value_is_string(prop))
+            {
+                std::string const propName = toString(prop);
+                if (propName == "length" || parseArrayIndex(propName))
+                    return jerry_throw_sz(JERRY_ERROR_TYPE,
+                        "cannot delete elements of a DOM array; "
+                        "copy it with slice() first");
+            }
+            return jerry_object_delete(target, prop);
+        });
+
+    return finishDomProxy(target, handler, holder);
 }
 
 // Holder for wrapped dom::Function, inherits NativeHolder for cleanup tracking.
@@ -556,7 +620,9 @@ toJsValue(dom::Value const& v, std::shared_ptr<Context::Impl> const& impl)
         return makeString(s);
     }
     case dom::Kind::Array:
-        // Use a lazy proxy for arrays too - elements converted on access.
+        // Use lazy proxy for arrays - elements converted on access, so a
+        // loop over a large array (every symbol in a corpus) only ever
+        // holds the current element on the JerryScript heap.
         return makeArrayProxy(v.getArray(), impl);
     case dom::Kind::Object:
         // Use lazy proxy for objects - properties converted on access.

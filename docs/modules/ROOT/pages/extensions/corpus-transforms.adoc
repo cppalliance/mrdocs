@@ -99,7 +99,7 @@ end)
 ----
 ======
 
-Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:generators/reference.adoc[the DOM reference].
+Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:generators/reference.adoc[the DOM reference]. The array itself (internally represented by a set) is fixed in size: read it, iterate it, filter it, but copy the entries you keep into your own array or table before trimming or reordering them.
 
 === Looking up a symbol
 
