@@ -46,7 +46,11 @@ antora:
         start_on_load: true
         theme: base
         theme_variables:
-          font_family: '"Roboto", sans-serif'
+          # The body stack, so diagram labels match the prose around them.
+          # Mermaid renders into the page, so the webfont is already loaded.
+          # Kept in sync by hand with --ds-font-body: this is YAML and cannot
+          # read the token.
+          font_family: '"Special Elite", "Special Elite Fallback", Roboto, sans-serif'
           quadrant1_fill: 'transparent'
           quadrant2_fill: 'transparent'
           quadrant3_fill: 'transparent'
