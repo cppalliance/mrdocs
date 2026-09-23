@@ -17,8 +17,9 @@
 // The code is organized as small top-level functions. The registered generator
 // (bottom of the file) just builds a model and calls the three emitters; every
 // other function is independent and documented. Each artifact is emitted in its
-// own run: the JerryScript heap is small, so the model is navigated lazily and
-// output is streamed with `output.append` rather than built up in memory.
+// own run: the JerryScript heap is small, so output is streamed with
+// `output.append` rather than built up in memory, and the model only collects
+// the records it needs by walking the `mrdocs` namespace tree.
 
 /**
  * @typedef {Object} Model
@@ -157,7 +158,7 @@ function getSymbol(model, id) {
 
 /**
  * Populate `model.records` with every record under the `mrdocs` namespace,
- * walking namespaces lazily so the full symbol array is never materialized.
+ * walking namespaces from the root so records elsewhere are never visited.
  * @param {Model} model
  * @returns {void}
  */

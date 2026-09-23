@@ -1090,20 +1090,19 @@ struct JavaScript_test
         }
 
         // Back and forth from C++
-        // Arrays use eager conversion (snapshot semantics), unlike objects which
-        // use lazy proxies. This means:
-        // - JS gets a snapshot of the C++ array at conversion time
-        // - JS mutations do NOT affect the C++ array
-        // - C++ mutations do NOT affect the JS array (it's a copy)
+        // Arrays use the same lazy proxy design as objects:
+        // - JS reads elements from the live C++ array via the get trap
+        // - C++ writes are visible from JS
+        // - JS index writes go through dom::Array::set into the C++ array
         {
             Scope scope(context);
             dom::Array a1({1, 2, 3});
             BOOST_TEST(a1.get(0) == 1);
 
-            // Register C++ array as JS array (creates a snapshot)
+            // Register C++ array as a JS array proxy
             scope.setGlobal("a", a1);
 
-            // JS can read the snapshot values
+            // JS can read elements through the proxy
             scope.eval("var x = a[0];");
             auto exp = scope.getGlobal("x");
             BOOST_TEST(exp);
@@ -1117,35 +1116,56 @@ struct JavaScript_test
             BOOST_TEST(exp->isNumber());
             BOOST_TEST(exp->getDom() == 3);
 
-            // Undefined field access
+            // Out-of-range and non-index reads are undefined
             scope.eval("var u = a.field;");
             exp = scope.getGlobal("u");
             BOOST_TEST(exp);
             BOOST_TEST(exp->isUndefined());
+            scope.eval("var oob = a[3];");
+            exp = scope.getGlobal("oob");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->isUndefined());
 
-            // JS mutations do NOT propagate to C++ array (snapshot semantics)
+            // Non-canonical index strings are ordinary properties, not
+            // element reads
+            scope.eval("var lead = a['01'];");
+            exp = scope.getGlobal("lead");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->isUndefined());
+
+            // JS index writes propagate to the C++ array
             scope.eval("a[0] = 99;");
-            BOOST_TEST(a1.get(0) == 1);  // C++ array unchanged
+            BOOST_TEST(a1.get(0) == 99);
 
-            // JS can add elements, but C++ array is unchanged
+            // Writing past the end grows the default array implementation
             scope.eval("a[5] = 10;");
-            BOOST_TEST(a1.get(5).isUndefined());
+            BOOST_TEST(a1.size() == 6);
+            BOOST_TEST(a1.get(5) == 10);
+            BOOST_TEST(a1.get(4).isUndefined());
+            scope.eval("var l2 = a.length;");
+            exp = scope.getGlobal("l2");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 6);
 
-            // C++ mutations do NOT affect the JS snapshot
+            // C++ mutations are visible from JS
             a1.set(0, 42);
             scope.eval("var x2 = a[0];");
-            auto exp2 = scope.getGlobal("x2");
-            BOOST_TEST(exp2);
-            // JS still has the original snapshot value (1) or JS-mutated value (99)
-            BOOST_TEST(exp2->isNumber());
-            BOOST_TEST(exp2->getDom() != 42);  // C++ change not visible
+            exp = scope.getGlobal("x2");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->isNumber());
+            BOOST_TEST(exp->getDom() == 42);
 
-            // 'in' operator works on JS array
+            // 'in' operator works on the proxy
             scope.eval("var hasIdx = 0 in a;");
             auto hasExp = scope.getGlobal("hasIdx");
             BOOST_TEST(hasExp);
             BOOST_TEST(hasExp->isBoolean());
             BOOST_TEST(hasExp->getBool() == true);
+
+            scope.eval("var hasOob = 6 in a;");
+            hasExp = scope.getGlobal("hasOob");
+            BOOST_TEST(hasExp);
+            BOOST_TEST(hasExp->getBool() == false);
 
             scope.eval("var hasLength = 'length' in a;");
             hasExp = scope.getGlobal("hasLength");
@@ -1153,28 +1173,292 @@ struct JavaScript_test
             BOOST_TEST(hasExp->isBoolean());
             BOOST_TEST(hasExp->getBool() == true);
 
-            // Object.keys returns array indices as strings
+            // Object.keys returns the indices as strings, without 'length'
             scope.eval("var z = Object.keys(a);");
             auto zexp = scope.getGlobal("z");
             BOOST_TEST(zexp);
             BOOST_TEST(zexp->isArray());
-            // Keys are string indices: "0", "1", "2", plus any JS-added indices
-            for (auto const& v : zexp->getArray())
             {
-                BOOST_TEST(v.isString());
+                dom::Array keys = zexp->getArray();
+                BOOST_TEST(keys.size() == 6);
+                for (auto const& v : keys)
+                {
+                    BOOST_TEST(v.isString());
+                    BOOST_TEST(v.getString() != "length");
+                }
             }
 
-            // Get the JS array as a Value and verify it has JS mutations
+            // The proxy is classified as an array on both sides
             auto aexp = scope.getGlobal("a");
             BOOST_TEST(aexp);
             Value a2 = *aexp;
             BOOST_TEST(a2.isArray());
+            BOOST_TEST(a2.type() == Type::array);
             BOOST_TEST(a2.get(0).isNumber());
+            scope.eval("var isArr = Array.isArray(a);");
+            exp = scope.getGlobal("isArr");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
 
-            // Get as dom::Value
+            // Converting back yields the original dom::Array, not a copy
             dom::Value a3 = a2.getDom();
             BOOST_TEST(a3.isArray());
-            BOOST_TEST(a3.get(0).isInteger());
+            BOOST_TEST(a3.getArray().impl() == a1.impl());
+            BOOST_TEST(a3.get(0) == 42);
+        }
+
+        // Iteration protocols and Array.prototype methods work on the
+        // proxy: they are generic over `length` and indexed reads, which
+        // the traps serve one element at a time.
+        {
+            Scope scope(context);
+            dom::Array a1({1, 2, 3});
+            scope.setGlobal("a", a1);
+
+            scope.eval("var sum = 0; for (var i = 0; i < a.length; ++i) sum += a[i];");
+            auto exp = scope.getGlobal("sum");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 6);
+
+            scope.eval("var ofSum = 0; for (var v of a) ofSum += v;");
+            exp = scope.getGlobal("ofSum");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 6);
+
+            scope.eval("var eachSum = 0; a.forEach(function(v) { eachSum += v; });");
+            exp = scope.getGlobal("eachSum");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 6);
+
+            scope.eval("var doubled = a.map(function(v) { return v * 2; });");
+            exp = scope.getGlobal("doubled");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->isArray());
+            BOOST_TEST(exp->getDom().getArray().size() == 3);
+            BOOST_TEST(exp->getDom().get(2) == 6);
+
+            scope.eval("var odd = a.filter(function(v) { return v % 2 === 1; });");
+            exp = scope.getGlobal("odd");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom().getArray().size() == 2);
+
+            scope.eval("var joined = a.join('-');");
+            exp = scope.getGlobal("joined");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getString() == "1-2-3");
+
+            scope.eval("var spread = [].concat(a).length;");
+            exp = scope.getGlobal("spread");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 3);
+
+            scope.eval("var json = JSON.stringify(a);");
+            exp = scope.getGlobal("json");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getString() == "[1,2,3]");
+
+            scope.eval("var idx = a.indexOf(3);");
+            exp = scope.getGlobal("idx");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 2);
+
+            // push appends through dom::Array::set and then writes
+            // `length`, which the proxy accepts and ignores
+            scope.eval("a.push(4);");
+            BOOST_TEST(a1.size() == 4);
+            BOOST_TEST(a1.get(3) == 4);
+        }
+
+        // Nested arrays and object elements are wrapped lazily too, and an
+        // array proxy handed back to C++ preserves the nested structure.
+        {
+            Scope scope(context);
+            dom::Object inner;
+            inner.set("name", "x");
+            dom::Array a1({dom::Value(inner), dom::Value(dom::Array({7, 8}))});
+            scope.setGlobal("a", a1);
+
+            scope.eval("var n = a[0].name;");
+            auto exp = scope.getGlobal("n");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getString() == "x");
+
+            scope.eval("var inner1 = a[1][1];");
+            exp = scope.getGlobal("inner1");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 8);
+
+            scope.eval("var innerIsArr = Array.isArray(a[1]);");
+            exp = scope.getGlobal("innerIsArr");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+
+            // Writing a nested element reaches the nested C++ array
+            scope.eval("a[1][0] = 70;");
+            BOOST_TEST(a1.get(1).getArray().get(0) == 70);
+        }
+
+        // A read-only array implementation (the default `dom::ArrayImpl::set`
+        // throws) rejects script writes with a TypeError, matching the C++
+        // API, and reads keep working.
+        {
+            struct ReadOnlyArray : dom::ArrayImpl
+            {
+                std::size_t size() const override { return 2; }
+                dom::Value get(std::size_t i) const override
+                {
+                    return dom::Value(static_cast<std::int64_t>(i * 10 + 1));
+                }
+            };
+            Scope scope(context);
+            dom::Array ro = dom::newArray<ReadOnlyArray>();
+            scope.setGlobal("ro", ro);
+            scope.eval(
+                "var roThrew = false;"
+                "try { ro[0] = 5; } catch (e) { roThrew = e instanceof TypeError; }"
+                "var roFirst = ro[0]; var roLen = ro.length;");
+            auto exp = scope.getGlobal("roThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("roFirst");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->isNumber());
+            BOOST_TEST(exp->getDom() == 1);
+            exp = scope.getGlobal("roLen");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 2);
+
+            // sort and push write elements, so they fail the same way
+            // instead of silently leaving the array untouched
+            scope.eval(
+                "var roSortThrew = false;"
+                "try { ro.sort(); } catch (e) { roSortThrew = e instanceof TypeError; }"
+                "var roPushThrew = false;"
+                "try { ro.push(3); } catch (e) { roPushThrew = e instanceof TypeError; }"
+                "var roLen2 = ro.length;");
+            exp = scope.getGlobal("roSortThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("roPushThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("roLen2");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 2);
+
+            // Reading still works
+            scope.eval("var roSum = 0; for (var v of ro) roSum += v;");
+            exp = scope.getGlobal("roSum");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 12);
+        }
+
+        // The array cannot be resized from a script. In-place reordering
+        // of a writable array works (sort and reverse only read and write
+        // elements), but anything that shrinks the array throws instead
+        // of leaving it with a stale length, and slice() gives a plain
+        // copy that can be trimmed freely.
+        {
+            Scope scope(context);
+            dom::Array a1({3, 1, 2});
+            scope.setGlobal("a", a1);
+
+            scope.eval("a.sort();");
+            BOOST_TEST(a1.get(0) == 1);
+            BOOST_TEST(a1.get(1) == 2);
+            BOOST_TEST(a1.get(2) == 3);
+
+            scope.eval("a.reverse();");
+            BOOST_TEST(a1.get(0) == 3);
+            BOOST_TEST(a1.get(2) == 1);
+
+            scope.eval(
+                "var popThrew = false;"
+                "try { a.pop(); } catch (e) { popThrew = e instanceof TypeError; }"
+                "var spliceThrew = false;"
+                "try { a.splice(0, 1); } catch (e) { spliceThrew = e instanceof TypeError; }"
+                "var lengthThrew = false;"
+                "try { a.length = 0; } catch (e) { lengthThrew = e instanceof TypeError; }"
+                "var deleteThrew = false;"
+                "try { delete a[0]; } catch (e) { deleteThrew = e instanceof TypeError; }"
+                "var sameLengthOk = true;"
+                "try { a.length = a.length; } catch (e) { sameLengthOk = false; }"
+                "var len = a.length;");
+            auto exp = scope.getGlobal("popThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("spliceThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("lengthThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("deleteThrew");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("sameLengthOk");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("len");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 3);
+            BOOST_TEST(a1.size() == 3);
+
+            // Expando properties are ordinary and can be deleted
+            scope.eval("a.tag = 1; var hadTag = 'tag' in a; delete a.tag; var hasTag = 'tag' in a;");
+            exp = scope.getGlobal("hadTag");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == true);
+            exp = scope.getGlobal("hasTag");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getBool() == false);
+
+            // A slice() copy is a plain JS array and leaves the DOM array alone
+            scope.eval("var copy = a.slice(); copy.pop(); copy.shift(); var copyLen = copy.length;");
+            exp = scope.getGlobal("copyLen");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp->getDom() == 1);
+            BOOST_TEST(a1.size() == 3);
+        }
+    }
+
+    void
+    test_large_arrays()
+    {
+        // Test that a large array is readable without exhausting the
+        // interpreter heap.
+        js::Context ctx;
+        js::Scope scope(ctx);
+
+        std::size_t const count = 50'000;
+        dom::Array large;
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            dom::Object elem;
+            elem.set("i", static_cast<std::int64_t>(i));
+            large.push_back(dom::Value(elem));
+        }
+        scope.setGlobal("large", dom::Value(large));
+
+        auto read = scope.eval(
+            "(function() {"
+            "  let seen = 0;"
+            "  for (let i = 0; i < large.length; ++i) { seen += large[i].i; }"
+            "  return seen;"
+            "})()");
+        BOOST_TEST(read);
+        if (read)
+        {
+            BOOST_TEST(read->isNumber());
+            BOOST_TEST(read->getDom() ==
+                static_cast<std::int64_t>(count * (count - 1) / 2));
+        }
+
+        auto len = scope.eval("large.length");
+        BOOST_TEST(len);
+        if (len)
+        {
+            BOOST_TEST(len->getDom() == static_cast<std::int64_t>(count));
         }
     }
 
@@ -2125,46 +2409,6 @@ struct JavaScript_test
         b.set("next", nullptr);
     }
 
-    void
-    test_large_arrays()
-    {
-        // Test that a large array is readable with exhausting the
-        // interpreter heap.
-        js::Context ctx;
-        js::Scope scope(ctx);
-
-        std::size_t const count = 50'000;
-        dom::Array large;
-        for (std::size_t i = 0; i < count; ++i)
-        {
-            dom::Object elem;
-            elem.set("i", static_cast<std::int64_t>(i));
-            large.push_back(dom::Value(elem));
-        }
-        scope.setGlobal("large", dom::Value(large));
-
-        auto read = scope.eval(
-            "(function() {"
-            "  let seen = 0;"
-            "  for (let i = 0; i < large.length; ++i) { seen += large[i].i; }"
-            "  return seen;"
-            "})()");
-        BOOST_TEST(read);
-        if (read)
-        {
-            BOOST_TEST(read->isNumber());
-            BOOST_TEST(read->getDom() ==
-                static_cast<std::int64_t>(count * (count - 1) / 2));
-        }
-
-        auto len = scope.eval("large.length");
-        BOOST_TEST(len);
-        if (len)
-        {
-            BOOST_TEST(len->getDom() == static_cast<std::int64_t>(count));
-        }
-    }
-
     void run()
     {
         test_context();
@@ -2173,6 +2417,7 @@ struct JavaScript_test
         test_cpp_function();
         test_cpp_object();
         test_cpp_array();
+        test_large_arrays();
         test_hbs_helpers();
         test_helper_error_propagation();
         test_value_lifetime_and_apply_errors();
@@ -2191,7 +2436,6 @@ struct JavaScript_test
         test_utility_file_globals();
         test_empty_script();
         test_large_strings();
-        test_large_arrays();
         test_function_round_trip();
         test_operator_bracket_edge_cases();
         test_deep_circular_stress();

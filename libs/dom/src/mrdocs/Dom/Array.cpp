@@ -18,7 +18,10 @@ namespace dom {
 
 void
 ArrayImpl::
-set(size_type, Value) {}
+set(size_type, Value)
+{
+    throw std::runtime_error("Array is const");
+}
 
 Array::
 ~Array() = default;
