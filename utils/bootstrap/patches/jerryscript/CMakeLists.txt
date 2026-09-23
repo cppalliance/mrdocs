@@ -94,6 +94,20 @@ set_target_properties(jerry-core PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/jerry-core/include>;$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
+# Under MemorySanitizer, keep JerryScript's own findings out of the report.
+# msan-ignorelist.txt is copied next to this file by the bootstrap. The
+# sources stay instrumented, so uninitialized memory is still tracked
+# through them; only reports originating in them are silenced.
+if (CMAKE_C_FLAGS MATCHES "-fsanitize=memory")
+    set(_jerry_msan_ignorelist "${CMAKE_CURRENT_SOURCE_DIR}/msan-ignorelist.txt")
+    target_compile_options(jerry-core PRIVATE
+        "-fsanitize-ignorelist=${_jerry_msan_ignorelist}")
+    if (TARGET jerry-port)
+        target_compile_options(jerry-port PRIVATE
+            "-fsanitize-ignorelist=${_jerry_msan_ignorelist}")
+    endif()
+endif()
+
 add_library(jerryscript ALIAS jerry-core)
 
 set(_install_targets jerry-core)
