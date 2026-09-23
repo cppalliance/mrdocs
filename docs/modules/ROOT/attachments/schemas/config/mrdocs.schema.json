@@ -135,7 +135,7 @@
     },
     "exclude": {
       "default": [],
-      "description": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`. Exclusion is strict about symlinks: it matches the file path only as written and does not resolve symlinks.",
+      "description": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`. Exclusion is strict about symlinks: it matches the file path once \".\" and \"..\" components are removed, but does not resolve symlinks. An absolute path is used as written, so it should not contain \".\" or \"..\" components.",
       "items": {
         "type": "string"
       },
