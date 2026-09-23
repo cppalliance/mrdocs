@@ -54,6 +54,19 @@ add_custom_target(amalgam)
 # Build jerry-core using upstream CMakeLists
 add_subdirectory(jerry-core)
 
+# With an external context, make the engine read its context pointer as a
+# thread-local variable the host defines instead of calling the port on
+# every access (see mrdocs-context.h, force-included into every jerry-core
+# translation unit).
+if (JERRY_EXTERNAL_CONTEXT)
+    set(_mrdocs_context_header "${CMAKE_CURRENT_SOURCE_DIR}/mrdocs-context.h")
+    if (MSVC)
+        target_compile_options(jerry-core PRIVATE "/FI${_mrdocs_context_header}")
+    else()
+        target_compile_options(jerry-core PRIVATE -include "${_mrdocs_context_header}")
+    endif()
+endif()
+
 # Build jerry-port ourselves to exclude the port functions the host provides
 # when JERRY_EXTERNAL_CONTEXT=ON: jerry_port_context_alloc,
 # jerry_port_context_free and jerry_port_context_get (jerry-port-context.c),
