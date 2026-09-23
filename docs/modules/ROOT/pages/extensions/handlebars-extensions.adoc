@@ -212,6 +212,8 @@ The xref:generators/reference.adoc[DOM reference] documents the values that help
 
 A user helper is a JavaScript or Lua file that lives under an addons `helpers/` directory and is picked up automatically. The filename without extension becomes the helper name: `slug.js` registers a helper called `slug`, `markdown.lua` registers one called `markdown`, and so on. The file's top-level function (or its `module.exports` in JS) is the helper body.
 
+Either language works, and both see the same values. JavaScript gives you the ECMAScript built-ins but no module system, and Lua gives you its whole standard library and runs faster. The xref:extensions/script-engines.adoc[Script Engines] page compares the two in detail.
+
 A small URL-slug helper, reusable across formats, lives under `common/helpers/`:
 
 .`addons/generator/common/helpers/slug.js`

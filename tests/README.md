@@ -18,3 +18,6 @@ from `libs/test_suite`.
   walks `tests/golden/fixtures`, rendering each test with the generator(s)
   declared in its own config and diffing against the committed fixtures. The
   `mrdocs-{test,create,update}-test-fixtures-all` targets drive create/update.
+- `benchmarks/` — benchmarks kept for re-measuring numbers the docs or a PR
+  quote (currently the JavaScript versus Lua script engine comparison). Custom
+  targets, not CTest tests; see `benchmarks/README.md`.

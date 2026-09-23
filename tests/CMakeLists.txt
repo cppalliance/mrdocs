@@ -13,6 +13,8 @@
 #   golden/ - reference-output harness (mrdocs-golden-tests)
 add_subdirectory(unit)
 add_subdirectory(golden)
+# Benchmarks are custom targets, not CTest tests; see benchmarks/README.md.
+add_subdirectory(benchmarks)
 
 # Self-documentation test: run mrdocs over its own build file with the noop
 # generator (warn-as-error toggled by the strict flag).
