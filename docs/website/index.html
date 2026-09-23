@@ -61,6 +61,13 @@
          Show the matching one and recolor its parts to the nav. Inlined so it
          applies even if styles.css is cached stale. */
       .nav .logo-link .brand-lockup { height: 47px; width: auto; display: none; }
+      /* 316:334242: the mobile bar is 59.4 around a 35.4 lockup. The override
+         has to live here as well as in styles.css -- this block is later in
+         document order, so at equal specificity it wins, and the 47 above was
+         beating the stylesheet's mobile rule. */
+      @media (max-width: 767px) {
+        .nav .logo-link .brand-lockup { height: 35px; }
+      }
       :root[data-theme="light"] .nav .logo-link .mark-light { display: block; }
       :root[data-theme="dark"]  .nav .logo-link .mark-dark  { display: block; }
       .nav .logo-link .mark-light path[fill="black"] { fill: #0f172a; }
@@ -105,7 +112,7 @@
         </div>
         <div class="nav-section">
             <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
-                <span></span><span></span><span></span>
+                <svg class="burger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.25 19C3.25 18.5858 3.58579 18.25 4 18.25H20C20.4142 18.25 20.75 18.5858 20.75 19C20.75 19.4142 20.4142 19.75 20 19.75H4C3.58579 19.75 3.25 19.4142 3.25 19Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3.25 5C3.25 4.58579 3.58579 4.25 4 4.25H20C20.4142 4.25 20.75 4.58579 20.75 5C20.75 5.41421 20.4142 5.75 20 5.75H4C3.58579 5.75 3.25 5.41421 3.25 5Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3.25 12C3.25 11.5858 3.58579 11.25 4 11.25H20C20.4142 11.25 20.75 11.5858 20.75 12C20.75 12.4142 20.4142 12.75 20 12.75H4C3.58579 12.75 3.25 12.4142 3.25 12Z" fill="currentColor"/></svg><svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
             <ul role="menubar" class="nav-menu" id="nav-menu">
             <li class="nav-link"><a href="#features" role="menuitem">Features</a></li>
@@ -116,7 +123,7 @@
                         <span>GitHub Repo</span>
                     </a>
                 </li>
-            <li class="nav-link">
+            <li class="nav-link nav-toggle-li">
                 <button type="button" class="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
                     <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M20 14.6A8 8 0 1 1 9.4 4a6.3 6.3 0 0 0 10.6 10.6z" stroke="currentColor" stroke-width="1.23" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     <svg class="icon-sun" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M11.0001 2.75V4.00758M11.0001 17.9924V19.25M19.25 11.0001H17.9924M4.00758 11.0001H2.75M16.8336 5.16617L15.9443 6.0554M6.05583 15.9443L5.16661 16.8336M16.8336 16.8336L15.9443 15.9443M6.05583 6.05583L5.16661 5.16661" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M11.0002 7.1543C13.1246 7.1543 14.8461 8.87655 14.8461 11.0002C14.8461 13.1246 13.1246 14.8469 11.0002 14.8469C8.87566 14.8469 7.1543 13.1246 7.1543 11.0002C7.1543 8.87655 8.87566 7.1543 11.0002 7.1543Z" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -755,9 +762,35 @@ lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem
                 });
                 var burger = document.getElementById('nav-hamburger');
                 var navEl = document.querySelector('.nav');
+                // The open menu runs from under the bar to the bottom of the
+                // viewport, so it needs the bar's height. Percentages in the
+                // stylesheet can't get it: the menu's containing block is the
+                // bar itself, whose height is auto.
+                var setNavH = function () {
+                    if (navEl) document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+                };
+                setNavH();
+                window.addEventListener('resize', setNavH);
+                var closeMenu = function () {
+                    if (!navEl || !navEl.classList.contains('nav-open')) return;
+                    navEl.classList.remove('nav-open');
+                    if (burger) burger.setAttribute('aria-expanded', 'false');
+                };
                 if (burger && navEl) burger.addEventListener('click', function () {
+                    setNavH();
                     var open = navEl.classList.toggle('nav-open');
                     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                // Following a link has to dismiss the panel. It covers the
+                // viewport, so an in-page jump would otherwise land behind it
+                // and look like the link did nothing. Links only: the theme
+                // toggle sits in here too and should leave the menu open.
+                var menuEl = document.getElementById('nav-menu');
+                if (menuEl) menuEl.addEventListener('click', function (e) {
+                    if (e.target.closest('a')) closeMenu();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeMenu();
                 });
             });
         })();

@@ -3342,16 +3342,30 @@ footer a:focus {
     /* default = dark. 316:256650, the dark Home frame's Navbar. */
     --navc-bg: #171c26;
     --navc-ink: #e9edf2;
-    --navc-border: #33454f;
+    /* 316:282463 strokes the dark bar, its buttons and their shadows in pure
+       #000000 -- not the slate edge and near-black shadow this carried, which
+       read softer than the same controls on the docs side. */
+    --navc-border: #000000;
     --navc-gold: var(--ds-gold-450);
-    --navc-shadow: #05080a;
+    --navc-shadow: #000000;
 
     /* Theme toggle, Figma "Secondary/Default" 38x38: #1E78FF at 10% with a
        2px #0F172A edge. The icon keeps its own token because it is the one
        part that has to invert for the dark ground. */
     --navc-toggle-bg: rgba(30, 120, 255, 0.1);
-    --navc-toggle-edge: #33454f;
+    --navc-toggle-edge: #000000;
     --navc-toggle-icon: #ffffff;
+
+    /* 316:282487, the dark Menu Container: pure #FFFFFF, not --navc-ink.
+       The bar's ink is a blue-grey (#E9EDF2), which left the glyph a shade
+       under the mock against the same ground. Light is #0F172A (316:334266). */
+    --navc-menu-icon: #ffffff;
+
+    /* 316:334241 / 316:282462: the open panel is the page ground under a 10%
+       blue wash -- #FDFAF5 light, #272E3F dark, both of which are
+       `--body-background`, so one mix covers both themes. The bar above it
+       stays `--navc-bg`. */
+    --navc-menu-bg: color-mix(in srgb, var(--ds-blue-450) 10%, var(--body-background));
 }
 :root[data-theme="light"] {
     --navc-bg: #ffffff;
@@ -3363,6 +3377,7 @@ footer a:focus {
     --navc-toggle-bg: rgba(30, 120, 255, 0.1);
     --navc-toggle-edge: #0f172a;
     --navc-toggle-icon: #0f172a;
+    --navc-menu-icon: #0f172a;
 }
 
 .nav {
@@ -3457,51 +3472,99 @@ footer a:focus {
 
 /* Hamburger — shown only on mobile */
 .nav { position: relative; }
+/* 316:334266 "Menu Container" is a bare 24x24 with no fill and no stroke,
+   so the glyph stands on its own -- the boxed button this used to draw gave
+   the burger a weight the mock never gives it, and one the neighbouring
+   38x38 toggle already owns. The three <span> bars are now the supplied
+   icon, drawn in `currentColor` so it inverts with the bar. */
 .nav .nav-hamburger {
     display: none;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 4px;
-    width: 42px; height: 38px;
-    /* zero the global button margin, which otherwise pads this out to 54 and
-       centres it 8px high in the 79 bar */
+    width: 24px; height: 24px;
+    /* zero the global button margin */
     margin: 0;
-    padding: 0 8px;
+    padding: 0;
     box-sizing: border-box;
-    border: 2px solid var(--navc-border);
-    box-shadow: 2px 2px 0 var(--navc-shadow);
-    background: var(--navc-bg);
+    border: 0;
+    box-shadow: none;
+    background: none;
+    color: var(--navc-ink);
     cursor: pointer;
 }
-.nav .nav-hamburger span { display: block; height: 2.5px; border-radius: 2px; background: var(--navc-ink); }
+/* Both icons carry the bar's ink explicitly. `currentColor` alone was
+   resolving to a blue further up the cascade, which painted the glyph as
+   though it were a link. */
+.nav .nav-hamburger .burger-icon,
+.nav .nav-hamburger .close-icon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    color: var(--navc-menu-icon);
+}
+.nav .nav-hamburger .burger-icon path { fill: currentColor; }
+.nav .nav-hamburger .close-icon path { stroke: currentColor; }
+
+/* 316:334267 "Close remove - Iconly Pro": the open menu swaps the bars for
+   a cross, so the control says how to dismiss what it opened. */
+.nav .nav-hamburger .burger-icon { display: block; }
+.nav.nav-open .nav-hamburger .burger-icon { display: none; }
+.nav.nav-open .nav-hamburger .close-icon { display: block; }
 
 @media (max-width: 767px) {
-    .nav { padding: 0 16px; }
+    /* 316:334242: the mobile bar is 59.4 -- a 35.4 logo inside 12/20 padding
+       -- not the 79 the desktop bar carries. The docs bar next to it is 57,
+       so the two products sat 22px apart on the same phone. */
+    .nav {
+        min-height: 59px;
+        padding: 0 20px;
+    }
+    .nav .logo-link .brand-lockup { height: 35px; }
     .nav .nav-hamburger { display: inline-flex; }
+    /* 316:334241 "Navbar Menu [Open]": the open panel is a 30px-padded row --
+       the links stacked left on a 32 gap, the toggle held at the top right --
+       and it hugs its content rather than running to the fold. The rules
+       between items are not in the mock; the 32 gap is what separates them. */
     .nav ul.nav-menu {
         display: none;
-        position: absolute;
-        top: 100%; left: 0; right: 0;
+        /* Fixed and run to the bottom, like the docs drawer: the mock's panel
+           is a full screen, and an absolute one scrolled away with the page.
+           `--nav-h` is published by the toggle script. */
+        position: fixed;
+        top: var(--nav-h, 79px); left: 0; right: 0; bottom: 0;
         flex-direction: column;
-        align-items: stretch;
-        gap: 0;
+        align-items: flex-start;
+        gap: 32px;
         margin: 0;
-        padding: 6px 16px 16px;
-        background: var(--navc-bg);
-        border-bottom: 2px solid var(--navc-border);
+        padding: 30px;
+        background: var(--navc-menu-bg);
+        border-bottom: 0;
+        overflow-y: auto;
         z-index: 60;
     }
     .nav.nav-open ul.nav-menu { display: flex; }
-    .nav ul.nav-menu > li { width: 100%; margin: 0; }
-    .nav ul.nav-menu > li.nav-link > a {
+    .nav ul.nav-menu > li { width: auto; margin: 0; }
+    /* `:not(.nav-btn)` -- the reset is for the plain menu links. Without it
+       the gh button lost its bottom border and rendered a three-sided box. */
+    .nav ul.nav-menu > li.nav-link > a:not(.nav-btn) {
         display: block;
-        padding: 13px 2px;
-        font-size: 15px;
-        border-bottom: 1px solid color-mix(in srgb, var(--navc-border) 45%, transparent);
+        padding: 0;
+        font-size: 14px;
+        border-bottom: 0;
     }
-    .nav .nav-btn--gh { width: 100%; justify-content: center; margin-top: 12px; padding: 10px 14px; }
+    /* 157x38 in the mock, left-aligned -- not stretched to the panel. */
+    /* Specificity: the link reset above is (0,3,3) and was zeroing the
+       button's own padding, collapsing it to 131 against the mock's 157. */
+    .nav ul.nav-menu > li.nav-link > a.nav-btn--gh {
+        width: auto;
+        justify-content: center;
+        margin-top: 0;
+        padding: 10px 14px;
+    }
     .nav .nav-btn--gh span { display: inline; }
-    .nav .nav-toggle-li { margin-top: 12px; justify-content: flex-start; }
+    /* Frame 234 sits at 334,30 in a 402 panel: top right, inside the padding,
+       on the same row as the links rather than stacked under them. */
+    .nav .nav-toggle-li { position: absolute; top: 30px; right: 30px; margin: 0; }
 }
 
 /* ===========================
