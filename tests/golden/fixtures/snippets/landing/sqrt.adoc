@@ -39,14 +39,6 @@ Returns zero for zero input&period;
 
 ====
 
-=== Return Value
-
-The integer square root of `value`&period;
-
-[NOTE]
-====
-The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[should not be discarded^].
-====
 === Template Parameters
 
 [cols="1,4"]
@@ -65,6 +57,14 @@ The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[s
 | The integral value, which must be non&hyphen;negative&period;
 |===
 
+=== Return Value
+
+The integer square root of `value`&period;
+
+[NOTE]
+====
+The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[should not be discarded^].
+====
 === Preconditions
 
 * `value &gt;&equals; 0`&period;

@@ -195,10 +195,6 @@ distance(
 
 The value is symmetric in its arguments and is zero exactly when the two points coincide, so it works well as the basis for an equality&hyphen;with&hyphen;tolerance check&period;
 
-=== Return Value
-
-The straight&hyphen;line distance between `a` and `b`&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -209,6 +205,10 @@ The straight&hyphen;line distance between `a` and `b`&period;
 | *b*
 | The second point&period;
 |===
+
+=== Return Value
+
+The straight&hyphen;line distance between `a` and `b`&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
