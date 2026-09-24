@@ -4598,11 +4598,11 @@ header .header-content > p:not(.row-label) {
 }
 
 /* ---- Hero mascot --------------------------------------------------- *
- * On mobile the figure is left-aligned and bleeds off the left edge only
- * (its cape tip touches x=0), at 81vw -- measured by matching the cape's
- * span to the mockup. It also rides up over the panel's lower edge. */
+ * On mobile the figure is centred at 81vw, the width measured off the
+ * mockup. It also rides up over the panel's lower edge. */
 .header-image {
-    margin-inline: -28px 0;
+    justify-self: center;
+    margin-inline: auto;
     margin-top: -24px;
     width: 81vw;
     max-width: none;
@@ -5841,16 +5841,22 @@ header {
     mask-image: var(--ds-cta-burst-art);
     -webkit-mask-size: var(--ds-cta-burst-art-width) auto;
     mask-size: var(--ds-cta-burst-art-width) auto;
-    -webkit-mask-position: left top;
-    mask-position: left top;
+    /* The rays converge at (192, 199) in this box, which was the mascot's
+       chest at Figma's placement: 64% across and 44% down the figure. The
+       mascot is now centred and 400 tall (325 wide), which puts the chest at
+       (50% of the box + 46px, 181px). A percentage mask-position offsets by
+       that share of (box - 402), hence 50% plus 46 + 201 - 192. */
+    -webkit-mask-position: calc(50% + 55px) -18px;
+    mask-position: calc(50% + 55px) -18px;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
 }
 
 .cta-panel-inner {
     position: relative;
-    /* Figma mobile frame: 867 tall. */
-    min-height: 867px;
+    /* Figma mobile frame: 867 tall, less the 40px the mascot was scaled
+       down by. */
+    min-height: 827px;
 }
 
 /* ---- Mascot --------------------------------------------------------- *
@@ -5863,25 +5869,27 @@ header {
     /* Shared fade (see .hero-mascot). Belt top at 84% of the art's height,
        so the same share of the figure is 21.5% of the art. */
     --mascot-fade-start: 77.5%;
-    /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
-       against the container's padding box, which the panel's 2px border
-       has already pushed in by 2. */
+    /* Figma y=9 from the frame's outer edge. `top` resolves against the
+       container's padding box, which the panel's 2px border has already
+       pushed in by 2. Centred rather than at Figma's x=-35: an absolutely
+       placed replaced element with both insets at 0 and auto margins
+       centres in its containing block. */
     top: 7px;
-    left: -37px;
-    /* Same ratio correction as the desktop rule: 564x440 framed the old
-       landscape cutout. */
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    /* Figma's 440, scaled down. Width from the art's own ratio (0.813). */
     width: auto;
-    height: 440px;
-    /* Fixed width past the viewport edge: the art is a cutout on
-       transparency, so the overflow is empty pixels, not a visible crop. */
+    height: 400px;
     max-width: none;
     pointer-events: none;
 }
 
 .cta-content {
     /* Figma puts the mobile copy block's pill at y=470; its 2px stroke is
-       outside that box, so the painted pill starts at 468. */
-    padding-top: 466px;
+       outside that box, so the painted pill starts at 468. Less the 40px the
+       mascot was scaled down by, so the pill keeps its distance from it. */
+    padding-top: 426px;
 }
 
 .cta-label {
