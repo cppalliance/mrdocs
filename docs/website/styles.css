@@ -4444,9 +4444,10 @@ header .header-content > p:not(.row-label) {
 .code-panel-body code {
     background: none;
     padding: 0;
-    /* Figma: 13px mobile, 14px desktop, line-height 2.2 in both. */
+    /* Figma: 13px mobile, 14px desktop. Line height follows the docs code
+       blocks (docs/ui doc.css), not Figma's 2.2, so the two read alike. */
     font-size: 13px;
-    line-height: 2.2;
+    line-height: 1.55;
     color: var(--ds-code-panel-fg);
 }
 
@@ -4459,7 +4460,7 @@ header .header-content > p:not(.row-label) {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     /* A blank source line has no text to give it a line box. */
-    min-height: 2.2em;
+    min-height: 1.55em;
 }
 
 .code-panel-body .cl::before {
@@ -4673,8 +4674,8 @@ header .header-content > p:not(.row-label) {
         margin-top: 67px;
     }
 
-    /* Desktop panel: 15px/31px pitch, no wrapping at this width, and a
-       deep bottom well as in the mockup. */
+    /* Desktop panel: 14px code as in the docs blocks, and a deep bottom
+       well as in the mockup. */
     .code-panel-body code {
         font-size: 14px;
     }
@@ -5266,10 +5267,6 @@ header {
     .side-by-side {
         flex-direction: row;
         padding: 2px;
-    }
-
-    .side-by-side > .snippet-panel > .code-panel-body {
-        padding: 30px;
     }
 
     .side-by-side > .documentation-panel {
