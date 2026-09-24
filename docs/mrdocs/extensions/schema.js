@@ -455,7 +455,7 @@ function rngRef(name) {
  * @returns {string}
  */
 function jsonRef(name) {
-  return '{"$ref":"#/$defs/' + name + '"}';
+  return '{"$ref":"#/definitions/' + name + '"}';
 }
 
 /**
@@ -602,7 +602,7 @@ function jsonForType(model, type) {
 }
 
 /**
- * The JSON `$defs` entry for a variant base: an anyOf over its kinds.
+ * The JSON `definitions` entry for a variant base: an anyOf over its kinds.
  * @param {Model} model
  * @param {string} base A variant base name.
  * @returns {string}
@@ -614,7 +614,7 @@ function jsonAnyDef(model, base) {
 }
 
 /**
- * The JSON `$defs` entry for a struct: an object with one property per field.
+ * The JSON `definitions` entry for a struct: an object with one property per field.
  * @param {Model} model
  * @param {string} id The struct id.
  * @param {Object} rec The struct's record symbol.
@@ -627,7 +627,7 @@ function jsonStructDef(model, id, rec) {
 }
 
 /**
- * Write the JSON Schema: preamble, the `symbols` array, then the `$defs`
+ * Write the JSON Schema: preamble, the `symbols` array, then the `definitions`
  * entries, streamed with separating commas so no big object is held at once.
  * @param {Model} model
  * @returns {void}
@@ -638,7 +638,7 @@ function emitJson(model) {
   for (var i = 0; i < symbolKinds.length; ++i) symbolRefs.push(jsonRef(defName(model, symbolKinds[i].id)));
   out.write(path, JSON_PREAMBLE +
     '  "properties": {"symbols": {"type":"array","items":{"anyOf":[' + symbolRefs.join(",") + ']}}},\n' +
-    '  "$defs": {\n');
+    '  "definitions": {\n');
   var first = true;
   for (var base in VARIANTS) { out.append(path, (first ? "" : ",\n") + jsonAnyDef(model, base)); first = false; }
   for (var j = 0; j < model.structOrder.length; ++j) {
