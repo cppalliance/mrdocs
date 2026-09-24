@@ -4439,6 +4439,16 @@ header .header-content > p:not(.row-label) {
     counter-reset: codeline;
     overflow-x: auto;
     flex: 1;
+    /* Digits in the widest line number; the gutter grows by 1ch per digit. */
+    --cl-digits: 1;
+}
+
+.code-panel-body:has(.cl:nth-child(10)) {
+    --cl-digits: 2;
+}
+
+.code-panel-body:has(.cl:nth-child(100)) {
+    --cl-digits: 3;
 }
 
 .code-panel-body code {
@@ -4455,8 +4465,10 @@ header .header-content > p:not(.row-label) {
     display: block;
     position: relative;
     counter-increment: codeline;
-    /* Figma: 9px number column + 30px gap. */
-    padding-left: 39px;
+    /* Figma: 9px number column + 30px gap. The column widens to fit
+       multi-digit numbers; resolved here so `ch` is the code face. */
+    --cl-gutter: max(9px, calc(var(--cl-digits) * 1ch));
+    padding-left: calc(var(--cl-gutter) + 30px);
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     /* A blank source line has no text to give it a line box. */
@@ -4467,8 +4479,11 @@ header .header-content > p:not(.row-label) {
     content: counter(codeline);
     position: absolute;
     left: 0;
-    width: 9px;
+    width: var(--cl-gutter);
     text-align: right;
+    /* .cl wraps anywhere; the number must not. */
+    white-space: nowrap;
+    overflow-wrap: normal;
     color: var(--ds-code-panel-linenum);
 }
 
