@@ -26,6 +26,26 @@ from ..tools.compilers import sanitizer_flag_name
 from functools import lru_cache
 
 
+# The key under which bootstrap marks, in a preset's `vendor` map (CMake's
+# place for tool-specific data), a preset it created. Bootstrap only ever
+# removes a preset carrying this; a preset without it is considered the
+# user's.
+BOOTSTRAP_VENDOR_KEY = "mrdocs.com/bootstrap/1.0"
+
+
+def is_bootstrap_preset(preset: Dict[str, Any]) -> bool:
+    """
+    Check whether bootstrap created a preset.
+
+    Args:
+        preset: A configure preset from CMakeUserPresets.json.
+
+    Returns:
+        True if the preset carries the bootstrap marker.
+    """
+    return BOOTSTRAP_VENDOR_KEY in (preset.get("vendor") or {})
+
+
 @lru_cache(maxsize=1)
 def get_host_system_name() -> Tuple[str, str]:
     """
@@ -382,6 +402,7 @@ def create_cmake_presets(
                 "intelliSenseMode": "windows-msvc-x64"
             }
         }
+    new_preset.setdefault("vendor", {})[BOOTSTRAP_VENDOR_KEY] = {}
 
     # Normalize paths
     source_dir_parent = os.path.dirname(source_dir)
@@ -432,3 +453,97 @@ def create_cmake_presets(
     )
 
     return new_preset
+
+
+def _removal_refusal(
+    presets_by_name: Dict[str, Dict[str, Any]],
+    name: str,
+    keep: str,
+) -> str:
+    """
+    Explain why a preset cannot be removed.
+
+    Args:
+        presets_by_name: The configure presets, keyed by name.
+        name: The preset to remove.
+        keep: The preset the current run sets up.
+
+    Returns:
+        The reason, or an empty string if the preset can be removed.
+    """
+    reason = ""
+    if name == keep:
+        reason = "it is the preset this run sets up"
+    elif name not in presets_by_name:
+        reason = "there is no such preset"
+    elif not is_bootstrap_preset(presets_by_name[name]):
+        reason = "it was not created by bootstrap"
+    return reason
+
+
+def remove_cmake_presets(
+    source_dir: str,
+    preset_names: List[str],
+    keep: str = "",
+    dry_run: bool = False,
+    ui: Optional[TextUI] = None,
+) -> List[str]:
+    """
+    Remove presets bootstrap created from CMakeUserPresets.json.
+
+    A preset the user wrote, one that does not exist, and the one the
+    current run sets up are reported and left in place.
+
+    Args:
+        source_dir: MrDocs source directory.
+        preset_names: Names of the presets to remove.
+        keep: The preset the current run sets up.
+        dry_run: If True, only report what would be written.
+        ui: TextUI instance for output.
+
+    Returns:
+        The names of the presets removed.
+    """
+    if ui is None:
+        ui = get_default_ui()
+    path = os.path.join(source_dir, "CMakeUserPresets.json")
+    user_presets: Dict[str, Any] = {}
+    if os.path.exists(path):
+        with open(path, "r") as f:
+            user_presets = json.load(f)
+    presets = user_presets.get("configurePresets", [])
+    removed = _removable_presets(presets, preset_names, keep, ui)
+    if removed:
+        user_presets["configurePresets"] = [
+            p for p in presets if p.get("name") not in removed]
+        write_text(path, json.dumps(user_presets, indent=2), dry_run=dry_run, ui=ui)
+    return removed
+
+
+def _removable_presets(
+    presets: List[Dict[str, Any]],
+    preset_names: List[str],
+    keep: str,
+    ui: TextUI,
+) -> List[str]:
+    """
+    Select the presets that can be removed, reporting the others.
+
+    Args:
+        presets: The configure presets in CMakeUserPresets.json.
+        preset_names: Names of the presets to remove.
+        keep: The preset the current run sets up.
+        ui: TextUI instance for output.
+
+    Returns:
+        The names that can be removed, each once.
+    """
+    presets_by_name = {p.get("name"): p for p in presets}
+    removable: List[str] = []
+    for name in dict.fromkeys(preset_names):
+        reason = _removal_refusal(presets_by_name, name, keep)
+        if reason:
+            ui.warn(f"Not removing preset '{name}': {reason}.")
+        else:
+            removable.append(name)
+    return removable
