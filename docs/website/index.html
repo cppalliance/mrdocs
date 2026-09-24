@@ -208,23 +208,7 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">terminate.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9</span><code><span class="hljs-doc-comment">/** Exit the program.
-
-    The program will end immediately.
-
-    <span class="hljs-doctag">@note</span> Functions registered with <span class="hljs-string">`std::atexit`</span> are not invoked.
-*/</span>
-<span class="hljs-meta">[[noreturn]]</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span>
-<span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-doc-comment">/** Exit the program.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    The program will end immediately.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@note</span> Functions registered with <span class="hljs-string">`std::atexit`</span> are not invoked.</span></span><span class="cl"><span class="hljs-doc-comment">*/</span></span><span class="cl"><span class="hljs-meta">[[noreturn]]</span></span><span class="cl"><span class="hljs-function"><span class="hljs-keyword">void</span></span></span><span class="cl"><span class="hljs-function"><span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -268,31 +252,7 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">distance.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13</span><code><span class="hljs-doc-comment">/** Return the distance between two points
-
-    This function returns the distance between two points
-    according to the Euclidean distance formula.
-
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">x0</span> The x-coordinate of the first point
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">y0</span> The y-coordinate of the first point
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">x1</span> The x-coordinate of the second point
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">y1</span> The y-coordinate of the second point
-    <span class="hljs-doctag">@return</span> The distance between the two points
-*/</span>
-<span class="hljs-function"><span class="hljs-keyword">double</span>
-<span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x0, <span class="hljs-keyword">double</span> y0, <span class="hljs-keyword">double</span> x1, <span class="hljs-keyword">double</span> y1)</span></span>;</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-doc-comment">/** Return the distance between two points</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    This function returns the distance between two points</span></span><span class="cl"><span class="hljs-doc-comment">    according to the Euclidean distance formula.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">x0</span> The x-coordinate of the first point</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">y0</span> The y-coordinate of the first point</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">x1</span> The x-coordinate of the second point</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">y1</span> The y-coordinate of the second point</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@return</span> The distance between the two points</span></span><span class="cl"><span class="hljs-doc-comment">*/</span></span><span class="cl"><span class="hljs-function"><span class="hljs-keyword">double</span></span></span><span class="cl"><span class="hljs-function"><span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x0, <span class="hljs-keyword">double</span> y0, <span class="hljs-keyword">double</span> x1, <span class="hljs-keyword">double</span> y1)</span></span>;</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -344,34 +304,7 @@
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">insert_sorted.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
-
-<span class="hljs-doc-comment">/** Insert a value into a sorted vector, keeping it sorted.
-
-    <span class="hljs-doctag">@pre</span> <span class="hljs-string">`v`</span> is sorted in ascending order.
-    <span class="hljs-doctag">@post</span> <span class="hljs-string">`v`</span> is sorted in ascending order and contains <span class="hljs-string">`value`</span>.
-
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">v</span> The sorted vector to insert into.
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The value to insert.
-    <span class="hljs-doctag">@return</span> An iterator to the inserted element.
-    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::bad_alloc If the vector has to grow and cannot.
-*/</span>
-<span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;::<span class="hljs-type">iterator</span>
-insert_sorted(<span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; v, <span class="hljs-keyword">int</span> value);
-</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span></span><span class="cl"></span><span class="cl"><span class="hljs-doc-comment">/** Insert a value into a sorted vector, keeping it sorted.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@pre</span> <span class="hljs-string">`v`</span> is sorted in ascending order.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@post</span> <span class="hljs-string">`v`</span> is sorted in ascending order and contains <span class="hljs-string">`value`</span>.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">v</span> The sorted vector to insert into.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The value to insert.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@return</span> An iterator to the inserted element.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::bad_alloc If the vector has to grow and cannot.</span></span><span class="cl"><span class="hljs-doc-comment">*/</span></span><span class="cl"><span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;::<span class="hljs-type">iterator</span></span><span class="cl">insert_sorted(<span class="hljs-type">std</span>::<span class="hljs-type">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; v, <span class="hljs-keyword">int</span> value);</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -438,36 +371,7 @@ insert_sorted(
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">sqrt.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
-
-<span class="hljs-doc-comment">/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.
-
-    This function calculates the square root of a given integral value
-    using bit manipulation, in $O(\log value)$ time.
-
-    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::invalid_argument If the input value is negative.
-
-    <span class="hljs-doctag">@tparam</span> <span class="hljs-name">T</span> The type of the input value. Must be an integral type.
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The integral value to compute the square root of.
-    <span class="hljs-doctag">@return</span> The square root of the input value.
- */</span>
-<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
-<span class="hljs-type">std</span>::<span class="hljs-type">enable_if_t</span>&lt;<span class="hljs-type">std</span>::<span class="hljs-type">is_integral_v</span>&lt;T&gt;, T&gt; sqrt(T value);
-</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;type_traits&gt;</span></span></span><span class="cl"></span><span class="cl"><span class="hljs-doc-comment">/** Computes the integer square root \f$\lfloor\sqrt{value}\rfloor\f$.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    This function calculates the square root of a given integral value</span></span><span class="cl"><span class="hljs-doc-comment">    using bit manipulation, in $O(\log value)$ time.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::invalid_argument If the input value is negative.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@tparam</span> <span class="hljs-name">T</span> The type of the input value. Must be an integral type.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">value</span> The integral value to compute the square root of.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@return</span> The square root of the input value.</span></span><span class="cl"><span class="hljs-doc-comment"> */</span></span><span class="cl"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;</span><span class="cl"><span class="hljs-type">std</span>::<span class="hljs-type">enable_if_t</span>&lt;<span class="hljs-type">std</span>::<span class="hljs-type">is_integral_v</span>&lt;T&gt;, T&gt; sqrt(T value);</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -536,32 +440,7 @@ T
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">function_object.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13</span><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span>
-{</span>
-    <span class="hljs-doc-comment">/** Compute the absolute value.
-
-        <span class="hljs-doctag">@param</span> <span class="hljs-name">x</span> The input value.
-        <span class="hljs-doctag">@return</span> The absolute value of x.
-    */</span>
-    <span class="hljs-function"><span class="hljs-keyword">double</span>
-    <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">noexcept</span></span>;
-};
-
-<span class="hljs-doc-comment">/** Return the absolute value of a number. */</span>
-<span class="hljs-keyword">constexpr</span> <span class="hljs-type">abs_fn</span> abs = {};
-</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">abs_fn</span></span></span><span class="cl"><span class="hljs-class">{</span></span><span class="cl">    <span class="hljs-doc-comment">/** Compute the absolute value.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">        <span class="hljs-doctag">@param</span> <span class="hljs-name">x</span> The input value.</span></span><span class="cl"><span class="hljs-doc-comment">        <span class="hljs-doctag">@return</span> The absolute value of x.</span></span><span class="cl"><span class="hljs-doc-comment">    */</span></span><span class="cl">    <span class="hljs-function"><span class="hljs-keyword">double</span></span></span><span class="cl"><span class="hljs-function">    <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">noexcept</span></span>;</span><span class="cl">};</span><span class="cl"></span><span class="cl"><span class="hljs-doc-comment">/** Return the absolute value of a number. */</span></span><span class="cl"><span class="hljs-keyword">constexpr</span> <span class="hljs-type">abs_fn</span> abs = {};</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">
@@ -608,60 +487,7 @@ T
                     <div class="panel-container side-by-side">
                         <div class="snippet-panel">
                             <div class="code-panel-chrome"><span class="code-panel-tab">lock_file.cpp</span></div>
-                            <pre class="code-panel-body"><span class="code-linenums" aria-hidden="true">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27</span><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;filesystem&gt;</span></span>
-
-<span class="hljs-keyword">namespace</span> detail {
-
-<span class="hljs-doc-comment">/** The object that holds the lock.
-
-    <span class="hljs-doctag">@implementationdefined</span>
-*/</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">file_lock</span>
-{</span>
-<span class="hljs-keyword">public</span>:
-    ~file_lock();
-};
-
-} <span class="hljs-comment">// namespace detail</span>
-
-<span class="hljs-doc-comment">/** Lock a file for exclusive access.
-
-    The lock is held until the returned object is destroyed.
-
-    <span class="hljs-doctag">@param</span> <span class="hljs-name">path</span> The path of the file to lock.
-    <span class="hljs-doctag">@return</span> An object that holds the lock.
-    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::system_error If the file cannot be locked.
-*/</span>
-<span class="hljs-meta">[[nodiscard]]</span>
-<span class="hljs-type">detail</span>::<span class="hljs-type">file_lock</span>
-lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem</span>::<span class="hljs-type">path</span> <span class="hljs-keyword">const</span>&amp; path);
-</code></pre>
+                            <pre class="code-panel-body"><code><span class="cl"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;filesystem&gt;</span></span></span><span class="cl"></span><span class="cl"><span class="hljs-keyword">namespace</span> detail {</span><span class="cl"></span><span class="cl"><span class="hljs-doc-comment">/** The object that holds the lock.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@implementationdefined</span></span></span><span class="cl"><span class="hljs-doc-comment">*/</span></span><span class="cl"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">file_lock</span></span></span><span class="cl"><span class="hljs-class">{</span></span><span class="cl"><span class="hljs-keyword">public</span>:</span><span class="cl">    ~file_lock();</span><span class="cl">};</span><span class="cl"></span><span class="cl">} <span class="hljs-comment">// namespace detail</span></span><span class="cl"></span><span class="cl"><span class="hljs-doc-comment">/** Lock a file for exclusive access.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    The lock is held until the returned object is destroyed.</span></span><span class="cl"><span class="hljs-doc-comment"></span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@param</span> <span class="hljs-name">path</span> The path of the file to lock.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@return</span> An object that holds the lock.</span></span><span class="cl"><span class="hljs-doc-comment">    <span class="hljs-doctag">@throws</span> <span class="hljs-name">std</span>::system_error If the file cannot be locked.</span></span><span class="cl"><span class="hljs-doc-comment">*/</span></span><span class="cl"><span class="hljs-meta">[[nodiscard]]</span></span><span class="cl"><span class="hljs-type">detail</span>::<span class="hljs-type">file_lock</span></span><span class="cl">lock_file(<span class="hljs-type">std</span>::<span class="hljs-type">filesystem</span>::<span class="hljs-type">path</span> <span class="hljs-keyword">const</span>&amp; path);</span></code></pre>
                         </div>
                         <div class="documentation-panel">
                             <div class="symbol">

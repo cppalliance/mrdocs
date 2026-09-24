@@ -84,6 +84,29 @@ const absSnippetsDir = process.env.SNIPPETS_PATH
 // same highlighter used for the raw snippet over those blocks (their
 // contents are HTML-escaped C++, so unescape before highlighting and let
 // highlight.js re-escape).
+// Wrap each source line of highlight.js output in a `.cl` span, the same
+// structure as the hero panel, so a CSS counter numbers every line and long
+// lines can wrap without the numbers drifting off their line. hljs spans
+// cross newlines (a doc comment is one span), so the open spans are closed
+// at each line end and re-opened on the next line.
+function splitHighlightedLines (html) {
+    const lines = [];
+    const open = [];
+    let line = '';
+    for (const token of html.replace(/\n+$/, '').split(/(<span[^>]*>|<\/span>|\n)/)) {
+        if (token === '\n') {
+            lines.push(line + '</span>'.repeat(open.length));
+            line = open.join('');
+        } else {
+            if (token.startsWith('<span')) open.push(token);
+            else if (token === '</span>') open.pop();
+            line += token;
+        }
+    }
+    lines.push(line);
+    return lines.map(l => `<span class="cl">${l}</span>`).join('');
+}
+
 function highlightSynopsisBlocks (html) {
     return html.replace(
         /<pre><code class="source-code cpp">([\s\S]*?)<\/code><\/pre>/g,
@@ -161,15 +184,7 @@ for (let panel of data.panels) {
     // Also inject the header contents as highlighted C++ (the representative
     // example is the header, not the thin .cpp that includes it).
     const snippetContents = fs.readFileSync(headerPath, 'utf8');
-    panel.snippet = hljs.highlight('cpp', snippetContents).value;
-
-    // Figma renders the gutter as its own 9px column beside the code, not
-    // as a number per line. Emit it as plain text: the highlighted snippet
-    // has spans that cross newlines, so wrapping each line would mean
-    // re-opening the span stack, and a sibling column needs none of that.
-    // Both columns share a line-height in CSS so the numbers stay aligned.
-    const snippetLineCount = snippetContents.replace(/\n+$/, '').split('\n').length;
-    panel.lineNumbers = Array.from({length: snippetLineCount}, (_, i) => i + 1).join('\n');
+    panel.snippet = splitHighlightedLines(hljs.highlight('cpp', snippetContents).value);
 
     // Delete the temporary output file
     fs.unlinkSync(mrdocsOutput);

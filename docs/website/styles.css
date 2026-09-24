@@ -4457,6 +4457,9 @@ header .header-content > p:not(.row-label) {
     /* Figma: 9px number column + 30px gap. */
     padding-left: 39px;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    /* A blank source line has no text to give it a line box. */
+    min-height: 2.2em;
 }
 
 .code-panel-body .cl::before {
@@ -5453,50 +5456,10 @@ header {
     margin-top: 0;
 }
 
-/* ---- Code half: line-number gutter ---------------------------------- *
- * Figma models this as two flex children -- a 9px right-aligned number
- * column and the code -- with a 30px gap, NOT as a number per line. That
- * matters: the snippet is highlight.js output whose spans cross
- * newlines, so a per-line wrapper (what the hero uses via counters)
- * would need the span stack re-opened on every line. A separate column
- * needs none of that, and matches the design's own structure. The two
- * columns must share a line-height or the numbers drift. */
-.side-by-side > .snippet-panel > .code-panel-body {
-    display: flex;
-    align-items: flex-start;
-    gap: 30px;
-    /* The code column scrolls, not the pre: scrolling the pre would carry
-       the number column off with it. */
-    overflow: hidden;
-}
-
-.code-linenums {
-    flex: none;
-    width: 9px;
-    text-align: right;
-    white-space: pre;
-    font-family: var(--ds-font-mono);
-    /* Must track .code-panel-body code exactly. */
-    font-size: 13px;
-    line-height: 2.2;
-    color: var(--ds-code-panel-linenum);
-}
-
-.side-by-side > .snippet-panel > .code-panel-body > code {
-    flex: 1 1 auto;
-    min-width: 0;
-    /* Long lines scroll rather than wrap. Wrapping would desynchronise the
-       gutter, which counts source lines, not visual rows. The golden
-       fixtures run wider than the design's idealised snippet. */
-    white-space: pre;
-    overflow-x: auto;
-}
-
-@media (min-width: 992px) {
-    .code-linenums {
-        font-size: 14px;
-    }
-}
+/* ---- Code half: line numbers ------------------------------------- *
+ * render.js wraps each source line in a `.cl`, like the hero, so the
+ * shared counter numbers them and a long line wraps under its own number
+ * rather than scrolling. */
 
 /* The hero panel's border and drop shadow are inherited here, where they
    sit *inside* the bordered box and have nothing to cast onto. */
