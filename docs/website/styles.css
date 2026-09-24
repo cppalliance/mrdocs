@@ -5921,6 +5921,10 @@ header {
 
 .cta-title .title-line {
     display: block;
+    /* Same WebKit clip as the hero h1 (see there): the synthesised oblique
+       ran the R of "Your" past the span box and lost its right edge. */
+    padding-right: 0.45em;
+    margin-right: -0.45em;
 }
 
 .cta-title .title-line--alt {
