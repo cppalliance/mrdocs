@@ -618,6 +618,7 @@ class MrDocsInstaller:
             cflags=self.options.cflags,
             cxxflags=self.options.cxxflags,
             ldflags=self.options.ldflags,
+            remove_presets=self.cmd_line_args.get("remove_preset") or [],
             dry_run=self.options.dry_run,
             ui=self.ui,
         )

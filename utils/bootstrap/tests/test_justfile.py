@@ -329,6 +329,32 @@ class TestPrune(unittest.TestCase):
         self.assertIn("my-custom-helper:", content)
         self.assertIn("echo mine", content)
 
+    def test_prunes_bootstrap_recipes_of_a_removed_preset(self):
+        existing = "".join(
+            f'[doc("{name}")]\n{rid}:\n    echo {rid}\n\n'
+            for name, rid in [
+                ("Bootstrap Update (old)", "bootstrap-update-old"),
+                ("Bootstrap Refresh (old)", "bootstrap-refresh-old"),
+                ("Generate Config Info (old)", "generate-config-info-old"),
+                ("Bootstrap Refresh (release-linux)",
+                 "bootstrap-refresh-release-linux"),
+            ])
+        configs = [
+            {"name": "Bootstrap Refresh (release-macos)",
+             "script": "/src/bootstrap.py"},
+            {"name": "Generate Config Info (docs)",
+             "script": "/src/utils/codegen/generate-config-info.py"},
+        ]
+        content = _gen(configs, all_presets=["release-macos", "release-linux"],
+                       existing=existing)
+        for pruned in ("bootstrap-update-old:", "bootstrap-refresh-old:",
+                       "generate-config-info-old:"):
+            self.assertNotIn(pruned, content)
+        for kept in ("bootstrap-refresh-release-linux:",
+                     "bootstrap-refresh-release-macos:",
+                     "generate-config-info-docs:"):
+            self.assertIn(kept, content)
+
 
 # ── install hint (US-010) ────────────────────────────────────────────
 

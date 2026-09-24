@@ -21,6 +21,7 @@ sys.path.insert(0, str(__file__).replace("\\", "/").rsplit("/", 2)[0])
 from src.configs.run_configs import (
     expand_with,
     format_values,
+    PER_PRESET_SCRIPT_BASES,
     get_dynamic_run_configs,
     generate_run_configs,
 )
@@ -103,6 +104,14 @@ class TestFormatValues(unittest.TestCase):
 # ── get_dynamic_run_configs ──────────────────────────────────────────
 
 class TestGetDynamicRunConfigs(unittest.TestCase):
+    def test_per_preset_script_bases_match_the_generated_names(self):
+        opts = _make_options(preset="release-linux-gcc")
+        configs = get_dynamic_run_configs(opts, _make_options())
+        suffix = " (release-linux-gcc)"
+        bases = {c["name"][:-len(suffix)] for c in configs
+                 if "script" in c and c["name"].endswith(suffix)}
+        self.assertEqual(bases, set(PER_PRESET_SCRIPT_BASES))
+
     def test_basic_bootstrap_configs(self):
         """Always produces at least the bootstrap helper configs."""
         opts = _make_options()

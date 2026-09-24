@@ -47,6 +47,13 @@ OPTION_DETAILS: dict[str, str] = {
         "expands to a value derived from build type, OS, compiler, "
         "and sanitizer; override only when you have a custom preset."
     ),
+    "remove_preset": (
+        "Removes a preset from CMakeUserPresets.json during this run, "
+        "and its entries from the run configurations the run "
+        "generates. Give the option once per preset. Only a preset that "
+        "bootstrap created is removed; any other is left in place with a "
+        "warning."
+    ),
     "sanitizer": (
         "Builds Mr.Docs with a Clang/GCC sanitizer enabled. "
         "`address` catches out-of-bounds and use-after-free, "

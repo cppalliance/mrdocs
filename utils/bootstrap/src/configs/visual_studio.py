@@ -22,7 +22,7 @@ from typing import Optional, List, Dict, Any
 
 from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
-from .run_configs import is_stale_preset_entry
+from .run_configs import PER_PRESET_SCRIPT_BASES, prune_stale_entries
 
 
 def vs_config_type(config: Dict[str, Any]) -> Optional[str]:
@@ -175,18 +175,16 @@ def generate_visual_studio_run_configs(
             vs_tasks_by_name[new_task["taskLabel"]] = new_task
 
     # Prune entries left over from presets that no longer exist. Matches the
-    # VS Code generator: only generator-owned per-preset entries (base name
-    # still produced) are removed; user entries are left alone.
+    # VS Code generator: entries are recognized by name alone, so a user
+    # entry is removed only if it is named like a generated one.
     valid_presets = set(all_presets or []) | {preset}
     launch_bases = {config["name"] for config in configs if "target" in config}
-    vs_configs_by_name = {
-        name: cfg for name, cfg in vs_configs_by_name.items()
-        if not is_stale_preset_entry(name, launch_bases, valid_presets)
-    }
-    vs_tasks_by_name = {
-        label: task for label, task in vs_tasks_by_name.items()
-        if not is_stale_preset_entry(label, launch_bases, valid_presets)
-    }
+    launch_bases |= PER_PRESET_SCRIPT_BASES
+    script_names = {config["name"] for config in configs if "script" in config}
+    vs_configs_by_name = prune_stale_entries(
+        vs_configs_by_name, launch_bases, valid_presets, script_names)
+    vs_tasks_by_name = prune_stale_entries(
+        vs_tasks_by_name, launch_bases, valid_presets, script_names)
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())

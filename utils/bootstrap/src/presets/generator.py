@@ -17,13 +17,32 @@ Provides functions to create and update CMakeUserPresets.json files.
 
 import json
 import os
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Optional, Dict, Any, List, Sequence, Tuple
 
 from ..core.platform import is_windows, is_macos
 from ..core.filesystem import write_text, is_executable
 from ..core.ui import TextUI, get_default_ui
 from ..tools.compilers import sanitizer_flag_name
 from functools import lru_cache
+
+
+# Bootstrap marks every preset it writes with this key in the preset's
+# `vendor` map, where CMake keeps tool-specific data. It only removes a
+# preset carrying the key; a preset without it is the user's.
+BOOTSTRAP_VENDOR_KEY = "mrdocs.com/bootstrap/1.0"
+
+
+def is_bootstrap_preset(preset: Dict[str, Any]) -> bool:
+    """
+    Check whether bootstrap created a preset.
+
+    Args:
+        preset: A configure preset from CMakeUserPresets.json.
+
+    Returns:
+        True if the preset carries the bootstrap marker.
+    """
+    return BOOTSTRAP_VENDOR_KEY in (preset.get("vendor") or {})
 
 
 @lru_cache(maxsize=1)
@@ -219,6 +238,7 @@ def create_cmake_presets(
     cflags: str = "",
     cxxflags: str = "",
     ldflags: str = "",
+    remove_presets: Sequence[str] = (),
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
 ) -> Dict[str, Any]:
@@ -243,6 +263,8 @@ def create_cmake_presets(
         cflags: Extra C compiler flags.
         cxxflags: Extra C++ compiler flags.
         ldflags: Extra linker flags.
+        remove_presets: Names of presets to remove, if bootstrap created
+            them.
         dry_run: If True, only return the preset without writing.
         ui: TextUI instance for output.
 
@@ -382,6 +404,7 @@ def create_cmake_presets(
                 "intelliSenseMode": "windows-msvc-x64"
             }
         }
+    new_preset.setdefault("vendor", {})[BOOTSTRAP_VENDOR_KEY] = {}
 
     # Normalize paths
     source_dir_parent = os.path.dirname(source_dir)
@@ -423,6 +446,8 @@ def create_cmake_presets(
         for k in stale_keys:
             del cache[k]
 
+    _drop_presets(user_presets, remove_presets, preset_name, dry_run, ui)
+
     # Write file
     write_text(
         user_presets_path,
@@ -432,3 +457,140 @@ def create_cmake_presets(
     )
 
     return new_preset
+
+
+def _inherited_names(preset: Dict[str, Any]) -> List[str]:
+    """
+    List the presets a configure preset inherits from.
+
+    Args:
+        preset: A configure preset.
+
+    Returns:
+        The names in its `inherits` field, which CMake allows to be a
+        string or a list.
+    """
+    inherits = preset.get("inherits") or []
+    return [inherits] if isinstance(inherits, str) else list(inherits)
+
+
+def _dependents_of(user_presets: Dict[str, Any], name: str) -> List[str]:
+    """
+    Name the presets that refer to a configure preset.
+
+    A configure preset refers to it through `inherits`, a build, test or
+    package preset through `configurePreset`, and a workflow preset
+    through a configure step.
+
+    Args:
+        user_presets: The contents of CMakeUserPresets.json.
+        name: The configure preset.
+
+    Returns:
+        The names of the presets that refer to it.
+    """
+    dependents = [
+        p.get("name") for p in user_presets.get("configurePresets", [])
+        if name in _inherited_names(p)]
+    for kind in ("buildPresets", "testPresets", "packagePresets"):
+        dependents += [
+            p.get("name") for p in user_presets.get(kind, [])
+            if p.get("configurePreset") == name]
+    dependents += [
+        w.get("name") for w in user_presets.get("workflowPresets", [])
+        if any(s.get("type") == "configure" and s.get("name") == name
+               for s in w.get("steps", []))]
+    return dependents
+
+
+def _refusal_reason(
+    user_presets: Dict[str, Any],
+    presets_by_name: Dict[str, Dict[str, Any]],
+    name: str,
+    keep: str,
+) -> str:
+    """
+    Explain why a preset cannot be removed.
+
+    Args:
+        user_presets: The contents of CMakeUserPresets.json.
+        presets_by_name: Its configure presets, keyed by name.
+        name: The preset to remove.
+        keep: The preset the current run sets up.
+
+    Returns:
+        The reason, or an empty string if the preset can be removed.
+    """
+    reason = ""
+    if name == keep:
+        reason = "it is the preset this run sets up"
+    elif name not in presets_by_name:
+        reason = "there is no such preset"
+    elif not is_bootstrap_preset(presets_by_name[name]):
+        reason = "bootstrap did not create it"
+    else:
+        dependents = _dependents_of(user_presets, name)
+        if dependents:
+            reason = "it is used by " + ", ".join(f"'{d}'" for d in dependents)
+    return reason
+
+
+def _presets_to_remove(
+    user_presets: Dict[str, Any],
+    preset_names: Sequence[str],
+    keep: str,
+    ui: TextUI,
+) -> List[str]:
+    """
+    Select the presets that can be removed, reporting the others.
+
+    Args:
+        user_presets: The contents of CMakeUserPresets.json.
+        preset_names: Names of the presets to remove.
+        keep: The preset the current run sets up.
+        ui: TextUI instance for output.
+
+    Returns:
+        The names that can be removed, each once.
+    """
+    presets_by_name = {
+        p.get("name"): p for p in user_presets.get("configurePresets", [])}
+    removable: List[str] = []
+    for name in dict.fromkeys(preset_names):
+        reason = _refusal_reason(user_presets, presets_by_name, name, keep)
+        if reason:
+            ui.warn(f"Not removing preset '{name}': {reason}.")
+        else:
+            removable.append(name)
+    return removable
+
+
+def _drop_presets(
+    user_presets: Dict[str, Any],
+    preset_names: Sequence[str],
+    keep: str,
+    dry_run: bool,
+    ui: TextUI,
+) -> None:
+    """
+    Remove from a presets document the named presets bootstrap created.
+
+    A preset the user wrote, one that does not exist, one another preset
+    uses, and the one the current run sets up are reported and left in
+    place.
+
+    Args:
+        user_presets: The contents of CMakeUserPresets.json, changed in
+            place.
+        preset_names: Names of the presets to remove.
+        keep: The preset the current run sets up.
+        dry_run: If True, report the removals as ones that would happen.
+        ui: TextUI instance for output.
+    """
+    removed = _presets_to_remove(user_presets, preset_names, keep, ui)
+    user_presets["configurePresets"] = [
+        p for p in user_presets["configurePresets"]
+        if p.get("name") not in removed]
+    verb = "Would remove" if dry_run else "Removed"
+    for name in removed:
+        ui.ok(f"{verb} preset '{name}'")

@@ -31,6 +31,15 @@ def _make_installer(**cmd_line_overrides):
     return inst
 
 
+def _refresh_entry(source_dir, preset):
+    """A "Bootstrap Refresh" run configuration for a preset."""
+    return {
+        "name": f"Bootstrap Refresh ({preset})",
+        "script": os.path.join(source_dir, "bootstrap.py"),
+        "args": ["--preset", preset, "--non-interactive"],
+    }
+
+
 class TestRefreshAll(unittest.TestCase):
     """refresh_all replays saved IDE configs robustly."""
 
@@ -78,6 +87,30 @@ class TestRefreshAll(unittest.TestCase):
             with patch("subprocess.run", side_effect=fake_run):
                 inst.refresh_all()  # must not raise despite the first failure
             self.assertEqual(len(calls), 2)
+
+    def test_does_not_set_up_a_removed_preset_again(self):
+        import json
+        from src.configs.run_configs import load_preset_names
+        from src.configs.vscode import generate_vscode_run_configs
+        from src.presets.generator import (
+            BOOTSTRAP_VENDOR_KEY, create_cmake_presets)
+        with tempfile.TemporaryDirectory() as tmp:
+            inst = self._setup(
+                tmp, [_refresh_entry(tmp, "old"), _refresh_entry(tmp, "new")])
+            with open(os.path.join(tmp, "CMakeUserPresets.json"), "w") as f:
+                json.dump({"version": 6, "configurePresets": [
+                    {"name": "old", "vendor": {BOOTSTRAP_VENDOR_KEY: {}}}]}, f)
+            create_cmake_presets(
+                tmp, "new", "Release", remove_presets=["old"], ui=MagicMock())
+            generate_vscode_run_configs(
+                [_refresh_entry(tmp, "new")], tmp,
+                os.path.join(tmp, "build", "new"), "new",
+                all_presets=load_preset_names(tmp), ui=MagicMock())
+            with patch("subprocess.run") as mock_run:
+                inst.refresh_all()
+            self.assertEqual(mock_run.call_count, 1)
+            self.assertIn("new", mock_run.call_args[0][0])
+            self.assertNotIn("old", mock_run.call_args[0][0])
 
 
 class TestExpandPlaceholders(unittest.TestCase):
@@ -720,6 +753,18 @@ class TestCreatePresets(unittest.TestCase):
         call_kwargs = mock_create.call_args
         self.assertEqual(call_kwargs[0][1], "release-linux-gcc")  # preset name
         self.assertEqual(call_kwargs[0][2], "Release")  # build type
+
+    @patch("src.installer.create_cmake_presets")
+    def test_create_presets_forwards_the_presets_to_remove(self, mock_create):
+        inst = _make_installer(remove_preset=["old"])
+        inst.create_presets()
+        self.assertEqual(mock_create.call_args[1]["remove_presets"], ["old"])
+
+    @patch("src.installer.create_cmake_presets")
+    def test_create_presets_removes_nothing_by_default(self, mock_create):
+        inst = _make_installer()
+        inst.create_presets()
+        self.assertEqual(mock_create.call_args[1]["remove_presets"], [])
 
     @patch("src.installer.create_cmake_presets")
     def test_create_presets_passes_package_roots(self, mock_create):

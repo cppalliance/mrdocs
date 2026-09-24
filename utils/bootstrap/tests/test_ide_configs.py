@@ -923,6 +923,36 @@ class TestVSCodePruning(unittest.TestCase):
         labels = [t["label"] for t in tasks_data["tasks"]]
         self.assertNotIn("CMake Build mrdocs (old-preset)", labels)
 
+    @patch("src.configs.vscode.write_text")
+    @patch("src.configs.vscode.load_json_file")
+    @patch("src.configs.vscode.ensure_dir")
+    def test_prunes_bootstrap_entries_of_a_removed_preset(self, mock_ensure, mock_load, mock_write):
+        existing_launch = {"version": "0.2.0", "configurations": [
+            {"name": "Bootstrap Update (old)"},
+            {"name": "Bootstrap Refresh (old)"},
+            {"name": "Generate Config Info (old)"},
+            {"name": "Bootstrap Refresh (other)"},
+            {"name": "My Script (old)"},
+        ]}
+        mock_load.side_effect = [existing_launch, {"version": "2.0.0", "tasks": []}]
+        configs = [
+            {"name": "Bootstrap Refresh (release)", "script": "/src/bootstrap.py"},
+            {"name": "Generate Config Info (docs)",
+             "script": "/src/utils/codegen/generate-config-info.py"},
+        ]
+        generate_vscode_run_configs(
+            configs, "/src", "/src/build", "release",
+            all_presets=["release", "other"], dry_run=False, ui=_ui(),
+        )
+        launch_data = json.loads(mock_write.call_args_list[0][0][1])
+        names = [c["name"] for c in launch_data["configurations"]]
+        for pruned in ("Bootstrap Update (old)", "Bootstrap Refresh (old)",
+                       "Generate Config Info (old)"):
+            self.assertNotIn(pruned, names)
+        for kept in ("Bootstrap Refresh (other)", "Bootstrap Refresh (release)",
+                     "Generate Config Info (docs)", "My Script (old)"):
+            self.assertIn(kept, names)
+
 
 class TestVSPruning(unittest.TestCase):
     """Visual Studio: prune generated entries for removed presets."""
@@ -946,6 +976,36 @@ class TestVSPruning(unittest.TestCase):
         names = [c["name"] for c in launch_data["configurations"]]
         self.assertNotIn("app (old)", names)   # pruned (base 'app' is a target)
         self.assertIn("Keep Me", names)        # user entry kept
+
+    @patch("src.configs.visual_studio.write_text")
+    @patch("src.configs.visual_studio.load_json_file")
+    @patch("src.configs.visual_studio.ensure_dir")
+    def test_prunes_bootstrap_entries_of_a_removed_preset(self, mock_ensure, mock_load, mock_write):
+        existing_launch = {"version": "0.2.1", "defaults": {}, "configurations": [
+            {"name": "Bootstrap Update (old)"},
+            {"name": "Bootstrap Refresh (old)"},
+            {"name": "Generate Config Info (old)"},
+            {"name": "Bootstrap Refresh (other)"},
+            {"name": "My Script (old)"},
+        ]}
+        mock_load.side_effect = [existing_launch, {"version": "0.2.1", "tasks": []}]
+        configs = [
+            {"name": "Bootstrap Refresh (release)", "script": "/src/bootstrap.py"},
+            {"name": "Generate Config Info (docs)",
+             "script": "/src/utils/codegen/generate-config-info.py"},
+        ]
+        generate_visual_studio_run_configs(
+            configs, "/src", "/src/build", "release",
+            all_presets=["release", "other"], dry_run=False, ui=_ui(),
+        )
+        launch_data = json.loads(mock_write.call_args_list[0][0][1])
+        names = [c["name"] for c in launch_data["configurations"]]
+        for pruned in ("Bootstrap Update (old)", "Bootstrap Refresh (old)",
+                       "Generate Config Info (old)"):
+            self.assertNotIn(pruned, names)
+        for kept in ("Bootstrap Refresh (other)", "Bootstrap Refresh (release)",
+                     "Generate Config Info (docs)", "My Script (old)"):
+            self.assertIn(kept, names)
 
 
 class TestClionPruning(unittest.TestCase):
