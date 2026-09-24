@@ -4468,9 +4468,23 @@ header .header-content > p:not(.row-label) {
     color: var(--ds-code-panel-linenum);
 }
 
-.code-panel-body .c { color: var(--ds-code-panel-comment); }
-.code-panel-body .k { color: var(--ds-code-panel-keyword); }
-.code-panel-body .f { color: var(--ds-code-panel-fn); }
+/* The panels are dark in both themes, so they take the docs' dark syntax
+   palette rather than the themed --hl-* set, which flips to light-surface
+   values in light mode. Same tokens as docs/ui vars.css, so the landing
+   page code reads exactly like the documentation's. */
+.code-panel,
+.side-by-side {
+    --hl-fg: var(--ds-code-panel-fg);
+    --hl-comment: var(--ds-code-panel-comment);
+    --hl-keyword: var(--ds-code-panel-hl-keyword);
+    --hl-string: var(--ds-code-panel-hl-string);
+    --hl-const: var(--ds-code-panel-hl-const);
+    --hl-entity: var(--ds-code-panel-hl-entity);
+    --hl-title: var(--ds-code-panel-hl-title);
+    --hl-tag: var(--ds-code-panel-hl-tag);
+    --hl-doc: var(--ds-code-panel-hl-doc);
+    --hl-doc-strong: var(--ds-code-panel-hl-doc-strong);
+}
 
 /* ---- Hero structure (mobile) --------------------------------------- *
  * The mockup gutter is 28px, not Pico's 16px. Scoped to the hero for
@@ -5285,35 +5299,9 @@ header {
     filter: var(--ds-title-drop-sm);
 }
 
-/* The code half is highlight.js output, so its colours come from hljs
-   classes rather than the hand-written spans the hero panel uses. Map them
-   onto the same panel palette: grey comments, pink keywords, blue
-   identifiers, cream for everything else. */
+/* The code half is highlight.js output, coloured by the shared hljs rules
+   through the panel palette above. */
 .side-by-side .code-panel-body code {
-    color: var(--ds-code-panel-fg);
-}
-
-.side-by-side .hljs-doc-comment,
-.side-by-side .hljs-comment {
-    color: var(--ds-code-panel-comment);
-}
-
-/* Only keywords take the pink; attributes and identifiers stay cream, and
-   everything inside a doc comment reads as comment grey. */
-.side-by-side .hljs-doctag,
-.side-by-side .hljs-string,
-.side-by-side .hljs-name {
-    color: inherit;
-}
-
-.side-by-side .hljs-keyword {
-    color: var(--ds-code-panel-keyword);
-}
-
-.side-by-side .hljs-meta,
-.side-by-side .hljs-title,
-.side-by-side .hljs-type,
-.side-by-side .hljs-params {
     color: var(--ds-code-panel-fg);
 }
 
@@ -5363,13 +5351,6 @@ header {
 .side-by-side > .documentation-panel dd,
 .side-by-side > .documentation-panel .admonition h4 {
     font-family: var(--ds-font-body);
-}
-
-/* Comments come through italic from the highlight theme; the mockup has
-   them upright. */
-.side-by-side .hljs-doc-comment,
-.side-by-side .hljs-comment {
-    font-style: normal;
 }
 
 /* ---- Section transition band --------------------------------------- *
@@ -5584,7 +5565,6 @@ header {
 .side-by-side > .documentation-panel pre code {
     font-size: 14px;
     line-height: 1.6;
-    color: var(--ds-color-doc-surface);
 }
 
 /* ---- Parameter / exception tables ---------------------------------- *

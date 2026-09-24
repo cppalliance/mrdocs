@@ -113,19 +113,19 @@
   /* The code panel is dark in BOTH themes, per frame 316:334286 and the landing
      page, so these are deliberately theme-invariant -- there is no light set to
      flip to. Ground, plain text and comments come from the shared system so the
-     two surfaces match; the remaining syntax roles keep the GitHub-dark values,
-     which the frame does not specify. */
+     two surfaces match; the remaining syntax roles are the shared
+     --ds-code-panel-hl-* tokens, which the frame does not specify. */
   --hl-bg: var(--ds-color-code-body);
   --hl-fg: var(--ds-code-panel-fg);
   --hl-comment: var(--ds-code-panel-comment);
-  --hl-keyword: #f47067;
-  --hl-string: #96d0ff;
-  --hl-const: #6cb6ff;
-  --hl-entity: #f69d50;
-  --hl-title: #dcbdfb;
-  --hl-tag: #8ddb8c;
-  --hl-doc: rgb(94, 135, 79);
-  --hl-doc-strong: rgb(164, 181, 67);
+  --hl-keyword: var(--ds-code-panel-hl-keyword);
+  --hl-string: var(--ds-code-panel-hl-string);
+  --hl-const: var(--ds-code-panel-hl-const);
+  --hl-entity: var(--ds-code-panel-hl-entity);
+  --hl-title: var(--ds-code-panel-hl-title);
+  --hl-tag: var(--ds-code-panel-hl-tag);
+  --hl-doc: var(--ds-code-panel-hl-doc);
+  --hl-doc-strong: var(--ds-code-panel-hl-doc-strong);
   --hl-border: var(--ds-color-outline);
   /* Figma: a 30px header strip in the chrome ink above the body. */
   --pre-title-background: var(--ds-color-code-chrome);
