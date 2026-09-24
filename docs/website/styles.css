@@ -4608,15 +4608,27 @@ header .header-content > p:not(.row-label) {
     max-width: none;
 }
 
+/* Both mascots are cropped at the thigh, so each ends on a hard horizontal
+   edge. One shared fade takes that edge out rather than letting it sit on
+   the ground as a cut. Each mascot sets only where the fade starts, so the
+   fade spans the same share of the figure: 0.26 of crown-to-belt (measured
+   in the source art), running to the crop. */
+.hero-mascot,
+.cta-mascot {
+    -webkit-mask-image: linear-gradient(
+        to bottom, var(--ds-black) var(--mascot-fade-start), transparent 99%
+    );
+    mask-image: linear-gradient(
+        to bottom, var(--ds-black) var(--mascot-fade-start), transparent 99%
+    );
+}
+
 .hero-mascot {
     display: block;
     width: 100%;
     height: auto;
-    /* The art is cropped at the thigh, so it ends on a hard horizontal edge.
-       Fade the last stretch out rather than letting that edge sit on the
-       page ground, where it reads as a cut rather than a figure. */
-    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 99%);
-    mask-image: linear-gradient(to bottom, #000 78%, transparent 99%);
+    /* Belt top at 82% of the art's height; 21% of the art is the fade. */
+    --mascot-fade-start: 78%;
 }
 
 /* =====================================================================
@@ -5848,10 +5860,9 @@ header {
 .cta-mascot {
     display: block;
     position: absolute;
-    /* Cropped at the thigh like the hero art, so the same fade keeps it from
-       ending on a hard horizontal edge. */
-    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 99%);
-    mask-image: linear-gradient(to bottom, #000 80%, transparent 99%);
+    /* Shared fade (see .hero-mascot). Belt top at 84% of the art's height,
+       so the same share of the figure is 21.5% of the art. */
+    --mascot-fade-start: 77.5%;
     /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
        against the container's padding box, which the panel's 2px border
        has already pushed in by 2. */
