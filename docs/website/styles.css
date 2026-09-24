@@ -80,7 +80,8 @@
      text colour; re-pointing the page background to it is a follow-up. */
 
   /* --- Palette: navy (dark surfaces) ------------------------------- */
-  --ds-navy-650: #171c26; /* dark doc surface / footer bar */
+  --ds-navy-550: #272e3f; /* Figma exact: dark page surface / doc panel */
+  --ds-navy-650: #171c26; /* footer bar */
   --ds-navy-750: #141720; /* dark code body / table header band */
 
   /* --- Typography: families ---------------------------------------- */
@@ -175,7 +176,7 @@
     color-scheme: dark;
 
     /* Dark uses pure black for outlines, not #0F172A. */
-    --ds-color-doc-surface: var(--ds-navy-650);
+    --ds-color-doc-surface: var(--ds-navy-550);
     --ds-color-cta-panel: var(--ds-blue-350);
     --ds-color-footer-bg: var(--ds-navy-650);
     --ds-color-icon-box: var(--ds-blue-350);
@@ -190,7 +191,7 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --ds-color-doc-surface: var(--ds-navy-650);
+  --ds-color-doc-surface: var(--ds-navy-550);
   --ds-color-cta-panel: var(--ds-blue-350);
   --ds-color-footer-bg: var(--ds-navy-650);
   --ds-color-icon-box: var(--ds-blue-350);
@@ -381,7 +382,7 @@
     --primary-color: #3d8bff;
     --primary-color-hover: #2563eb;
     /* Midnight canvas (dark, the default theme) */
-    --body-background: #272e3f; /* Figma: dark page surface */
+    --body-background: var(--ds-navy-550); /* Figma: dark page surface */
 }
 
 /* Responsive base font size is provided by --ds-font-size (see
@@ -586,7 +587,7 @@ kbd {
 [data-theme=dark] {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
-    --body-background: #272e3f; /* Figma: dark page surface */
+    --body-background: var(--ds-navy-550); /* Figma: dark page surface */
     /* code + panel surfaces (dark) */
     --hl-bg: #0f172a;
     --hl-fg: #adbac7;
@@ -5552,6 +5553,8 @@ header {
 .side-by-side > .documentation-panel table {
     width: 100%;
     border-collapse: collapse;
+    /* The global table rule boxes it in white; Figma has no outer box. */
+    border: 0;
     margin: 0;
 }
 
