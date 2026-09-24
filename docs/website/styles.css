@@ -4447,7 +4447,7 @@ header .header-content > p:not(.row-label) {
     /* Figma: 13px mobile, 14px desktop. Line height follows the docs code
        blocks (docs/ui doc.css), not Figma's 2.2, so the two read alike. */
     font-size: 13px;
-    line-height: 1.55;
+    line-height: var(--ds-leading-code);
     color: var(--ds-code-panel-fg);
 }
 
@@ -4460,7 +4460,7 @@ header .header-content > p:not(.row-label) {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     /* A blank source line has no text to give it a line box. */
-    min-height: 1.55em;
+    min-height: calc(var(--ds-leading-code) * 1em);
 }
 
 .code-panel-body .cl::before {

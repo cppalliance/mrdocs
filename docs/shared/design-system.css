@@ -75,6 +75,19 @@
   --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
   --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
+  /* --- Palette: syntax (code panels, both surfaces) ---------------- *
+   * GitHub Primer dark dimmed, named by its scale index, plus the
+   * brand's green pair for doc comments and the Figma comment grey.
+   * See docs/ui/src/css/highlight.css for the role mapping. */
+  --ds-syntax-gray-400: #6e727b; /* Figma exact: comments        */
+  --ds-syntax-red-300: #f47067; /* keywords                      */
+  --ds-syntax-blue-100: #96d0ff; /* strings                      */
+  --ds-syntax-blue-200: #6cb6ff; /* constants, attributes, meta  */
+  --ds-syntax-orange-200: #f69d50; /* types, class names         */
+  --ds-syntax-purple-200: #dcbdfb; /* function names             */
+  --ds-syntax-green-100: #8ddb8c; /* tags                        */
+  --ds-syntax-green-600: #5e874f; /* doc-comment prose           */
+  --ds-syntax-lime-500: #a4b543; /* doc-comment @tags and names  */
 
   /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
   --ds-gold-400: #ffd700; /* peak / hover              */
@@ -145,6 +158,7 @@
   --ds-leading-tight: 1.125; /* h1                     */
   --ds-leading-snug: 1.25; /* h2                     */
   --ds-leading-normal: 1.5; /* body                   */
+  --ds-leading-code: 1.55; /* code blocks            */
 
   /* --- Spacing scale (base unit = 1rem) ---------------------------- */
   --ds-space: 1rem;
@@ -461,21 +475,21 @@
   --ds-code-panel-chrome: var(--ds-color-code-chrome);
   --ds-code-panel-border: var(--ds-color-outline);
   --ds-code-panel-fg: var(--ds-paper-50); /* plain code text; comments use --ds-code-panel-comment */
-  --ds-code-panel-comment: #6e727b;
+  --ds-code-panel-comment: var(--ds-syntax-gray-400);
   --ds-code-panel-linenum: rgba(255, 255, 255, 0.4);
   --ds-code-panel-keyword: var(--ds-color-label);
   --ds-code-panel-tab: var(--ds-white);
   /* Syntax roles, shared by the docs code blocks and the landing panels.
-     GitHub Primer dark dimmed; doc comments take the green pair so the
-     parts that feed the rendered documentation stand out. */
-  --ds-code-panel-hl-keyword: #f47067;
-  --ds-code-panel-hl-string: #96d0ff;
-  --ds-code-panel-hl-const: #6cb6ff;
-  --ds-code-panel-hl-entity: #f69d50;
-  --ds-code-panel-hl-title: #dcbdfb;
-  --ds-code-panel-hl-tag: #8ddb8c;
-  --ds-code-panel-hl-doc: rgb(94, 135, 79);
-  --ds-code-panel-hl-doc-strong: rgb(164, 181, 67);
+     Doc comments take the green pair so the parts that feed the rendered
+     documentation stand out. */
+  --ds-code-panel-hl-keyword: var(--ds-syntax-red-300);
+  --ds-code-panel-hl-string: var(--ds-syntax-blue-100);
+  --ds-code-panel-hl-const: var(--ds-syntax-blue-200);
+  --ds-code-panel-hl-entity: var(--ds-syntax-orange-200);
+  --ds-code-panel-hl-title: var(--ds-syntax-purple-200);
+  --ds-code-panel-hl-tag: var(--ds-syntax-green-100);
+  --ds-code-panel-hl-doc: var(--ds-syntax-green-600);
+  --ds-code-panel-hl-doc-strong: var(--ds-syntax-lime-500);
 
   /* ---- Hero cityscape ---------------------------------------------- *
    * Skyline band anchored to the bottom of the hero. Height is width-

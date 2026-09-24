@@ -1076,7 +1076,7 @@ html {
 
   /* Figma 316:334286 code-block-basic: Menlo 14 on #272E3E, 20px inset. */
   font-size: calc(14 / var(--rem-base) * 1rem);
-  line-height: 1.55;
+  line-height: var(--ds-leading-code);
   overflow-x: auto;
   padding: calc(20 / var(--rem-base) * 1rem);
 }
