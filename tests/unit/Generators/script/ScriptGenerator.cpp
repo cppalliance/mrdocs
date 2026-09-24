@@ -335,6 +335,30 @@ end)
     }
 
     void
+    testLuaTableKeysInOrder()
+    {
+        ScopedTempDirectory td("mrdocs-scriptgen");
+        BOOST_TEST(td);
+        std::string const outDir = files::appendPath(td.path(), "out");
+        // A Lua table has no order of its own; its keys reach the DOM, and
+        // so `ctx.stringify`, in sorted order.
+        Expected<void> ran = runRegisteredGenerator("lua", R"LUA(
+mrdocs.register_generator("selftest", function(ctx)
+  ctx.output.write("keys.json", ctx.stringify({ zeta = 1, alpha = 2, mid = 3 }))
+end)
+)LUA", "selftest", td.path(), outDir);
+        BOOST_TEST(ran.has_value());
+        Expected<std::string> got =
+            files::getFileText(files::appendPath(outDir, "keys.json"));
+        BOOST_TEST(got.has_value());
+        if (got)
+        {
+            BOOST_TEST(*got ==
+                "{\n    \"alpha\": 2,\n    \"mid\": 3,\n    \"zeta\": 1\n}");
+        }
+    }
+
+    void
     testWriteEscapeIsError()
     {
         ScopedTempDirectory td("mrdocs-scriptgen");
@@ -446,6 +470,7 @@ end)
         testGeneratorReceivesConfig();
         testGeneratorReceivesParams();
         testGeneratorIteratesCorpus();
+        testLuaTableKeysInOrder();
         testWriteEscapeIsError();
         testGeneratorErrorIsReported();
 
