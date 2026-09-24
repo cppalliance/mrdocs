@@ -171,6 +171,7 @@
   --ds-space-2xl: 3rem;
   --ds-space-3xl: 4rem;
   --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
+  --ds-gutter: 16px; /* page side gutter → 24/28/78px, see breakpoints */
 
   /* --- Radii & borders --------------------------------------------- */
   --ds-radius: 0.5rem;
@@ -227,16 +228,19 @@
   :root {
     --ds-font-size: 17px;
     --ds-section-gap: 4rem;
+    --ds-gutter: 24px;
   }
 }
 @media (min-width: 768px) {
   :root {
     --ds-font-size: 18px;
+    --ds-gutter: 28px;
   }
 }
 @media (min-width: 992px) {
   :root {
     --ds-font-size: 19px;
+    --ds-gutter: 78px;
   }
 }
 @media (min-width: 1200px) {

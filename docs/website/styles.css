@@ -4509,8 +4509,8 @@ header .header-content > p:not(.row-label) {
 }
 
 /* ---- Hero structure (mobile) --------------------------------------- *
- * The mockup gutter is 28px, not Pico's 16px. Scoped to the hero for
- * now; the rest of the page still uses Pico's container padding.
+ * Side gutter from --ds-gutter, which steps with the viewport: the 402
+ * mockup's 28px left too little measure on phones, so it holds from 768.
  * Mobile stacking order is content -> code panel -> mascot, which is
  * NOT DOM order, so the two visual columns are re-ordered here and
  * placed properly at the desktop breakpoint later. */
@@ -4519,8 +4519,8 @@ header .container,
 #features .container,
 .cta-panel-inner,
 .footer-bar {
-    padding-left: 28px;
-    padding-right: 28px;
+    padding-left: var(--ds-gutter);
+    padding-right: var(--ds-gutter);
 }
 
 .header-banner {
@@ -4651,8 +4651,8 @@ header .header-content > p:not(.row-label) {
     #features .container,
     .cta-panel-inner,
     .footer-bar {
-        max-width: calc(1284px + 2 * 78px);
-        padding-inline: 78px;
+        max-width: calc(1284px + 2 * var(--ds-gutter));
+        padding-inline: var(--ds-gutter);
         margin-inline: auto;
     }
 
@@ -6088,19 +6088,6 @@ footer {
 .footer-bar .footer-link > a:hover,
 .footer-bar .footer-link > a:focus {
     text-decoration: underline;
-}
-
-/* 402 is the narrowest frame Figma defines. Below it the shared 28px
-   gutter squeezes the slogan -- 318px at the design's 1.4px tracking --
-   onto a second line, taking the bar from 92 to 105 at 360 and to 142 at
-   320 once the link row wrapped too. A 16px gutter holds both to one line
-   down to ~350, and leaves 25px of slack at 375 where 28px left one pixel.
-   Narrower still, the slogan wraps -- fine for a sentence, and the links
-   keep their own single line. */
-@media (max-width: 401px) {
-    .footer-bar {
-        padding-inline: 16px;
-    }
 }
 
 /* 992px is where the page as a whole switches to the 78px desktop
