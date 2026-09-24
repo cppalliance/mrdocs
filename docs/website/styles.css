@@ -5289,7 +5289,7 @@ header {
 
 .side-by-side > .documentation-panel {
     background: var(--ds-color-doc-surface);
-    padding: 20px;
+    padding: var(--ds-space-sm);
     height: auto;
 }
 
@@ -6225,5 +6225,91 @@ footer {
     .footer-slogan,
     .footer-bar .footer-links {
         font-size: 14px;
+    }
+}
+
+/* =====================================================================
+ * Mobile pass (below the 992 desktop layout). Figma defines the 402 frame
+ * off desktop decisions that do not survive a single column: fixed box
+ * heights sized for unwrapped code, equal-height rows for a 2x2 grid that
+ * is now a stack, and a desktop exceptions column wider than the phone.
+ * ===================================================================== */
+@media (max-width: 991px) {
+    /* Figma fixes the hero panel at 386 for unwrapped code. Wrapped, the
+       eight lines end well short of that and leave an empty well. */
+    .code-panel {
+        height: auto;
+    }
+
+    /* The hero mascot rides 24px up over the panel, and its book reaches
+       higher still; this keeps that overlap in empty well, off the code. */
+    .hero-code .code-panel-body {
+        padding-bottom: var(--ds-space-2xl);
+    }
+
+    /* One inset for every code and doc surface, so the stacked halves of
+       a row line their text up on the same edge. */
+    .code-panel-body,
+    .side-by-side > .snippet-panel > .code-panel-body,
+    .side-by-side > .documentation-panel pre {
+        padding: var(--ds-space-sm);
+    }
+
+    .side-by-side > .documentation-panel .admonition {
+        padding-inline: var(--ds-space-md);
+    }
+
+    /* Figma's 46px block gap is the desktop rhythm; at phone width the
+       sections read as disconnected. */
+    .side-by-side > .documentation-panel > .symbol {
+        gap: var(--ds-space-xl);
+    }
+
+    /* Pre/postconditions were never given the 12px block rhythm, so they
+       spaced out on Pico's list margins instead; the return value kept a
+       paragraph margin under its last line. */
+    .side-by-side > .documentation-panel .preconditions,
+    .side-by-side > .documentation-panel .postconditions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .side-by-side > .documentation-panel .preconditions ul,
+    .side-by-side > .documentation-panel .postconditions ul,
+    .side-by-side > .documentation-panel .return-value > p {
+        margin: 0;
+    }
+
+    .side-by-side > .documentation-panel .preconditions li:last-child,
+    .side-by-side > .documentation-panel .postconditions li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Every heading sits the same 12px above the next box, but text starts
+       half a leading below its box top, so a heading over a paragraph or
+       list read ~4px further off than one over a table or note. Pull the
+       text up by exactly its half-leading. */
+    .side-by-side > .documentation-panel .symbol h3 + p,
+    .side-by-side > .documentation-panel .symbol h3 + ul {
+        margin-top: calc((1em - 1lh) / 2);
+    }
+
+    /* The phone-wide `display: block` (for scrolling wide tables) makes
+       the table shrink to its content instead of spanning the panel. These
+       tables break long names instead, so they can stay tables. */
+    .side-by-side > .documentation-panel table {
+        display: table;
+    }
+}
+
+/* The desktop 273px name column left "Thrown on" 74px wide on a phone, one
+   word a line. 60% still fits `std::invalid_argument` unbroken at 390;
+   from 576 the desktop width fits again. (min() here is ignored by WebKit
+   on a fixed-layout cell, so the switch is a breakpoint.) */
+@media (max-width: 575px) {
+    .side-by-side > .documentation-panel .exceptions table th:first-child,
+    .side-by-side > .documentation-panel .exceptions table td:first-child {
+        width: 60%;
     }
 }
