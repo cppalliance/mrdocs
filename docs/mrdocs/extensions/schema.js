@@ -546,39 +546,39 @@ function jsonForType(model, type) {
   if (id === "SymbolID") return '{"type":"string"}';
   if (isStringType(t)) return '{"type":"string"}';
   if (id === "Optional") return jsonForType(model, templateArg(t, 0));
-  if (id === "Polymorphic") { var b = ((templateArg(t, 0) || {}).name || {}).identifier; return (b && VARIANTS[b]) ? '{"$ref":"#/$defs/Any' + b + '"}' : '{}'; }
-  if (VARIANTS[id]) return '{"$ref":"#/$defs/Any' + id + '"}';
+  if (id === "Polymorphic") { var b = ((templateArg(t, 0) || {}).name || {}).identifier; return (b && VARIANTS[b]) ? '{"$ref":"#/definitions/Any' + b + '"}' : '{}'; }
+  if (VARIANTS[id]) return '{"$ref":"#/definitions/Any' + id + '"}';
   if (id === "vector" || id === "std::vector") {
     var et = templateArg(t, 0) || {}, en = (et.name || {}).identifier;
     if (en === "SymbolID") return '{"type":"array","items":{"type":"string"}}';
     if (et.fundamentalType) return '{"type":"array","items":' + jsonForType(model, et) + '}';
     if (isStringLike(model, et)) return '{"type":"array","items":{"type":"string"}}';
-    if (en === "Polymorphic") { var bb = ((templateArg(et, 0) || {}).name || {}).identifier; if (bb && VARIANTS[bb]) return '{"type":"array","items":{"$ref":"#/$defs/Any' + bb + '"}}'; }
-    if (VARIANTS[en]) return '{"type":"array","items":{"$ref":"#/$defs/Any' + en + '"}}';
+    if (en === "Polymorphic") { var bb = ((templateArg(et, 0) || {}).name || {}).identifier; if (bb && VARIANTS[bb]) return '{"type":"array","items":{"$ref":"#/definitions/Any' + bb + '"}}'; }
+    if (VARIANTS[en]) return '{"type":"array","items":{"$ref":"#/definitions/Any' + en + '"}}';
     var er = recordFromType(model, et);
-    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '{"type":"array","items":{"$ref":"#/$defs/' + defName(model, er.id) + '"}}'; }
+    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '{"type":"array","items":{"$ref":"#/definitions/' + defName(model, er.id) + '"}}'; }
     return '{"type":"array"}';
   }
   var r = recordFromType(model, t);
   if (r && r.kind === "enum") return '{"type":"string"}';
-  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return '{"type":"string"}'; model.neededStructIds[r.id] = 1; return '{"$ref":"#/$defs/' + defName(model, r.id) + '"}'; }
+  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return '{"type":"string"}'; model.neededStructIds[r.id] = 1; return '{"$ref":"#/definitions/' + defName(model, r.id) + '"}'; }
   return '{}';
 }
 
 /**
- * The JSON `$defs` entry for a variant base: an anyOf over its kinds.
+ * The JSON `definitions` entry for a variant base: an anyOf over its kinds.
  * @param {Model} model
  * @param {string} base A variant base name.
  * @returns {string}
  */
 function jsonAnyDef(model, base) {
   var kinds = model.variantKinds[base], refs = [];
-  for (var i = 0; i < kinds.length; ++i) refs.push('{"$ref":"#/$defs/' + defName(model, kinds[i].id) + '"}');
+  for (var i = 0; i < kinds.length; ++i) refs.push('{"$ref":"#/definitions/' + defName(model, kinds[i].id) + '"}');
   return '    "Any' + base + '": {"anyOf":[' + refs.join(",") + ']}';
 }
 
 /**
- * The JSON `$defs` entry for a struct: an object with one property per field.
+ * The JSON `definitions` entry for a struct: an object with one property per field.
  * @param {Model} model
  * @param {string} id The struct id.
  * @param {Object} rec The struct's record symbol.
@@ -591,7 +591,7 @@ function jsonStructDef(model, id, rec) {
 }
 
 /**
- * Write the JSON Schema: preamble, the `symbols` array, then the `$defs`
+ * Write the JSON Schema: preamble, the `symbols` array, then the `definitions`
  * entries, streamed with separating commas so no big object is held at once.
  * @param {Model} model
  * @returns {void}
@@ -599,10 +599,10 @@ function jsonStructDef(model, id, rec) {
 function emitJson(model) {
   var path = "generators/mrdocs.schema.json", out = model.ctx.output;
   var symbolKinds = model.variantKinds.Symbol, symbolRefs = [];
-  for (var i = 0; i < symbolKinds.length; ++i) symbolRefs.push('{"$ref":"#/$defs/' + defName(model, symbolKinds[i].id) + '"}');
+  for (var i = 0; i < symbolKinds.length; ++i) symbolRefs.push('{"$ref":"#/definitions/' + defName(model, symbolKinds[i].id) + '"}');
   out.write(path, JSON_PREAMBLE +
     '  "properties": {"symbols": {"type":"array","items":{"anyOf":[' + symbolRefs.join(",") + ']}}},\n' +
-    '  "$defs": {\n');
+    '  "definitions": {\n');
   var first = true;
   for (var base in VARIANTS) { out.append(path, (first ? "" : ",\n") + jsonAnyDef(model, base)); first = false; }
   for (var j = 0; j < model.structOrder.length; ++j) {
