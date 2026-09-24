@@ -125,8 +125,9 @@ function getPostCssPlugins (dest, preview) {
         //
         // Deliberately not octicons-16.svg: it is referenced with #view-*
         // fragments, which cannot survive inlining. home*.svg is below the
-        // fold on mobile only.
-        filter: /^src[/\\]img[/\\](?:caret|chevron|github|search)\.svg$/,
+        // fold on mobile only. toc-backdrop.svg is not an icon but is a mask
+        // too, so it has the same paint-nothing-until-loaded problem.
+        filter: /^src[/\\]img[/\\](?:caret|chevron|github|search|toc-backdrop)\.svg$/,
         url: 'inline',
         encodeType: 'encodeURIComponent',
         optimizeSvgEncode: true,

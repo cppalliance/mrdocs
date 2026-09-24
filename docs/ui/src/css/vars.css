@@ -391,6 +391,10 @@
      #6E727B, the current one the strong ink. */
   --toc-border-color: var(--gold-surface);
   --toc-line-height: 1.2;
+  /* Figma 520:84: the blob behind the rail's links is the page ground itself,
+     so it reads as the halftone thinning out rather than as a panel. --bg
+     already flips per theme (cream / #272E3F). */
+  --toc-backdrop: var(--body-background);
 
   /* footer */
   --footer-line-height: var(--doc-line-height);

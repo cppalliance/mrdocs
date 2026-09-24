@@ -82,6 +82,42 @@
       );
     background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
     background-repeat: repeat;
+    /* Clips the backdrop blob below at the padding edge, so it stops at the
+       left rule and at the window edge without adding horizontal scroll.
+       `clip`, not `hidden`: hidden makes the rail a scroller and the sticky
+       list would stop sticking. */
+    overflow: clip;
+  }
+
+  /* Figma 520:84: a blurred blob of page ground behind the links, so the
+     halftone does not fight the text. On the sticky list rather than the rail
+     so it travels with the links, and stretched to the list so a long list
+     is covered end to end. The shape is the designer's path used as a mask
+     (the blur is baked into the SVG and rasterised once), not filter: blur()
+     or backdrop-filter, which re-filter on every scrolled frame. z-index 0
+     makes the list a stacking context, so the -1 lands above the rail's dots
+     and under the chip and links. */
+  .toc.sidebar .toc-menu {
+    z-index: 0;
+  }
+
+  .toc.sidebar .toc-menu::before {
+    background-color: var(--toc-backdrop);
+    content: "";
+    /* Only the blob's core is solid: alpha >= 0.9 spans 38% of its width and
+       24% of its height, off-centre (33% in from the left, 38% down). Sized
+       with fixed margins, that core landed on the middle of the list and the
+       chip and first links kept their dots. These insets make the core the
+       list box itself, whatever the list's height: each is the core's offset
+       on that side divided by the core's share of the axis (top/bottom are %
+       of the list's height, left/right of its width). The overhang is clipped
+       by the rail. */
+    inset: -160% -74% -162% -87%;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    -webkit-mask: url(../img/toc-backdrop.svg) no-repeat center / 100% 100%;
+    mask: url(../img/toc-backdrop.svg) no-repeat center / 100% 100%;
   }
 }
 
