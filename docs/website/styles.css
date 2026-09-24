@@ -3745,7 +3745,9 @@ footer a:focus {
     height: var(--ds-btn-height);
     font-family: var(--ds-font-display);
     font-style: italic;
-    font-weight: var(--ds-weight-medium);
+    /* Bangers ships only 400. A heavier weight is a synthetic bold, which
+       WebKit also widens by a pixel a glyph; Chromium only thickens it. */
+    font-weight: var(--ds-weight-regular);
     text-transform: uppercase;
     padding: 0 var(--ds-btn-padding-x);
     white-space: nowrap;
@@ -5945,9 +5947,11 @@ header {
     box-shadow: var(--ds-cta-btn-shadow);
     /* .fig "Primary" symbol (316:8): Bangers Regular, 17 mobile / 20 desktop,
        10% tracking, uppercase. Bangers carries its own slant -- the italic
-       this used to set was a synthetic oblique on top of it. */
+       this used to set was a synthetic oblique on top of it. Regular for the
+       same reason: 600 was a synthetic bold, and WebKit widens that, which
+       wrapped the mobile pair onto two rows on iOS Safari. */
     font-family: var(--ds-font-display);
-    font-weight: var(--ds-weight-medium);
+    font-weight: var(--ds-weight-regular);
     font-size: 17px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
