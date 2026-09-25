@@ -99,6 +99,12 @@ function(mrdocs_package)
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
     set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.adoc")
 
+    # The MSI's upgrade code identifies MrDocs across releases, so an MSI
+    # replaces the MrDocs already installed. Never change it. CPack's
+    # template allows upgrades between equal versions, so an older MSI
+    # with the same project version replaces a newer install.
+    set(CPACK_WIX_UPGRADE_GUID "CBB0618D-E748-4848-B57A-167981E3C241")
+
     # Ignore files (from .gitignore)
     FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/.gitignore GITIGNORE_CONTENTS)
     STRING(REGEX REPLACE ";" "\\\\;" GITIGNORE_CONTENTS "${GITIGNORE_CONTENTS}")
