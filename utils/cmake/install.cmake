@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
@@ -104,6 +105,20 @@ function(mrdocs_package)
     # template allows upgrades between equal versions, so an older MSI
     # with the same project version replaces a newer install.
     set(CPACK_WIX_UPGRADE_GUID "CBB0618D-E748-4848-B57A-167981E3C241")
+
+    # The MSI can add mrdocs to the system `PATH`, which only a
+    # per-machine install may change.
+    set(CPACK_WIX_INSTALL_SCOPE perMachine)
+    configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/utils/cmake/wix-patch.xml.in
+            ${CMAKE_CURRENT_BINARY_DIR}/wix-patch.xml
+            @ONLY)
+    set(CPACK_WIX_PATCH_FILE ${CMAKE_CURRENT_BINARY_DIR}/wix-patch.xml)
+    # The patch extends this UI, which CPack would otherwise choose only
+    # because some install rules name a component.
+    set(CPACK_WIX_UI_REF WixUI_FeatureTree)
+    set(CPACK_PROJECT_CONFIG_FILE
+            ${CMAKE_CURRENT_SOURCE_DIR}/utils/cmake/cpack-project-config.cmake)
 
     # Ignore files (from .gitignore)
     FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/.gitignore GITIGNORE_CONTENTS)
