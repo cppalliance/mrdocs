@@ -9,16 +9,9 @@
 #
 
 # Starter projects, each invoked exactly as the user-facing docs (usage.adoc)
-# instruct, to keep those instructions honest. They build standalone via their
-# own run.sh, so they are registered as tests here, not added to this build.
+# instruct (`mrdocs --config=docs/mrdocs.yml` from the project's root), to keep
+# those instructions honest. They are standalone projects, so they are
+# registered as examples here, not added to this build, and commit no output.
 foreach (example IN ITEMS compilation-database cmake cmake-header-only scanned)
-    add_test(
-        NAME mrdocs-getting-started-${example}
-        COMMAND bash run.sh
-                --output=${CMAKE_CURRENT_BINARY_DIR}/${example}/reference-output
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
-    )
-    set_property(TEST mrdocs-getting-started-${example} PROPERTY
-        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+    mrdocs_add_example(DIRECTORY ${example} CONFIG docs/mrdocs.yml RUN_ONLY)
 endforeach ()

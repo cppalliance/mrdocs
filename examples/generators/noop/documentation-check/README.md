@@ -31,9 +31,11 @@ cmake -S . -B build && ctest --test-dir build
 
 The No-op page shows the report this header produces. `report.py` runs the same
 check and writes the tool's diagnostic messages to `report.txt`, which the page
-includes. `python report.py --check` re-runs the capture and fails if
-`report.txt` has drifted; in the MrDocs build the `documentation-check-report`
-test guards it, and `cmake --build build --target mrdocs-documentation-check-report`
-rewrites it.
+includes: next to the script, or in the directory given by `--output=<dir>`. In
+the MrDocs build, the
+`mrdocs-example-generators-noop-documentation-check-report` test compares a
+fresh capture with the committed `report.txt`, and building the
+`mrdocs-update-example-generators-noop-documentation-check-report` target, or
+`mrdocs-update-examples` for every example, rewrites it.
 
 See `generators/noop.adoc` in the documentation for the full write-up.

@@ -305,17 +305,6 @@ def get_dynamic_run_configs(
             "args": ["gulp", "bundle"],
             "cwd": os.path.join(options.source_dir, "docs", "ui"),
         },
-        {
-            "name": "Test Getting-Started Examples",
-            "group": "Documentation",
-            "script": os.path.join(options.source_dir, "utils", "docs", "test_getting_started.sh"),
-            "folder": "Render Docs",
-            "args": [],
-            "cwd": options.source_dir,
-            "env": {
-                "MRDOCS_BIN": os.path.join(options.install_dir, "bin", "mrdocs"),
-            },
-        },
     ])
 
     # Boost documentation targets (dynamic scan)
