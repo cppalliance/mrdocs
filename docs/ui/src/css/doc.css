@@ -284,8 +284,9 @@ html {
   word-spacing: var(--doc-prose-word-spacing);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* No paint-order: stroke and fill share a colour, so it changed nothing,
+     and Safari painted the stroke onto the start of inline code with it. */
   -webkit-text-stroke: var(--doc-prose-stroke) currentColor;
-  paint-order: stroke fill;
 }
 
 /* The measure caps the text, not the block, so prose keeps the column's left
