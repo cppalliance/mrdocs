@@ -219,6 +219,11 @@ body {
   visibility: hidden;
 }
 
+/* Labels wrap at Mermaid's 200px; `.doc`'s auto hyphens split words there. */
+.doc .mermaid {
+  hyphens: manual;
+}
+
 .doc .mermaid:has(> svg) {
   animation: mermaid-in var(--ds-transition);
 }
