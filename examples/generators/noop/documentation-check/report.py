@@ -4,9 +4,10 @@
 The No-op page shows the report the example header produces (it leaves its two
 parameters undocumented). Rather than hard-code it in prose, where it would
 drift as MrDocs' wording changed, this script runs the real check and writes the
-diagnostic messages to report.txt, which the page includes. `--check`
-regenerates the report and compares it to the committed report.txt, so CI fails
-if the two drift apart.
+diagnostic messages to report.txt, which the page includes: next to this
+script, or in the directory given by `--output=<dir>`. The build's example test
+runs it that way and compares the result with the committed report.txt, so CI
+fails if the two drift apart.
 
 Each diagnostic prints as "    N) <symbol>: <message>" under a source-location
 header; the messages are the stable part, so the volatile framing (the absolute
@@ -23,7 +24,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MRDOCS = os.environ.get("MRDOCS", "mrdocs")
-REPORT = os.path.join(HERE, "report.txt")
+REPORT = "report.txt"
 MESSAGE = re.compile(r"^\s*\d+\)\s+(.*\S)\s*$")
 
 
@@ -37,21 +38,20 @@ def capture(extra):
 
 
 def main():
-    flags = sys.argv[1:]
-    extra = [a for a in flags if a not in ("--check", "--write")]
+    output = HERE
+    extra = []
+    for arg in sys.argv[1:]:
+        if arg.startswith("--output="):
+            output = arg[len("--output="):]
+        else:
+            extra.append(arg)
     report = capture(extra)
     if not report:
         sys.exit("no diagnostics captured; is MRDOCS set and the check still failing?")
-
-    if "--check" in flags:
-        current = open(REPORT).read() if os.path.exists(REPORT) else ""
-        if report != current:
-            sys.exit("report.txt is out of date; run `python report.py` to update it.")
-        print("report.txt is up to date.")
-    else:
-        with open(REPORT, "w") as f:
-            f.write(report)
-        print(f"Wrote {REPORT}")
+    path = os.path.join(output, REPORT)
+    with open(path, "w", newline="\n") as f:
+        f.write(report)
+    print(f"Wrote {path}")
 
 
 if __name__ == "__main__":

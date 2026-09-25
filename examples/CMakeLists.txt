@@ -21,7 +21,7 @@ if (MSVC)
         /wd4456 /wd4457 /wd4458 /wd4459 /wd4701 /wd4702 /wd4703)
 endif()
 
-# Each example subdirectory owns the tests that exercise it.
+include(cmake/MrDocsExample.cmake)
 add_subdirectory(generators)      # data-driven + script-driven generator examples
 add_subdirectory(extensions)      # corpus-transform extension examples
 add_subdirectory(library)         # standalone programs that link mrdocs-core
