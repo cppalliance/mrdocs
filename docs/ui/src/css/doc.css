@@ -273,18 +273,28 @@ html {
   margin: 0;
 }
 
-/* The measure caps the text, not the block, so prose keeps the column's left
-   edge. The stroke fills Special Elite's worn edges. */
+/* The stroke fills Special Elite's worn edges. Hyphenation is off: the face's
+   wide hyphen breaks too many words on the short measure. */
 .doc .paragraph > p,
 .doc .ulist li > p,
 .doc .olist li > p {
   color: var(--doc-prose-color);
-  max-width: var(--doc-prose-measure);
+  hyphens: manual;
+  text-wrap: pretty;
   word-spacing: var(--doc-prose-word-spacing);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-stroke: var(--doc-prose-stroke) currentColor;
   paint-order: stroke fill;
+}
+
+/* The measure caps the text, not the block, so prose keeps the column's left
+   edge. Lists take it on the list, whose border-box includes the indent, so
+   their text ends where paragraphs do. */
+.doc .paragraph > p,
+.doc .ulist > ul,
+.doc .olist > ol {
+  max-width: var(--doc-prose-measure);
 }
 
 /* Blocks that set their own ink keep it: `color: currentColor` inherits. */
