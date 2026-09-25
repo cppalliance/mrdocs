@@ -9,13 +9,8 @@
 #
 
 # Dependency-handling fixtures, each exercised with the same mrdocs invocation
-# the docs use.
+# the docs use, the configuration given as a plain argument. None commits its
+# output.
 foreach (example IN ITEMS find shim-files shim-snippets accept-missing)
-    add_test(
-        NAME mrdocs-dependencies-${example}
-        COMMAND mrdocs docs/mrdocs.yml
-                --output ${CMAKE_CURRENT_BINARY_DIR}/${example}/reference-output
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
-    )
+    mrdocs_add_example(DIRECTORY ${example} ARGS docs/mrdocs.yml RUN_ONLY)
 endforeach ()

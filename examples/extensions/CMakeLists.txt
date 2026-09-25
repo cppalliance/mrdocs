@@ -4,50 +4,24 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+# Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-# Corpus-transform extension examples exercised as run-only tests: the test
-# only checks that mrdocs runs each example to completion using the example's
-# own configuration. Output goes to the build tree; the committed output files
-# are illustrative and are not compared here. The working directory is the
-# example directory so a transform can resolve the external files it reads
-# (for example ghostwriter's external-docs/) relative to the run.
-foreach (transform_example IN ITEMS ghostwriter project-conventions)
-    add_test(
-        NAME mrdocs-extension-example-${transform_example}
-        COMMAND bash run.sh
-                --output=${CMAKE_CURRENT_BINARY_DIR}/${transform_example}/reference-output
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${transform_example}
-    )
-    set_property(TEST mrdocs-extension-example-${transform_example} PROPERTY
-        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
-endforeach ()
+# Corpus-transform extension examples. Each runs in its own directory, so a
+# transform can resolve the external files it reads (for example
+# ghostwriter's external-docs/) relative to the run.
 
-# Internal to MrDocs: keep warnings.txt (included by the Corpus Transforms page)
-# in step with the tool. project-conventions-report re-captures the extension's
-# warnings and fails if they drifted; mrdocs-project-conventions-report rewrites
-# the file.
-find_package(Python3 COMPONENTS Interpreter)
-if (Python3_FOUND)
-    add_test(
-        NAME project-conventions-report
-        COMMAND ${Python3_EXECUTABLE}
-                ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions/report.py
-                --check ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions)
-    set_tests_properties(project-conventions-report PROPERTIES
-        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+# ghostwriter commits the reference it produces, which the Corpus Transforms
+# page includes.
+mrdocs_add_example(DIRECTORY ghostwriter CONFIG mrdocs.yml
+    OUTPUTS reference.adoc)
 
-    add_custom_target(mrdocs-project-conventions-report
-        COMMAND ${CMAKE_COMMAND} -E env "MRDOCS=$<TARGET_FILE:mrdocs>"
-                ${Python3_EXECUTABLE}
-                ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions/report.py
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project-conventions
-        COMMENT "Regenerating project-conventions/warnings.txt"
-        VERBATIM)
-    add_dependencies(mrdocs-project-conventions-report mrdocs)
-endif ()
+# project-conventions commits no reference; its test checks that the run
+# succeeds. What the page shows is the extension's warnings: report.py
+# captures them from a run as warnings.txt, which is compared instead.
+mrdocs_add_example(DIRECTORY project-conventions CONFIG mrdocs.yml RUN_ONLY)
+mrdocs_add_example(DIRECTORY project-conventions
+    NAME extensions-project-conventions-report
+    SCRIPT report.py OUTPUTS warnings.txt)

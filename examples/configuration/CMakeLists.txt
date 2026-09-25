@@ -9,8 +9,9 @@
 #
 
 # Per-option configuration examples from the docs. Each lives at
-# configuration/<page>/<example>/ with a docs/mrdocs.yml, a run.sh, and the
-# minimum source the demonstrated option needs. Each is exercised as a test.
+# configuration/<page>/<example>/ with a docs/mrdocs.yml and the minimum
+# source the demonstrated option needs. Each is exercised as a test, which
+# checks that the run succeeds: none of them commits its output.
 set(_config_examples
     "inputs/extra-includes"
     "parsing/missing-include-prefixes"
@@ -21,14 +22,5 @@ set(_config_examples
     "overview/customized"
 )
 foreach (example IN LISTS _config_examples)
-    string(REPLACE "/" "-" _name ${example})
-    add_test(
-        NAME mrdocs-configuration-${_name}
-        COMMAND bash run.sh
-                --output=${CMAKE_CURRENT_BINARY_DIR}/${_name}/reference-output
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${example}
-    )
-    set_property(TEST mrdocs-configuration-${_name} PROPERTY
-        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
+    mrdocs_add_example(DIRECTORY ${example} CONFIG docs/mrdocs.yml RUN_ONLY)
 endforeach ()
