@@ -9,7 +9,8 @@ Alan Freitas <alandefreitas@gmail.com>
 
 Mr.Docs is a C++ reference documentation generator built on Clang/LLVM. It reads your project's source through a compilation database, builds a complete symbol corpus from the real Clang AST, and emits documentation in several formats. The same corpus feeds rendered documents intended for human readers and structured data intended for downstream tools.
 
-[mermaid]
+// Reserves the rendered size (viewBox 862.71x302) so the page does not jump.
+[mermaid, height="calc(min(100cqi, 862.71px) * 302 / 862.71)"]
 ....
 graph LR
   CPP["C++ source<br/>doc comments"]:::input

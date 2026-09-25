@@ -219,6 +219,13 @@ body {
   visibility: hidden;
 }
 
+/* Each [mermaid] block reserves its rendered height in `cqi` (see the sources),
+   so the page does not jump when the SVG lands. Once it has, the SVG sizes the
+   box: a drifted reservation then shifts slightly rather than overlapping. */
+.doc .imageblock:has(> .mermaid) {
+  container-type: inline-size; /* stylelint-disable-line property-no-unknown */
+}
+
 /* Labels wrap at Mermaid's 200px; `.doc`'s auto hyphens split words there. */
 .doc .mermaid {
   hyphens: manual;
@@ -226,6 +233,7 @@ body {
 
 .doc .mermaid:has(> svg) {
   animation: mermaid-in var(--ds-transition);
+  height: auto !important;
 }
 
 @keyframes mermaid-in {

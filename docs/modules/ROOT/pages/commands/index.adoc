@@ -81,7 +81,8 @@ Other ecosystems have adopted similar approaches and comment styles, sometimes w
 MrDocs uses the same two-phase parsing model as the https://spec.commonmark.org/0.31.2/#appendix-a-parsing-strategy[CommonMark specification^]. It adds a pre-step to extract the text from the comment markers, and recognizes some MrDocs-specific commands alongside the standard CommonMark syntax.
 
 .Doc-comment parsing pipeline
-[mermaid]
+// Reserves the rendered size (viewBox 1087.7x298) so the page does not jump.
+[mermaid, height="calc(min(100cqi, 1087.7px) * 298 / 1087.7)"]
 ....
 graph LR
   PRE["Pre-step<br/>strip markers,<br/>fix indentation"]

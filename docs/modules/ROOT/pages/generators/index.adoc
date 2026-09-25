@@ -47,7 +47,8 @@ mrdocs --config=path/to/mrdocs.yml --generator=html
 
 Each format trades *redundancy* (how much duplicated or unstructured information lives in the output) against *convenience* (how readily the output is usable without further tooling). The built-in generators are the starting point. When none of them is the right fit, you customize only as far as you need: each step below reaches deeper than the previous one, and each is covered in the xref:extensions/index.adoc[Extensions] section.
 
-[mermaid]
+// Reserves the rendered size (viewBox 500x500) so the page does not jump.
+[mermaid, height="calc(min(100cqi, 500px) * 500 / 500)"]
 ....
 quadrantChart
     title Output format trade-off
