@@ -211,6 +211,30 @@ body {
   color: var(--logo-fill);
 }
 
+/* Mermaid renders client-side from the raw source text. Hide the block until
+   the finished SVG lands, then fade it in. Not `[data-processed]`: Mermaid
+   sets that when it starts, before its diagram code has even loaded. The
+   final SVG is the only direct child; the one it measures in is nested. */
+.doc .mermaid:not(:has(> svg)) {
+  visibility: hidden;
+}
+
+.doc .mermaid:has(> svg) {
+  animation: mermaid-in var(--ds-transition);
+}
+
+@keyframes mermaid-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc .mermaid:has(> svg) {
+    animation: none;
+  }
+}
+
 /* Flowcharts are themed here rather than in the page sources. Mermaid emits
    `classDef` colours as inline `!important`, which no stylesheet can reach, so
    the sources bind semantic classes only (input, stage, output...) and leave
