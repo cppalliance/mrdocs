@@ -282,7 +282,7 @@
   --doc-line-height: 1.8;
   /* Running prose: paragraphs and list items. */
   --doc-prose-color: var(--mr-slate-850);
-  --doc-prose-measure: 64ch;
+  --doc-prose-measure: 72ch;
   --doc-prose-word-spacing: 0.06em;
   --doc-prose-gap: 1.35em;
   --doc-prose-stroke: 0.35px;
