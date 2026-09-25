@@ -26,6 +26,8 @@
   --mr-navy-750: #171c26; /* dark navbar ground (both sites)              */
   --mr-slate-750: #272e3f; /* dark page ground: the three columns          */
   --mr-slate-300: #a9abb2; /* dark muted row ink (316:335538)              */
+  --mr-slate-850: #1e2536; /* light prose ink                             */
+  --mr-slate-150: #e4e7ee; /* dark prose ink                              */
   --mr-code-bg: #0f172a;
   --mr-code-bg-2: #131c2e;
   --mr-cream: #fdfaf5;
@@ -273,11 +275,17 @@
      the theme used before. */
   --doc-font-color: var(--text-strong);
   --doc-font-size: inherit;
-  --doc-font-size--desktop: calc(16 / var(--rem-base) * 1rem);
+  --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
   /* text-size-small / -large from the same frame. */
   --doc-font-size-small: calc(14 / var(--rem-base) * 1rem);
   --doc-font-size-large: calc(20 / var(--rem-base) * 1rem);
-  --doc-line-height: 1.65;
+  --doc-line-height: 1.8;
+  /* Running prose: paragraphs and list items. */
+  --doc-prose-color: var(--mr-slate-850);
+  --doc-prose-measure: 64ch;
+  --doc-prose-word-spacing: 0.06em;
+  --doc-prose-gap: 1.35em;
+  --doc-prose-stroke: 0.35px;
   --doc-margin: 0 auto;
   /* Flush to the nav seam; the 60px inset is padding, not margin. */
   --doc-margin--desktop: 0;
@@ -459,6 +467,7 @@
   --surface-2: #172234;
   --text: rgba(237, 242, 249, 0.92);
   --text-strong: #fff;
+  --doc-prose-color: var(--mr-slate-150);
   --text-muted: var(--slate-400);
   --border: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(148, 163, 184, 0.32);
@@ -541,6 +550,7 @@
     --surface-2: #172234;
     --text: rgba(237, 242, 249, 0.92);
     --text-strong: #fff;
+    --doc-prose-color: var(--mr-slate-150);
     --text-muted: var(--slate-400);
     --border: rgba(148, 163, 184, 0.18);
     --border-strong: rgba(148, 163, 184, 0.32);

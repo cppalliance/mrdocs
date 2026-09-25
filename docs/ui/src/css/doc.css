@@ -273,6 +273,42 @@ html {
   margin: 0;
 }
 
+/* The measure caps the text, not the block, so prose keeps the column's left
+   edge. The stroke fills Special Elite's worn edges. */
+.doc .paragraph > p,
+.doc .ulist li > p,
+.doc .olist li > p {
+  color: var(--doc-prose-color);
+  max-width: var(--doc-prose-measure);
+  word-spacing: var(--doc-prose-word-spacing);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: var(--doc-prose-stroke) currentColor;
+  paint-order: stroke fill;
+}
+
+/* Blocks that set their own ink keep it: `color: currentColor` inherits. */
+.doc .admonitionblock,
+.doc .quoteblock,
+.doc .verseblock,
+#preamble .abstract {
+  --doc-prose-color: currentColor;
+}
+
+.doc .paragraph + .paragraph {
+  margin-top: var(--doc-prose-gap);
+}
+
+/* Special Elite has no bold; underline rather than synthesise one. */
+.doc .paragraph > p strong,
+.doc .ulist li > p strong,
+.doc .olist li > p strong {
+  font-weight: normal;
+  font-synthesis: none;
+  text-decoration: underline 0.08em;
+  text-underline-offset: 0.22em;
+}
+
 .doc a {
   color: var(--link-font-color);
 }
@@ -306,6 +342,7 @@ html {
   border-radius: 0.25em;
   font-size: 0.95em;
   padding: 0.125em 0.25em;
+  -webkit-text-stroke: 0;
 }
 
 .doc code,
