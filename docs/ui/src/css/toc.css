@@ -82,6 +82,42 @@
       );
     background-size: var(--ds-halftone-gap) var(--ds-halftone-gap);
     background-repeat: repeat;
+    /* Clips the backdrop blob below at the padding edge, so it stops at the
+       left rule and at the window edge without adding horizontal scroll.
+       `clip`, not `hidden`: hidden makes the rail a scroller and the sticky
+       list would stop sticking. */
+    overflow: clip;
+  }
+
+  /* Figma 520:84: a blurred blob of page ground behind the links, so the
+     halftone does not fight the text. On the sticky list rather than the rail
+     so it travels with the links, and stretched to the list so a long list
+     is covered end to end. The shape is the designer's path used as a mask
+     (the blur is baked into the SVG and rasterised once), not filter: blur()
+     or backdrop-filter, which re-filter on every scrolled frame. z-index 0
+     makes the list a stacking context, so the -1 lands above the rail's dots
+     and under the chip and links. */
+  .toc.sidebar .toc-menu {
+    z-index: 0;
+  }
+
+  .toc.sidebar .toc-menu::before {
+    background-color: var(--toc-backdrop);
+    content: "";
+    /* Only the blob's core is solid: alpha >= 0.9 spans 38% of its width and
+       24% of its height, off-centre (33% in from the left, 38% down). Sized
+       with fixed margins, that core landed on the middle of the list and the
+       chip and first links kept their dots. These insets make the core the
+       list box itself, whatever the list's height: each is the core's offset
+       on that side divided by the core's share of the axis (top/bottom are %
+       of the list's height, left/right of its width). The overhang is clipped
+       by the rail. */
+    inset: -160% -74% -162% -87%;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    -webkit-mask: url(../img/toc-backdrop.svg) no-repeat center / 100% 100%;
+    mask: url(../img/toc-backdrop.svg) no-repeat center / 100% 100%;
   }
 }
 
@@ -200,5 +236,138 @@
   .toc.embedded .toc-menu a.is-active {
     border-left-color: var(--gold-surface);
     color: var(--text-strong);
+  }
+
+  /* ---- Long contents lists (02-on-this-page.js, >= 11 entries) ------------
+     The threshold is where the list would otherwise push the page title off
+     the first mobile screen; the median page has 2 entries and keeps the open
+     block the frame draws, untouched.
+
+     CLIPPED, not folded: the first five top-level entries stay visible so the
+     reader is oriented without tapping, and the rest is one tap away on the
+     same chevron idiom the nav drawer's section chips use. */
+  /* `:not(.is-section)` keeps the CURRENT section on screen when it falls past
+     the clip, so the reader is never left with no marker at all. */
+  .toc.embedded.toc--long:not(.is-deep) .is-extra:not(.is-section):not(.is-shown) {
+    display: none;
+  }
+
+  /* Section rows carry their own disclosure: caret.svg, the theme's ITEM-level
+     glyph, at 12px and muted so it sits under the 16px panel chevron above. */
+  .toc.embedded .toc-menu li {
+    position: relative;
+  }
+
+  .toc.embedded .toc-sect-toggle {
+    align-items: center;
+    background: transparent;
+    border: none;
+    bottom: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    /* NOT centred in its own button: this 12 glyph has to share the vertical
+       axis of the 16 panel chevron above, whose centre sits 8 in from the row's
+       right edge, so this one's right edge sits 2 in. The 32 stays the touch
+       target -- only the glyph moves. */
+    justify-content: flex-end;
+    padding: 0 calc(2 / var(--rem-base) * 1rem) 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(32 / var(--rem-base) * 1rem);
+  }
+
+  .toc.embedded .toc-sect-toggle::before {
+    background-color: currentColor;
+    content: "";
+    display: block;
+    height: calc(12 / var(--rem-base) * 1rem);
+    transition: transform 150ms ease;
+    width: calc(12 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/caret.svg) no-repeat center / contain;
+    mask: url(../img/caret.svg) no-repeat center / contain;
+  }
+
+  .toc.embedded .toc-menu li.is-open > .toc-sect-toggle::before {
+    transform: rotate(90deg);
+  }
+
+  .toc.embedded .toc-sect-toggle:hover {
+    color: var(--text-strong);
+  }
+
+  .toc.embedded .toc-sect-toggle:focus-visible {
+    outline: 2px solid var(--gold-surface);
+    outline-offset: -2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc.embedded .toc-sect-toggle::before {
+      transition: none;
+    }
+  }
+
+  /* The section row carries the marker while the real target is clipped away.
+     Same treatment as .is-active: it IS the active section, just not the
+     active heading. */
+  .toc.embedded .toc-menu li.is-section > a {
+    border-left-color: var(--gold-surface);
+    color: var(--text-strong);
+  }
+
+  /* The chip keeps its own width (the frame draws a 96x21 pill, not a full-width
+     bar), so the row it sits in carries the chevron at the far end. */
+  .toc.embedded .toc-head {
+    align-items: center;
+    display: flex;
+    position: relative;
+  }
+
+  /* The WHOLE row toggles, as in .nav-section-toggle: the button is stretched
+     over the row and the chevron drawn on its ::after.
+     `color` is set explicitly -- a <button> does not inherit it, so
+     currentColor in the mask would resolve to the default button ink. */
+  .toc.embedded .toc-toggle {
+    background: transparent;
+    border: none;
+    color: var(--toc-font-color);
+    cursor: pointer;
+    display: block;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  }
+
+  /* Same 16x16 masked chevron as the nav drawer, pointing DOWN on the clipped
+     list and UP once it is showing everything. */
+  .toc.embedded .toc-toggle::after {
+    background-color: currentColor;
+    content: "";
+    height: calc(16 / var(--rem-base) * 1rem);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 150ms ease;
+    width: calc(16 / var(--rem-base) * 1rem);
+    -webkit-mask: url(../img/chevron.svg) no-repeat center / contain;
+    mask: url(../img/chevron.svg) no-repeat center / contain;
+  }
+
+  .toc.embedded.is-deep .toc-toggle::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .toc.embedded .toc-toggle:focus-visible {
+    outline: 2px solid var(--gold-surface);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc.embedded .toc-toggle::after {
+      transition: none;
+    }
   }
 }

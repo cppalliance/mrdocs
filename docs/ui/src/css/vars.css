@@ -26,6 +26,8 @@
   --mr-navy-750: #171c26; /* dark navbar ground (both sites)              */
   --mr-slate-750: #272e3f; /* dark page ground: the three columns          */
   --mr-slate-300: #a9abb2; /* dark muted row ink (316:335538)              */
+  --mr-slate-850: #1e2536; /* light prose ink                             */
+  --mr-slate-150: #e4e7ee; /* dark prose ink                              */
   --mr-code-bg: #0f172a;
   --mr-code-bg-2: #131c2e;
   --mr-cream: #fdfaf5;
@@ -34,6 +36,13 @@
   --mr-blue-300: #93c5fd;
   --mr-blue-450: #1e78ff; /* Figma exact: theme-toggle fill, note blocks */
   --mr-blue-600: #2563eb;
+  /* One step past 600, for links on the tinted table ground where 600
+     measures 4.39:1. */
+  --mr-blue-700: #1d4fd7;
+  /* Hover steps for table links -- one further in each theme's direction, so
+     the state is never dimmer than the rest state. */
+  --mr-blue-800: #1e40af;
+  --mr-blue-200: #bfdbfe;
   --mr-yellow: #facc15;
   --mr-yellow-300: #f1d874;
   --mr-amber-700: #b45309;
@@ -106,19 +115,19 @@
   /* The code panel is dark in BOTH themes, per frame 316:334286 and the landing
      page, so these are deliberately theme-invariant -- there is no light set to
      flip to. Ground, plain text and comments come from the shared system so the
-     two surfaces match; the remaining syntax roles keep the GitHub-dark values,
-     which the frame does not specify. */
+     two surfaces match; the remaining syntax roles are the shared
+     --ds-code-panel-hl-* tokens, which the frame does not specify. */
   --hl-bg: var(--ds-color-code-body);
   --hl-fg: var(--ds-code-panel-fg);
   --hl-comment: var(--ds-code-panel-comment);
-  --hl-keyword: #f47067;
-  --hl-string: #96d0ff;
-  --hl-const: #6cb6ff;
-  --hl-entity: #f69d50;
-  --hl-title: #dcbdfb;
-  --hl-tag: #8ddb8c;
-  --hl-doc: rgb(94, 135, 79);
-  --hl-doc-strong: rgb(164, 181, 67);
+  --hl-keyword: var(--ds-code-panel-hl-keyword);
+  --hl-string: var(--ds-code-panel-hl-string);
+  --hl-const: var(--ds-code-panel-hl-const);
+  --hl-entity: var(--ds-code-panel-hl-entity);
+  --hl-title: var(--ds-code-panel-hl-title);
+  --hl-tag: var(--ds-code-panel-hl-tag);
+  --hl-doc: var(--ds-code-panel-hl-doc);
+  --hl-doc-strong: var(--ds-code-panel-hl-doc-strong);
   --hl-border: var(--ds-color-outline);
   /* Figma: a 30px header strip in the chrome ink above the body. */
   --pre-title-background: var(--ds-color-code-chrome);
@@ -240,9 +249,14 @@
 
   /* Tabbed code cards (AsciiDoc tabs). Light paints solid surfaces set off
      from the cream content; dark keeps the white/black overlays it had. */
-  --tab-surface: var(--surface-2);
-  --tab-inactive-bg: var(--slate-200);
-  --tab-inactive-color: var(--text-muted);
+  /* The visible panel face is the innermost node in the frame: the page ground
+     with the same 10% blue wash the inactive tabs carry, which is why the two
+     read as one surface. The outer containers never show. */
+  --tab-surface: var(--surface-tint);
+  /* The frame gives the inactive tab the page ground with a 10% blue wash,
+     which `--surface-tint` already mixes; the label keeps full ink. */
+  --tab-inactive-bg: var(--surface-tint);
+  --tab-inactive-color: var(--text-strong);
 
   /* admonitions (brand accents; readable on both themes) */
   --caution-color: var(--mr-pink);
@@ -261,11 +275,17 @@
      the theme used before. */
   --doc-font-color: var(--text-strong);
   --doc-font-size: inherit;
-  --doc-font-size--desktop: calc(16 / var(--rem-base) * 1rem);
+  --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
   /* text-size-small / -large from the same frame. */
   --doc-font-size-small: calc(14 / var(--rem-base) * 1rem);
   --doc-font-size-large: calc(20 / var(--rem-base) * 1rem);
-  --doc-line-height: 1.65;
+  --doc-line-height: 1.8;
+  /* Running prose: paragraphs and list items. */
+  --doc-prose-color: var(--mr-slate-850);
+  --doc-prose-measure: 74ch;
+  --doc-prose-word-spacing: 0.06em;
+  --doc-prose-gap: 1.35em;
+  --doc-prose-stroke: 0.35px;
   --doc-margin: 0 auto;
   /* Flush to the nav seam; the 60px inset is padding, not margin. */
   --doc-margin--desktop: 0;
@@ -335,14 +355,35 @@
      1.00:1, i.e. no visible grid and no visible header at all.
      The framed variant's ground is the brand blue at 10% over the page
      (#E7EDF6 light / #263552 dark), which is exactly --surface-tint.
-     Names in the first column are Menlo in the label colour (#EC4899 light /
-     #FF4C4C dark) -- --ds-color-label already carries both. */
+     The frame draws the first-column names in the label colour (#EC4899 /
+     #FF4C4C), but that rule reaches every code span in a cell, not just the
+     names: magenta and red read as dead links beside the live blue ones, and
+     measure 3.00:1 / 3.71:1 on this ground. They inherit instead. */
+  /* Flowchart diagram roles. The page sources bind semantic classes
+     (input, stage, output, ext...) but no longer carry colours, so the two
+     themes are free to differ. Each role tints the theme's own surface, so
+     dark gets dark nodes with light ink rather than light nodes pasted onto
+     the page. --mr-green is new and only used here. */
+  --mr-green: #22c55e;
+  --diagram-surface: var(--surface-2);
+  --diagram-ink: var(--text-strong);
+  --diagram-line: var(--text-muted);
+  --diagram-cluster-bg: var(--surface-tint);
+  --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 22%, var(--mr-white));
+  --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 30%, var(--mr-white));
+  --diagram-output: color-mix(in sRGB, var(--mr-green) 22%, var(--mr-white));
+  --diagram-accent: color-mix(in sRGB, var(--mr-pink) 18%, var(--mr-white));
   --table-border-color: var(--ds-color-code-body);
   --table-frame-color: var(--outline);
   --table-frame-background: var(--surface-tint);
+  /* Links sit on that tinted frame, not the page, where `--link` measures
+     4.39:1 (3.68:1 dark), under AA. One step darker clears it at 5.66:1; dark
+     steps the other way, to the 300, at 6.80:1. */
+  --table-link-color: var(--mr-blue-700);
+  --table-link-hover-color: var(--mr-blue-800);
   --table-header-background: var(--ds-color-code-body);
   --table-header-color: var(--mr-white);
-  --table-name-color: var(--ds-color-label);
+  --table-name-color: inherit;
   --table-stripe-background: var(--surface-2);
   --table-footer-background:
     linear-gradient(
@@ -358,6 +399,10 @@
      #6E727B, the current one the strong ink. */
   --toc-border-color: var(--gold-surface);
   --toc-line-height: 1.2;
+  /* Figma 520:84: the blob behind the rail's links is the page ground itself,
+     so it reads as the halftone thinning out rather than as a panel. --bg
+     already flips per theme (cream / #272E3F). */
+  --toc-backdrop: var(--body-background);
 
   /* footer */
   --footer-line-height: var(--doc-line-height);
@@ -422,11 +467,19 @@
   --surface-2: #172234;
   --text: rgba(237, 242, 249, 0.92);
   --text-strong: #fff;
+  --doc-prose-color: var(--mr-slate-150);
   --text-muted: var(--slate-400);
   --border: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(148, 163, 184, 0.32);
   /* DERIVED -- see the note in the prefers-color-scheme block below. */
   --outline: #000;
+  --diagram-surface: var(--surface-2);
+  --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 30%, var(--bg));
+  --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 24%, var(--bg));
+  --diagram-output: color-mix(in sRGB, var(--mr-green) 26%, var(--bg));
+  --diagram-accent: color-mix(in sRGB, var(--mr-pink) 24%, var(--bg));
+  --table-link-color: var(--mr-blue-300);
+  --table-link-hover-color: var(--mr-blue-200);
   --navbar-surface: var(--mr-navy-750);
   --nav-title-background: var(--mr-red);
   --gold-surface: var(--mr-yellow);
@@ -464,9 +517,9 @@
      white here made the nav column read lighter than the content and
      contents panes either side of it. */
   --nav-panel-overlay: transparent;
-  --tab-surface: rgba(255, 255, 255, 0.12);
-  --tab-inactive-bg: rgba(0, 0, 0, 0.25);
-  --tab-inactive-color: rgba(255, 255, 255, 0.5);
+  /* Tab tokens are deliberately NOT overridden per theme: `--surface-tint`
+     and `--text-strong` already flip. Figma's dark inactive tab is solid
+     #3D8BFF, but that puts its white label at 3.32:1, under AA. */
 }
 
 /* ---- Small-screen chrome (Figma 316:335067 / 316:334667, 402) ---------- */
@@ -497,11 +550,19 @@
     --surface-2: #172234;
     --text: rgba(237, 242, 249, 0.92);
     --text-strong: #fff;
+    --doc-prose-color: var(--mr-slate-150);
     --text-muted: var(--slate-400);
     --border: rgba(148, 163, 184, 0.18);
     --border-strong: rgba(148, 163, 184, 0.32);
     /* DERIVED -- the frame is light only. Revisit with a dark frame. */
     --outline: #000;
+    --diagram-surface: var(--surface-2);
+    --diagram-input: color-mix(in sRGB, var(--mr-blue-450) 30%, var(--bg));
+    --diagram-stage: color-mix(in sRGB, var(--mr-yellow) 24%, var(--bg));
+    --diagram-output: color-mix(in sRGB, var(--mr-green) 26%, var(--bg));
+    --diagram-accent: color-mix(in sRGB, var(--mr-pink) 24%, var(--bg));
+    --table-link-color: var(--mr-blue-300);
+    --table-link-hover-color: var(--mr-blue-200);
     --navbar-surface: var(--mr-navy-750);
     --nav-title-background: var(--mr-red);
     --gold-surface: var(--mr-yellow);
@@ -539,8 +600,8 @@
        white here made the nav column read lighter than the content and
        contents panes either side of it. */
     --nav-panel-overlay: transparent;
-    --tab-surface: rgba(255, 255, 255, 0.12);
-    --tab-inactive-bg: rgba(0, 0, 0, 0.25);
-    --tab-inactive-color: rgba(255, 255, 255, 0.5);
+    /* Tab tokens are deliberately NOT overridden per theme: `--surface-tint`
+       and `--text-strong` already flip. Figma's dark inactive tab is solid
+       #3D8BFF, but that puts its white label at 3.32:1, under AA. */
   }
 }

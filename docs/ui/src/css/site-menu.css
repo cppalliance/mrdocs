@@ -36,8 +36,11 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: calc(32 / var(--rem-base) * 1rem);
-    padding: calc(30 / var(--rem-base) * 1rem);
+    /* px, not rem: the root drops 18 -> 17 under 768, exactly where this menu
+       lives, so every rem-derived figure landed at 94% of the frame. These are
+       fixed control sizes, so they are pinned. */
+    gap: 32px;
+    padding: 30px;
   }
 
   /* Frame 235: 272x130, three items 32 apart. */
@@ -45,7 +48,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: calc(32 / var(--rem-base) * 1rem);
+    gap: 32px;
   }
 
   /* 316:335055: Special Elite 14, UPPER case with 1.4 of tracking. */
@@ -67,14 +70,14 @@
     box-shadow: var(--outline-shadow);
     color: var(--ds-color-on-accent);
     display: inline-flex;
-    font-size: calc(14 / var(--rem-base) * 1rem);
-    gap: calc(8 / var(--rem-base) * 1rem);
+    font-size: 14px;
+    gap: 8px;
     letter-spacing: 1.4px;
     line-height: 1;
     /* Height pinned to the frame's 38: its INSIDE stroke sits within that box,
        whereas a CSS border adds to it, which made the button 40 tall. */
-    height: calc(38 / var(--rem-base) * 1rem);
-    padding: 0 calc(14 / var(--rem-base) * 1rem);
+    height: 38px;
+    padding: 0 14px;
     text-decoration: none;
     text-transform: uppercase;
   }
@@ -99,20 +102,18 @@
      --color-white-60, which renders the glyph translucent on light. */
   .site-menu-theme.theme-toggle {
     align-self: flex-start;
-    /* Centred on the first link's line rather than sharing its top edge. The
-       frame top-aligns the two (its links frame and toggle frame are both at
-       y=30), which left the 38 button's centre 11 below the 14 line's, so it
-       read as sitting lower. Half the difference, (38 - 14) / 2. */
-    margin-top: calc(-12 / var(--rem-base) * 1rem);
+    /* Top-aligned, as both frames draw it (links and toggle each at y=30).
+       Centring it on the first link's line instead put it 16 above the landing
+       page's identical control. */
     background: color-mix(in sRGB, var(--mr-blue-450) 10%, transparent);
     border: 2px solid var(--outline);
     border-radius: 0;
     box-shadow: var(--outline-shadow);
     color: var(--text-strong);
     flex: 0 0 auto;
-    height: calc(38 / var(--rem-base) * 1rem);
+    height: 38px;
     padding: 0;
-    width: calc(38 / var(--rem-base) * 1rem);
+    width: 38px;
   }
 
   .site-menu-theme.theme-toggle:hover {
@@ -122,7 +123,7 @@
 
   /* 316:335064: the sun is 22, against the 1.15rem the base rule gives it. */
   .site-menu-theme.theme-toggle svg {
-    height: calc(22 / var(--rem-base) * 1rem);
-    width: calc(22 / var(--rem-base) * 1rem);
+    height: 22px;
+    width: 22px;
   }
 }
