@@ -20,9 +20,9 @@ namespace mrdocs {
 
 /** Finalizes a set of Info.
 
-    This finalizer finds non-member functions
-    for a record and populate the related
-    field of the doc.
+    This finalizer finds derived classes
+    for each base class and populates the
+    related `Derived` field of the RecordSymbol.
 */
 class DerivedFinalizer
 {

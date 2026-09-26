@@ -188,6 +188,43 @@ find_last_of(Range&& range, Els&& els)
     return std::ranges::end(range);
 }
 
+/** Insert a value into a range sorted by a comparator, searching only
+    a subrange of it.
+
+    @param container The container to insert into.
+    @param first The beginning of the sorted subrange to search.
+    @param last The end of the sorted subrange to search.
+    @param value The value to insert.
+    @param comp The comparator the subrange is sorted by.
+    @return An iterator to the inserted element.
+*/
+template <class Container, std::forward_iterator It, class T, class Comp>
+auto
+insert_sorted(Container& container, It first, It last, T&& value, Comp comp)
+{
+    auto const it = std::ranges::lower_bound(first, last, value, comp);
+    return container.insert(it, std::forward<T>(value));
+}
+
+/** Insert a value into a range sorted by a comparator.
+
+    @param container The sorted container to insert into.
+    @param value The value to insert.
+    @param comp The comparator the container is sorted by.
+    @return An iterator to the inserted element.
+*/
+template <std::ranges::range Container, class T, class Comp>
+auto
+insert_sorted(Container& container, T&& value, Comp comp)
+{
+    return insert_sorted(
+        container,
+        std::ranges::begin(container),
+        std::ranges::end(container),
+        std::forward<T>(value),
+        comp);
+}
+
 } // mrdocs
 
 #endif

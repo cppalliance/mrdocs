@@ -885,11 +885,7 @@ processRelates(Symbol& ctx, DocComment& doc)
             doc::ReferenceInline relatedRef(std::move(currentName));
             relatedRef.id = ctx.id;
             // Insert in order by name
-            auto const it = std::ranges::lower_bound(
-                related.doc->related,
-                relatedRef,
-                referenceCmp);
-            related.doc->related.insert(it, std::move(relatedRef));
+            insert_sorted(related.doc->related, std::move(relatedRef), referenceCmp);
         }
     }
 
@@ -1052,12 +1048,12 @@ setAutoRelates(Symbol& ctx)
         }))
         {
             // Insert in order by name
-            auto const it = std::ranges::lower_bound(
+            insert_sorted(
+                I.doc->relates,
                 I.doc->relates.begin() + prevRelatesSize,
                 I.doc->relates.end(),
-                ref,
+                std::move(ref),
                 referenceCmp);
-            I.doc->relates.insert(it, std::move(ref));
         }
     }
 }
