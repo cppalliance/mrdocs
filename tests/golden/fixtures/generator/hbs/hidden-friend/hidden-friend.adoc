@@ -1,0 +1,201 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#label[`label`] 
+| A class whose friend also has a matching namespace&hyphen;scope declaration, so it is an ordinary (non&hyphen;hidden) friend and renders no admonition&period;
+| link:#point[`point`] 
+| A class whose `operator&equals;&equals;` is a hidden friend&colon; declared (and defined) only inside the class body, so it is found only through argument&hyphen;dependent lookup&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#operator_eq-07[`operator&equals;&equals;`] 
+| Equality operators
+|===
+
+
+[#label]
+== label
+
+A class whose friend also has a matching namespace&hyphen;scope declaration, so it is an ordinary (non&hyphen;hidden) friend and renders no admonition&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct label;
+----
+
+=== Friends
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#operator_eq-05[operator&equals;&equals;]`
+| Compare two labels&period;
+|===
+
+[#point]
+== point
+
+A class whose `operator&equals;&equals;` is a hidden friend&colon; declared (and defined) only inside the class body, so it is found only through argument&hyphen;dependent lookup&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct point;
+----
+
+=== Data Members
+
+[cols="1"]
+|===
+| Name
+| link:#point-x[`x`] 
+|===
+
+
+=== Friends
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#operator_eq-08[operator&equals;&equals;]`
+| Compare two points&period;
+|===
+
+[#point-x]
+== link:#point[point]::x
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double x;
+----
+
+[#operator_eq-07]
+== operator&equals;&equals;
+
+Equality operators
+
+=== Synopses
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+Compare two points&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+link:#operator_eq-08[operator&equals;&equals;](
+    link:#point[point] a,
+    link:#point[point] b);
+----
+
+[.small]#link:#operator_eq-08[_» more&period;&period;&period;_]#
+
+Compare two labels&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+link:#operator_eq-05[operator&equals;&equals;](
+    link:#label[label] a,
+    link:#label[label] b);
+----
+
+[.small]#link:#operator_eq-05[_» more&period;&period;&period;_]#
+
+[#operator_eq-08]
+== operator&equals;&equals;
+
+Compare two points&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    link:#point[point] a,
+    link:#point[point] b);
+----
+
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#point[point]: it is declared only inside that class and can be found only through argument-dependent lookup.
+====
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| The left operand
+| *b*
+| The right operand
+|===
+
+[#operator_eq-05]
+== operator&equals;&equals;
+
+Compare two labels&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    link:#label[label] a,
+    link:#label[label] b);
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| The left operand
+| *b*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

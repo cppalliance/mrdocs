@@ -372,5 +372,6 @@
   </params>
   <funcClass>normal</funcClass>
   <overloadedOperator>==</overloadedOperator>
+  <hiddenFriendOf>4STgDrwLeHv7mqV5anD6cJEd6K4T</hiddenFriendOf>
 </function>
 </mrdocs>

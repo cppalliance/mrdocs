@@ -75,6 +75,11 @@ operator&equals;&equals;(
     link:#point[point] b);
 ----
 
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#point[point]: it is declared only inside that class and can be found only through argument-dependent lookup.
+====
+
 === Return Value
 
 `true` if the objects are equal, `false` otherwise

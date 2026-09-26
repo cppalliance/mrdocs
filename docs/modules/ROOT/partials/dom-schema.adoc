@@ -274,6 +274,10 @@ Metadata for a function or method.
 |`boolean`
 |True when using a trailing return type.
 
+|`hiddenFriendOf`
+|`string`
+|Optional. The class this function is a hidden friend of.
+
 |`isConst`
 |`boolean`
 |True when qualified const.
