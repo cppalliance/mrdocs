@@ -8,37 +8,36 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
-# Generator examples exercised as run-only tests: the test only checks that
-# mrdocs runs each example to completion using the example's own
-# configuration. Output goes to the build tree; the committed output files are
-# illustrative and are not compared here.
+# Generator examples. Each runs with the example's own configuration, and the
+# output it commits, which the docs include, is compared with what the run
+# writes.
 
 # Data-driven generators: examples/generators/data-driven/<id> demonstrates a
-# Handlebars generator defined entirely in an addon.
+# Handlebars generator defined entirely in an addon. The committed output is
+# named after the example's source rather than the generator's
+# `reference.<id>`.
 foreach (data_driven IN ITEMS md tex jsonl)
-    add_test(NAME mrdocs-generator-example-data-driven-${data_driven}
-        COMMAND
-            mrdocs
-            "${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/simple.cpp"
-            "--config=${CMAKE_CURRENT_SOURCE_DIR}/data-driven/${data_driven}/mrdocs.yml"
-            "--output=${CMAKE_CURRENT_BINARY_DIR}/data-driven/${data_driven}"
-            ${MRDOCS_BUILTIN_DIR_ARGS}
-            --log-level=warn
-    )
+    mrdocs_add_example(
+        DIRECTORY data-driven/${data_driven}
+        CONFIG mrdocs.yml ARGS simple.cpp --log-level=warn
+        OUTPUTS simple.${data_driven}=reference.${data_driven})
 endforeach ()
 
-# Script-driven generator examples (a shell driver that invokes mrdocs).
-foreach (script_driven IN ITEMS search-index json toc describe snippets)
-    add_test(
-        NAME mrdocs-generator-script-driven-${script_driven}
-        COMMAND bash run.sh
-                --output=${CMAKE_CURRENT_BINARY_DIR}/script-driven/${script_driven}/reference-output
-                ${MRDOCS_BUILTIN_DIR_ARGS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/script-driven/${script_driven}
-    )
-    set_property(TEST mrdocs-generator-script-driven-${script_driven} PROPERTY
-        ENVIRONMENT "MRDOCS=$<TARGET_FILE:mrdocs>")
-endforeach ()
+# Script-driven generator examples.
+mrdocs_add_example(DIRECTORY script-driven/search-index CONFIG mrdocs.yml
+    OUTPUTS search-index.json)
+mrdocs_add_example(DIRECTORY script-driven/json CONFIG mrdocs.yml
+    OUTPUTS reference.json)
+mrdocs_add_example(DIRECTORY script-driven/toc CONFIG mrdocs.yml
+    OUTPUTS toc.adoc toc.html toc.md)
+mrdocs_add_example(DIRECTORY script-driven/describe CONFIG mrdocs.yml
+    OUTPUTS circle.described.hpp level.described.hpp
+            shape.described.hpp vec2.described.hpp)
+# snippets runs two generators: the reference comes from the adoc one, and
+# the exported examples from the snippets one.
+mrdocs_add_example(DIRECTORY script-driven/snippets CONFIG mrdocs.yml
+    OUTPUTS reference.adoc=adoc/reference.adoc
+            exported/arithmetic.cpp exported/text.cpp)
 
 # No-op generator examples (the documentation check and the AI repair loop).
 # Each owns its own CMakeLists, so add the directory rather than a test here.
