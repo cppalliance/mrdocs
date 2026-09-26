@@ -6,6 +6,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -27,23 +28,23 @@
 namespace mrdocs {
 namespace {
 
+// All valid C++ identifiers begin with an underscore or
+// alphabetic character, so a numeric prefix ensures no
+// conflicts.
+constexpr
+std::string_view
+func_reserved[] = {
+    "2function",
+    "2constructor",
+    "2conversion",
+    "2destructor"
+};
+
 std::string
 getUnnamedInfoName(Symbol const& I)
 {
-    // All valid c++ identifiers begin with
-    // an underscore or alphabetic character,
-    // so a numeric prefix ensures no conflicts
     if (I.isFunction() || I.isOverloads())
     {
-        static
-        constexpr
-        std::string_view
-        func_reserved[] = {
-            "2function",
-            "2constructor",
-            "2conversion",
-            "2destructor"
-        };
         std::size_t func_idx = 0;
         if (auto const* FI = I.asFunctionPtr())
         {
@@ -80,6 +81,23 @@ getUnnamedInfoName(Symbol const& I)
     auto const kindStr = std::string(toString(I.Kind));
     res += toKebabCase(kindStr);
     return res;
+}
+
+// The name to anchor an operator under; empty if `name` is not one.
+std::string
+getOperatorAnchorName(std::string_view name)
+{
+    std::string result;
+    if (OperatorKind const kind = getOperatorKind(name);
+        kind != OperatorKind::None)
+    {
+        result = getSafeOperatorName(kind, true);
+    }
+    else if (name.starts_with("operator "))
+    {
+        result = func_reserved[to_underlying(FunctionClass::Conversion)];
+    }
+    return result;
 }
 
 // Computes each symbol's unqualified, URL-safe legible name, unique among
@@ -248,6 +266,11 @@ public:
                     if (t.Class == UsingClass::Normal && !t.ShadowDeclarations.empty())
                     {
                         return getRawUnqualified(t.ShadowDeclarations.front());
+                    }
+                    if (std::string anchorName = getOperatorAnchorName(t.Name);
+                        !anchorName.empty())
+                    {
+                        return anchorName;
                     }
                 }
                 return t.Name;
