@@ -284,7 +284,7 @@ operator()(RecordSymbol& I)
         auto& baseName = baseNameType.Name->asName();
         // `baseName.id` is the primary template's ID. When the base
         // names a concrete specialization (e.g. `base<int>`) and
-        // `extract-implicit-specializations` is on, we prefer the
+        // `extract-implicit-base-classes` is on, we prefer the
         // implicit specialization's ID so inherited members carry
         // the substituted types. For a dependent base such as
         // `base<T>` in `template<T> class derived : public base<T>`,
@@ -293,7 +293,7 @@ operator()(RecordSymbol& I)
         // to the primary's ID and inherit its members with the
         // primary's template parameter intact.
         SymbolID baseID = baseName.id;
-        if (config_.extractImplicitSpecializations && 
+        if (config_.extractImplicitBaseClasses && 
             baseName.isSpecialization())
         {
             auto& baseSpec = baseName.asSpecialization();

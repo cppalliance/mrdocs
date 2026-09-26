@@ -1,0 +1,101 @@
+= Reference
+:mrdocs:
+
+[#box-0f5]
+== box
+
+A simple container template&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;base&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct box;
+----
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#box-0f5-value[`value`] 
+| The contained value&period;
+|===
+
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#int_box[`int&lowbar;box`] 
+| Inherits from `box&lt;int&gt;`&period; With `extract&hyphen;implicit&hyphen;base&hyphen;classes&colon; true`, that implicit instantiation shows up in the docs alongside the primary template&period;
+|===
+
+[#box-0f5-value]
+== link:#box-0f5[box]::value
+
+The contained value&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;base&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T value;
+----
+
+[#int_box]
+== int&lowbar;box
+
+Inherits from `box&lt;int&gt;`&period; With `extract&hyphen;implicit&hyphen;base&hyphen;classes&colon; true`, that implicit instantiation shows up in the docs alongside the primary template&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;base&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct int&lowbar;box
+    : link:#box-0f5[box&lt;int&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#box-0f5[box&lt;int&gt;]`
+| A simple container template&period;
+|===
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#int_box-value[`value`] 
+| The contained value&period;
+|===
+
+
+[#int_box-value]
+== link:#int_box[int&lowbar;box]::value
+
+The contained value&period;
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;base&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int value;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

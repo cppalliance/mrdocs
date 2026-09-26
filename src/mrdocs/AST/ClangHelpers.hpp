@@ -747,7 +747,7 @@ isAnyImplicitSpecialization(clang::Decl const* D);
     members, which is why this looks at the explicit instantiation kinds.
     An instantiation the compiler performed on its own is never a written
     member: it is reached through the types that use it, and whether it is
-    extracted is the `extract-implicit-specializations` option's decision.
+    extracted is the `extract-implicit-base-classes` option's decision.
     The members of an instantiated class are not instantiations either,
     they are that class's members, so they are left alone.
 */

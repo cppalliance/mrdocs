@@ -403,6 +403,16 @@ load(
             {
                 c.unknownConfigKeys.emplace_back(key);
             }
+            else if (key == "extract-implicit-specializations")
+            {
+                // A deprecated key that keeps working by forwarding its value
+                // to the option that replaced it, so a configuration written
+                // before the rename does not silently lose its setting.
+                report::warn(
+                    "`extract-implicit-specializations` option is deprecated, "
+                    "use `extract-implicit-base-classes` instead");
+                c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
+            }
         }
     }
     // Apply the command-line overrides on top of the file's values (a no-op
@@ -576,6 +586,15 @@ applyCommandLineOverrides(ConfigSchema& c, char const** argv)
                 }
             }
         });
+    // A deprecated key keeps accepting its legacy command-line spelling by
+    // forwarding the value onto the option that replaced it.
+    if (supplied.contains("extract-implicit-specializations"))
+    {
+        report::warn(
+            "`extract-implicit-specializations` option is deprecated, "
+            "use `extract-implicit-base-classes` instead");
+        c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
+    }
     return result;
 }
 

@@ -1,1 +1,1 @@
-extract-implicit-specializations: false
+extract-implicit-base-classes: false
