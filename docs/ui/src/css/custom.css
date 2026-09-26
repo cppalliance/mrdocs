@@ -211,6 +211,116 @@ body {
   color: var(--logo-fill);
 }
 
+/* Mermaid renders client-side from the raw source text. Hide the block until
+   the finished SVG lands, then fade it in. Not `[data-processed]`: Mermaid
+   sets that when it starts, before its diagram code has even loaded. The
+   final SVG is the only direct child; the one it measures in is nested. */
+.doc .mermaid:not(:has(> svg)) {
+  visibility: hidden;
+}
+
+/* Each [mermaid] block reserves its rendered height in `cqi` (see the sources),
+   so the page does not jump when the SVG lands. Once it has, the SVG sizes the
+   box: a drifted reservation then shifts slightly rather than overlapping. */
+.doc .imageblock:has(> .mermaid) {
+  container-type: inline-size; /* stylelint-disable-line property-no-unknown */
+}
+
+/* Labels wrap at Mermaid's 200px; `.doc`'s auto hyphens split words there. */
+.doc .mermaid {
+  hyphens: manual;
+}
+
+.doc .mermaid:has(> svg) {
+  animation: mermaid-in var(--ds-transition);
+  height: auto !important;
+}
+
+@keyframes mermaid-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc .mermaid:has(> svg) {
+    animation: none;
+  }
+}
+
+/* Flowcharts are themed here rather than in the page sources. Mermaid emits
+   `classDef` colours as inline `!important`, which no stylesheet can reach, so
+   the sources bind semantic classes only (input, stage, output...) and leave
+   the colour to these rules. Mermaid's own styles are ID-scoped inside the
+   SVG, hence `!important` throughout.
+
+   Scoped to flowcharts: the quadrant charts below theme their own text, and
+   these node rules would fight them. */
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node polygon,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node path {
+  fill: var(--diagram-surface) !important;
+  stroke: var(--outline) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.input rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.input polygon,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.input path {
+  fill: var(--diagram-input) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.stage rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.common rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.stage path,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.common path {
+  fill: var(--diagram-stage) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.output rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.output path {
+  fill: var(--diagram-output) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.ext rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.mrdocs rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.concepts rect,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.ext path,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.mrdocs path,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .node.concepts path {
+  fill: var(--diagram-accent) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .nodeLabel,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .cluster-label,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .edgeLabel {
+  color: var(--diagram-ink) !important;
+  fill: var(--diagram-ink) !important;
+  background: transparent !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .cluster rect {
+  fill: var(--diagram-cluster-bg) !important;
+  stroke: var(--border-strong) !important;
+}
+
+/* The label sits on a painted chip; without this it keeps a light one and the
+   ink above turns invisible on dark. */
+.doc .mermaid :is(.flowchart, .flowchart-v2) .edgeLabel .labelBkg,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .edgeLabel rect {
+  fill: var(--bg) !important;
+  background: var(--bg) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) .flowchart-link {
+  stroke: var(--diagram-line) !important;
+}
+
+.doc .mermaid :is(.flowchart, .flowchart-v2) marker path,
+.doc .mermaid :is(.flowchart, .flowchart-v2) .arrowMarkerPath {
+  fill: var(--diagram-line) !important;
+  stroke: var(--diagram-line) !important;
+}
+
 /* Mermaid quadrant charts (e.g. the "Output format trade-off" scatter) draw
    their title, axis labels and point labels with a fill baked in at init time.
    That single colour can't suit both themes, so recolour the text and the

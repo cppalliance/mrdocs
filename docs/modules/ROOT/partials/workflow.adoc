@@ -1,4 +1,5 @@
-[mermaid]
+// Reserves the rendered size (viewBox 615.89x860) so the page does not jump.
+[mermaid, height="calc(min(100cqi, 615.89px) * 860 / 615.89)"]
 ....
 graph TD
   %% Define styles for visual clarity
