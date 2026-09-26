@@ -1173,6 +1173,22 @@ private:
     bool
     checkFileFilters(std::string_view symbolPath) const;
 
+    /* Check the input filters for a declaration
+
+       True when the file the declaration comes from is one of the
+       inputs, whatever the exclusions say.
+    */
+    bool
+    checkInputFilters(clang::Decl const* D);
+
+    /* Check whether the configuration excludes a file
+
+       True when the file lies in an excluded directory or matches one
+       of the exclude patterns.
+    */
+    bool
+    isExcludedFile(std::string_view filePath) const;
+
     /* Check all symbol filters for a declaration
 
        @param D The declaration to check

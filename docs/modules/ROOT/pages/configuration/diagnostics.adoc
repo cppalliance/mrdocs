@@ -11,6 +11,7 @@ The `warn-*` family treats common documentation problems as warnings, so a CI ru
 * xref:configuration/reference.adoc#warn-no-paramdoc_option[`warn-no-paramdoc`] and xref:configuration/reference.adoc#warn-unnamed-param_option[`warn-unnamed-param`] flag functions whose parameters are not documented or not named.
 * xref:configuration/reference.adoc#warn-if-undoc-enum-val_option[`warn-if-undoc-enum-val`] flags enumerators without doc comments.
 * xref:configuration/reference.adoc#warn-broken-ref_option[`warn-broken-ref`] flags `@ref` and `@see` targets that do not resolve.
+* xref:configuration/reference.adoc#warn-if-filtered-in-public-api_option[`warn-if-filtered-in-public-api`] flags a documented declaration that names a symbol removed by the filters, which leaves the reader a name with no page behind it. Marking that symbol xref:commands/reference.adoc#cmd-implementation-defined[`@implementationdefined`] renders it as a placeholder and settles the warning.
 
 xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] turns every warning into a failure, the usual CI setup once a project is past the bring-up phase.
 

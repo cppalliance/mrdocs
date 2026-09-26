@@ -780,6 +780,16 @@
       "title": "Warn if documentation has errors",
       "type": "boolean"
     },
+    "warn-if-filtered-in-public-api": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message when a documented declaration names a symbol that the filters removed, such as a return type or a public base class from an excluded namespace. Note that marking the symbol with `@implementationdefined` avoids the warning. Symbols from outside `source-root` are not reported.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if the documented API names a filtered symbol",
+      "type": "boolean"
+    },
     "warn-if-undoc-enum-val": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs a warning message if an enum value is not documented.",

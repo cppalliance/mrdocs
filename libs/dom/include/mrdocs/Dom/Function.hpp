@@ -193,8 +193,7 @@ class DefaultFunctionImpl;
 class MRDOCS_DOM_DECL
     Function
 {
-    using impl_type = std::shared_ptr<FunctionImpl>;
-    impl_type impl_;
+    std::shared_ptr<FunctionImpl> impl_;
 
     explicit
     Function(
@@ -205,6 +204,10 @@ class MRDOCS_DOM_DECL
     }
 
 public:
+    /** The implementation type.
+    */
+    using impl_type = std::shared_ptr<FunctionImpl>;
+
     /** Destructor.
     */
     ~Function();

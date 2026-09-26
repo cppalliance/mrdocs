@@ -19,6 +19,7 @@
 #include "Metadata/Finalizers/AnchorFinalizer.hpp"
 #include "Metadata/Finalizers/BaseMembersFinalizer.hpp"
 #include "Metadata/Finalizers/DerivedFinalizer.hpp"
+#include "Metadata/Finalizers/FilteredSymbolFinalizer.hpp"
 #include "Metadata/Finalizers/DocCommentFinalizer.hpp"
 #include "Metadata/Finalizers/FunctionObjectFinalizer.hpp"
 #include "Metadata/Finalizers/NamespacesFinalizer.hpp"
@@ -766,6 +767,15 @@ Corpus::finalize(Config const& config)
     {
         report::debug("  - Finalizing documentation comments");
         DocCommentFinalizer finalizer(*this, config);
+        finalizer.build();
+    }
+
+    // Report the filtered symbols the documented API still names. This
+    // only reads the corpus, so it runs once everything else has settled.
+    if (config.warnings && config.warnIfFilteredInPublicApi)
+    {
+        report::debug("  - Reporting filtered symbols in the public API");
+        FilteredSymbolFinalizer finalizer(*this, config);
         finalizer.build();
     }
 

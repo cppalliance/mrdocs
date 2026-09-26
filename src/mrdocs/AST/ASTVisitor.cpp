@@ -23,6 +23,7 @@
 #include "TypeBuilder.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
+#include <mrdocs/Support/InputFiles.hpp>
 #include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/AST.h>
@@ -3338,7 +3339,25 @@ checkFilters(
     // This filters symbols supported by MrDocs and
     // symbol types whitelisted in the configuration,
     // such as private members and anonymous namespaces.
-    MRDOCS_CHECK_OR(checkTypeFilters(D, access), ExtractionMode::Dependency);
+    if (!checkTypeFilters(D, access))
+    {
+        // Consider the case of a public function returning
+        // a private nested type marked
+        // `@implementationdefined`. Dropping the type here
+        // (for being private) would cause the type name to
+        // be printed normally in the function signature,
+        // with no trace of "implementation-defined". So,
+        // make the command decide. (An implicit declaration
+        // has no doc-comment to carry the command.)
+        //
+        // See tests/golden/fixtures/filters/symbol-type/private-implementation-defined.cpp.
+        MRDOCS_CHECK_OR(!D->isImplicit(), ExtractionMode::Dependency);
+        auto const [declared, declaredKind] = checkSymbolFilters(D);
+        MRDOCS_CHECK_OR(
+            declared == ExtractionMode::ImplementationDefined ||
+            declared == ExtractionMode::SeeBelow,
+            ExtractionMode::Dependency);
+    }
 
     // Check if this symbol should be extracted according
     // to its qualified name. This checks if it matches
@@ -3353,7 +3372,21 @@ checkFilters(
     // to its location. This checks if it's in one of the
     // input directories, if it matches the file patterns,
     // and it's not in an excluded file.
-    MRDOCS_CHECK_OR(checkFileFilters(D), ExtractionMode::Dependency);
+    //
+    // An `@implementationdefined` or `seebelow` command on a symbol in
+    // an excluded file "wins" over the file exclusion, because it is a
+    // more specific statement. A command in a third-party header speaks
+    // for that library, instead, so it does not win.
+    // See tests/golden/fixtures/filters/file/excluded-implementation-defined.cpp
+    if (Cat == ExtractionMode::ImplementationDefined ||
+        Cat == ExtractionMode::SeeBelow)
+    {
+        MRDOCS_CHECK_OR(checkInputFilters(D), ExtractionMode::Dependency);
+    }
+    else
+    {
+        MRDOCS_CHECK_OR(checkFileFilters(D), ExtractionMode::Dependency);
+    }
 
     return Cat;
 }
@@ -3427,81 +3460,39 @@ bool
 ASTVisitor::
 checkFileFilters(std::string_view const symbolPath) const
 {
-    // Inclusion is generous: a file counts as being inside an input
-    // directory when its path matches as written or by its real
-    // (symlink-resolved) location. This recognizes files reached through a
-    // symlinked directory without dropping anything that
-    // already matched as written.
-    if (config_.recursive)
-    {
-        MRDOCS_CHECK_OR(
-            config_.input.empty() ||
-            std::ranges::any_of(config_.input,
-                [&](std::string const& inputDir)
-                {
-                    return files::isResolvedSubpathOf(symbolPath, inputDir);
-                }),
-            false);
-    }
-    else
-    {
-        // Resolve the symbol's parent lazily: the filesystem lookup only
-        // happens when a literal match fails, so a tree with no symlinks
-        // pays no extra cost.
-        std::string_view const symbolParentDir = files::getParentDir(symbolPath);
-        Optional<std::string> symbolParentDirReal;
-        auto parentDirReal = [&]() -> std::string const&
-        {
-            if (!symbolParentDirReal)
-            {
-                symbolParentDirReal = files::makeRealPath(symbolParentDir);
-            }
-            return *symbolParentDirReal;
-        };
-        MRDOCS_CHECK_OR(
-            config_.input.empty() ||
-            std::ranges::any_of(config_.input,
-                [&](std::string const& inputDir)
-                {
-                    return inputDir == symbolParentDir
-                        || files::makeRealPath(inputDir) == parentDirReal();
-                }),
-            false);
-    }
+    return isInputFile(config_, symbolPath) && !isExcludedFile(symbolPath);
+}
 
+bool
+ASTVisitor::
+isExcludedFile(std::string_view const filePath) const
+{
     // Exclusion is strict: match the written path only, so a symlinked alias
     // of an excluded file is not excluded.
-    MRDOCS_CHECK_OR(
-        config_.exclude.empty() ||
-        std::ranges::none_of(config_.exclude,
+    bool const inExcludedDirectory =
+        std::ranges::any_of(config_.exclude,
             [&](std::string const& excludeDir)
             {
-                return files::isSubpathOf(symbolPath, excludeDir);
-            }),
-        false);
-
-    // Don't extract declarations that fail the exclude pattern filter
-    MRDOCS_CHECK_OR(
-        config_.excludePatterns.empty() ||
-        std::ranges::none_of(config_.excludePatterns,
+                return files::isSubpathOf(filePath, excludeDir);
+            });
+    bool const matchesExcludePattern =
+        std::ranges::any_of(config_.excludePatterns,
             [&](PathGlobPattern const& pattern)
             {
-                return pattern.match(symbolPath);
-            }),
-        false);
+                return pattern.match(filePath);
+            });
+    return inExcludedDirectory || matchesExcludePattern;
+}
 
-    // Don't extract declarations that fail the file pattern filter
-    MRDOCS_CHECK_OR(
-        config_.filePatterns.empty() ||
-        std::ranges::any_of(config_.filePatterns,
-        [symbolFilename = files::getFileName(symbolPath)]
-        (PathGlobPattern const& pattern)
-            {
-                return pattern.match(symbolFilename);
-            }),
-        false);
+bool
+ASTVisitor::
+checkInputFilters(clang::Decl const* D)
+{
+    MRDOCS_SYMBOL_TRACE(D, context_);
 
-    return true;
+    FileInfo const* fileInfo = findFileInfo(D);
+    MRDOCS_CHECK_OR(fileInfo, false);
+    return isInputFile(config_, fileInfo->full_path);
 }
 
 std::optional<ExtractionMode>

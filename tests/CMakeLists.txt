@@ -30,3 +30,28 @@ add_test(NAME mrdocs-self-doc
             --log-level=debug
             $<$<BOOL:${MRDOCS_BUILD_STRICT_TESTS}>:--warn-as-error=true>
     )
+
+# A warning is not a generated file, so the golden harness cannot see it.
+# The input names a filtered symbol twice, as a base class and as a return
+# type, and nothing else in it emits a warning: with the warning on, the
+# run fails under --warn-as-error, and with it off the run is clean.
+set(MRDOCS_FILTERED_API_DIR "${CMAKE_CURRENT_SOURCE_DIR}/diagnostics/filtered-in-public-api")
+set(MRDOCS_FILTERED_API_COMMAND
+        mrdocs
+            "--config=${MRDOCS_FILTERED_API_DIR}/mrdocs.yml"
+            ${MRDOCS_BUILTIN_DIR_ARGS}
+            --generator=noop
+            --warn-as-error)
+add_test(NAME mrdocs-warn-filtered-in-public-api
+    COMMAND ${MRDOCS_FILTERED_API_COMMAND})
+set_tests_properties(mrdocs-warn-filtered-in-public-api PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME mrdocs-quiet-filtered-in-public-api
+    COMMAND ${MRDOCS_FILTERED_API_COMMAND} --warn-if-filtered-in-public-api=false)
+
+add_test(NAME mrdocs-ignore-filtered-outside-inputs
+    COMMAND mrdocs
+        "--config=${CMAKE_CURRENT_SOURCE_DIR}/diagnostics/filtered-outside-inputs/mrdocs.yml"
+        ${MRDOCS_BUILTIN_DIR_ARGS}
+        --generator=noop
+        --warn-as-error)
