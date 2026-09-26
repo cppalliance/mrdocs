@@ -19,12 +19,17 @@ import unittest
 
 sys.path.insert(0, str(__file__).replace("\\", "/").rsplit("/", 2)[0])
 
+from unittest.mock import MagicMock, patch
+
 from src.presets.generator import (
+    BOOTSTRAP_VENDOR_KEY,
     get_host_system_name,
     get_parent_preset_name,
     get_display_name,
     normalize_preset_value,
     create_cmake_presets,
+    is_bootstrap_preset,
+    remove_cmake_presets,
 )
 
 
@@ -505,6 +510,106 @@ class TestCreateCmakePresetsCleanup(unittest.TestCase):
         self.assertIn("debug-macos", names)
         self.assertIn("release-macos", names,
                       "Other presets should be preserved, not deleted")
+
+
+class TestBootstrapPresetMarker(unittest.TestCase):
+    """A preset bootstrap writes records that bootstrap created it."""
+
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def _created_preset(self):
+        create_cmake_presets(
+            source_dir=self.tmpdir,
+            preset_name="release-linux",
+            build_type="Release",
+            ui=MagicMock(),
+        )
+        with open(os.path.join(self.tmpdir, "CMakeUserPresets.json")) as f:
+            return json.load(f)["configurePresets"][0]
+
+    def test_created_preset_is_marked(self):
+        self.assertTrue(is_bootstrap_preset(self._created_preset()))
+
+    @patch("src.presets.generator.is_windows", return_value=True)
+    def test_marker_sits_beside_visual_studio_settings(self, _):
+        vendor = self._created_preset()["vendor"]
+        self.assertIn(BOOTSTRAP_VENDOR_KEY, vendor)
+        self.assertIn("microsoft.com/VisualStudioSettings/CMake/1.0", vendor)
+
+    def test_hand_written_preset_is_not_marked(self):
+        self.assertFalse(is_bootstrap_preset({"name": "mine"}))
+        self.assertFalse(is_bootstrap_preset(
+            {"name": "mine", "vendor": {"example.com/IDE/1.0": {}}}))
+
+
+class TestRemoveCmakePresets(unittest.TestCase):
+    """remove_cmake_presets removes only the presets bootstrap created."""
+
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        self.path = os.path.join(self.tmpdir, "CMakeUserPresets.json")
+        marked = {"vendor": {BOOTSTRAP_VENDOR_KEY: {}}}
+        self.presets = {
+            "version": 6,
+            "configurePresets": [
+                dict(name="old", **marked),
+                dict(name="current", **marked),
+                {"name": "mine"},
+            ],
+        }
+        with open(self.path, "w") as f:
+            json.dump(self.presets, f)
+        self.ui = MagicMock()
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def _remove(self, names, **kwargs):
+        return remove_cmake_presets(
+            self.tmpdir, names, keep="current", ui=self.ui, **kwargs)
+
+    def _names_on_disk(self):
+        with open(self.path) as f:
+            return [p["name"] for p in json.load(f)["configurePresets"]]
+
+    def _warnings(self):
+        return " ".join(str(c.args[0]) for c in self.ui.warn.call_args_list)
+
+    def test_removes_a_bootstrap_preset(self):
+        self.assertEqual(self._remove(["old"]), ["old"])
+        self.assertEqual(self._names_on_disk(), ["current", "mine"])
+
+    def test_keeps_a_hand_written_preset(self):
+        self.assertEqual(self._remove(["mine"]), [])
+        self.assertEqual(self._names_on_disk(), ["old", "current", "mine"])
+        self.assertIn("bootstrap did not create it", self._warnings())
+
+    def test_keeps_the_preset_the_run_sets_up(self):
+        self.assertEqual(self._remove(["current"]), [])
+        self.assertIn("current", self._names_on_disk())
+        self.assertIn("this run sets up", self._warnings())
+
+    def test_reports_an_unknown_preset(self):
+        self.assertEqual(self._remove(["nope"]), [])
+        self.assertIn("no such preset", self._warnings())
+
+    def test_removes_a_repeated_name_once(self):
+        self.assertEqual(self._remove(["old", "old"]), ["old"])
+
+    def test_dry_run_leaves_the_file_alone(self):
+        self.assertEqual(self._remove(["old"], dry_run=True), ["old"])
+        self.assertEqual(self._names_on_disk(), ["old", "current", "mine"])
+
+    def test_without_a_presets_file_removes_nothing(self):
+        os.remove(self.path)
+        self.assertEqual(self._remove(["old"]), [])
+        self.assertFalse(os.path.exists(self.path))
 
 
 class TestInjectClangToolchainFlags(unittest.TestCase):

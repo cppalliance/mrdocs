@@ -721,6 +721,17 @@ class TestCreatePresets(unittest.TestCase):
         self.assertEqual(call_kwargs[0][1], "release-linux-gcc")  # preset name
         self.assertEqual(call_kwargs[0][2], "Release")  # build type
 
+    @patch("src.installer.remove_cmake_presets", return_value=["old"])
+    @patch("src.installer.create_cmake_presets")
+    def test_create_presets_removes_the_named_presets(self, _, mock_remove):
+        inst = _make_installer(remove_preset=["old"])
+        inst.options.preset = "new"
+        inst.ui = MagicMock()
+        inst.create_presets()
+        self.assertEqual(mock_remove.call_args[0][1], ["old"])
+        self.assertEqual(mock_remove.call_args[1]["keep"], "new")
+        inst.ui.ok.assert_called_once_with("Removed preset 'old'")
+
     @patch("src.installer.create_cmake_presets")
     def test_create_presets_passes_package_roots(self, mock_create):
         inst = _make_installer()
