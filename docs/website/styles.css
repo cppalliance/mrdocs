@@ -80,7 +80,8 @@
      text colour; re-pointing the page background to it is a follow-up. */
 
   /* --- Palette: navy (dark surfaces) ------------------------------- */
-  --ds-navy-650: #171c26; /* dark doc surface / footer bar */
+  --ds-navy-550: #272e3f; /* Figma exact: dark page surface / doc panel */
+  --ds-navy-650: #171c26; /* footer bar */
   --ds-navy-750: #141720; /* dark code body / table header band */
 
   /* --- Typography: families ---------------------------------------- */
@@ -175,7 +176,7 @@
     color-scheme: dark;
 
     /* Dark uses pure black for outlines, not #0F172A. */
-    --ds-color-doc-surface: var(--ds-navy-650);
+    --ds-color-doc-surface: var(--ds-navy-550);
     --ds-color-cta-panel: var(--ds-blue-350);
     --ds-color-footer-bg: var(--ds-navy-650);
     --ds-color-icon-box: var(--ds-blue-350);
@@ -190,7 +191,7 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --ds-color-doc-surface: var(--ds-navy-650);
+  --ds-color-doc-surface: var(--ds-navy-550);
   --ds-color-cta-panel: var(--ds-blue-350);
   --ds-color-footer-bg: var(--ds-navy-650);
   --ds-color-icon-box: var(--ds-blue-350);
@@ -255,15 +256,13 @@
    * token, so the whole burst scales from one declaration.
    *
    *   mobile   assets/mrdocs-cta-rays-mobile.webp    804x1734, 9.7KB
-   *   desktop  assets/mrdocs-cta-rays-desktop.webp  2000x1182,  49KB
    *
-   * Both are exact 1:1 exports of their Figma frame -- mobile is 402x867 at
-   * 2x, desktop 1440x851 -- so PAINTING ONE AT ITS FRAME WIDTH, top left of
-   * the container, is the entire placement. That alone lands each burst's
-   * origin on the mascot's chest (desktop: the artwork's own centre falls at
-   * (1066, 294) against the .fig's (1068.5, 292.5)); the mascot is laid out
-   * against the same container with a fixed offset at both breakpoints, so
-   * the two track each other without an origin coordinate on either side. */
+   * Mobile only: desktop has no burst. The file is a 1:1 export of the
+   * Figma frame (402x867 at 2x), so PAINTING IT AT ITS FRAME WIDTH, top
+   * left of the container, is the entire placement. That alone lands the
+   * burst's origin on the mascot's chest; the mascot is laid out against
+   * the same container with a fixed offset, so the two track each other
+   * without an origin coordinate on either side. */
   --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-mobile.webp");
   --ds-cta-burst-art-width: 402px;
   --ds-cta-burst-art-color: var(--ds-black);
@@ -383,7 +382,7 @@
     --primary-color: #3d8bff;
     --primary-color-hover: #2563eb;
     /* Midnight canvas (dark, the default theme) */
-    --body-background: #272e3f; /* Figma: dark page surface */
+    --body-background: var(--ds-navy-550); /* Figma: dark page surface */
 }
 
 /* Responsive base font size is provided by --ds-font-size (see
@@ -588,7 +587,7 @@ kbd {
 [data-theme=dark] {
     color-scheme: dark;
     --background-color: rgba(0, 0, 0, 0.3);
-    --body-background: #272e3f; /* Figma: dark page surface */
+    --body-background: var(--ds-navy-550); /* Figma: dark page surface */
     /* code + panel surfaces (dark) */
     --hl-bg: #0f172a;
     --hl-fg: #adbac7;
@@ -3342,16 +3341,27 @@ footer a:focus {
     /* default = dark. 316:256650, the dark Home frame's Navbar. */
     --navc-bg: #171c26;
     --navc-ink: #e9edf2;
-    --navc-border: #33454f;
+    /* The frame strokes the dark bar, its buttons and their shadows in pure
+       #000000, not the slate edge the docs side never uses. */
+    --navc-border: #000000;
     --navc-gold: var(--ds-gold-450);
-    --navc-shadow: #05080a;
+    --navc-shadow: #000000;
 
     /* Theme toggle, Figma "Secondary/Default" 38x38: #1E78FF at 10% with a
        2px #0F172A edge. The icon keeps its own token because it is the one
        part that has to invert for the dark ground. */
     --navc-toggle-bg: rgba(30, 120, 255, 0.1);
-    --navc-toggle-edge: #33454f;
+    --navc-toggle-edge: #000000;
     --navc-toggle-icon: #ffffff;
+
+    /* The dark Menu Container is pure #FFFFFF, not the bar's
+       blue-grey `--navc-ink`. Light is #0F172A. */
+    --navc-menu-icon: #ffffff;
+
+    /* In both themes the open panel is the page ground under a 10%
+       blue wash, in both themes, so one mix off `--body-background` covers
+       them. The bar above it stays `--navc-bg`. */
+    --navc-menu-bg: color-mix(in srgb, var(--ds-blue-450) 10%, var(--body-background));
 }
 :root[data-theme="light"] {
     --navc-bg: #ffffff;
@@ -3363,6 +3373,7 @@ footer a:focus {
     --navc-toggle-bg: rgba(30, 120, 255, 0.1);
     --navc-toggle-edge: #0f172a;
     --navc-toggle-icon: #0f172a;
+    --navc-menu-icon: #0f172a;
 }
 
 .nav {
@@ -3457,51 +3468,95 @@ footer a:focus {
 
 /* Hamburger — shown only on mobile */
 .nav { position: relative; }
+/* The frame's "Menu Container" is a bare 24x24 with no fill and no stroke, so
+   the glyph stands on its own -- the neighbouring 38x38 toggle already owns
+   that weight. */
 .nav .nav-hamburger {
     display: none;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 4px;
-    width: 42px; height: 38px;
-    /* zero the global button margin, which otherwise pads this out to 54 and
-       centres it 8px high in the 79 bar */
+    width: 24px; height: 24px;
+    /* zero the global button margin */
     margin: 0;
-    padding: 0 8px;
+    padding: 0;
     box-sizing: border-box;
-    border: 2px solid var(--navc-border);
-    box-shadow: 2px 2px 0 var(--navc-shadow);
-    background: var(--navc-bg);
+    border: 0;
+    box-shadow: none;
+    background: none;
+    color: var(--navc-ink);
     cursor: pointer;
 }
-.nav .nav-hamburger span { display: block; height: 2.5px; border-radius: 2px; background: var(--navc-ink); }
+/* Both icons carry the bar's ink explicitly: `currentColor` alone resolves to
+   a blue further up the cascade and paints the glyph as though it were a
+   link. */
+.nav .nav-hamburger .burger-icon,
+.nav .nav-hamburger .close-icon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    color: var(--navc-menu-icon);
+}
+.nav .nav-hamburger .burger-icon path { fill: currentColor; }
+.nav .nav-hamburger .close-icon path { stroke: currentColor; }
+
+/* Per "Close remove - Iconly Pro": the open menu swaps the bars for
+   a cross, so the control says how to dismiss what it opened. */
+.nav .nav-hamburger .burger-icon { display: block; }
+.nav.nav-open .nav-hamburger .burger-icon { display: none; }
+.nav.nav-open .nav-hamburger .close-icon { display: block; }
 
 @media (max-width: 767px) {
-    .nav { padding: 0 16px; }
+    /* The frame makes the mobile bar 59.4 (a 35.4 logo inside 12/20 padding),
+       not the 79 the desktop bar carries -- the docs bar beside it is 57. */
+    .nav {
+        min-height: 59px;
+        padding: 0 20px;
+    }
+    .nav .logo-link .brand-lockup { height: 35px; }
     .nav .nav-hamburger { display: inline-flex; }
+    /* Per "Navbar Menu [Open]": 30px padding, the links stacked left on
+       a 32 gap, the toggle at the top right. No rules between items -- the 32
+       gap is what separates them. */
     .nav ul.nav-menu {
         display: none;
-        position: absolute;
-        top: 100%; left: 0; right: 0;
+        /* Fixed and run to the bottom, like the docs drawer: the mock's panel
+           is a full screen, and an absolute one scrolls away with the page.
+           `--nav-h` is published by the toggle script. */
+        position: fixed;
+        top: var(--nav-h, 79px); left: 0; right: 0; bottom: 0;
         flex-direction: column;
-        align-items: stretch;
-        gap: 0;
+        align-items: flex-start;
+        gap: 32px;
         margin: 0;
-        padding: 6px 16px 16px;
-        background: var(--navc-bg);
-        border-bottom: 2px solid var(--navc-border);
+        padding: 30px;
+        background: var(--navc-menu-bg);
+        border-bottom: 0;
+        overflow-y: auto;
         z-index: 60;
     }
     .nav.nav-open ul.nav-menu { display: flex; }
-    .nav ul.nav-menu > li { width: 100%; margin: 0; }
-    .nav ul.nav-menu > li.nav-link > a {
+    .nav ul.nav-menu > li { width: auto; margin: 0; }
+    /* `:not(.nav-btn)` -- the reset is for the plain menu links. Without it
+       the gh button lost its bottom border and rendered a three-sided box. */
+    .nav ul.nav-menu > li.nav-link > a:not(.nav-btn) {
         display: block;
-        padding: 13px 2px;
-        font-size: 15px;
-        border-bottom: 1px solid color-mix(in srgb, var(--navc-border) 45%, transparent);
+        padding: 0;
+        font-size: 14px;
+        border-bottom: 0;
     }
-    .nav .nav-btn--gh { width: 100%; justify-content: center; margin-top: 12px; padding: 10px 14px; }
+    /* 157x38 in the mock, left-aligned, not stretched to the panel. The
+       padding is restated because the link reset above is (0,3,3) and would
+       otherwise zero it. */
+    .nav ul.nav-menu > li.nav-link > a.nav-btn--gh {
+        width: auto;
+        justify-content: center;
+        margin-top: 0;
+        padding: 10px 14px;
+    }
     .nav .nav-btn--gh span { display: inline; }
-    .nav .nav-toggle-li { margin-top: 12px; justify-content: flex-start; }
+    /* Frame 234 sits at 334,30 in a 402 panel: top right, inside the padding,
+       on the same row as the links rather than stacked under them. */
+    .nav .nav-toggle-li { position: absolute; top: 30px; right: 30px; margin: 0; }
 }
 
 /* ===========================
@@ -3690,7 +3745,9 @@ footer a:focus {
     height: var(--ds-btn-height);
     font-family: var(--ds-font-display);
     font-style: italic;
-    font-weight: var(--ds-weight-medium);
+    /* Bangers ships only 400. A heavier weight is a synthetic bold, which
+       WebKit also widens by a pixel a glyph; Chromium only thickens it. */
+    font-weight: var(--ds-weight-regular);
     text-transform: uppercase;
     padding: 0 var(--ds-btn-padding-x);
     white-space: nowrap;
@@ -4258,6 +4315,14 @@ header::before,
 /* Headline: three lines, line 1 blue and the rest gold. */
 header .header-content h1 .title-line {
     display: block;
+    /* Bangers ships no italic cut, so the oblique is synthesised. WebKit does
+       not grow the ink overflow rect to cover that skew, and this span's box
+       ends exactly at the text advance, so it clipped the last glyph: the Y of
+       "Full-fidelity" lost 15px of its arm on iOS while Chromium drew it whole.
+       The padding gives the glyph room and the negative margin takes the space
+       back, leaving layout identical. */
+    padding-right: 0.45em;
+    margin-right: -0.45em;
 }
 
 header .header-content h1 .title-line--alt {
@@ -4377,14 +4442,25 @@ header .header-content > p:not(.row-label) {
     counter-reset: codeline;
     overflow-x: auto;
     flex: 1;
+    /* Digits in the widest line number; the gutter grows by 1ch per digit. */
+    --cl-digits: 1;
+}
+
+.code-panel-body:has(.cl:nth-child(10)) {
+    --cl-digits: 2;
+}
+
+.code-panel-body:has(.cl:nth-child(100)) {
+    --cl-digits: 3;
 }
 
 .code-panel-body code {
     background: none;
     padding: 0;
-    /* Figma: 13px mobile, 14px desktop, line-height 2.2 in both. */
+    /* Figma: 13px mobile, 14px desktop. Line height follows the docs code
+       blocks (docs/ui doc.css), not Figma's 2.2, so the two read alike. */
     font-size: 13px;
-    line-height: 2.2;
+    line-height: var(--ds-leading-code);
     color: var(--ds-code-panel-fg);
 }
 
@@ -4392,27 +4468,49 @@ header .header-content > p:not(.row-label) {
     display: block;
     position: relative;
     counter-increment: codeline;
-    /* Figma: 9px number column + 30px gap. */
-    padding-left: 39px;
+    /* Figma: 9px number column + 30px gap. The column widens to fit
+       multi-digit numbers; resolved here so `ch` is the code face. */
+    --cl-gutter: max(9px, calc(var(--cl-digits) * 1ch));
+    padding-left: calc(var(--cl-gutter) + 30px);
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    /* A blank source line has no text to give it a line box. */
+    min-height: calc(var(--ds-leading-code) * 1em);
 }
 
 .code-panel-body .cl::before {
     content: counter(codeline);
     position: absolute;
     left: 0;
-    width: 9px;
+    width: var(--cl-gutter);
     text-align: right;
+    /* .cl wraps anywhere; the number must not. */
+    white-space: nowrap;
+    overflow-wrap: normal;
     color: var(--ds-code-panel-linenum);
 }
 
-.code-panel-body .c { color: var(--ds-code-panel-comment); }
-.code-panel-body .k { color: var(--ds-code-panel-keyword); }
-.code-panel-body .f { color: var(--ds-code-panel-fn); }
+/* The panels are dark in both themes, so they take the docs' dark syntax
+   palette rather than the themed --hl-* set, which flips to light-surface
+   values in light mode. Same tokens as docs/ui vars.css, so the landing
+   page code reads exactly like the documentation's. */
+.code-panel,
+.side-by-side {
+    --hl-fg: var(--ds-code-panel-fg);
+    --hl-comment: var(--ds-code-panel-comment);
+    --hl-keyword: var(--ds-code-panel-hl-keyword);
+    --hl-string: var(--ds-code-panel-hl-string);
+    --hl-const: var(--ds-code-panel-hl-const);
+    --hl-entity: var(--ds-code-panel-hl-entity);
+    --hl-title: var(--ds-code-panel-hl-title);
+    --hl-tag: var(--ds-code-panel-hl-tag);
+    --hl-doc: var(--ds-code-panel-hl-doc);
+    --hl-doc-strong: var(--ds-code-panel-hl-doc-strong);
+}
 
 /* ---- Hero structure (mobile) --------------------------------------- *
- * The mockup gutter is 28px, not Pico's 16px. Scoped to the hero for
- * now; the rest of the page still uses Pico's container padding.
+ * Side gutter from --ds-gutter, which steps with the viewport: the 402
+ * mockup's 28px left too little measure on phones, so it holds from 768.
  * Mobile stacking order is content -> code panel -> mascot, which is
  * NOT DOM order, so the two visual columns are re-ordered here and
  * placed properly at the desktop breakpoint later. */
@@ -4421,8 +4519,8 @@ header .container,
 #features .container,
 .cta-panel-inner,
 .footer-bar {
-    padding-left: 28px;
-    padding-right: 28px;
+    padding-left: var(--ds-gutter);
+    padding-right: var(--ds-gutter);
 }
 
 .header-banner {
@@ -4500,20 +4598,37 @@ header .header-content > p:not(.row-label) {
 }
 
 /* ---- Hero mascot --------------------------------------------------- *
- * On mobile the figure is left-aligned and bleeds off the left edge only
- * (its cape tip touches x=0), at 81vw -- measured by matching the cape's
- * span to the mockup. It also rides up over the panel's lower edge. */
+ * On mobile the figure is centred at 81vw, the width measured off the
+ * mockup. It also rides up over the panel's lower edge. */
 .header-image {
-    margin-inline: -28px 0;
+    justify-self: center;
+    margin-inline: auto;
     margin-top: -24px;
     width: 81vw;
     max-width: none;
+}
+
+/* Both mascots are cropped at the thigh, so each ends on a hard horizontal
+   edge. One shared fade takes that edge out rather than letting it sit on
+   the ground as a cut. Each mascot sets only where the fade starts, so the
+   fade spans the same share of the figure: 0.26 of crown-to-belt (measured
+   in the source art), running to the crop. */
+.hero-mascot,
+.cta-mascot {
+    -webkit-mask-image: linear-gradient(
+        to bottom, var(--ds-black) var(--mascot-fade-start), transparent 99%
+    );
+    mask-image: linear-gradient(
+        to bottom, var(--ds-black) var(--mascot-fade-start), transparent 99%
+    );
 }
 
 .hero-mascot {
     display: block;
     width: 100%;
     height: auto;
+    /* Belt top at 82% of the art's height; 21% of the art is the fade. */
+    --mascot-fade-start: 78%;
 }
 
 /* =====================================================================
@@ -4536,8 +4651,8 @@ header .header-content > p:not(.row-label) {
     #features .container,
     .cta-panel-inner,
     .footer-bar {
-        max-width: calc(1284px + 2 * 78px);
-        padding-inline: 78px;
+        max-width: calc(1284px + 2 * var(--ds-gutter));
+        padding-inline: var(--ds-gutter);
         margin-inline: auto;
     }
 
@@ -4584,11 +4699,13 @@ header .header-content > p:not(.row-label) {
     }
 
     .hero-code {
-        margin-top: 73px;
+        /* Figma tops the painted panel at y256, 67px below the eyebrow (its
+           2px OUTSIDE stroke puts the box 2px above the y258 node). */
+        margin-top: 67px;
     }
 
-    /* Desktop panel: 15px/31px pitch, no wrapping at this width, and a
-       deep bottom well as in the mockup. */
+    /* Desktop panel: 14px code as in the docs blocks, and a deep bottom
+       well as in the mockup. */
     .code-panel-body code {
         font-size: 14px;
     }
@@ -4599,25 +4716,54 @@ header .header-content > p:not(.row-label) {
 }
 
 @media (min-width: 992px) {
+    /* Figma opens the hero 110px below the navbar (eyebrow pill painted at
+       y189 against a 79px navbar). The mascot and code panel offsets below are
+       derived from that y189. */
     header .container {
-        padding-top: 47px;
+        padding-top: 30px;
+    }
+
+    /* Holds the band's bottom edge at Figma's y1025: the mascot bottoms out at
+       y932 and the frame leaves ~93px of city below it. Explicit so the
+       section height does not track `padding-top`. */
+    header {
+        padding-bottom: 93px;
+    }
+
+    /* Hero vertical rhythm at desktop; the base rules above are tuned for the
+       402 frame and must stay untouched. Figma's Text Container stacks at a
+       uniform gap32: pill (bottom y221) -> title y251 -> description y541 ->
+       buttons y677. */
+    header .header-content h1 {
+        margin-block: 30px 0;
+    }
+
+    header .header-content > p:not(.row-label) {
+        margin-block: 30px 32px;
     }
 
     /* The mascot is wider than its own column in the mockup -- it reads as
        an overlay that the copy and panel columns sit either side of, so it
        is sized absolutely and allowed to spill over the column edges. */
+    /* 486 wide against a 382 gap at 1440, so the figure has to cross one of
+       its neighbours. It spills right, over the code panel, and never over
+       the copy: the panel is a flat slab that reads fine behind a figure,
+       where the headline does not. Anchored to the column start so the left
+       edge tracks the copy rather than the centre of a gap that changes
+       width. The caped art was biased the other way, which is what drove the
+       book through the headline once the wider lab coat replaced it. */
     .header-image {
-        justify-self: center;
-        /* Scaled so the cape matches the mockup's 388px span -- measured
-           on the cape because it is the only saturated red in the art;
-           the tan armour pollutes any gold/hex-badge measurement. */
+        justify-self: start;
         width: 486px;
         max-width: none;
-        margin-top: 92px;
-        /* Biased left of its own column: in the mockup the figure sits
-           closer to the copy than to the panel, overlapping the copy
-           column rather than centring in the gap. */
-        transform: translateX(-66px);
+        /* Figma tops the mascot at y285, i.e. 96px below the eyebrow. */
+        margin-top: 96px;
+        /* Over the panel, not under it. */
+        position: relative;
+        z-index: 2;
+        /* Nudged left of the column start, into the art's transparent
+           margin, without reaching the headline. */
+        left: -12px;
     }
 }
 
@@ -5143,7 +5289,7 @@ header {
 
 .side-by-side > .documentation-panel {
     background: var(--ds-color-doc-surface);
-    padding: 20px;
+    padding: var(--ds-space-sm);
     height: auto;
 }
 
@@ -5151,10 +5297,6 @@ header {
     .side-by-side {
         flex-direction: row;
         padding: 2px;
-    }
-
-    .side-by-side > .snippet-panel > .code-panel-body {
-        padding: 30px;
     }
 
     .side-by-side > .documentation-panel {
@@ -5187,35 +5329,9 @@ header {
     filter: var(--ds-title-drop-sm);
 }
 
-/* The code half is highlight.js output, so its colours come from hljs
-   classes rather than the hand-written spans the hero panel uses. Map them
-   onto the same panel palette: grey comments, pink keywords, blue
-   identifiers, cream for everything else. */
+/* The code half is highlight.js output, coloured by the shared hljs rules
+   through the panel palette above. */
 .side-by-side .code-panel-body code {
-    color: var(--ds-code-panel-fg);
-}
-
-.side-by-side .hljs-doc-comment,
-.side-by-side .hljs-comment {
-    color: var(--ds-code-panel-comment);
-}
-
-/* Only keywords take the pink; attributes and identifiers stay cream, and
-   everything inside a doc comment reads as comment grey. */
-.side-by-side .hljs-doctag,
-.side-by-side .hljs-string,
-.side-by-side .hljs-name {
-    color: inherit;
-}
-
-.side-by-side .hljs-keyword {
-    color: var(--ds-code-panel-keyword);
-}
-
-.side-by-side .hljs-meta,
-.side-by-side .hljs-title,
-.side-by-side .hljs-type,
-.side-by-side .hljs-params {
     color: var(--ds-code-panel-fg);
 }
 
@@ -5267,13 +5383,6 @@ header {
     font-family: var(--ds-font-body);
 }
 
-/* Comments come through italic from the highlight theme; the mockup has
-   them upright. */
-.side-by-side .hljs-doc-comment,
-.side-by-side .hljs-comment {
-    font-style: normal;
-}
-
 /* ---- Section transition band --------------------------------------- *
  * Figma floats a decorative layer over the boundary into this section:
  * a cloud bank in the top corners and comic speed lines converging behind
@@ -5288,6 +5397,14 @@ header {
    against the heading at y3310) -- which a single flattened export cannot
    reproduce. That needs the rays and clouds exported separately. */
 @media (min-width: 992px) {
+    /* Figma leaves 164px between the hero band's bottom edge (y1025) and this
+       heading (`Frame 15` at y1189); the default section padding gives 80.
+       Bottom padding is deliberately left at that default 80: `#features`
+       below derives its own 237 from it. */
+    .principles {
+        padding-top: 164px;
+    }
+
     /* Figma puts 317px between the cards' bottom and this heading; the
        default section padding gives only 160, which is what pulled the
        decorative band up over the cards. */
@@ -5366,50 +5483,10 @@ header {
     margin-top: 0;
 }
 
-/* ---- Code half: line-number gutter ---------------------------------- *
- * Figma models this as two flex children -- a 9px right-aligned number
- * column and the code -- with a 30px gap, NOT as a number per line. That
- * matters: the snippet is highlight.js output whose spans cross
- * newlines, so a per-line wrapper (what the hero uses via counters)
- * would need the span stack re-opened on every line. A separate column
- * needs none of that, and matches the design's own structure. The two
- * columns must share a line-height or the numbers drift. */
-.side-by-side > .snippet-panel > .code-panel-body {
-    display: flex;
-    align-items: flex-start;
-    gap: 30px;
-    /* The code column scrolls, not the pre: scrolling the pre would carry
-       the number column off with it. */
-    overflow: hidden;
-}
-
-.code-linenums {
-    flex: none;
-    width: 9px;
-    text-align: right;
-    white-space: pre;
-    font-family: var(--ds-font-mono);
-    /* Must track .code-panel-body code exactly. */
-    font-size: 13px;
-    line-height: 2.2;
-    color: var(--ds-code-panel-linenum);
-}
-
-.side-by-side > .snippet-panel > .code-panel-body > code {
-    flex: 1 1 auto;
-    min-width: 0;
-    /* Long lines scroll rather than wrap. Wrapping would desynchronise the
-       gutter, which counts source lines, not visual rows. The golden
-       fixtures run wider than the design's idealised snippet. */
-    white-space: pre;
-    overflow-x: auto;
-}
-
-@media (min-width: 992px) {
-    .code-linenums {
-        font-size: 14px;
-    }
-}
+/* ---- Code half: line numbers ------------------------------------- *
+ * render.js wraps each source line in a `.cl`, like the hero, so the
+ * shared counter numbers them and a long line wraps under its own number
+ * rather than scrolling. */
 
 /* The hero panel's border and drop shadow are inherited here, where they
    sit *inside* the bordered box and have nothing to cast onto. */
@@ -5478,7 +5555,6 @@ header {
 .side-by-side > .documentation-panel pre code {
     font-size: 14px;
     line-height: 1.6;
-    color: var(--ds-color-doc-surface);
 }
 
 /* ---- Parameter / exception tables ---------------------------------- *
@@ -5491,6 +5567,8 @@ header {
 .side-by-side > .documentation-panel table {
     width: 100%;
     border-collapse: collapse;
+    /* The global table rule boxes it in white; Figma has no outer box. */
+    border: 0;
     margin: 0;
 }
 
@@ -5693,7 +5771,7 @@ header {
  *            Even pitch is where the resemblance ends: the rays taper, run
  *            to different lengths, start at different radii and cluster
  *            hard by direction. This layer is therefore not drawn at all
- *            but masked from Figma's own export, one per breakpoint --
+ *            but masked from Figma's own export, on mobile only --
  *            see --ds-cta-burst-art.
  *
  * The dot masks were then swept against the mockup and scored on mean ink
@@ -5753,27 +5831,32 @@ header {
 
    The pseudo-element is inset:0 on that container, so anchoring the mask
    top-left is all the placement there is; --ds-cta-burst-art-width picks the
-   frame the export was drawn at and @media 992 swaps both tokens. Each
-   artwork is taller than the panel it sits in (mobile 867 against ~870 of
-   content, desktop 851 against 768) and the desktop one is wider than the
-   container past 1440, so the bottom and right run under the panel's
-   overflow:hidden. The .fig clips them at the same frame. */
+   frame the export was drawn at, and @media 992 drops the layer. The
+   artwork is about as tall as the panel (867 against ~870 of content), so
+   any excess runs under the panel's overflow:hidden. The .fig clips it at
+   the same frame. */
 .cta-panel-inner::before {
     background-color: var(--ds-cta-burst-art-color);
     -webkit-mask-image: var(--ds-cta-burst-art);
     mask-image: var(--ds-cta-burst-art);
     -webkit-mask-size: var(--ds-cta-burst-art-width) auto;
     mask-size: var(--ds-cta-burst-art-width) auto;
-    -webkit-mask-position: left top;
-    mask-position: left top;
+    /* The rays converge at (192, 199) in this box, which was the mascot's
+       chest at Figma's placement: 64% across and 44% down the figure. The
+       mascot is now centred and 400 tall (325 wide), which puts the chest at
+       (50% of the box + 46px, 181px). A percentage mask-position offsets by
+       that share of (box - 402), hence 50% plus 46 + 201 - 192. */
+    -webkit-mask-position: calc(50% + 55px) -18px;
+    mask-position: calc(50% + 55px) -18px;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
 }
 
 .cta-panel-inner {
     position: relative;
-    /* Figma mobile frame: 867 tall. */
-    min-height: 867px;
+    /* Figma mobile frame: 867 tall, less the 40px the mascot was scaled
+       down by. */
+    min-height: 827px;
 }
 
 /* ---- Mascot --------------------------------------------------------- *
@@ -5783,23 +5866,30 @@ header {
 .cta-mascot {
     display: block;
     position: absolute;
-    /* Figma x=-35 y=9 from the frame's outer edge. `top`/`left` resolve
-       against the container's padding box, which the panel's 2px border
-       has already pushed in by 2. */
+    /* Shared fade (see .hero-mascot). Belt top at 84% of the art's height,
+       so the same share of the figure is 21.5% of the art. */
+    --mascot-fade-start: 77.5%;
+    /* Figma y=9 from the frame's outer edge. `top` resolves against the
+       container's padding box, which the panel's 2px border has already
+       pushed in by 2. Centred rather than at Figma's x=-35: an absolutely
+       placed replaced element with both insets at 0 and auto margins
+       centres in its containing block. */
     top: 7px;
-    left: -37px;
-    width: 564px;
-    height: 440px;
-    /* Fixed width past the viewport edge: the art is a cutout on
-       transparency, so the overflow is empty pixels, not a visible crop. */
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    /* Figma's 440, scaled down. Width from the art's own ratio (0.813). */
+    width: auto;
+    height: 400px;
     max-width: none;
     pointer-events: none;
 }
 
 .cta-content {
     /* Figma puts the mobile copy block's pill at y=470; its 2px stroke is
-       outside that box, so the painted pill starts at 468. */
-    padding-top: 466px;
+       outside that box, so the painted pill starts at 468. Less the 40px the
+       mascot was scaled down by, so the pill keeps its distance from it. */
+    padding-top: 426px;
 }
 
 .cta-label {
@@ -5831,6 +5921,10 @@ header {
 
 .cta-title .title-line {
     display: block;
+    /* Same WebKit clip as the hero h1 (see there): the synthesised oblique
+       ran the R of "Your" past the span box and lost its right edge. */
+    padding-right: 0.45em;
+    margin-right: -0.45em;
 }
 
 .cta-title .title-line--alt {
@@ -5876,9 +5970,11 @@ header {
     box-shadow: var(--ds-cta-btn-shadow);
     /* .fig "Primary" symbol (316:8): Bangers Regular, 17 mobile / 20 desktop,
        10% tracking, uppercase. Bangers carries its own slant -- the italic
-       this used to set was a synthetic oblique on top of it. */
+       this used to set was a synthetic oblique on top of it. Regular for the
+       same reason: 600 was a synthetic bold, and WebKit widens that, which
+       wrapped the mobile pair onto two rows on iOS Safari. */
     font-family: var(--ds-font-display);
-    font-weight: var(--ds-weight-medium);
+    font-weight: var(--ds-weight-regular);
     font-size: 17px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -6006,19 +6102,6 @@ footer {
     text-decoration: underline;
 }
 
-/* 402 is the narrowest frame Figma defines. Below it the shared 28px
-   gutter squeezes the slogan -- 318px at the design's 1.4px tracking --
-   onto a second line, taking the bar from 92 to 105 at 360 and to 142 at
-   320 once the link row wrapped too. A 16px gutter holds both to one line
-   down to ~350, and leaves 25px of slack at 375 where 28px left one pixel.
-   Narrower still, the slogan wraps -- fine for a sentence, and the links
-   keep their own single line. */
-@media (max-width: 401px) {
-    .footer-bar {
-        padding-inline: 16px;
-    }
-}
-
 /* 992px is where the page as a whole switches to the 78px desktop
    gutter, so the CTA has to change arrangement at the same width or the
    mascot's offset would be measured against the wrong padding. */
@@ -6043,9 +6126,11 @@ footer {
             rgba(0, 0, 0, 0.1) 0, transparent 25%,
             transparent 45%, #000 80%
         );
-        /* Same layer, the desktop frame's export -- see the burst block. */
-        --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-desktop.webp");
-        --ds-cta-burst-art-width: 1440px;
+    }
+
+    /* No speed lines on desktop. */
+    .cta-panel-inner::before {
+        content: none;
     }
 
     .cta-panel-inner {
@@ -6054,12 +6139,26 @@ footer {
     }
 
     .cta-mascot {
-        /* Figma x=656 y=-31, 964x753, measured from the frame's outer
-           edge; the container's padding box starts 2px inside it. */
-        top: -33px;
-        left: 654px;
-        width: 964px;
-        height: 753px;
+        /* Height-driven, width from the art's own ratio. The 964x753 box
+           here framed the old landscape cutout (1928x1506); this pose is
+           portrait (1247x1533), so a fixed box of those dimensions scaled it
+           up until the head and right shoulder left the panel. Anchored to
+           the right edge rather than a left offset measured for wider art. */
+        top: auto;
+        bottom: 0;
+        left: auto;
+        right: 40px;
+        width: auto;
+        /* Inside the 768 panel, not bleeding past it. At 820 the crown left
+           the top edge and the right shoulder met the panel's right border.
+           Standing on the panel floor keeps the whole figure in frame.
+
+           Height follows the space left beside the copy, which is a fixed
+           560 column ending at 640, so the gap shrinks with the viewport
+           while a fixed height did not: at 1024 the figure ran 227 into the
+           headline. The art is 0.813 wide per unit of height, so trading
+           height for width keeps it clear down to 992. */
+        height: min(700px, calc((100vw - 700px) * 1.22));
     }
 
     .cta-content {
@@ -6126,5 +6225,91 @@ footer {
     .footer-slogan,
     .footer-bar .footer-links {
         font-size: 14px;
+    }
+}
+
+/* =====================================================================
+ * Mobile pass (below the 992 desktop layout). Figma defines the 402 frame
+ * off desktop decisions that do not survive a single column: fixed box
+ * heights sized for unwrapped code, equal-height rows for a 2x2 grid that
+ * is now a stack, and a desktop exceptions column wider than the phone.
+ * ===================================================================== */
+@media (max-width: 991px) {
+    /* Figma fixes the hero panel at 386 for unwrapped code. Wrapped, the
+       eight lines end well short of that and leave an empty well. */
+    .code-panel {
+        height: auto;
+    }
+
+    /* The hero mascot rides 24px up over the panel, and its book reaches
+       higher still; this keeps that overlap in empty well, off the code. */
+    .hero-code .code-panel-body {
+        padding-bottom: var(--ds-space-2xl);
+    }
+
+    /* One inset for every code and doc surface, so the stacked halves of
+       a row line their text up on the same edge. */
+    .code-panel-body,
+    .side-by-side > .snippet-panel > .code-panel-body,
+    .side-by-side > .documentation-panel pre {
+        padding: var(--ds-space-sm);
+    }
+
+    .side-by-side > .documentation-panel .admonition {
+        padding-inline: var(--ds-space-md);
+    }
+
+    /* Figma's 46px block gap is the desktop rhythm; at phone width the
+       sections read as disconnected. */
+    .side-by-side > .documentation-panel > .symbol {
+        gap: var(--ds-space-xl);
+    }
+
+    /* Pre/postconditions were never given the 12px block rhythm, so they
+       spaced out on Pico's list margins instead; the return value kept a
+       paragraph margin under its last line. */
+    .side-by-side > .documentation-panel .preconditions,
+    .side-by-side > .documentation-panel .postconditions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .side-by-side > .documentation-panel .preconditions ul,
+    .side-by-side > .documentation-panel .postconditions ul,
+    .side-by-side > .documentation-panel .return-value > p {
+        margin: 0;
+    }
+
+    .side-by-side > .documentation-panel .preconditions li:last-child,
+    .side-by-side > .documentation-panel .postconditions li:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Every heading sits the same 12px above the next box, but text starts
+       half a leading below its box top, so a heading over a paragraph or
+       list read ~4px further off than one over a table or note. Pull the
+       text up by exactly its half-leading. */
+    .side-by-side > .documentation-panel .symbol h3 + p,
+    .side-by-side > .documentation-panel .symbol h3 + ul {
+        margin-top: calc((1em - 1lh) / 2);
+    }
+
+    /* The phone-wide `display: block` (for scrolling wide tables) makes
+       the table shrink to its content instead of spanning the panel. These
+       tables break long names instead, so they can stay tables. */
+    .side-by-side > .documentation-panel table {
+        display: table;
+    }
+}
+
+/* The desktop 273px name column left "Thrown on" 74px wide on a phone, one
+   word a line. 60% still fits `std::invalid_argument` unbroken at 390;
+   from 576 the desktop width fits again. (min() here is ignored by WebKit
+   on a fixed-layout cell, so the switch is a breakpoint.) */
+@media (max-width: 575px) {
+    .side-by-side > .documentation-panel .exceptions table th:first-child,
+    .side-by-side > .documentation-panel .exceptions table td:first-child {
+        width: 60%;
     }
 }
