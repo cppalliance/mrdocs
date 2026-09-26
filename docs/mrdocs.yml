@@ -23,16 +23,17 @@ include-symbols:
 # API, so keep them out of MrDocs's own reference.
 exclude-symbols:
   - 'mrdocs::*Finalizer'
-# MrDocs's own macros are maintainer-facing implementation helpers, not
-# public API: the MRDOCS_* support macros and the internal X-macros
-# (INFO/LOG/F) and compat shims used across the headers. Keep them out of
-# MrDocs's own reference.
-exclude-macros:
+# The documented MRDOCS_* macros (MRDOCS_TRY, MRDOCS_CHECK, MRDOCS_CHECK_OR,
+# MRDOCS_ASSERT, MRDOCS_DESCRIBE_*, ...) are public API. Private helpers are
+# named MRDOCS_DETAIL_* or MRDOCS_PP_* and excluded by pattern, so a stray doc
+# comment can't publish them. With extract-all-macros off, the undocumented
+# build plumbing (MRDOCS_DECL, MRDOCS_VISIBLE, ...) stays out as well, and
+# include-macros keeps out the X-macros (INFO, LOG, F) and compat shims.
+include-macros:
   - 'MRDOCS_*'
-  - 'INFO'
-  - 'LOG'
-  - 'F'
-  - 'FMT_CONSTEVAL'
+exclude-macros:
+  - 'MRDOCS_DETAIL_*'
+  - 'MRDOCS_PP_*'
 implementation-defined:
   - '**::detail'
     # Injected by the MRDOCS_DESCRIBE_* macros

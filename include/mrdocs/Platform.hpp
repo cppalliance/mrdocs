@@ -28,10 +28,6 @@
 
 namespace mrdocs {
 
-/** The minimum version of LLVM required
-*/
-#define MRDOCS_MINIMUM_LLVM_VERSION 15
-
 //------------------------------------------------
 //
 // Shared Libraries

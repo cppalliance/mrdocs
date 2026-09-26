@@ -958,39 +958,170 @@ toString(E e) noexcept
 
 // --- MRDOCS_DESCRIBE_STRUCT ----------------------------------------
 
-#define MRDOCS_MEMBER_IMPL(C, m) \
+#define MRDOCS_DETAIL_MEMBER(C, m) \
     , ::mrdocs::describe::detail::member_descriptor<                \
         &C::m, []{ return #m; }>{}
 
 #define MRDOCS_PP_UNPACK(...) __VA_ARGS__
 
-#define MRDOCS_DESCRIBE_BASES(C, ...)                               \
+#define MRDOCS_DETAIL_DESCRIBE_BASES(C, ...)                        \
     [[maybe_unused]]                                                \
     typename ::mrdocs::describe::detail::bases_descriptor_impl<             \
         C, ::mrdocs::describe::list<__VA_ARGS__>>::type             \
     mrdocs_base_descriptor_fn(C**);
 
-#define MRDOCS_DESCRIBE_MEMBERS(C, ...)                             \
+#define MRDOCS_DETAIL_DESCRIBE_MEMBERS(C, ...)                      \
     [[maybe_unused]]                                                \
     decltype(                                                       \
         ::mrdocs::describe::detail::member_descriptor_fn_impl(              \
             0 __VA_OPT__(MRDOCS_PP_FOR_EACH(                        \
-                MRDOCS_MEMBER_IMPL, C, __VA_ARGS__))))              \
+                MRDOCS_DETAIL_MEMBER, C, __VA_ARGS__))))              \
     mrdocs_member_descriptor_fn(C**);
 
+/** Describe the bases and members of a class, outside its definition.
+
+    Place it at namespace scope, in the namespace of the class, after the
+    class definition. `Bases` and `Members` are parenthesized,
+    comma-separated lists, and either one may be empty:
+
+    @code
+    namespace geo {
+
+    struct Shape
+    {
+        std::string name;
+    };
+
+    struct Point : Shape
+    {
+        int x = 0;
+        int y = 0;
+    };
+
+    struct Tag {};
+
+    MRDOCS_DESCRIBE_STRUCT(Shape, (), (name))
+    MRDOCS_DESCRIBE_STRUCT(Point, (Shape), (x, y))
+    MRDOCS_DESCRIBE_STRUCT(Tag, (), ())
+
+    } // namespace geo
+    @endcode
+
+    Several bases are listed like several members, e.g.
+    `MRDOCS_DESCRIBE_STRUCT(AB, (A, B), (c))`. The three lines expand to
+    roughly the following (simplified: the `::mrdocs::describe::detail::`
+    and `::mrdocs::describe::` qualifications are dropped and the
+    assertion message is shortened):
+
+    @code
+    // MRDOCS_DESCRIBE_STRUCT(Shape, (), (name))
+    static_assert(std::is_class_v<Shape> || std::is_union_v<Shape>, "...");
+    [[maybe_unused]]
+    typename bases_descriptor_impl<Shape, list<>>::type
+    mrdocs_base_descriptor_fn(Shape**);
+    [[maybe_unused]]
+    decltype(member_descriptor_fn_impl(
+        0,
+        member_descriptor<&Shape::name, []{ return "name"; }>{}))
+    mrdocs_member_descriptor_fn(Shape**);
+
+    // MRDOCS_DESCRIBE_STRUCT(Point, (Shape), (x, y))
+    // Rejects anything that isn't a class or a union.
+    static_assert(std::is_class_v<Point> || std::is_union_v<Point>, "...");
+
+    // Declared, never defined or called: only the return type matters.
+    // ADL finds it from a `Point**`, and the return type lists the bases.
+    [[maybe_unused]]
+    typename bases_descriptor_impl<Point, list<Shape>>::type
+    mrdocs_base_descriptor_fn(Point**);
+
+    // Same trick for the members: one descriptor per name, holding the
+    // member pointer and the name as a string.
+    [[maybe_unused]]
+    decltype(member_descriptor_fn_impl(
+        0,
+        member_descriptor<&Point::x, []{ return "x"; }>{},
+        member_descriptor<&Point::y, []{ return "y"; }>{}))
+    mrdocs_member_descriptor_fn(Point**);
+
+    // MRDOCS_DESCRIBE_STRUCT(Tag, (), ())
+    // Empty lists give an empty base list and no member descriptors.
+    static_assert(std::is_class_v<Tag> || std::is_union_v<Tag>, "...");
+    [[maybe_unused]]
+    typename bases_descriptor_impl<Tag, list<>>::type
+    mrdocs_base_descriptor_fn(Tag**);
+    [[maybe_unused]]
+    decltype(member_descriptor_fn_impl(0))
+    mrdocs_member_descriptor_fn(Tag**);
+    @endcode
+
+    Afterwards the `describe` queries work on the type. Each member
+    descriptor has a static `pointer` and `name`, and each base
+    descriptor has a `type` alias:
+
+    @code
+    namespace describe = mrdocs::describe;
+
+    static_assert(describe::described<geo::Point>);
+    static_assert(describe::describedMemberCount<geo::Point>() == 3);
+
+    void
+    print(geo::Point const& p)
+    {
+        // Own members only: x, y
+        describe::for_each(
+            describe::describe_members<geo::Point>{},
+            [&](auto d) {
+                std::cout << d.name << " = " << p.*d.pointer << '\n';
+            });
+
+        // Direct bases only: Shape
+        describe::for_each(
+            describe::describe_bases<geo::Point>{},
+            [](auto d) {
+                using Base = typename decltype(d)::type;
+                static_assert(std::is_same_v<Base, geo::Shape>);
+            });
+
+        // Inherited members too: name, x, y
+        describe::for_each_member(
+            p,
+            [](std::string_view name, auto const& value) {
+                std::cout << name << " = " << value << '\n';
+            });
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li The macro ends with its own `;`, so don't add another one after
+        it. An extra `;` is an empty declaration that `-Wextra-semi`
+        flags.
+    @li It has to be in the class's own namespace. The queries find the
+        declarations by ADL, so they don't see them anywhere else.
+    @li List non-static data members by their unqualified names, up to
+        128 of them. `&C::m` is formed at namespace scope, so private and
+        protected members fail to compile. For those, and for class
+        templates, use `MRDOCS_DESCRIBE_CLASS` inside the class instead.
+    @li List direct bases only. `for_each_member` and
+        `describedMemberCount` walk up the hierarchy themselves, which
+        requires each listed base to be described too. Listing a type
+        that isn't a base fails a `static_assert` once the bases are
+        used.
+
+    @param C The class type.
+    @param Bases The parenthesized list of direct base classes.
+    @param Members The parenthesized list of data member names.
+*/
 #define MRDOCS_DESCRIBE_STRUCT(C, Bases, Members)                   \
     static_assert(                                                  \
         std::is_class_v<C> || std::is_union_v<C>,                   \
         "MRDOCS_DESCRIBE_STRUCT should only be used with "          \
         "class types");                                             \
-    MRDOCS_DESCRIBE_BASES(C, MRDOCS_PP_UNPACK Bases)                \
-    MRDOCS_DESCRIBE_MEMBERS(C, MRDOCS_PP_UNPACK Members)
+    MRDOCS_DETAIL_DESCRIBE_BASES(C, MRDOCS_PP_UNPACK Bases)                \
+    MRDOCS_DETAIL_DESCRIBE_MEMBERS(C, MRDOCS_PP_UNPACK Members)
 
 // --- MRDOCS_DESCRIBE_CLASS ------------------------------------------
-//
-// Like MRDOCS_DESCRIBE_STRUCT but placed INSIDE a class definition.
-// Uses friend declarations so the descriptor functions are declared
-// in the enclosing namespace. This variant supports class templates.
 //
 // The friends are only ever read through `decltype`; no caller invokes them.
 // They carry an inline `{ return {}; }` body rather than staying pure
@@ -999,18 +1130,18 @@ toString(E e) noexcept
 // but never defined" (-Wunused-function). Defining it silences that; the body
 // is never ODR-used. This matches MRDOCS_DESCRIBE_KINDS below.
 
-#define MRDOCS_DESCRIBE_FRIEND_BASES(C, ...)                        \
+#define MRDOCS_DETAIL_DESCRIBE_FRIEND_BASES(C, ...)                 \
     friend                                                          \
     typename ::mrdocs::describe::detail::bases_descriptor_impl<             \
         C, ::mrdocs::describe::list<__VA_ARGS__>>::type             \
     mrdocs_base_descriptor_fn(C**) { return {}; }
 
-#define MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, ...)                      \
+#define MRDOCS_DETAIL_DESCRIBE_FRIEND_MEMBERS(C, ...)               \
     friend                                                          \
     decltype(                                                       \
         ::mrdocs::describe::detail::member_descriptor_fn_impl(              \
             0 __VA_OPT__(MRDOCS_PP_FOR_EACH(                        \
-                MRDOCS_MEMBER_IMPL, C, __VA_ARGS__))))              \
+                MRDOCS_DETAIL_MEMBER, C, __VA_ARGS__))))              \
     mrdocs_member_descriptor_fn(C**) { return {}; }
 
 #if defined(__GNUC__) && !defined(__clang__)
@@ -1018,24 +1149,386 @@ toString(E e) noexcept
 // non-template friend function (-Wnon-template-friend). That is
 // exactly the intended behaviour: every instantiation of the
 // enclosing class template gets its own descriptor overload.
+/** Describe the bases and members of a class, inside its definition.
+
+    Works like `MRDOCS_DESCRIBE_STRUCT`, but goes inside the class
+    definition, after the members it names. It declares the descriptor
+    functions as hidden friends, so it also works for class templates
+    and for private members:
+
+    @code
+    namespace app {
+
+    struct Named
+    {
+        std::string name;
+    };
+    MRDOCS_DESCRIBE_STRUCT(Named, (), (name))
+
+    template <class T>
+    class Counter : public Named
+    {
+        T value_{};
+        int hits_ = 0;
+
+    public:
+        explicit Counter(T v) : Named{"counter"}, value_(v) {}
+
+        MRDOCS_DESCRIBE_CLASS(Counter, (Named), (value_, hits_))
+    };
+
+    class Empty
+    {
+    public:
+        MRDOCS_DESCRIBE_CLASS(Empty, (), ())
+    };
+
+    } // namespace app
+    @endcode
+
+    The two calls expand to roughly the following (simplified: the
+    `::mrdocs::describe::detail::` and `::mrdocs::describe::`
+    qualifications are dropped):
+
+    @code
+    // MRDOCS_DESCRIBE_CLASS(Counter, (Named), (value_, hits_))
+    // Hidden friends: only ADL on a `Counter<T>**` finds them, and each
+    // instantiation of the template gets its own pair. Nothing calls
+    // them; the `{ return {}; }` bodies only keep GCC from warning about
+    // undefined internal functions.
+    friend
+    typename bases_descriptor_impl<Counter, list<Named>>::type
+    mrdocs_base_descriptor_fn(Counter**) { return {}; }
+
+    friend
+    decltype(member_descriptor_fn_impl(
+        0,
+        member_descriptor<&Counter::value_, []{ return "value_"; }>{},
+        member_descriptor<&Counter::hits_, []{ return "hits_"; }>{}))
+    mrdocs_member_descriptor_fn(Counter**) { return {}; }
+
+    // MRDOCS_DESCRIBE_CLASS(Empty, (), ())
+    friend
+    typename bases_descriptor_impl<Empty, list<>>::type
+    mrdocs_base_descriptor_fn(Empty**) { return {}; }
+
+    friend
+    decltype(member_descriptor_fn_impl(0))
+    mrdocs_member_descriptor_fn(Empty**) { return {}; }
+    @endcode
+
+    With GCC, the two friends are also wrapped in `_Pragma`s that silence
+    `-Wnon-template-friend` for them.
+
+    Afterwards the same `describe` queries as for `MRDOCS_DESCRIBE_STRUCT`
+    work on every instantiation, private members included:
+
+    @code
+    namespace describe = mrdocs::describe;
+
+    static_assert(describe::described<app::Counter<double>>);
+    static_assert(describe::describedMemberCount<app::Counter<int>>() == 3);
+
+    void
+    dump()
+    {
+        app::Counter<int> c(42);
+
+        // Prints name = counter, value_ = 42, hits_ = 0
+        describe::for_each_member(
+            c,
+            [](std::string_view name, auto const& v) {
+                std::cout << name << " = " << v << '\n';
+            });
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li Put it after the member declarations. The friend return types
+        aren't a complete-class context, so a member declared below the
+        macro isn't found ("no member named ...").
+    @li `C` names the enclosing class. In a template, the injected name
+        (`Counter`) is enough; you don't need to spell `Counter<T>`.
+    @li The access section it sits in doesn't matter, since friend
+        declarations ignore access.
+    @li It ends with a function body, so it needs no trailing `;`.
+    @li The rules for `Bases` and `Members` are the same as for
+        `MRDOCS_DESCRIBE_STRUCT`: direct bases only, each described too
+        if you walk inherited members, and up to 128 data members.
+
+    @param C The class type.
+    @param Bases The parenthesized list of direct base classes.
+    @param Members The parenthesized list of data member names.
+*/
 #define MRDOCS_DESCRIBE_CLASS(C, Bases, Members)                    \
     _Pragma("GCC diagnostic push")                                  \
     _Pragma("GCC diagnostic ignored \"-Wnon-template-friend\"")     \
-    MRDOCS_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
-    MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)     \
+    MRDOCS_DETAIL_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
+    MRDOCS_DETAIL_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)     \
     _Pragma("GCC diagnostic pop")
 #else
+/** Describe the bases and members of a class, inside its definition.
+
+    Works like `MRDOCS_DESCRIBE_STRUCT`, but goes inside the class
+    definition, after the members it names. It declares the descriptor
+    functions as hidden friends, so it also works for class templates
+    and for private members:
+
+    @code
+    namespace app {
+
+    struct Named
+    {
+        std::string name;
+    };
+    MRDOCS_DESCRIBE_STRUCT(Named, (), (name))
+
+    template <class T>
+    class Counter : public Named
+    {
+        T value_{};
+        int hits_ = 0;
+
+    public:
+        explicit Counter(T v) : Named{"counter"}, value_(v) {}
+
+        MRDOCS_DESCRIBE_CLASS(Counter, (Named), (value_, hits_))
+    };
+
+    class Empty
+    {
+    public:
+        MRDOCS_DESCRIBE_CLASS(Empty, (), ())
+    };
+
+    } // namespace app
+    @endcode
+
+    The two calls expand to roughly the following (simplified: the
+    `::mrdocs::describe::detail::` and `::mrdocs::describe::`
+    qualifications are dropped):
+
+    @code
+    // MRDOCS_DESCRIBE_CLASS(Counter, (Named), (value_, hits_))
+    // Hidden friends: only ADL on a `Counter<T>**` finds them, and each
+    // instantiation of the template gets its own pair. Nothing calls
+    // them; the `{ return {}; }` bodies only keep GCC from warning about
+    // undefined internal functions.
+    friend
+    typename bases_descriptor_impl<Counter, list<Named>>::type
+    mrdocs_base_descriptor_fn(Counter**) { return {}; }
+
+    friend
+    decltype(member_descriptor_fn_impl(
+        0,
+        member_descriptor<&Counter::value_, []{ return "value_"; }>{},
+        member_descriptor<&Counter::hits_, []{ return "hits_"; }>{}))
+    mrdocs_member_descriptor_fn(Counter**) { return {}; }
+
+    // MRDOCS_DESCRIBE_CLASS(Empty, (), ())
+    friend
+    typename bases_descriptor_impl<Empty, list<>>::type
+    mrdocs_base_descriptor_fn(Empty**) { return {}; }
+
+    friend
+    decltype(member_descriptor_fn_impl(0))
+    mrdocs_member_descriptor_fn(Empty**) { return {}; }
+    @endcode
+
+    With GCC, the two friends are also wrapped in `_Pragma`s that silence
+    `-Wnon-template-friend` for them.
+
+    Afterwards the same `describe` queries as for `MRDOCS_DESCRIBE_STRUCT`
+    work on every instantiation, private members included:
+
+    @code
+    namespace describe = mrdocs::describe;
+
+    static_assert(describe::described<app::Counter<double>>);
+    static_assert(describe::describedMemberCount<app::Counter<int>>() == 3);
+
+    void
+    dump()
+    {
+        app::Counter<int> c(42);
+
+        // Prints name = counter, value_ = 42, hits_ = 0
+        describe::for_each_member(
+            c,
+            [](std::string_view name, auto const& v) {
+                std::cout << name << " = " << v << '\n';
+            });
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li Put it after the member declarations. The friend return types
+        aren't a complete-class context, so a member declared below the
+        macro isn't found ("no member named ...").
+    @li `C` names the enclosing class. In a template, the injected name
+        (`Counter`) is enough; you don't need to spell `Counter<T>`.
+    @li The access section it sits in doesn't matter, since friend
+        declarations ignore access.
+    @li It ends with a function body, so it needs no trailing `;`.
+    @li The rules for `Bases` and `Members` are the same as for
+        `MRDOCS_DESCRIBE_STRUCT`: direct bases only, each described too
+        if you walk inherited members, and up to 128 data members.
+
+    @param C The class type.
+    @param Bases The parenthesized list of direct base classes.
+    @param Members The parenthesized list of data member names.
+*/
 #define MRDOCS_DESCRIBE_CLASS(C, Bases, Members)                    \
-    MRDOCS_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
-    MRDOCS_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)
+    MRDOCS_DETAIL_DESCRIBE_FRIEND_BASES(C, MRDOCS_PP_UNPACK Bases)         \
+    MRDOCS_DETAIL_DESCRIBE_FRIEND_MEMBERS(C, MRDOCS_PP_UNPACK Members)
 #endif
 
 // --- MRDOCS_DESCRIBE_ENUM ------------------------------------------
 
+/** Emit the describe entry for one enumerator.
+
+    Use it between `MRDOCS_DESCRIBE_ENUM_BEGIN` and
+    `MRDOCS_DESCRIBE_ENUM_END`, usually by pointing the X-macro `INFO` at
+    it before including the `.inc` file that lists the enumerators:
+
+    @code
+    MRDOCS_DESCRIBE_ENUM_BEGIN(ShapeKind)
+    #define INFO(Name) MRDOCS_ENUM_ENTRY(ShapeKind, Name)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_ENUM_END(ShapeKind)
+    @endcode
+
+    You can also write the entries by hand:
+
+    @code
+    enum class Dir { Up, Down };
+
+    MRDOCS_DESCRIBE_ENUM_BEGIN(Dir)
+    MRDOCS_ENUM_ENTRY(Dir, Up)
+    MRDOCS_ENUM_ENTRY(Dir, Down)
+    MRDOCS_DESCRIBE_ENUM_END(Dir)
+    @endcode
+
+    Each entry is one comma-prefixed descriptor argument:
+
+    @code
+    // MRDOCS_ENUM_ENTRY(Dir, Up)
+    , ::mrdocs::describe::detail::enum_descriptor<
+        Dir::Up, []{ return "Up"; }>{}
+    // The descriptor's `value` is Dir::Up and its `name` is "Up".
+    @endcode
+
+    The leading comma is what lets entries follow the `0` that
+    `MRDOCS_DESCRIBE_ENUM_BEGIN` leaves open, so don't put commas or
+    semicolons between entries. It only makes sense inside that
+    bracket; anywhere else the stray comma is a syntax error.
+
+    @param E The enum type.
+    @param e The enumerator name, written without the `E::` prefix.
+*/
 #define MRDOCS_ENUM_ENTRY(E, e)                                     \
     , ::mrdocs::describe::detail::enum_descriptor<                  \
         E::e, []{ return #e; }>{}
 
+/** Describe the enumerators of an enum.
+
+    Pass the enum type followed by the enumerators you want to describe,
+    up to 128 of them. Place it at namespace scope, in the same
+    namespace as the enum, after the enum definition:
+
+    @code
+    namespace shapes {
+
+    enum class Shape { Circle, RoundedRect, Triangle };
+
+    MRDOCS_DESCRIBE_ENUM(Shape, Circle, RoundedRect, Triangle)
+
+    } // namespace shapes
+    @endcode
+
+    The macro declares a function that is found by argument-dependent
+    lookup and whose return type lists one descriptor per enumerator:
+
+    @code
+    // Simplified: whitespace changed; each lambda is a distinct closure
+    // type that only returns the stringized enumerator name.
+
+    // MRDOCS_DESCRIBE_ENUM(Shape, Circle, RoundedRect, Triangle)
+    static_assert(std::is_enum_v<Shape>,
+        "MRDOCS_DESCRIBE_ENUM should only be used with enums");
+    [[maybe_unused]]
+    decltype(::mrdocs::describe::detail::enum_descriptor_fn_impl(0
+        , ::mrdocs::describe::detail::enum_descriptor<
+            Shape::Circle, []{ return "Circle"; }>{}
+        , ::mrdocs::describe::detail::enum_descriptor<
+            Shape::RoundedRect, []{ return "RoundedRect"; }>{}
+        , ::mrdocs::describe::detail::enum_descriptor<
+            Shape::Triangle, []{ return "Triangle"; }>{}
+    )) mrdocs_enum_descriptor_fn(Shape**);
+    // The return type is describe::list<D1, D2, D3>, where each Di has
+    // `static constexpr Shape value` and `static constexpr char const*
+    // name`. The function is declared only; it's never called.
+    @endcode
+
+    Afterwards the enum works with the describe queries and the string
+    helpers, all usable in constant expressions:
+
+    @code
+    namespace describe = mrdocs::describe;
+    using shapes::Shape;
+
+    static_assert(describe::has_describe_enumerators<Shape>::value);
+
+    // Kebab-case name, as used in the generated output
+    static_assert(mrdocs::toString(Shape::RoundedRect) == "rounded-rect");
+
+    // Declared name
+    static_assert(
+        describe::enum_to_string(Shape::RoundedRect) == "RoundedRect");
+
+    void
+    demo()
+    {
+        // Declared name back to the enumerator
+        Shape s{};
+        bool ok = describe::enum_from_string("Triangle", s);
+        // ok == true, s == Shape::Triangle
+
+        // Visit every described enumerator
+        describe::for_each(
+            describe::describe_enumerators<Shape>{},
+            [](auto d) {
+                // d.value: Shape::Circle, then RoundedRect, then Triangle
+                // d.name:  "Circle", then "RoundedRect", then "Triangle"
+            });
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li Don't put it inside a class, even for a nested enum. There it
+        declares a member function that lookup never finds, so the enum
+        silently stays undescribed. For a nested enum, write it at
+        namespace scope after the class and qualify the type:
+        `MRDOCS_DESCRIBE_ENUM(Canvas::Layer, background, foreground)`.
+    @li Writing it in a different namespace also leaves the enum
+        undescribed, for the same reason.
+    @li It already ends with a semicolon, so don't add one.
+    @li Enumerators you leave out are unknown to the helpers: `toString`
+        and `describe::enum_to_string` return an empty string for them,
+        and `describe::enum_from_string` never produces them.
+    @li Works for scoped and unscoped enums, since each entry is spelled
+        `E::name`.
+    @li When the enumerators already live in an X-macro `.inc` file, use
+        `MRDOCS_DESCRIBE_ENUM_BEGIN` and `MRDOCS_DESCRIBE_ENUM_END`
+        instead. They also have no limit on the number of enumerators.
+    @li To mark one enumerator as the empty state, follow it with
+        `MRDOCS_DESCRIBE_ENUM_UNDEFINED`.
+
+    @param E The enum type.
+*/
 #define MRDOCS_DESCRIBE_ENUM(E, ...)                                \
     static_assert(std::is_enum_v<E>,                                \
         "MRDOCS_DESCRIBE_ENUM should only be used with enums");     \
@@ -1047,34 +1540,200 @@ toString(E e) noexcept
         )) mrdocs_enum_descriptor_fn(E**);
 
 // --- MRDOCS_DESCRIBE_ENUM from an X-macro (.inc) list --------------
-//
-// When an enum's enumerators already live in an X-macro `.inc` file (one
-// `INFO(Name)` per enumerator, the same file used to define the enum itself),
-// the describe metadata can be generated from that single source of truth
-// instead of repeating the list in MRDOCS_DESCRIBE_ENUM. Bracket the include
-// with these two macros and point `INFO` at MRDOCS_ENUM_ENTRY:
-//
-//     MRDOCS_DESCRIBE_ENUM_BEGIN(BlockKind)
-//     #define INFO(Name) MRDOCS_ENUM_ENTRY(BlockKind, Name)
-//     #include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
-//     MRDOCS_DESCRIBE_ENUM_END(BlockKind)
-//
-// The `.inc` file `#undef`s INFO itself, so no cleanup line is needed.
 
+/** Open an enum description driven by an X-macro `.inc` file.
+
+    Use it when the enumerators already live in an X-macro `.inc` file,
+    one `INFO(Name)` line per enumerator, that also defines the enum. You
+    then describe the enum from the same list instead of repeating every
+    name in `MRDOCS_DESCRIBE_ENUM`, so the two can't drift apart.
+
+    Given this `ShapeNodes.inc`:
+
+    @code
+    #ifndef INFO
+    #define INFO(Name)
+    #endif
+
+    INFO(Circle)
+    INFO(RoundedRect)
+    INFO(Triangle)
+
+    #undef INFO
+    @endcode
+
+    include it once to define the enum and once more between
+    `MRDOCS_DESCRIBE_ENUM_BEGIN` and `MRDOCS_DESCRIBE_ENUM_END`, with
+    `INFO` pointed at `MRDOCS_ENUM_ENTRY`:
+
+    @code
+    namespace shapes {
+
+    enum class ShapeKind
+    {
+        None = 0,
+    #define INFO(Name) Name,
+    #include "ShapeNodes.inc"
+    };
+
+    MRDOCS_DESCRIBE_ENUM_BEGIN(ShapeKind)
+    #define INFO(Name) MRDOCS_ENUM_ENTRY(ShapeKind, Name)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_ENUM_END(ShapeKind)
+
+    } // namespace shapes
+    @endcode
+
+    The `.inc` file `#undef`s `INFO` itself, so no cleanup line is
+    needed. The three pieces together produce the same declaration as
+    `MRDOCS_DESCRIBE_ENUM(ShapeKind, Circle, RoundedRect, Triangle)`:
+
+    @code
+    // Simplified: each lambda is a distinct closure type that returns the
+    // stringized name.
+
+    // MRDOCS_DESCRIBE_ENUM_BEGIN(ShapeKind)
+    static_assert(std::is_enum_v<ShapeKind>,
+        "MRDOCS_DESCRIBE_ENUM should only be used with enums");
+    [[maybe_unused]]
+    decltype(::mrdocs::describe::detail::enum_descriptor_fn_impl(0
+
+    // #include "ShapeNodes.inc": one MRDOCS_ENUM_ENTRY per INFO line
+        , ::mrdocs::describe::detail::enum_descriptor<
+            ShapeKind::Circle, []{ return "Circle"; }>{}
+        , ::mrdocs::describe::detail::enum_descriptor<
+            ShapeKind::RoundedRect, []{ return "RoundedRect"; }>{}
+        , ::mrdocs::describe::detail::enum_descriptor<
+            ShapeKind::Triangle, []{ return "Triangle"; }>{}
+
+    // MRDOCS_DESCRIBE_ENUM_END(ShapeKind)
+    )) mrdocs_enum_descriptor_fn(ShapeKind**);
+    @endcode
+
+    Here `None` isn't in the `.inc` file, so it isn't described:
+    `toString(ShapeKind::None)` is empty, while
+    `toString(ShapeKind::RoundedRect)` is `"rounded-rect"`.
+
+    Things to keep in mind:
+
+    @li The macro opens a parenthesized expression that
+        `MRDOCS_DESCRIBE_ENUM_END` closes, so everything in between must
+        expand to nothing but `MRDOCS_ENUM_ENTRY` calls (and
+        preprocessor directives). Each entry starts with its own comma,
+        so don't add separators.
+    @li Pass the same enum type to both macros.
+    @li The placement rules of `MRDOCS_DESCRIBE_ENUM` apply: namespace
+        scope, in the namespace of the enum, never inside a class.
+    @li Don't put a `;` after either macro. After this one it's a
+        syntax error, and `MRDOCS_DESCRIBE_ENUM_END` already ends with
+        one.
+    @li Unlike `MRDOCS_DESCRIBE_ENUM`, there's no limit on the number of
+        enumerators.
+
+    @param E The enum type.
+*/
 #define MRDOCS_DESCRIBE_ENUM_BEGIN(E)                               \
     static_assert(std::is_enum_v<E>,                                \
         "MRDOCS_DESCRIBE_ENUM should only be used with enums");     \
     [[maybe_unused]]                                                \
     decltype(::mrdocs::describe::detail::enum_descriptor_fn_impl(0
 
+/** Close an enum description opened with `MRDOCS_DESCRIBE_ENUM_BEGIN`.
+
+    It closes the expression opened by `MRDOCS_DESCRIBE_ENUM_BEGIN` and
+    names the descriptor function, which completes the description:
+
+    @code
+    MRDOCS_DESCRIBE_ENUM_BEGIN(ShapeKind)
+    #define INFO(Name) MRDOCS_ENUM_ENTRY(ShapeKind, Name)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_ENUM_END(ShapeKind)
+    @endcode
+
+    On its own it expands to the closing tokens below; see
+    `MRDOCS_DESCRIBE_ENUM_BEGIN` for the full expansion of the three
+    pieces together:
+
+    @code
+    // MRDOCS_DESCRIBE_ENUM_END(ShapeKind)
+    )) mrdocs_enum_descriptor_fn(ShapeKind**);
+    @endcode
+
+    Pass the same enum type given to `MRDOCS_DESCRIBE_ENUM_BEGIN`. The
+    expansion ends with a semicolon, so don't add one. Without a matching
+    `MRDOCS_DESCRIBE_ENUM_BEGIN` before it, it's a syntax error.
+
+    @param E The enum type.
+*/
 #define MRDOCS_DESCRIBE_ENUM_END(E)                                 \
     )) mrdocs_enum_descriptor_fn(E**);
 
 // --- MRDOCS_DESCRIBE_ENUM_UNDEFINED --------------------------------
-//
-// Marks E::U as E's undefined (empty) state. See has_undefined_enumerator /
-// undefined_enumerator. Place at namespace scope after MRDOCS_DESCRIBE_ENUM(E).
 
+/** Mark one enumerator as the enum's undefined (empty) state.
+
+    Some enums have a value that means "not set", like `None`. Marking it
+    makes the string helpers treat it as empty, and makes generators treat
+    a field holding it as absent (an empty optional) instead of printing
+    it. Place it at namespace scope, in the namespace of the enum, after
+    the enum's `MRDOCS_DESCRIBE_ENUM`:
+
+    @code
+    namespace shapes {
+
+    enum class Fill { None, Solid, Hatched };
+
+    MRDOCS_DESCRIBE_ENUM(Fill, None, Solid, Hatched)
+    MRDOCS_DESCRIBE_ENUM_UNDEFINED(Fill, None)
+
+    } // namespace shapes
+    @endcode
+
+    It expands to a small function that ADL finds from the enum type:
+
+    @code
+    // MRDOCS_DESCRIBE_ENUM_UNDEFINED(Fill, None)
+    [[maybe_unused]]
+    inline constexpr Fill
+    mrdocs_undefined_descriptor_fn(Fill**) noexcept { return Fill::None; }
+    @endcode
+
+    Afterwards:
+
+    @code
+    namespace describe = mrdocs::describe;
+    using shapes::Fill;
+
+    static_assert(describe::has_undefined_enumerator<Fill>);
+    static_assert(describe::undefined_enumerator<Fill> == Fill::None);
+
+    // The undefined state renders as the empty string
+    static_assert(mrdocs::toString(Fill::None).empty());
+    static_assert(describe::enum_to_string(Fill::None).empty());
+    static_assert(mrdocs::toString(Fill::Solid) == "solid");
+
+    void
+    demo()
+    {
+        // and the empty string parses back to it
+        Fill f = Fill::Solid;
+        describe::enum_from_string("", f); // returns true, f == Fill::None
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li Use it at most once per enum; a second use is a redefinition
+        error.
+    @li Like `MRDOCS_DESCRIBE_ENUM`, it must be in the namespace of the
+        enum and not inside a class, or lookup won't find it.
+    @li The function is `inline`, so it's safe in headers.
+    @li It ends with a closing brace, so don't add a semicolon.
+
+    @param E The enum type.
+    @param U The enumerator that represents the undefined state, written
+        without the `E::` prefix.
+*/
 #define MRDOCS_DESCRIBE_ENUM_UNDEFINED(E, U)                         \
     [[maybe_unused]]                                                 \
     inline constexpr E                                              \
@@ -1082,26 +1741,195 @@ toString(E e) noexcept
 
 // --- MRDOCS_DESCRIBE_KINDS -----------------------------------------
 //
-// Register a polymorphic base `C` together with the closed set of its concrete
-// derived classes ("kinds"). Generic code iterates the result with for_each:
-//
-//     MRDOCS_DESCRIBE_KINDS(Type, NamedType, PointerType, ArrayType /* ... */)
-//
-//     describe::for_each(describe::describe_kinds<Type>{}, [](auto desc) {
-//         using D = typename decltype(desc)::type; /* ... */ });
-//
-// Every listed derived class must be a complete type at the point of expansion,
-// so the macro's natural home is a dedicated header that includes each kind's
-// header. Query with describe::has_describe_kinds<C> / describe::describe_kinds<C>.
-//
 // The emitted mrdocs_kind_descriptor_fn is only ever read through decltype; the
 // inline `{ return {}; }` body (rather than a pure declaration) silences GCC's
 // -Wunused-function when the macro is used in an anonymous namespace, and inline
 // keeps it ODR-safe in headers.
 
+/** Emit the describe entry for one derived kind.
+
+    Use it between `MRDOCS_DESCRIBE_KINDS_BEGIN` and
+    `MRDOCS_DESCRIBE_KINDS_END`, one per derived class. Usually the
+    X-macro `INFO` points at it, so an `.inc` file with one `INFO(Name)`
+    per kind supplies the entries:
+
+    @code
+    #define INFO(Name) MRDOCS_KIND_ENTRY(Shape, Name##Shape)
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Shape)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_KINDS_END(Shape)
+    @endcode
+
+    You can also write the entries by hand:
+
+    @code
+    struct Node { int Kind; };
+    struct Leaf : Node {};
+    struct Branch : Node {};
+
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Node)
+        MRDOCS_KIND_ENTRY(Node, Leaf)
+        MRDOCS_KIND_ENTRY(Node, Branch)
+    MRDOCS_DESCRIBE_KINDS_END(Node)
+    @endcode
+
+    Each entry is a leading comma plus a descriptor object, which becomes
+    one more argument of the call that `MRDOCS_DESCRIBE_KINDS_BEGIN`
+    opens:
+
+    @code
+    // MRDOCS_KIND_ENTRY(Node, Leaf) expands to exactly:
+    , ::mrdocs::describe::detail::kind_descriptor<Node, Leaf>{}
+    @endcode
+
+    Because of that leading comma it only makes sense in that spot. Don't
+    put a `;` after it, and don't use it with `MRDOCS_DESCRIBE_KINDS`,
+    which writes its own entries. `D` may still be a forward declaration
+    here.
+
+    @param C The polymorphic base class, the same one passed to
+        `MRDOCS_DESCRIBE_KINDS_BEGIN`.
+    @param D The derived class.
+*/
 #define MRDOCS_KIND_ENTRY(C, D)                                     \
     , ::mrdocs::describe::detail::kind_descriptor<C, D>{}
 
+/** Describe a polymorphic base and the closed set of its derived classes.
+
+    Place it at namespace scope, in the namespace of the base. The first
+    argument is the base; the rest are its concrete derived classes, from
+    none up to 128:
+
+    @code
+    namespace shapes {
+
+    enum class ShapeKind { Circle, Square };
+
+    struct Shape
+    {
+        ShapeKind Kind;
+    };
+
+    struct Circle : Shape
+    {
+        static constexpr ShapeKind kind_id = ShapeKind::Circle;
+        double radius = 1;
+        Circle() : Shape{kind_id} {}
+    };
+
+    struct Square : Shape
+    {
+        static constexpr ShapeKind kind_id = ShapeKind::Square;
+        double side = 2;
+        Square() : Shape{kind_id} {}
+    };
+
+    MRDOCS_DESCRIBE_KINDS(Shape, Circle, Square)  // several kinds
+
+    struct One { int Kind; };
+    struct OnlyChild : One {};
+    MRDOCS_DESCRIBE_KINDS(One, OnlyChild)         // a single kind
+
+    struct Leaf {};
+    MRDOCS_DESCRIBE_KINDS(Leaf)                   // no kinds at all
+
+    } // namespace shapes
+    @endcode
+
+    The three calls expand to roughly the following (simplified: the
+    `::mrdocs::describe::detail::` qualification is dropped and the
+    assertion message is shortened):
+
+    @code
+    // MRDOCS_DESCRIBE_KINDS(Shape, Circle, Square)
+    static_assert(std::is_class_v<Shape>, "...");
+
+    // Defined inline but never called: only the return type matters.
+    // ADL finds it from a `Shape**`.
+    [[maybe_unused]]
+    inline decltype(kind_descriptor_fn_impl(
+        0,
+        kind_descriptor<Shape, Circle>{},
+        kind_descriptor<Shape, Square>{}))
+    mrdocs_kind_descriptor_fn(Shape**) { return {}; }
+
+    // So describe_kinds<Shape> is
+    //   list<kind_descriptor<Shape, Circle>,
+    //        kind_descriptor<Shape, Square>>
+    // and each descriptor's `type` alias names one derived class.
+
+    // MRDOCS_DESCRIBE_KINDS(One, OnlyChild)
+    static_assert(std::is_class_v<One>, "...");
+    [[maybe_unused]]
+    inline decltype(kind_descriptor_fn_impl(
+        0,
+        kind_descriptor<One, OnlyChild>{}))
+    mrdocs_kind_descriptor_fn(One**) { return {}; }
+
+    // MRDOCS_DESCRIBE_KINDS(Leaf): an empty kind list
+    static_assert(std::is_class_v<Leaf>, "...");
+    [[maybe_unused]]
+    inline decltype(kind_descriptor_fn_impl(0))
+    mrdocs_kind_descriptor_fn(Leaf**) { return {}; }
+    @endcode
+
+    Afterwards `describe::has_describe_kinds` is true for the base (even
+    with no kinds, where `describe::describe_kinds` is an empty list),
+    `describe::for_each` iterates the kinds in the listed order, and
+    `mrdocs::visit` from `<mrdocs/Support/TypeTraits/Visitor.hpp>` can
+    downcast a base reference by comparing its `Kind` member with each
+    kind's static `kind_id`:
+
+    @code
+    namespace describe = mrdocs::describe;
+
+    static_assert(describe::has_describe_kinds<shapes::Shape>::value);
+
+    double
+    area(shapes::Shape const& s)
+    {
+        return mrdocs::visit(s, []<class T>(T const& shape) -> double {
+            if constexpr (std::is_same_v<T, shapes::Circle>)
+                return 3.14159 * shape.radius * shape.radius;
+            else
+                return shape.side * shape.side;
+        });
+    }
+
+    int
+    countKinds()
+    {
+        int n = 0;
+        describe::for_each(
+            describe::describe_kinds<shapes::Shape>{},
+            [&](auto d) {
+                using D = typename decltype(d)::type;
+                static_assert(std::is_base_of_v<shapes::Shape, D>);
+                ++n;
+            });
+        return n; // 2
+    }
+    @endcode
+
+    Things to keep in mind:
+
+    @li The derived classes may be forward declarations where the macro
+        expands. They need to be complete wherever you use them, e.g.
+        in `mrdocs::visit` or in a `for_each` body that touches `D`, so a
+        header that includes every kind's header is still the natural
+        home for the macro.
+    @li The macro doesn't check that each kind derives from the base.
+    @li `mrdocs::visit` needs at least one kind, so a base described
+        with no kinds can be queried but not visited.
+    @li It ends with a function body, so it needs no trailing `;`. The
+        function is `inline`, so the macro is safe in a header, but each
+        base can only be described once.
+    @li When the kinds already live in an X-macro `.inc` file, use
+        `MRDOCS_DESCRIBE_KINDS_BEGIN` and `MRDOCS_DESCRIBE_KINDS_END`
+        instead.
+
+    @param C The class type whose kinds follow.
+*/
 #define MRDOCS_DESCRIBE_KINDS(C, ...)                               \
     static_assert(std::is_class_v<C>,                               \
         "MRDOCS_DESCRIBE_KINDS should only be used with "           \
@@ -1113,13 +1941,110 @@ toString(E e) noexcept
                 MRDOCS_KIND_ENTRY, C, __VA_ARGS__))                 \
         )) mrdocs_kind_descriptor_fn(C**) { return {}; }
 
-// The BEGIN/END variant drives the kind list from an X-macro `.inc` file:
-//
-//     #define INFO(Name) MRDOCS_KIND_ENTRY(Base, Name##Suffix)
-//     MRDOCS_DESCRIBE_KINDS_BEGIN(Base)
-//     #include <path/to/Nodes.inc>
-//     MRDOCS_DESCRIBE_KINDS_END(Base)
+/** Open a kinds description driven by an X-macro `.inc` file.
 
+    When the derived kinds already live in an X-macro `.inc` file (one
+    `INFO(Name)` per kind, often the same file that builds the kind
+    enum), this registers them without repeating the list in
+    `MRDOCS_DESCRIBE_KINDS`. Point `INFO` at `MRDOCS_KIND_ENTRY`, then
+    bracket the include with this macro and `MRDOCS_DESCRIBE_KINDS_END`.
+    Given this `ShapeNodes.inc`:
+
+    @code
+    #ifndef INFO
+    #define INFO(Name)
+    #endif
+
+    INFO(Circle)
+    INFO(Square)
+
+    #undef INFO
+    @endcode
+
+    a header can build both the enum and the kind list from it:
+
+    @code
+    namespace shapes {
+
+    enum class ShapeKind
+    {
+    #define INFO(Name) Name,
+    #include "ShapeNodes.inc"
+    };
+
+    struct Shape { ShapeKind Kind; };
+
+    struct CircleShape : Shape
+    {
+        static constexpr ShapeKind kind_id = ShapeKind::Circle;
+        CircleShape() : Shape{kind_id} {}
+    };
+
+    struct SquareShape : Shape
+    {
+        static constexpr ShapeKind kind_id = ShapeKind::Square;
+        SquareShape() : Shape{kind_id} {}
+    };
+
+    #define INFO(Name) MRDOCS_KIND_ENTRY(Shape, Name##Shape)
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Shape)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_KINDS_END(Shape)
+
+    } // namespace shapes
+    @endcode
+
+    The entries can also be written by hand, and an empty pair registers
+    a base with no kinds:
+
+    @code
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Node)
+        MRDOCS_KIND_ENTRY(Node, Leaf)
+        MRDOCS_KIND_ENTRY(Node, Branch)
+    MRDOCS_DESCRIBE_KINDS_END(Node)
+
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Empty)
+    MRDOCS_DESCRIBE_KINDS_END(Empty)
+    @endcode
+
+    After preprocessing, the `Shape` block becomes the following
+    (simplified: the `::mrdocs::describe::detail::` qualification is
+    dropped and the assertion message is shortened):
+
+    @code
+    // MRDOCS_DESCRIBE_KINDS_BEGIN(Shape): leaves the call open
+    static_assert(std::is_class_v<Shape>, "...");
+    [[maybe_unused]]
+    inline decltype(kind_descriptor_fn_impl(0
+
+    // #include "ShapeNodes.inc": one MRDOCS_KIND_ENTRY per INFO line
+        , kind_descriptor<Shape, CircleShape>{}   // INFO(Circle)
+        , kind_descriptor<Shape, SquareShape>{}   // INFO(Square)
+
+    // MRDOCS_DESCRIBE_KINDS_END(Shape): closes the call
+    )) mrdocs_kind_descriptor_fn(Shape**) { return {}; }
+    @endcode
+
+    That's the same declaration
+    `MRDOCS_DESCRIBE_KINDS(Shape, CircleShape, SquareShape)` produces,
+    so the same queries (`describe::describe_kinds`,
+    `describe::has_describe_kinds`, `mrdocs::visit`) work afterwards.
+
+    Things to keep in mind:
+
+    @li This macro leaves a call open, so only `MRDOCS_KIND_ENTRY`
+        expansions and preprocessor directives may come before the
+        matching `MRDOCS_DESCRIBE_KINDS_END`. Anything else, including a
+        stray `;`, is a syntax error.
+    @li Pass the same base to this macro, to every entry, and to
+        `MRDOCS_DESCRIBE_KINDS_END`.
+    @li Place the block at namespace scope, in the namespace of the base.
+    @li Define `INFO` before the include. The `.inc` file is expected to
+        `#undef` it at the end; if yours doesn't, add the `#undef`
+        yourself.
+
+    @param C The polymorphic base class.
+*/
 #define MRDOCS_DESCRIBE_KINDS_BEGIN(C)                              \
     static_assert(std::is_class_v<C>,                               \
         "MRDOCS_DESCRIBE_KINDS_BEGIN should only be used "          \
@@ -1128,6 +2053,31 @@ toString(E e) noexcept
     inline decltype(                                                \
         ::mrdocs::describe::detail::kind_descriptor_fn_impl(0
 
+/** Close a kinds description opened with `MRDOCS_DESCRIBE_KINDS_BEGIN`.
+
+    It closes the call the opening macro left open and names the
+    descriptor function it declares, which registers the kinds for `C`:
+
+    @code
+    #define INFO(Name) MRDOCS_KIND_ENTRY(Shape, Name##Shape)
+    MRDOCS_DESCRIBE_KINDS_BEGIN(Shape)
+    #include "ShapeNodes.inc"
+    MRDOCS_DESCRIBE_KINDS_END(Shape)
+    @endcode
+
+    @code
+    // MRDOCS_DESCRIBE_KINDS_END(Shape) expands to exactly:
+    )) mrdocs_kind_descriptor_fn(Shape**) { return {}; }
+    @endcode
+
+    `C` has to match the one passed to `MRDOCS_DESCRIBE_KINDS_BEGIN`,
+    since this is where the function's parameter type, and so the base
+    the kinds get registered for, comes from. It ends with a function
+    body, so it needs no trailing `;`. See `MRDOCS_DESCRIBE_KINDS_BEGIN`
+    for a complete example.
+
+    @param C The polymorphic base class.
+*/
 #define MRDOCS_DESCRIBE_KINDS_END(C)                                \
         )) mrdocs_kind_descriptor_fn(C**) { return {}; }
 
