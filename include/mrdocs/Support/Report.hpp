@@ -34,7 +34,7 @@
 */
 namespace mrdocs::report {
 
-/** Severity levels attached to reported messags.
+/** Severity levels attached to reported messages.
 */
 enum class Level
 {
@@ -103,11 +103,10 @@ Level
 getMinimumLevel() noexcept;
 
 /** If true, source location information will be
-    printed with warnings, errors, and fatal messages.
+    printed.
 
-    @param b true to enable source location
-    information, false to disable it. The default
-    value is true.
+    @param b true to enable the bug report details,
+    false to disable them. The default value is true.
 */
 MRDOCS_DECL
 void
@@ -133,8 +132,13 @@ print(
     trailing newline will be added to the
     message automatically.
 
-    @param loc The source location of the report.
-    If this value is null, no location is printed.
+    @param loc The source location a bug report
+    should carry. If this value is null, the message
+    is printed on its own, without the bug report
+    details.
+
+    @param e The error the message reports, when
+    there is one. Only read when `loc` is not null.
 */
 MRDOCS_DECL
 void
@@ -179,38 +183,42 @@ struct Located
     column widths) from the public reporting API.
 */
 namespace detail {
+// `withBugDetails` says whether the message reports a MrDocs defect. Only
+// then is the location where MrDocs raised it worth printing, along with
+// the rest of what a bug report needs. A message about the user's input
+// does not contain such info.
 template<class Arg0, class... Args>
 requires (!std::same_as<std::decay_t<Arg0>, Error>)
 void
 log_impl(
     Level level,
+    bool withBugDetails,
     Located<std::string_view> fs,
     Arg0&& arg0,
     Args&&... args)
 {
   std::string str =
       std::vformat(fs.value, std::make_format_args(arg0, args...));
-  return print(level, str, &fs.where);
+  return print(level, str, withBugDetails ? &fs.where : nullptr);
 }
 
 template<class... Args>
 void
 log_impl(
     Level level,
+    bool withBugDetails,
     Located<std::string_view> fs,
     Error const& e,
     Args&&... args)
 {
-    // When the message is an error, we send split
-    // the information relevant to the user from
-    // the information relevant for bug tracking
-    // so that users can understand the message.
+    // The reason is what went wrong; where MrDocs raised it belongs to the
+    // bug report details, so the message carries the reason alone.
     std::string str =
         std::vformat(fs.value, std::make_format_args(e.reason(), args...));
     return print(
         level,
         str,
-        &fs.where,
+        withBugDetails ? &fs.where : nullptr,
         &e);
 }
 
@@ -218,10 +226,11 @@ inline
 void
 log_impl(
     Level level,
+    bool withBugDetails,
     Located<std::string_view> fs)
 {
   std::string str(fs.value);
-  return print(level, str, &fs.where);
+  return print(level, str, withBugDetails ? &fs.where : nullptr);
 }
 }
 
@@ -246,6 +255,7 @@ log(
 {
     return detail::log_impl(
         level,
+        false,
         fs,
         std::forward<Args>(args)...);
 }
@@ -326,6 +336,29 @@ fatal(
     Args&&... args)
 {
     return log(Level::fatal, format, std::forward<Args>(args)...);
+}
+
+/** Emit an error that reports a defect in MrDocs itself.
+
+    The message is followed by the version and the source location a bug
+    report needs. Use it where MrDocs reached a state it does not handle.
+    A mistake in the user's input is not a bug in MrDocs, so it goes
+    through the other reporting functions.
+
+    @param format fmt-style format string.
+    @param args Arguments substituted into the format string.
+*/
+template<class... Args>
+void
+bug(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    return detail::log_impl(
+        Level::error,
+        true,
+        format,
+        std::forward<Args>(args)...);
 }
 
 } // mrdocs

@@ -413,7 +413,7 @@ mrdocs_main(int argc, char const** argv)
     auto res = getReferenceDirectories(execPath);
     if (!res)
     {
-        report::fatal("Failed to determine reference directories: {}", res.error().message());
+        report::fatal("Failed to determine reference directories: {}", res.error());
         return EXIT_FAILURE;
     }
     auto dirs = *std::move(res);
@@ -421,7 +421,7 @@ mrdocs_main(int argc, char const** argv)
     auto expConfigPath = getConfigPath(dirs, cl);
     if (!expConfigPath)
     {
-        report::fatal("Failed to determine config path: {}", expConfigPath.error().message());
+        report::fatal("Failed to determine config path: {}", expConfigPath.error());
         return EXIT_FAILURE;
     }
     auto configPath = *std::move(expConfigPath);
@@ -439,7 +439,7 @@ mrdocs_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
-#ifdef _NDEBUG
+#ifdef NDEBUG
 static
 void
 reportUnhandledException(
@@ -447,7 +447,7 @@ reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    report::fatal("Unhandled exception: {}\n", ex.what());
+    report::bug("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 #endif
@@ -457,7 +457,7 @@ reportUnhandledException(
 int
 main(int argc, char const** argv)
 {
-#ifndef _NDEBUG
+#ifndef NDEBUG
     return mrdocs::mrdocs_main(argc, argv);
 #else
     try

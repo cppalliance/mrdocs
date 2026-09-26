@@ -189,7 +189,7 @@ loadJsExtensions(std::string const& scriptPath, Config const& config)
     if (!ran.has_value())
     {
         return Unexpected(formatError(
-            "extension '{}': {}", scriptPath, ran.error().message()));
+            "extension '{}': {}", scriptPath, ran.error().reason()));
     }
 
     if (loaded.transforms.empty() && loaded.generators.empty())
