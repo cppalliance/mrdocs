@@ -530,7 +530,7 @@ auto filter_by_fn = dom::makeVariadicInvocable([](
     {
         dom::Value container = arguments.at(0);
         std::vector<dom::Value> keys;
-        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        for (std::size_t i = 1; i + 1 < arguments.size(); ++i)
         {
             dom::Value key = arguments.at(i);
             keys.push_back(key);
@@ -576,7 +576,7 @@ auto reject_by_fn = dom::makeVariadicInvocable([](
     {
         dom::Value container = arguments.at(0);
         std::vector<dom::Value> keys;
-        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        for (std::size_t i = 1; i + 1 < arguments.size(); ++i)
         {
             dom::Value key = arguments.at(i);
             keys.push_back(key);
@@ -622,7 +622,7 @@ auto any_of_by_fn = dom::makeVariadicInvocable([](
     {
         dom::Value container = arguments.at(0);
         std::vector<dom::Value> keys;
-        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        for (std::size_t i = 1; i + 1 < arguments.size(); ++i)
         {
             dom::Value key = arguments.at(i);
             keys.push_back(key);

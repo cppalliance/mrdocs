@@ -1792,7 +1792,10 @@ evalExpr(
             cb.set("data", data);
             cb.set("root", state.rootContext);
             cb.set("log", logger_);
-            setupArgs(all, context, state, args, cb, opt);
+            if (auto setupErr = setupArgs(all, context, state, args, cb, opt); !setupErr)
+            {
+                return Unexpected(setupErr.error());
+            }
             Expected<dom::Value> exp = fn.call(args);
             if (!exp)
             {
@@ -2400,7 +2403,7 @@ renderExpression(
             cb.set("log", logger_);
             HandlebarsOptions noStrict = opt;
             noStrict.strict = false;
-            setupArgs(tag.arguments, context, state, args, cb, noStrict);
+            { auto _hbs_try24 = setupArgs(tag.arguments, context, state, args, cb, noStrict); if (!_hbs_try24) return Unexpected(_hbs_try24.error()); }
             Expected<dom::Value> expV2 = resV.value.getFunction().call(args);
             if (!expV2) {
                 Error e = expV2.error();
@@ -2445,7 +2448,7 @@ renderExpression(
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = false;
-    setupArgs(tag.arguments, context, state, args, cb, noStrict);
+    { auto _hbs_try25 = setupArgs(tag.arguments, context, state, args, cb, noStrict); if (!_hbs_try25) return Unexpected(_hbs_try25.error()); }
     Expected<dom::Value> exp2 = fn.call(args);
     if (!exp2)
     {
@@ -3037,7 +3040,7 @@ renderBlock(
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = opt.strict && emulateMustache;
-    setupArgs(tagArgumentsStr, context, state, args, cb, noStrict);
+    { auto _hbs_try26 = setupArgs(tagArgumentsStr, context, state, args, cb, noStrict); if (!_hbs_try26) return Unexpected(_hbs_try26.error()); }
 
     // ==========================================
     // Setup block parameters
