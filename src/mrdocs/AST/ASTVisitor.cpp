@@ -3978,6 +3978,15 @@ buildFileInfo(std::string_view path)
                 file_info.full_path, config_.sourceRoot);
         }
     }
+    else
+    {
+        // A relative path is normalized above, on its way to being made
+        // absolute, whereas a path the compiler recorded as absolute is not:
+        // an include reached through `#include "../vendor/x.hpp"` arrives as
+        // the unnormalized `<root>/api/../vendor/x.hpp`, which reads as though
+        // it lay inside `<root>/api`. Normalize to avoid that.
+        file_info.full_path = files::normalizePath(file_info.full_path);
+    }
 
     if (!files::isPosixStyle(file_info.full_path))
     {
