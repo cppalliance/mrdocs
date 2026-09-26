@@ -160,6 +160,23 @@ struct FunctionSymbol final
     */
     std::vector<SymbolID> Specializations;
 
+    /** The class this function is a hidden friend of.
+
+        A hidden friend is a function whose only declarations are
+        friend declarations inside a class: every redeclaration has
+        a non-`FOK_None` friend object kind, so no matching
+        namespace-scope declaration exists. Ordinary and qualified
+        lookup cannot find it; only argument-dependent lookup on the
+        befriending class, or a class derived from it, does.
+
+        When set, this is the id of the record whose friend
+        declaration introduced the function. A function befriended
+        by several classes records the first one seen. A copy made
+        when a derived class inherits the friend records that derived
+        class, since the copy presents the friend as seen from it.
+    */
+    Optional<SymbolID> HiddenFriendOf;
+
     //--------------------------------------------
 
     /** Construct a function symbol with its ID.
@@ -185,8 +202,21 @@ MRDOCS_DESCRIBE_STRUCT(
      OverloadedOperator, StorageClass, IsRecordMethod, IsVirtual,
      IsVirtualAsWritten, IsPure, IsConst, IsVolatile, IsFinal,
      RefQualifier, Explicit, FunctionObjectImpl,
-     IsListedOnPrimary, Specializations)
+     IsListedOnPrimary, Specializations, HiddenFriendOf)
 )
+
+/** Merge two function symbols.
+
+    All members use the default merge strategy except
+    `HiddenFriendOf`, which is kept only when every translation unit
+    that sees the function sets it: a single TU treating it as an
+    ordinary namespace-scope function is enough to make it not a
+    hidden friend.
+*/
+MRDOCS_DECL
+void
+merge(FunctionSymbol& I, FunctionSymbol&& Other);
+
 
 
 /** Check whether a function is a default constructor.

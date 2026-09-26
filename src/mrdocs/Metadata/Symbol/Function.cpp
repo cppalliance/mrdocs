@@ -334,6 +334,27 @@ merge(std::vector<Param>& dst, std::vector<Param>&& src)
     }
 }
 
+void
+merge(FunctionSymbol& I, FunctionSymbol&& Other)
+{
+    // Capture both sides before the generic merge, which takes Other's
+    // value when I's is disengaged: a translation unit that sees the
+    // function as an ordinary namespace-scope declaration leaves its own
+    // side unset, and that must win over any TU that saw only the friend
+    // declaration.
+    Optional<SymbolID> const iHidden = I.HiddenFriendOf;
+    bool const otherHidden = Other.HiddenFriendOf.has_value();
+    merge<FunctionSymbol>(I, std::move(Other));
+    if (iHidden && otherHidden)
+    {
+        I.HiddenFriendOf = iHidden;
+    }
+    else
+    {
+        I.HiddenFriendOf.reset();
+    }
+}
+
 
 std::strong_ordering
 FunctionSymbol::

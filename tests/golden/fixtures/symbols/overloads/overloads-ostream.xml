@@ -632,6 +632,7 @@
   </params>
   <funcClass>normal</funcClass>
   <overloadedOperator>&lt;&lt;</overloadedOperator>
+  <hiddenFriendOf>2BAW2QhdSZJ5cLFxw9S3E7A1XkVy</hiddenFriendOf>
 </function>
 <function>
   <name>operator&lt;&lt;</name>

@@ -428,6 +428,52 @@ struct FunctionSymbolTest
         BOOST_TEST(!isSpecialMemberFunction(f));
     }
 
+    // ------ HiddenFriendOf merge ------
+
+    // `merge(FunctionSymbol&, FunctionSymbol&&)` keeps `HiddenFriendOf` only
+    // when both translation units set it: a single TU seeing the function as
+    // an ordinary namespace-scope declaration (unset) makes it not hidden,
+    // regardless of merge order. When both are set, the first one seen wins.
+    void
+    test_hidden_friend_of_merge()
+    {
+        SymbolID const classA("aaaaaaaaaaaaaaaaaaaa");
+        SymbolID const classB("bbbbbbbbbbbbbbbbbbbb");
+        // hidden && hidden -> hidden, first wins
+        {
+            FunctionSymbol f = makeFunc();
+            f.HiddenFriendOf = classA;
+            FunctionSymbol g = makeFunc();
+            g.HiddenFriendOf = classB;
+            merge(f, std::move(g));
+            BOOST_TEST(f.HiddenFriendOf.has_value());
+            BOOST_TEST(*f.HiddenFriendOf == classA);
+        }
+        // hidden && visible -> visible
+        {
+            FunctionSymbol f = makeFunc();
+            f.HiddenFriendOf = classA;
+            FunctionSymbol g = makeFunc();
+            merge(f, std::move(g));
+            BOOST_TEST(!f.HiddenFriendOf.has_value());
+        }
+        // visible && hidden -> visible
+        {
+            FunctionSymbol f = makeFunc();
+            FunctionSymbol g = makeFunc();
+            g.HiddenFriendOf = classB;
+            merge(f, std::move(g));
+            BOOST_TEST(!f.HiddenFriendOf.has_value());
+        }
+        // visible && visible -> visible
+        {
+            FunctionSymbol f = makeFunc();
+            FunctionSymbol g = makeFunc();
+            merge(f, std::move(g));
+            BOOST_TEST(!f.HiddenFriendOf.has_value());
+        }
+    }
+
     // ------ run ------
 
     void run()
@@ -482,6 +528,7 @@ struct FunctionSymbolTest
         test_special_move_assignment();
         test_special_normal_function();
         test_special_call_operator();
+        test_hidden_friend_of_merge();
     }
 };
 

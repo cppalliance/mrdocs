@@ -886,7 +886,7 @@ populate(
                 MRDOCS_CHECK_OR_CONTINUE(!T || !T->isBuiltinType());
             }
             FriendInfo F;
-            populate(F, FD);
+            populate(F, FD, I);
             if (F.id != SymbolID::invalid)
             {
                 Symbol* FI = this->find(F.id);
@@ -1323,7 +1323,8 @@ void
 ASTVisitor::
 populate(
     FriendInfo& I,
-    clang::FriendDecl const* D)
+    clang::FriendDecl const* D,
+    RecordSymbol const& R)
 {
     if (clang::TypeSourceInfo const* TSI = D->getFriendType())
     {
@@ -1344,6 +1345,46 @@ populate(
         if (Symbol const* SI = findOrTraverse(Target))
         {
             I.id = SI->id;
+        }
+        // A hidden friend is a function whose every redeclaration has a
+        // non-`FOK_None` friend object kind: no matching namespace-scope
+        // declaration exists, so ordinary and qualified lookup cannot find
+        // it. Walk the befriended FunctionDecl's own redeclaration chain
+        // (not the canonicalized Target, which may be a primary template).
+        // For a function template, the friend object kind lives on its
+        // templated FunctionDecl, whose redeclaration chain covers every
+        // declaration of the template.
+        clang::FunctionDecl const* FD = nullptr;
+        if (auto const* FTD = dyn_cast<clang::FunctionTemplateDecl>(ND))
+        {
+            FD = FTD->getTemplatedDecl();
+        }
+        else
+        {
+            FD = dyn_cast<clang::FunctionDecl>(ND);
+        }
+        if (FD)
+        {
+            bool isHidden = true;
+            for (clang::FunctionDecl const* Redecl : FD->redecls())
+            {
+                if (Redecl->getFriendObjectKind() == clang::Decl::FOK_None)
+                {
+                    isHidden = false;
+                    break;
+                }
+            }
+            if (isHidden)
+            {
+                if (Symbol* TI = find(I.id))
+                {
+                    if (auto* FS = dynamic_cast<FunctionSymbol*>(TI);
+                        FS && !FS->HiddenFriendOf)
+                    {
+                        FS->HiddenFriendOf = R.id;
+                    }
+                }
+            }
         }
     }
     // The newly traversed info might need to inherit the

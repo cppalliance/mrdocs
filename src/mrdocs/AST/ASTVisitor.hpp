@@ -685,8 +685,10 @@ private:
     void
     populate(VariableSymbol& I, clang::FieldDecl const* D);
 
+    /** Populate a friend entry of record `R` from its friend declaration.
+    */
     void
-    populate(FriendInfo& I, clang::FriendDecl const* D);
+    populate(FriendInfo& I, clang::FriendDecl const* D, RecordSymbol const& R);
 
     void
     populate(GuideSymbol& I, clang::CXXDeductionGuideDecl const* D);

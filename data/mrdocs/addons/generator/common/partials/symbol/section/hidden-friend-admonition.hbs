@@ -1,0 +1,4 @@
+{{! Hidden friend NOTE admonition. }}
+{{~#if symbol.hiddenFriendOf}}
+{{#> markup/admonition kind="note"}}This function is a {{#> markup/a href="https://en.cppreference.com/w/cpp/language/friend"}}hidden friend{{/markup/a}} of {{#with (@root.mrdocs.corpus.get symbol.hiddenFriendOf)}}{{> symbol/name}}{{/with}}: it is declared only inside that class and can be found only through argument-dependent lookup.{{/markup/admonition}}
+{{/if~}}

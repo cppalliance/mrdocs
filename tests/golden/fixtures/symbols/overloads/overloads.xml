@@ -607,6 +607,7 @@
   </params>
   <funcClass>normal</funcClass>
   <overloadedOperator>==</overloadedOperator>
+  <hiddenFriendOf>2Nkohq7e7VYjm412uPP8Ja4rS6tz</hiddenFriendOf>
 </function>
 <function>
   <name>operator==</name>
@@ -738,6 +739,7 @@
   </params>
   <funcClass>normal</funcClass>
   <overloadedOperator>==</overloadedOperator>
+  <hiddenFriendOf>2Nkohq7e7VYjm412uPP8Ja4rS6tz</hiddenFriendOf>
 </function>
 <function>
   <name>operator==</name>

@@ -158,12 +158,25 @@ canonicalFriendTarget(clang::NamedDecl const* ND)
 
     if (auto const* FD = llvm::dyn_cast<clang::FunctionDecl>(ND))
     {
-        if (auto const* PT = FD->getPrimaryTemplate())
-            return PT->getTemplatedDecl()->getCanonicalDecl();
+        // Collapse only implicit instantiations to their primary template.
+        // An explicit specialization declared as a friend (`friend void
+        // f<>(X)`) is a distinct declaration the user wrote: it keeps its
+        // own identity, so a hidden friend of that form is tagged on the
+        // specialization rather than on the primary template.
+        if (FD->getTemplateSpecializationKind() !=
+            clang::TSK_ExplicitSpecialization)
+        {
+            if (auto const* PT = FD->getPrimaryTemplate())
+                return PT->getTemplatedDecl()->getCanonicalDecl();
+        }
     }
 
+    // A function template keeps its template header: converging to the
+    // templated declaration would strip the template parameters, losing the
+    // `template` section and, for hidden friends, the check below that walks
+    // the redeclaration chain to set `HiddenFriendOf`.
     if (auto const* FTD = llvm::dyn_cast<clang::FunctionTemplateDecl>(ND))
-        return FTD->getTemplatedDecl()->getCanonicalDecl();
+        return FTD->getCanonicalDecl();
 
     return ND->getCanonicalDecl();
 }

@@ -219,7 +219,7 @@
       <location>
         <shortPath>friend-and-member-operator-rshift.cpp</shortPath>
         <sourcePath>friend-and-member-operator-rshift.cpp</sourcePath>
-        <lineNumber>26</lineNumber>
+        <lineNumber>25</lineNumber>
         <columnNumber>5</columnNumber>
         <documented/>
       </location>
@@ -356,7 +356,17 @@
       <name>bs</name>
     </param>
   </params>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>B</name>
+        <keyKind>class</keyKind>
+      </type>
+    </params>
+  </template>
   <funcClass>normal</funcClass>
   <overloadedOperator>&gt;&gt;</overloadedOperator>
+  <hiddenFriendOf>EeQ1x8PP9hxqoN8GerrL9H8GHBv</hiddenFriendOf>
 </function>
 </mrdocs>
