@@ -89,14 +89,14 @@
   "panels": [
     {
       "label": "Attributes & Specifiers",
-      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, noexcept).",
+      "description": "Accurate rendering of attributes and exception specifications (e.g. <code>[[noreturn]]</code>, <code>noexcept</code>).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
       "label": "Parameters & Returns",
-      "description": "Documentation comments become structured reference pages—synopsis, description, parameters, and returns.",
+      "description": "Comments become structured reference pages — synopsis, params, returns.",
       "source": "distance.cpp",
       "imageClass": "shouting",
       "boxClass": "box3 box-shape1 box0"
@@ -110,7 +110,7 @@
     },
     {
       "label": "Templates & SFINAE",
-      "description": "Understands concepts, constraints, and SFINAE—rendered as you wrote them.",
+      "description": "Understands concepts, constraints, SFINAE, and LaTeX math — and shows <code>enable_if</code> as the constraint it really expresses.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
       "boxClass": "box3 box-shape3 box270"
