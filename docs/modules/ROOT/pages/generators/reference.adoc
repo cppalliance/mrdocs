@@ -3,6 +3,6 @@
 
 This is the reference for the data MrDocs extracts into a cpp:Corpus[corpus] and exposes to each generator as structured objects: each cpp:Symbol[symbol], and the types, names, template parameters, and documentation blocks attached to it.
 
-Machine-readable schema files for the corpus are also attached to this site: a xref:attachment$schemas/generators/mrdocs.rng[RELAX NG schema] for the XML representation and a xref:attachment$schemas/generators/mrdocs.schema.json[JSON Schema] for the JSON representation.
+Machine-readable schema files for the corpus are also attached to this site: a xref:attachment$schemas/generators/mrdocs.rng[RELAX NG schema] for the XML representation and a xref:attachment$schemas/generators/mrdocs.schema.json[JSON Schema] for the JSON representation. In both, each definition is named after the MrDocs type it describes, such as `FunctionSymbol`. When two types share a name, each is qualified with as many enclosing scopes as it takes to tell them apart, joined with `.`, as in `doc.Text`.
 
 include::partial$dom-schema.adoc[]

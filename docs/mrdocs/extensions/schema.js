@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -34,6 +35,7 @@
  * @property {Array}  structOrder   Struct ids in first-seen (emission) order.
  * @property {Object} fieldsCache   Memoized `record id -> [field]`.
  * @property {Object} singleTextCache Memoized `record id -> bool`.
+ * @property {Object} defNames      `struct id -> definition name` (see assignDefNames).
  */
 
 // ---------------------------------------------------------------------------
@@ -361,6 +363,66 @@ function discoverStructs(model) {
 }
 
 /**
+ * The names of a symbol and its enclosing scopes, outermost first, up to (not
+ * including) the unnamed global namespace.
+ * @param {Model} model
+ * @param {Object} sym A symbol.
+ * @returns {Array} e.g. ["mrdocs", "doc", "Text"].
+ */
+function qualifiedNameParts(model, sym) {
+  var parts = [];
+  for (var s = sym; s && s.name; s = getSymbol(model, s.parent)) parts.unshift(s.name);
+  return parts;
+}
+
+/**
+ * Name the definition of every emitted struct after the C++ type it reflects.
+ * A type gets the shortest trailing part of its qualified name, scopes joined
+ * with ".", that no other emitted type shares and that no fixed definition
+ * already uses: `FunctionSymbol` alone, `doc.Text` when another `Text` is
+ * emitted too. Types that still share every part keep `S_<id>`.
+ * @param {Model} model
+ * @returns {void}
+ */
+function assignDefNames(model) {
+  var taken = { Mrdocs: 1, Tagfile: 1, TagCompound: 1, TagClass: 1, TagMember: 1 };
+  for (var base in VARIANTS) taken["Any" + base] = 1;
+  var pending = [];
+  for (var i = 0; i < model.structOrder.length; ++i) {
+    var id = model.structOrder[i];
+    pending.push({ id: id, parts: qualifiedNameParts(model, getSymbol(model, id)) });
+  }
+  for (var depth = 1; pending.length; ++depth) {
+    var byName = {}, next = [];
+    for (var j = 0; j < pending.length; ++j) {
+      var p = pending[j];
+      if (p.parts.length < depth) continue;
+      p.name = p.parts.slice(-depth).join(".");
+      byName[p.name] = (byName[p.name] || 0) + 1;
+    }
+    for (var k = 0; k < pending.length; ++k) {
+      var q = pending[k];
+      if (q.parts.length < depth) continue;
+      if (byName[q.name] === 1 && !taken[q.name]) { model.defNames[q.id] = q.name; taken[q.name] = 1; }
+      else next.push(q);
+    }
+    pending = next;
+  }
+}
+
+/**
+ * The definition name of a struct: the one `assignDefNames` gave it, or
+ * `S_<id>` when it has none (also while the model is still being built, when
+ * the patterns referring to it are computed only for their side effects).
+ * @param {Model} model
+ * @param {string} id The struct id.
+ * @returns {string}
+ */
+function defName(model, id) {
+  return model.defNames[id] || ("S_" + id);
+}
+
+/**
  * Build the full model from a generator context.
  * @param {Object} ctx The generator context.
  * @returns {Model}
@@ -368,11 +430,13 @@ function discoverStructs(model) {
 function buildModel(ctx) {
   var model = {
     ctx: ctx, cache: {}, records: [], variantKinds: {}, kindToVariant: {},
-    neededStructIds: {}, structIds: {}, structOrder: [], fieldsCache: {}, singleTextCache: {}
+    neededStructIds: {}, structIds: {}, structOrder: [], fieldsCache: {}, singleTextCache: {},
+    defNames: {}
   };
   collectRecords(model);
   buildVariants(model);
   discoverStructs(model);
+  assignDefNames(model);
   return model;
 }
 
@@ -403,12 +467,12 @@ function rngContentForType(model, type) {
     if (en === "Polymorphic") { var bb = ((templateArg(et, 0) || {}).name || {}).identifier; if (bb && VARIANTS[bb]) return '<zeroOrMore><ref name="Any' + bb + '"/></zeroOrMore>'; }
     if (VARIANTS[en]) return '<zeroOrMore><ref name="Any' + en + '"/></zeroOrMore>';
     var er = recordFromType(model, et);
-    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '<zeroOrMore><element name="' + kindTag(model, er) + '"><ref name="S_' + er.id + '"/></element></zeroOrMore>'; }
+    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '<zeroOrMore><element name="' + kindTag(model, er) + '"><ref name="' + defName(model, er.id) + '"/></element></zeroOrMore>'; }
     return "<zeroOrMore><text/></zeroOrMore>";
   }
   var r = recordFromType(model, t);
   if (r && r.kind === "enum") return "<text/>";
-  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return "<text/>"; model.neededStructIds[r.id] = 1; return '<ref name="S_' + r.id + '"/>'; }
+  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return "<text/>"; model.neededStructIds[r.id] = 1; return '<ref name="' + defName(model, r.id) + '"/>'; }
   return "<text/>";
 }
 
@@ -444,7 +508,7 @@ function rngStructBody(model, rec) {
  */
 function rngAnyDefine(model, base) {
   var kinds = model.variantKinds[base], parts = "";
-  for (var i = 0; i < kinds.length; ++i) parts += '<element name="' + kindTag(model, kinds[i]) + '"><ref name="S_' + kinds[i].id + '"/></element>';
+  for (var i = 0; i < kinds.length; ++i) parts += '<element name="' + kindTag(model, kinds[i]) + '"><ref name="' + defName(model, kinds[i].id) + '"/></element>';
   return '<define name="Any' + base + '"><choice>' + parts + "</choice></define>";
 }
 
@@ -460,7 +524,7 @@ function emitRng(model) {
   for (var base in VARIANTS) out.append(path, "  " + rngAnyDefine(model, base) + "\n");
   for (var i = 0; i < model.structOrder.length; ++i) {
     var id = model.structOrder[i];
-    out.append(path, "  " + '<define name="S_' + id + '">' + rngStructBody(model, getSymbol(model, id)) + "</define>\n");
+    out.append(path, "  " + '<define name="' + defName(model, id) + '">' + rngStructBody(model, getSymbol(model, id)) + "</define>\n");
   }
   out.append(path, "</grammar>\n");
 }
@@ -482,39 +546,39 @@ function jsonForType(model, type) {
   if (id === "SymbolID") return '{"type":"string"}';
   if (isStringType(t)) return '{"type":"string"}';
   if (id === "Optional") return jsonForType(model, templateArg(t, 0));
-  if (id === "Polymorphic") { var b = ((templateArg(t, 0) || {}).name || {}).identifier; return (b && VARIANTS[b]) ? '{"$ref":"#/$defs/Any' + b + '"}' : '{}'; }
-  if (VARIANTS[id]) return '{"$ref":"#/$defs/Any' + id + '"}';
+  if (id === "Polymorphic") { var b = ((templateArg(t, 0) || {}).name || {}).identifier; return (b && VARIANTS[b]) ? '{"$ref":"#/definitions/Any' + b + '"}' : '{}'; }
+  if (VARIANTS[id]) return '{"$ref":"#/definitions/Any' + id + '"}';
   if (id === "vector" || id === "std::vector") {
     var et = templateArg(t, 0) || {}, en = (et.name || {}).identifier;
     if (en === "SymbolID") return '{"type":"array","items":{"type":"string"}}';
     if (et.fundamentalType) return '{"type":"array","items":' + jsonForType(model, et) + '}';
     if (isStringLike(model, et)) return '{"type":"array","items":{"type":"string"}}';
-    if (en === "Polymorphic") { var bb = ((templateArg(et, 0) || {}).name || {}).identifier; if (bb && VARIANTS[bb]) return '{"type":"array","items":{"$ref":"#/$defs/Any' + bb + '"}}'; }
-    if (VARIANTS[en]) return '{"type":"array","items":{"$ref":"#/$defs/Any' + en + '"}}';
+    if (en === "Polymorphic") { var bb = ((templateArg(et, 0) || {}).name || {}).identifier; if (bb && VARIANTS[bb]) return '{"type":"array","items":{"$ref":"#/definitions/Any' + bb + '"}}'; }
+    if (VARIANTS[en]) return '{"type":"array","items":{"$ref":"#/definitions/Any' + en + '"}}';
     var er = recordFromType(model, et);
-    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '{"type":"array","items":{"$ref":"#/$defs/S_' + er.id + '"}}'; }
+    if (er && er.kind === "record") { model.neededStructIds[er.id] = 1; return '{"type":"array","items":{"$ref":"#/definitions/' + defName(model, er.id) + '"}}'; }
     return '{"type":"array"}';
   }
   var r = recordFromType(model, t);
   if (r && r.kind === "enum") return '{"type":"string"}';
-  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return '{"type":"string"}'; model.neededStructIds[r.id] = 1; return '{"$ref":"#/$defs/S_' + r.id + '"}'; }
+  if (r && r.kind === "record") { if (isSingleTextObject(model, r)) return '{"type":"string"}'; model.neededStructIds[r.id] = 1; return '{"$ref":"#/definitions/' + defName(model, r.id) + '"}'; }
   return '{}';
 }
 
 /**
- * The JSON `$defs` entry for a variant base: an anyOf over its kinds.
+ * The JSON `definitions` entry for a variant base: an anyOf over its kinds.
  * @param {Model} model
  * @param {string} base A variant base name.
  * @returns {string}
  */
 function jsonAnyDef(model, base) {
   var kinds = model.variantKinds[base], refs = [];
-  for (var i = 0; i < kinds.length; ++i) refs.push('{"$ref":"#/$defs/S_' + kinds[i].id + '"}');
+  for (var i = 0; i < kinds.length; ++i) refs.push('{"$ref":"#/definitions/' + defName(model, kinds[i].id) + '"}');
   return '    "Any' + base + '": {"anyOf":[' + refs.join(",") + ']}';
 }
 
 /**
- * The JSON `$defs` entry for a struct: an object with one property per field.
+ * The JSON `definitions` entry for a struct: an object with one property per field.
  * @param {Model} model
  * @param {string} id The struct id.
  * @param {Object} rec The struct's record symbol.
@@ -523,11 +587,11 @@ function jsonAnyDef(model, base) {
 function jsonStructDef(model, id, rec) {
   var f = allFields(model, rec), props = [];
   for (var i = 0; i < f.length; ++i) props.push('"' + toCamelCase(f[i].name) + '":' + jsonForType(model, f[i].type));
-  return '    "S_' + id + '": {"type":"object","additionalProperties":true,"properties":{' + props.join(",") + '}}';
+  return '    "' + defName(model, id) + '": {"type":"object","additionalProperties":true,"properties":{' + props.join(",") + '}}';
 }
 
 /**
- * Write the JSON Schema: preamble, the `symbols` array, then the `$defs`
+ * Write the JSON Schema: preamble, the `symbols` array, then the `definitions`
  * entries, streamed with separating commas so no big object is held at once.
  * @param {Model} model
  * @returns {void}
@@ -535,10 +599,10 @@ function jsonStructDef(model, id, rec) {
 function emitJson(model) {
   var path = "generators/mrdocs.schema.json", out = model.ctx.output;
   var symbolKinds = model.variantKinds.Symbol, symbolRefs = [];
-  for (var i = 0; i < symbolKinds.length; ++i) symbolRefs.push('{"$ref":"#/$defs/S_' + symbolKinds[i].id + '"}');
+  for (var i = 0; i < symbolKinds.length; ++i) symbolRefs.push('{"$ref":"#/definitions/' + defName(model, symbolKinds[i].id) + '"}');
   out.write(path, JSON_PREAMBLE +
     '  "properties": {"symbols": {"type":"array","items":{"anyOf":[' + symbolRefs.join(",") + ']}}},\n' +
-    '  "$defs": {\n');
+    '  "definitions": {\n');
   var first = true;
   for (var base in VARIANTS) { out.append(path, (first ? "" : ",\n") + jsonAnyDef(model, base)); first = false; }
   for (var j = 0; j < model.structOrder.length; ++j) {
