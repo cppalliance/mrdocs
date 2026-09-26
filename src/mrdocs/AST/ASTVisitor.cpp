@@ -816,7 +816,7 @@ populate(
             // If we're going to copy the members from the specialization,
             // we need to instantiate and traverse the specialization
             // as a dependency.
-            if (config_.extractImplicitSpecializations)
+            if (config_.extractImplicitBaseClasses)
             {
                 [&] {
                     auto* TST = BT->getAs<clang::TemplateSpecializationType>();
