@@ -1,0 +1,96 @@
+<!--
+    Licensed under the Apache License v2.0 with LLVM Exceptions.
+    See https://llvm.org/LICENSE.txt for license information.
+    SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+    Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+
+    Official repository: https://github.com/cppalliance/mrdocs
+-->
+
+<!--
+    Additions to the WiX sources CPack generates for the MSI.
+
+    The PATH entry belongs to a feature, hidden from the feature tree and
+    selected by default, so uninstalling MrDocs removes it and a silent
+    install can leave it out with REMOVE=AddToPath. The checkbox of the
+    AddToPathDlg dialog selects or deselects the feature. The dialog comes
+    between CustomizeDlg and VerifyReadyDlg: its NewDialog events have a
+    higher order than those of WixUI_FeatureTree, and when a control has
+    more than one, Windows Installer publishes the one with the highest
+    order.
+-->
+<CPackWiXPatch>
+    <CPackWiXFragment Id="#PRODUCTFEATURE">
+        <Feature Id="AddToPath" Level="1" Display="hidden"
+            Title="Add mrdocs to the PATH">
+            <Component Id="AddToPath" Directory="INSTALL_ROOT"
+                Guid="3AF0ED09-C765-40E4-8C19-1552B8162E37" KeyPath="yes">
+                <Environment Id="AddToPath" Name="PATH"
+                    Value="[INSTALL_ROOT]@CMAKE_INSTALL_BINDIR@"
+                    Action="set" Part="last" System="yes" Permanent="no"/>
+            </Component>
+        </Feature>
+    </CPackWiXFragment>
+    <CPackWiXFragment Id="#PRODUCT">
+        <Property Id="AddToPathChecked" Value="1"/>
+        <UI>
+            <Dialog Id="AddToPathDlg" Width="370" Height="270"
+                Title="[ProductName] Setup">
+                <Control Id="BannerBitmap" Type="Bitmap"
+                    X="0" Y="0" Width="370" Height="44" TabSkip="no"
+                    Text="WixUI_Bmp_Banner"/>
+                <Control Id="BannerLine" Type="Line"
+                    X="0" Y="44" Width="370" Height="0"/>
+                <Control Id="Title" Type="Text"
+                    X="15" Y="6" Width="200" Height="15"
+                    Transparent="yes" NoPrefix="yes"
+                    Text="{\WixUI_Font_Title}Command Line"/>
+                <Control Id="Description" Type="Text"
+                    X="25" Y="23" Width="280" Height="15"
+                    Transparent="yes" NoPrefix="yes"
+                    Text="Choose whether terminals find mrdocs by name."/>
+                <Control Id="AddToPath" Type="CheckBox"
+                    X="20" Y="60" Width="330" Height="17"
+                    Property="AddToPathChecked" CheckBoxValue="1"
+                    Text="&amp;Add mrdocs to the PATH for all users"/>
+                <Control Id="AddToPathText" Type="Text"
+                    X="37" Y="80" Width="313" Height="40" NoPrefix="yes"
+                    Text="Adds [INSTALL_ROOT]@CMAKE_INSTALL_BINDIR@ to the system PATH."/>
+                <Control Id="BottomLine" Type="Line"
+                    X="0" Y="234" Width="370" Height="0"/>
+                <Control Id="Back" Type="PushButton"
+                    X="180" Y="243" Width="56" Height="17"
+                    Text="!(loc.WixUIBack)">
+                    <Publish Event="NewDialog" Value="CustomizeDlg">1</Publish>
+                </Control>
+                <Control Id="Next" Type="PushButton"
+                    X="236" Y="243" Width="56" Height="17" Default="yes"
+                    Text="!(loc.WixUINext)">
+                    <Publish Event="AddLocal" Value="AddToPath"
+                        Order="1">AddToPathChecked</Publish>
+                    <Publish Event="Remove" Value="AddToPath"
+                        Order="2">NOT AddToPathChecked</Publish>
+                    <Publish Event="NewDialog" Value="VerifyReadyDlg"
+                        Order="3">1</Publish>
+                </Control>
+                <Control Id="Cancel" Type="PushButton"
+                    X="304" Y="243" Width="56" Height="17" Cancel="yes"
+                    Text="!(loc.WixUICancel)">
+                    <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+                </Control>
+            </Dialog>
+
+            <Publish Dialog="CustomizeDlg" Control="Next"
+                Event="NewDialog" Value="AddToPathDlg" Order="10">1</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back"
+                Event="NewDialog" Value="AddToPathDlg"
+                Order="10">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+
+            <!-- On a change, the checkbox starts out as the feature is. -->
+            <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton"
+                Property="AddToPathChecked" Value="{}"
+                Order="10">NOT (!AddToPath = 3)</Publish>
+        </UI>
+    </CPackWiXFragment>
+</CPackWiXPatch>
