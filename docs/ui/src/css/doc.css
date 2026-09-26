@@ -141,7 +141,10 @@ html {
 .doc > h1.page:first-child,
 .doc > aside.toc.embedded + h1.page {
   font-size: calc(62 / var(--rem-base) * 1rem);
-  margin: 1.5rem 0;
+  /* `auto`, NOT 0. This selector is (0,3,1) and outranks the
+     `.doc > * { margin-inline: auto }` below at (0,1,0) whatever the source
+     order, so `0` left-anchors the title inside its 779 measure. */
+  margin: 1.5rem auto;
 }
 
 @media screen and (min-width: 769px) {
@@ -270,6 +273,53 @@ html {
   margin: 0;
 }
 
+/* The stroke fills Special Elite's worn edges. Hyphenation is off: the face's
+   wide hyphen breaks too many words on the short measure. */
+.doc .paragraph > p,
+.doc .ulist li > p,
+.doc .olist li > p {
+  color: var(--doc-prose-color);
+  hyphens: manual;
+  text-wrap: pretty;
+  word-spacing: var(--doc-prose-word-spacing);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* No paint-order: stroke and fill share a colour, so it changed nothing,
+     and Safari painted the stroke onto the start of inline code with it. */
+  -webkit-text-stroke: var(--doc-prose-stroke) currentColor;
+}
+
+/* The measure caps the text, not the block, so prose keeps the column's left
+   edge. Lists take it on the list, whose border-box includes the indent, so
+   their text ends where paragraphs do. */
+.doc .paragraph > p,
+.doc .ulist > ul,
+.doc .olist > ol {
+  max-width: var(--doc-prose-measure);
+}
+
+/* Blocks that set their own ink keep it: `color: currentColor` inherits. */
+.doc .admonitionblock,
+.doc .quoteblock,
+.doc .verseblock,
+#preamble .abstract {
+  --doc-prose-color: currentColor;
+}
+
+.doc .paragraph + .paragraph {
+  margin-top: var(--doc-prose-gap);
+}
+
+/* Special Elite has no bold; underline rather than synthesise one. */
+.doc .paragraph > p strong,
+.doc .ulist li > p strong,
+.doc .olist li > p strong {
+  font-weight: normal;
+  font-synthesis: none;
+  text-decoration: underline 0.08em;
+  text-underline-offset: 0.22em;
+}
+
 .doc a {
   color: var(--link-font-color);
 }
@@ -303,6 +353,7 @@ html {
   border-radius: 0.25em;
   font-size: 0.95em;
   padding: 0.125em 0.25em;
+  -webkit-text-stroke: 0;
 }
 
 .doc code,
@@ -432,6 +483,27 @@ html {
   background: none;
 }
 
+/* Underlined because nothing else marks them: links and inline code in a cell
+   are both Menlo 400 with no decoration, so they differed by hue alone (WCAG
+   1.4.1). The mock draws no underline, but never puts the two side by side in
+   a column. `--table-link-color` is the contrast-safe blue for the tinted cell
+   ground -- see vars.css. */
+.doc table.tableblock a {
+  color: var(--table-link-color);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Hover belongs to the link, not the cell: a cell-wide wash dims the link it
+   is advertising and puts a pointer over prose that is not clickable. The
+   colour steps one further in each theme's own direction, so hover is never
+   the dimmer of the two. */
+.doc table.tableblock a:hover,
+.doc table.tableblock a:focus-visible {
+  color: var(--table-link-hover-color);
+  text-decoration-thickness: 2px;
+}
+
 .doc table.tableblock thead ~ tbody tr:first-child {
   background-color: transparent;
 }
@@ -444,8 +516,9 @@ html {
   font-size: calc(14 / var(--rem-base) * 1rem);
 }
 
-/* Figma: names are Menlo 14 in the label pink -- .doc code's 0.95em would
-   render them at 13.3. */
+/* Menlo 14 -- `.doc code`'s 0.95em would render these at 13.3. Colour is
+   inherited, not the frame's label pink: this catches every code span in a
+   cell, and pink read as a dead link beside the real ones. */
 .doc table.tableblock td code {
   color: var(--table-name-color);
   background: none;
@@ -1051,7 +1124,7 @@ html {
 
   /* Figma 316:334286 code-block-basic: Menlo 14 on #272E3E, 20px inset. */
   font-size: calc(14 / var(--rem-base) * 1rem);
-  line-height: 1.55;
+  line-height: var(--ds-leading-code);
   overflow-x: auto;
   padding: calc(20 / var(--rem-base) * 1rem);
 }
@@ -1353,11 +1426,6 @@ html {
 .doc table.tableblock a img[src*="asciidoc.svg"] {
   width: 20px !important;
   height: 20px !important;
-}
-
-.doc table.tableblock td:has(a):hover {
-  background-color: rgba(0, 0, 0, 0.3);
-  cursor: pointer;
 }
 
 .doc table.tableblock td:has(a) p {

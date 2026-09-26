@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 694 544" preserveAspectRatio="none">
+  <!-- Figma TOC backdrop blob (520:84). Used as a mask only: the fill is
+       alpha, the colour comes from the toc-backdrop token in vars.css. -->
+  <filter id="toc-backdrop-blur" x="0" y="0" width="694" height="544" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feGaussianBlur stdDeviation="33.5"/>
+  </filter>
+  <path filter="url(#toc-backdrop-blur)" d="M407.74 161.844C306.103 212.22 145.831-25.4136 172.57 108.448C199.309 242.31 48.2932 170.735 68.9478 257.462C94.766 365.87 226.35 305.607 244.836 433.775C263.323 561.943 518.442 362.481 604.032 317.257C689.621 272.033 509.378 111.467 407.74 161.844Z"/>
+</svg>
