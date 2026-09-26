@@ -4156,7 +4156,7 @@ upsert(DeclType const* D)
     SymbolID const id = generateID(D);
     MRDOCS_TRY(checkUndocumented<R>(id, D, m));
 
-    MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
+    MRDOCS_CHECK(id, "Failed to extract symbol ID");
     auto [I, isNew] = upsert<R>(id);
 
     // Already populate the extraction mode
