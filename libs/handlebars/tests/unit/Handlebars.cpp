@@ -4594,6 +4594,36 @@ utils()
 }
 
 void
+container_helpers_edge_cases()
+{
+    // Regression tests for the container-helper key-loop underflow. The
+    // container helpers computed their trailing-key range as
+    // `i < arguments.size() - 1`, which underflowed for a subexpression
+    // call with an empty argument array.
+    Handlebars hbs;
+    helpers::registerContainerHelpers(hbs);
+    {
+        BOOST_TEST(hbs.render("{{filter_by}}") == "[object Object]");
+        BOOST_TEST(hbs.render("{{reject_by}}") == "[object Object]");
+        BOOST_TEST(hbs.render("{{any_of_by}}") == "[object Object]");
+    }
+    {
+        hbs.registerHelper("outer", [](dom::Value const& v) -> dom::Value
+        {
+            return v;
+        });
+        hbs.registerHelper("inner", [](dom::Value const& v) -> dom::Value
+        {
+            return v;
+        });
+        BOOST_TEST_THROW_STARTS_WITH(
+            hbs.render("{{outer (inner (missing))}}"),
+            std::runtime_error,
+            "missing is not a function");
+    }
+}
+
+void
 run()
 {
     safe_string();
@@ -4621,6 +4651,7 @@ run()
     strict();
     assume_objects();
     utils();
+    container_helpers_edge_cases();
 }
 
 };
