@@ -8,20 +8,21 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLIDCOMPARE_HPP
-#define MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLIDCOMPARE_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLCOMPARE_HPP
+#define MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLCOMPARE_HPP
 
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/detail/Corpus.hpp>
 
 namespace mrdocs {
 
-/** Comparison function by symbol IDs.
+/** Comparison function by symbol.
 
-    Orders the symbols two IDs refer to the way a reader expects to
-    meet them in a list.
+    Orders two symbols the way a reader expects to meet them in a
+    list. Use this overload when both symbols are already resolved;
+    use `SymbolIDCompareFn` when only their IDs are at hand.
 */
-struct SymbolIDCompareFn
+struct SymbolCompareFn
 {
     Corpus const& corpus_;
     Config const& config_;
@@ -71,16 +72,8 @@ struct SymbolIDCompareFn
     }
 
     bool
-    operator()(SymbolID const& lhsId, SymbolID const& rhsId) const
+    operator()(Symbol const& lhs, Symbol const& rhs) const
     {
-        // Get Info from SymbolID
-        Symbol const* lhsPtr = corpus_.find(lhsId);
-        MRDOCS_CHECK_OR(lhsPtr, false);
-        Symbol const* rhsPtr = corpus_.find(rhsId);
-        MRDOCS_CHECK_OR(rhsPtr, true);
-        Symbol const& lhs = *lhsPtr;
-        Symbol const& rhs = *rhsPtr;
-
         // Constructors come first
         Optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
         Optional<FunctionClass> const rhsClass = findFunctionClass(rhs);
@@ -268,6 +261,29 @@ struct SymbolIDCompareFn
     }
 };
 
+/** Comparison function by symbol IDs.
+
+    Orders the symbols two IDs refer to the way a reader expects to
+    meet them in a list. Resolves each ID and delegates to
+    `SymbolCompareFn`; an ID that fails to resolve sorts after every
+    ID that does.
+*/
+struct SymbolIDCompareFn
+{
+    Corpus const& corpus_;
+    Config const& config_;
+
+    bool
+    operator()(SymbolID const& lhsId, SymbolID const& rhsId) const
+    {
+        Symbol const* lhsPtr = corpus_.find(lhsId);
+        MRDOCS_CHECK_OR(lhsPtr, false);
+        Symbol const* rhsPtr = corpus_.find(rhsId);
+        MRDOCS_CHECK_OR(rhsPtr, true);
+        return SymbolCompareFn{corpus_, config_}(*lhsPtr, *rhsPtr);
+    }
+};
+
 } // mrdocs
 
-#endif // MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLIDCOMPARE_HPP
+#endif // MRDOCS_LIB_METADATA_FINALIZERS_SYMBOLCOMPARE_HPP

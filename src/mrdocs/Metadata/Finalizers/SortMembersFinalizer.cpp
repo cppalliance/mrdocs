@@ -9,7 +9,7 @@
 //
 
 #include "SortMembersFinalizer.hpp"
-#include "SymbolIDCompare.hpp"
+#include "SymbolCompare.hpp"
 #include <algorithm>
 #include <ranges>
 

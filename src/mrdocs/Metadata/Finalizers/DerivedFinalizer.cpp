@@ -9,9 +9,9 @@
 //
 
 #include "DerivedFinalizer.hpp"
+#include "SymbolCompare.hpp"
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <algorithm>
 
 namespace mrdocs {
 
@@ -40,26 +40,12 @@ build()
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr);
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->isRecord());
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->Extraction == ExtractionMode::Regular);
-            if (auto& baseRecord = baseInfoPtr->asRecord();
-                !contains(baseRecord.Derived, record.id))
-            {
-                // Insert in order by name
-                auto const it = std::ranges::lower_bound(
-                    baseRecord.Derived,
-                    record.id,
-                    [&](SymbolID const& lhs, SymbolID const& rhs) {
-                        auto const* lhsRecord = corpus_.find(lhs);
-                        auto const* rhsRecord = corpus_.find(rhs);
-                        MRDOCS_ASSERT(lhsRecord);
-                        MRDOCS_ASSERT(rhsRecord);
-                        if (lhsRecord->Name != rhsRecord->Name)
-                        {
-                            return lhsRecord->Name < rhsRecord->Name;
-                        }
-                        return lhs < rhs;
-                });
-                baseRecord.Derived.insert(it, record.id);
-            }
+            auto& baseRecord = baseInfoPtr->asRecord();
+            MRDOCS_CHECK_OR_CONTINUE(!contains(baseRecord.Derived, record.id));
+            insert_sorted(
+                baseRecord.Derived,
+                record.id,
+                SymbolIDCompareFn{corpus_, config_});
         }
     }
 }

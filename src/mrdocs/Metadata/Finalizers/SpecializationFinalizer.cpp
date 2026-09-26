@@ -9,7 +9,7 @@
 //
 
 #include "SpecializationFinalizer.hpp"
-#include "SymbolIDCompare.hpp"
+#include "SymbolCompare.hpp"
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <algorithm>
 #include <ranges>
