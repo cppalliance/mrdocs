@@ -18,10 +18,6 @@ b64&lowbar;encode(
     unsigned int n);
 ----
 
-=== Return Value
-
-A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -32,6 +28,10 @@ A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&perio
 | *n*
 | Number of bytes in `data`&period;
 |===
+
+=== Return Value
+
+A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
 
 [#base64]
 == base64
@@ -50,10 +50,6 @@ base64(
     unsigned int n);
 ----
 
-=== Return Value
-
-A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -64,6 +60,10 @@ A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&perio
 | *n*
 | Number of bytes in `data`&period;
 |===
+
+=== Return Value
+
+A null&hyphen;terminated base&hyphen;64 string&period; Owned by the caller&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -21,6 +21,15 @@ lock&lowbar;file(std::filesystem::path const& path);
 
 The lock is held until the returned object is destroyed&period;
 
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *path*
+| The path of the file to lock&period;
+|===
+
 === Exceptions
 
 [cols="1,4"]
@@ -38,14 +47,5 @@ An object that holds the lock&period;
 ====
 The return value https://en.cppreference.com/cpp/language/attributes/nodiscard[should not be discarded^].
 ====
-=== Parameters
-
-[cols="1,4"]
-|===
-| Name| Description
-| *path*
-| The path of the file to lock&period;
-|===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

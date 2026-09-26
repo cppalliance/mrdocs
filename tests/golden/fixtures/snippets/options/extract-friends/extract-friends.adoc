@@ -75,10 +75,6 @@ operator&equals;&equals;(
     link:#point[point] b);
 ----
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -89,6 +85,10 @@ operator&equals;&equals;(
 | *b*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

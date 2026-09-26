@@ -21,10 +21,6 @@ resample(
     Sample* out);
 ----
 
-=== Return Value
-
-The number of samples written to `out`&period;
-
 === Template Parameters
 
 [cols="1,4"]
@@ -48,6 +44,10 @@ The number of samples written to `out`&period;
 | *out* [out]
 | Buffer that receives the resampled signal&period;
 |===
+
+=== Return Value
+
+The number of samples written to `out`&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

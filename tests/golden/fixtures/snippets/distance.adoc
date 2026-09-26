@@ -24,10 +24,6 @@ distance(
 
 This function returns the distance between two points according to the Euclidean distance formula&period;
 
-=== Return Value
-
-The distance between the two points
-
 === Parameters
 
 [cols="1,4"]
@@ -42,6 +38,10 @@ The distance between the two points
 | *y1*
 | The y&hyphen;coordinate of the second point
 |===
+
+=== Return Value
+
+The distance between the two points
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
