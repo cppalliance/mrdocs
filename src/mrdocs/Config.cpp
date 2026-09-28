@@ -413,6 +413,13 @@ load(
                     "use `extract-implicit-base-classes` instead");
                 c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
             }
+            else if (key == "extract-friends")
+            {
+                report::warn(
+                    "`extract-friends` option is deprecated: friends are "
+                    "always extracted; hide them in the generator templates "
+                    "instead");
+            }
         }
     }
     // Apply the command-line overrides on top of the file's values (a no-op
@@ -594,6 +601,12 @@ applyCommandLineOverrides(ConfigSchema& c, char const** argv)
             "`extract-implicit-specializations` option is deprecated, "
             "use `extract-implicit-base-classes` instead");
         c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
+    }
+    if (supplied.contains("extract-friends"))
+    {
+        report::warn(
+            "`extract-friends` option is deprecated: friends are always "
+            "extracted; hide them in the generator templates instead");
     }
     return result;
 }

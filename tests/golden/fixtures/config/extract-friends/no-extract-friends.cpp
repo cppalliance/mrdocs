@@ -18,3 +18,10 @@ public:
     }
 };
 }
+/// A class whose `operator==` is a hidden friend. `extract-friends` is
+/// deprecated and ignored: the function is extracted and the class still
+/// lists it as a friend.
+class B {
+    /// Compare two `B` values.
+    friend bool operator==(B, B) { return true; }
+};
