@@ -15,6 +15,7 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Metadata/Symbol/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/DescribedToDom.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
@@ -566,6 +567,38 @@ Builder(
                 return nullptr;
             }
             return dom::Value(domCorpus.getQualifiedAnchor(*sym, '-'));
+        }));
+    // `isImplementationDefined` tells a template whether one of its values
+    // names an implementation-defined symbol, so lists can drop such entries
+    // with the generic `reject` helper instead of a dedicated filter. It
+    // accepts a symbol id string, an object with a top-level `id` (a friend),
+    // or a base object whose `type.name.id` names the symbol. Anything it
+    // cannot resolve is treated as not implementation-defined, so `reject`
+    // fails open and keeps it.
+    corpusVal.getObject().set("isImplementationDefined", dom::makeInvocable(
+        [&](dom::Value const& v) -> dom::Value
+        {
+            std::optional<SymbolID> id;
+            if (v.isString())
+            {
+                id = fromBase58Str(v.getString());
+            }
+            else if (v.isObject())
+            {
+                dom::Value const idV =
+                    v.get("id").isString() ? v.get("id") : v.lookup("type.name.id");
+                if (idV.isString())
+                {
+                    id = fromBase58Str(idV.getString());
+                }
+            }
+            if (!id)
+            {
+                return false;
+            }
+            Symbol const* sym = domCorpus.getCorpus().find(*id);
+            return sym &&
+                sym->Extraction == ExtractionMode::ImplementationDefined;
         }));
     dom::Object mrdocsObj;
     mrdocsObj.set("corpus", corpusVal);

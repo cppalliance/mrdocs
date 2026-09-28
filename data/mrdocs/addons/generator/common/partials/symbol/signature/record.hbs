@@ -9,9 +9,9 @@
     {{>symbol/name-text symbol ~}}
 {{~/if}}
 {{~#if isFinal}} final{{/if~}}
-{{#if bases}}
+{{#if (reject bases @root.mrdocs.corpus.isImplementationDefined)}}
 
-{{#each bases~}}
+{{#each (reject bases @root.mrdocs.corpus.isImplementationDefined)~}}
     {{#if @first}}
     :{{else}}
     ,{{/if~}}
@@ -25,4 +25,4 @@
       declaration). Similarly, don't show a semicolon if there are base
       classes. --}}
 {{~#if (eq extraction "see-below")}} { {{> symbol/signature/see-below}} }{{/if~}}
-{{#if (or (eq extraction "see-below") (and (not isFinal) (eq (len bases) 0)))}};{{/if}}
+{{#if (or (eq extraction "see-below") (and (not isFinal) (eq (len (reject bases @root.mrdocs.corpus.isImplementationDefined)) 0)))}};{{/if}}
