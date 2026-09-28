@@ -872,9 +872,10 @@ populate(
         }
     }
 
-    // Iterate over the friends of the class
-    if (config_.extractFriends &&
-        D->hasDefinition() &&
+    // Iterate over the friends of the class. A hidden friend (a function
+    // declared only as a friend inside the class) has no other declaration
+    // to be extracted from, so this is the one place it is reached.
+    if (D->hasDefinition() &&
         D->hasFriends())
     {
         for (clang::FriendDecl const* FD : D->friends())
