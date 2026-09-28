@@ -275,7 +275,7 @@
   <id>4RN7U35H91MmCjs1PhSU1Qeu5GEE</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>2QNTTB9W6ddCyrosjUkvpw72URGc</inheritedFrom>
   <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
   <doc>
     <brief>
@@ -326,7 +326,7 @@
   <id>2jgt4CfAs6R1oiBp6PEsdzFAn6yY</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>2QNTTB9W6ddCyrosjUkvpw72URGc</inheritedFrom>
   <parent>3Mh5YCvsGhZTTNjciaQ48gzZCfSN</parent>
   <doc>
     <brief>
@@ -504,7 +504,7 @@
   <id>3jBv2HPtFDMbMQGF3zp7QXBLuzfa</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>2QNTTB9W6ddCyrosjUkvpw72URGc</inheritedFrom>
   <parent>2Co5cQRLpHyqoKUvAErKwzkfJBuy</parent>
   <doc>
     <brief>
@@ -554,7 +554,7 @@
   <id>3fENyx57kdBGyVfWg3dAP8yPRYu9</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>2QNTTB9W6ddCyrosjUkvpw72URGc</inheritedFrom>
   <parent>2Co5cQRLpHyqoKUvAErKwzkfJBuy</parent>
   <doc>
     <brief>

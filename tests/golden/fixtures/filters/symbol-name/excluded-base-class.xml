@@ -100,7 +100,7 @@
   <id>5es8H9kDgrA9WHd2muMG4Jwq7jw</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>4Qzh7fZXvkejuajZAHEGDagHCt4v</inheritedFrom>
   <parent>4XceMwibZBAcQ78SrXF4MYjfdD2U</parent>
   <returnType>
     <named>
@@ -289,7 +289,7 @@
   <id>2ixjpSov8aQ3DSwHskKDrLWDR5Tx</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>4Qzh7fZXvkejuajZAHEGDagHCt4v</inheritedFrom>
   <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
   <returnType>
     <named>
@@ -321,7 +321,7 @@
   <id>XidbpLDeDDQ69j9JCUAxow8mWEc</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>4Qzh7fZXvkejuajZAHEGDagHCt4v</inheritedFrom>
   <parent>2hkBK3xf9WoHuE2HTCEFqMoQ64kr</parent>
   <returnType>
     <named>

@@ -19,7 +19,6 @@
             "kind": "namespace",
             "id": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "attributes": [],
             "isInline": false,
             "isAnonymous": false,
@@ -76,7 +75,6 @@
             "kind": "namespace",
             "id": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "4ZrjxJnU1LA5xSyrWMNuXTvSYKwt",
             "attributes": [],
             "isInline": false,
@@ -137,7 +135,6 @@
             "kind": "record",
             "id": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
             "doc": {
                 "$meta": {
@@ -300,7 +297,6 @@
             "id": "3X4hXD9TNfeSsq4SZ12tSt2KLtxe",
             "access": "public",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
             "doc": {
                 "$meta": {
@@ -424,7 +420,6 @@
             "id": "3eU5ivokqDnUqojf2Q55FpAp5TwT",
             "access": "public",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2Nz2w6tGeUqMfpD9XGS9bwRoksYa",
             "doc": {
                 "$meta": {
@@ -533,7 +528,6 @@
             "kind": "enum",
             "id": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
             "doc": {
                 "$meta": {
@@ -641,7 +635,6 @@
             "kind": "enum-constant",
             "id": "4ZRDsE6wESeYiUKghM5Xvav4SjGV",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
             "attributes": [],
             "initializer": {
@@ -686,7 +679,6 @@
             "kind": "enum-constant",
             "id": "4VCyAYZLGPwhe89MZcFXYDFKRgng",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
             "attributes": [],
             "initializer": {
@@ -731,7 +723,6 @@
             "kind": "enum-constant",
             "id": "2AZJRFhGNfHzTVTY7DFuAtM1W2Ga",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2NGNPuH6Wf1qSUSK1aUim5a2aFgA",
             "attributes": [],
             "initializer": {
@@ -776,7 +767,6 @@
             "kind": "function",
             "id": "2BciL9YHnssEJRqzovTQyhLr46Hs",
             "extraction": "regular",
-            "isCopyFromInherited": false,
             "parent": "2buXaq5YEtJhY4cNxSRtzAbdAXba",
             "doc": {
                 "$meta": {

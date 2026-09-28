@@ -277,14 +277,16 @@ struct MergeTest
         BOOST_TEST(dst.Access == AccessKind::Public);
     }
 
-    void test_symbol_bool_or_merge()
+    void test_symbol_optional_takes_src()
     {
         auto dst = makeFunc();
         auto src = makeFunc();
-        src.IsCopyFromInherited = true;
+        SymbolID const baseId("bbbbbbbbbbbbbbbbbbbb");
+        src.InheritedFrom = baseId;
 
         merge(static_cast<Symbol&>(dst), static_cast<Symbol&&>(src));
-        BOOST_TEST(dst.IsCopyFromInherited);
+        BOOST_TEST(dst.InheritedFrom.has_value());
+        BOOST_TEST(*dst.InheritedFrom == baseId);
     }
 
     // -- FunctionSymbol -------------------------------------------
@@ -478,7 +480,7 @@ struct MergeTest
         test_symbol_parent_invalid_takes_src();
         test_symbol_parent_valid_keeps_dst();
         test_symbol_access_none_takes_src();
-        test_symbol_bool_or_merge();
+        test_symbol_optional_takes_src();
 
         test_func_noexcept_implicit_takes_src();
         test_func_noexcept_explicit_keeps_dst();

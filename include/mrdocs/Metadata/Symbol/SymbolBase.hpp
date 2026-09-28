@@ -89,10 +89,14 @@ struct MRDOCS_VISIBLE Symbol {
     */
     ExtractionMode Extraction = ExtractionMode::Dependency;
 
-    /** Whether this a copy of an inherited method, as produced when
-        `inherit-base-members` is not `never`.
+    /** The base class this symbol was inherited from.
+
+        Set on a copy of a base class member, as produced when
+        `inherit-base-members` is not `never`. It names the class
+        that declares the member: a copy made through an intermediate
+        base keeps the class where the member was first declared.
     */
-    bool IsCopyFromInherited = false;
+    Optional<SymbolID> InheritedFrom;
 
     /** The parent symbol, if any.
 
@@ -201,7 +205,7 @@ MRDOCS_DESCRIBE_STRUCT(
     Symbol,
     (),
     (Name, Anchor, Loc, Kind, id, Access,
-     Extraction, IsCopyFromInherited, Parent, doc, Attributes)
+     Extraction, InheritedFrom, Parent, doc, Attributes)
 )
 
 //------------------------------------------------
