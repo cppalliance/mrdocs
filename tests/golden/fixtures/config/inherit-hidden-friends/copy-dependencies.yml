@@ -1,0 +1,3 @@
+inherit-hidden-friends: copy-dependencies
+exclude-symbols:
+  - lib::detail::**

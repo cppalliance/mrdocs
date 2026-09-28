@@ -1,0 +1,5 @@
+inherit-hidden-friends: copy-dependencies
+implementation-defined:
+  - lib::detail
+extract-private-bases: true
+warn-no-paramdoc: false

@@ -1,0 +1,148 @@
+= Reference
+:mrdocs:
+
+[#temperature]
+== temperature
+
+A temperature in degrees Celsius&period;
+
+=== Synopsis
+
+Declared in `&lt;inherit&hyphen;hidden&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct temperature;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#temperature-2constructor[`temperature`]         [.small]#[constructor]#
+| Construct from a value in degrees Celsius&period;
+| link:#temperature-compare[`compare`] 
+| Three&hyphen;way comparison against another temperature&period;
+|===
+
+
+=== Data Members
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#temperature-celsius[`celsius`] 
+| The value in degrees Celsius&period;
+|===
+
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#operator_eq[`operator&equals;&equals;`]
+| True if `a&period;compare(b)` is `0`&period;
+|===
+
+[#temperature-2constructor]
+== link:#temperature[temperature]::temperature
+
+Construct from a value in degrees Celsius&period;
+
+=== Synopsis
+
+Declared in `&lt;inherit&hyphen;hidden&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+temperature(double celsius) noexcept;
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *celsius*
+| The value to construct from
+|===
+
+[#temperature-compare]
+== link:#temperature[temperature]::compare
+
+Three&hyphen;way comparison against another temperature&period;
+
+=== Synopsis
+
+Declared in `&lt;inherit&hyphen;hidden&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+compare(link:#temperature[temperature] const& other) const noexcept;
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *other*
+| A temperature in degrees Celsius&period;
+|===
+
+[#temperature-celsius]
+== link:#temperature[temperature]::celsius
+
+The value in degrees Celsius&period;
+
+=== Synopsis
+
+Declared in `&lt;inherit&hyphen;hidden&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double celsius;
+----
+
+[#operator_eq]
+== operator&equals;&equals;
+
+True if `a&period;compare(b)` is `0`&period;
+
+=== Synopsis
+
+Declared in `&lt;inherit&hyphen;hidden&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    link:#temperature[temperature] const& a,
+    link:#temperature[temperature] const& b) noexcept;
+----
+
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#temperature[temperature], declared inside an implementation-defined base class: it can be found only through argument-dependent lookup.
+====
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| The left operand
+| *b*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -80,6 +80,30 @@ public:
         , config_(config)
     {}
 
+    /** A base of a record, resolved for inheriting from it.
+
+        Shared with `HiddenFriendsFinalizer`, which walks the same base
+        graph to surface hidden friends.
+    */
+    struct ResolvedBase
+    {
+        /** The record to inherit from: the implicit specialization when
+            one was extracted, otherwise the base as written.
+        */
+        RecordSymbol* Record;
+
+        /** The base as written in the base-specifier: the primary template
+            for a specialization. Copies record it as the class they are
+            inherited from.
+        */
+        SymbolID AsWritten;
+
+        /** Replacement location for copies when the base has no page of
+            its own; empty when it does.
+        */
+        SourceInfo RelocateLoc;
+    };
+
     /** The ids of every record in the corpus, in source order.
 
         A snapshot to iterate while symbols are inserted into the corpus,
@@ -91,6 +115,19 @@ public:
     std::vector<SymbolID>
     recordsInSourceOrder(Corpus const& corpus);
 
+    /** Resolve one base-specifier of `I`.
+
+        Returns nothing when the base cannot be inherited from: an unnamed
+        base, a record naming a dependent specialization of itself, or a
+        base that is not in the corpus.
+    */
+    static
+    Optional<ResolvedBase>
+    resolveBase(
+        Corpus& corpus,
+        Config const& config,
+        RecordSymbol const& I,
+        BaseInfo const& baseI);
 
     void
     build()

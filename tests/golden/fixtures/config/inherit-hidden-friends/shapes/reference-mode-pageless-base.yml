@@ -1,0 +1,4 @@
+inherit-hidden-friends: reference
+implementation-defined:
+  - lib::detail
+warn-no-paramdoc: false

@@ -2,17 +2,23 @@
 :mrdocs:
 
 [#index]
-== Global index
+== Global namespace
 
 === Types
 
 [cols="1,4"]
 |===
 | Name| Description
+| link:#base[`base`] 
+| A documented base carrying a hidden friend&period;
 | link:#label[`label`] 
 | A class whose friend also has a matching namespace&hyphen;scope declaration, so it is an ordinary (non&hyphen;hidden) friend and renders no admonition&period;
 | link:#point[`point`] 
 | A class whose `operator&equals;&equals;` is a hidden friend&colon; declared (and defined) only inside the class body, so it is found only through argument&hyphen;dependent lookup&period;
+| link:#value[`value`] 
+| Derives from the implementation&hyphen;defined base&semi; the copied friend cannot name it&period;
+| link:#wrapped[`wrapped`] 
+| Derives from the documented base&semi; the copied friend names `base`&period;
 |===
 
 
@@ -21,10 +27,44 @@
 [cols="1,4"]
 |===
 | Name| Description
+| link:#less-0a[`less`] 
+| `less` overloads
 | link:#operator_eq-07[`operator&equals;&equals;`] 
 | Equality operators
 |===
 
+
+[#base]
+== base
+
+A documented base carrying a hidden friend&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct base;
+----
+
+=== Friends
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#less-0f[less]`
+| Order two bases&period;
+|===
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#wrapped[`wrapped`] 
+| Derives from the documented base&semi; the copied friend names `base`&period;
+|===
 
 [#label]
 == label
@@ -93,6 +133,209 @@ Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
 double x;
 ----
 
+[#value]
+== value
+
+Derives from the implementation&hyphen;defined base&semi; the copied friend cannot name it&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct value;
+----
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#less-00[`less`]
+| Order two ops&period;
+|===
+
+[#wrapped]
+== wrapped
+
+Derives from the documented base&semi; the copied friend names `base`&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct wrapped
+    : link:#base[base]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#base[base]`
+| A documented base carrying a hidden friend&period;
+|===
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#less-0e[`less`]
+| Order two bases&period;
+|===
+
+[#less-0a]
+== less
+
+`less` overloads
+
+=== Synopses
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+Order two bases&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+link:#less-0f[less](
+    link:#base[base] a,
+    link:#base[base] b);
+----
+
+[.small]#link:#less-0f[_» more&period;&period;&period;_]#
+
+Order two ops&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+link:#less-00[less](
+    link:#value[value] a,
+    link:#value[value] b);
+----
+
+[.small]#link:#less-00[_» more&period;&period;&period;_]#
+
+Order two bases&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+link:#less-0e[less](
+    link:#wrapped[wrapped] a,
+    link:#wrapped[wrapped] b);
+----
+
+[.small]#link:#less-0e[_» more&period;&period;&period;_]#
+
+[#less-0f]
+== less
+
+Order two bases&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+less(
+    link:#base[base] a,
+    link:#base[base] b);
+----
+
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#base[base], declared only inside that class: it can be found only through argument-dependent lookup.
+====
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| A documented base carrying a hidden friend&period;
+| *b*
+| A documented base carrying a hidden friend&period;
+|===
+
+[#less-00]
+== less
+
+Order two ops&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+less(
+    link:#value[value] a,
+    link:#value[value] b);
+----
+
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#value[value], declared inside an implementation-defined base class: it can be found only through argument-dependent lookup.
+====
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| Derives from the implementation&hyphen;defined base&semi; the copied friend cannot name it&period;
+| *b*
+| Derives from the implementation&hyphen;defined base&semi; the copied friend cannot name it&period;
+|===
+
+[#less-0e]
+== less
+
+Order two bases&period;
+
+=== Synopsis
+
+Declared in `&lt;hidden&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+less(
+    link:#wrapped[wrapped] a,
+    link:#wrapped[wrapped] b);
+----
+
+[NOTE]
+====
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#wrapped[wrapped], declared inside its base class link:#base[base]: it can be found only through argument-dependent lookup.
+====
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *a*
+| Derives from the documented base&semi; the copied friend names `base`&period;
+| *b*
+| Derives from the documented base&semi; the copied friend names `base`&period;
+|===
+
 [#operator_eq-07]
 == operator&equals;&equals;
 
@@ -147,7 +390,7 @@ operator&equals;&equals;(
 
 [NOTE]
 ====
-This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#point[point]: it is declared only inside that class and can be found only through argument-dependent lookup.
+This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#point[point], declared only inside that class: it can be found only through argument-dependent lookup.
 ====
 
 === Return Value

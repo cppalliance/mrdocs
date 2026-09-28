@@ -2,3 +2,6 @@ generator: adoc
 multipage: false
 warn-if-undocumented: false
 source-root: .
+inherit-hidden-friends: copy-all
+implementation-defined:
+  - detail

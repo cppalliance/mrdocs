@@ -231,11 +231,45 @@ include::example$snippets/configuration/inherited-members-specialization/inherit
 include::example$snippets/configuration/inherited-members-specialization/inherited-members-specialization.adoc[tags=!footer]
 ========
 
-The configuration marks the `detail` namespace as xref:configuration/filters.adoc#_implementation_details[implementation-defined], so neither the primary template `detail::comparable` nor any of its symbols have a page of their own and every reference to one of them renders as `+/* implementation-defined */+`. ``version``'s base class in the rendered synopsis is exactly that placeholder. The specialization `detail::comparable<version>` is therefore a pure dependency. `copy-dependencies` reaches into that instantiated base and copies its members onto ``version``'s page: `operator==` and `operator!=` appear in ``version``'s Member Functions table, with the parameter type rewritten to `version const&` and the boilerplate brief, parameter doc, and return value supplied by xref:#_function_metadata[`auto-function-metadata`]. The reader gets the full API of `version` in one place, with nothing referring outwardly to a base that has no page.
+The configuration marks the `detail` namespace as xref:configuration/filters.adoc#_implementation_details[implementation-defined], so neither the primary template `detail::comparable` nor any of its symbols have a page of their own and every reference to one of them renders as `+/* implementation-defined */+`. A base class is the one place MrDocs can say nothing instead, so ``version``'s rendered synopsis omits the base clause entirely. The specialization `detail::comparable<version>` is therefore a pure dependency. `copy-dependencies` reaches into that instantiated base and copies its members onto ``version``'s page: `operator==` and `operator!=` appear in ``version``'s Member Functions table, with the parameter type rewritten to `version const&` and the boilerplate brief, parameter doc, and return value supplied by xref:#_function_metadata[`auto-function-metadata`]. The reader gets the full API of `version` in one place, with nothing referring outwardly to a base that has no page.
 
 This is one of the larger gaps between MrDocs and other tools. Other tools could at most document the primary `comparable<T>` and report the inheritance, but the implicit specialization `comparable<version>` is not an entity that can be introspected without a compiler. The inherited operators silently disappear from ``version``'s page, and the Boost.Operators / CRTP idiom becomes invisible in the rendered docs. MrDocs treats the specialization as a first-class dependency and copies the resolved members into the derived class.
 
 `copy-all`: The last possible setting copies every base member into every derived page, regardless of whether the base is in the corpus. It flattens the documentation: a reader on a derived page sees the full surface inline, with no need to follow base-class links. The price is duplication: the same member is documented on every class that inherits it.
+
+=== Hidden friends
+
+A friend declared inside a class body and nowhere else is a *hidden friend*: it cannot be named directly and is found only through argument-dependent lookup on that class. When a class inherits from another, the base's hidden friends stay reachable on the derived class through ADL, and xref:configuration/reference.adoc#inherit-hidden-friends_option[`inherit-hidden-friends`] decides how the derived page presents them. The four settings mirror xref:#_inherited_members[`inherit-base-members`]:
+
+* `never` keeps the base's hidden friends off the derived page; readers follow the base-class link to find them.
+* `reference` lists them on the derived page, each entry linking back to the base's declaration.
+* `copy-dependencies` (the default) behaves like `reference` when the base has a page of its own, and copies the hidden friend when the base is a *dependency*.
+* `copy-all` copies every hidden friend into every derived page, flattening the documentation at the cost of duplication.
+
+Access matters too. ADL finds a base's hidden friend through a protected or private base as well, but calling it with a derived object needs a derived-to-base conversion, and outside code cannot perform that conversion through a non-public base. MrDocs therefore inherits a friend through a non-public base only when its parameters never name the base, which is the case for a CRTP friend such as `operator==(Derived const&, Derived const&)`; a friend that takes the base itself is left off the derived page.
+
+The motivating case for the default is the CRTP base: `detail::equality_comparable<temperature>` is an implicit specialization no one wrote, so a "see the base" link would point at a primary template that is hard to interpret. `copy-dependencies` instantiates the dependency and surfaces its hidden friend on the derived page, with the concrete derived type substituted in:
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/inherit-hidden-friends/inherit-hidden-friends.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/inherit-hidden-friends/inherit-hidden-friends.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/inherit-hidden-friends/inherit-hidden-friends.adoc[tags=!footer]
+========
+
+The `detail` namespace is marked xref:configuration/filters.adoc#_implementation_details[implementation-defined], so `detail::equality_comparable<temperature>` has no page of its own; a base with no page is omitted from the synopsis rather than shown as `+/* implementation-defined */+`. ``temperature``'s page still lists `operator==` under Non-Member Functions, copied from the instantiated base with the parameter type rewritten from `T` to `temperature`. The copy keeps its hidden-friend note, which is what tells a reader why an operator ``temperature`` never declared shows up in its API.
+
+The substitution of the friend's operands follows the page status of the type it names. A CRTP base like `detail::equality_comparable<T>` declares its friend with a `T const&` parameter, so instantiating it already leaves `temperature const&` in the copy. For a friend whose parameter spells out a specialization, the operand is kept when the primary template has a page of its own (a `base<int>` operand stays a clickable link to `base`), and rewritten to the derived type when it does not, so a copied `operator==(detail::base<int>, detail::base<int>)` becomes `operator==(temperature, temperature)` instead of a pair of placeholders.
 
 == Missing headers
 
