@@ -298,6 +298,66 @@ recordsInSourceOrder(Corpus const& corpus)
     return ids;
 }
 
+Optional<BaseMembersFinalizer::ResolvedBase>
+BaseMembersFinalizer::
+resolveBase(
+    Corpus& corpus,
+    Config const& config,
+    RecordSymbol const& I,
+    BaseInfo const& baseI)
+{
+    MRDOCS_ASSERT(!baseI.Type.valueless_after_move());
+    MRDOCS_CHECK_OR(baseI.Type->isNamed(), {});
+    auto& baseNameType = baseI.Type->asNamed();
+    MRDOCS_ASSERT(!baseNameType.Name.valueless_after_move());
+    auto& baseName = baseNameType.Name->asName();
+    // `baseName.id` is the primary template's ID. When the base
+    // names a concrete specialization (e.g. `base<int>`) and
+    // `extract-implicit-base-classes` is on, we prefer the
+    // implicit specialization's ID so inherited members carry
+    // the substituted types. For a dependent base such as
+    // `base<T>` in `template<T> class derived : public base<T>`,
+    // `specializationID` stays invalid (no `ClassTemplate-
+    // SpecializationDecl` exists in the AST), so we fall back
+    // to the primary's ID and inherit its members with the
+    // primary's template parameter intact.
+    SymbolID baseID = baseName.id;
+    if (config.extractImplicitBaseClasses &&
+        baseName.isSpecialization())
+    {
+        auto& baseSpec = baseName.asSpecialization();
+        if (baseSpec.specializationID)
+        {
+            baseID = baseSpec.specializationID;
+        }
+    }
+    MRDOCS_CHECK_OR(baseID, {});
+    // A record can name a dependent specialization of its own template.
+    // Explicit and partial specializations keep their own IDs.
+    MRDOCS_CHECK_OR(baseID != I.id, {});
+    auto basePtr = corpus.find(baseID);
+    MRDOCS_CHECK_OR(basePtr, {});
+    auto* baseRecord = basePtr->asRecordPtr();
+    MRDOCS_CHECK_OR(baseRecord, {});
+
+    // Decide whether inherited symbols should be relocated. The base class
+    // is documented on its own page only when the symbol it names is
+    // regular; for a specialization that is the primary template
+    // (`baseName.id`), so a specialization of a documented template counts
+    // as documented. When it is documented, copies keep their real
+    // location; otherwise they are relocated to the base-specifier in the
+    // derived class (falling back to the derived class's own location).
+    Symbol const* namedBase = corpus.find(baseName.id);
+    SourceInfo relocateLoc;
+    if (!namedBase || namedBase->Extraction != ExtractionMode::Regular)
+    {
+        relocateLoc = baseI.Loc.DefLoc || !baseI.Loc.Loc.empty()
+            ? baseI.Loc
+            : I.Loc;
+    }
+    return ResolvedBase{baseRecord, baseName.id, std::move(relocateLoc)};
+}
+
 void
 BaseMembersFinalizer::
 operator()(RecordSymbol& I)
@@ -309,60 +369,11 @@ operator()(RecordSymbol& I)
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     for (BaseInfo const& baseI: I.Bases)
     {
-        MRDOCS_ASSERT(!baseI.Type.valueless_after_move());
-        MRDOCS_CHECK_OR_CONTINUE(baseI.Type->isNamed());
-        auto& baseNameType = baseI.Type->asNamed();
-        MRDOCS_ASSERT(!baseNameType.Name.valueless_after_move());
-        auto& baseName = baseNameType.Name->asName();
-        // `baseName.id` is the primary template's ID. When the base
-        // names a concrete specialization (e.g. `base<int>`) and
-        // `extract-implicit-base-classes` is on, we prefer the
-        // implicit specialization's ID so inherited members carry
-        // the substituted types. For a dependent base such as
-        // `base<T>` in `template<T> class derived : public base<T>`,
-        // `specializationID` stays invalid (no `ClassTemplate-
-        // SpecializationDecl` exists in the AST), so we fall back
-        // to the primary's ID and inherit its members with the
-        // primary's template parameter intact.
-        SymbolID baseID = baseName.id;
-        if (config_.extractImplicitBaseClasses && 
-            baseName.isSpecialization())
-        {
-            auto& baseSpec = baseName.asSpecialization();
-            if (baseSpec.specializationID)
-            {
-                baseID = baseSpec.specializationID;
-            }
-        }
-        MRDOCS_CHECK_OR_CONTINUE(baseID);
-        // A record can name a dependent specialization of its own template.
-        // Explicit and partial specializations keep their own IDs.
-        MRDOCS_CHECK_OR_CONTINUE(baseID != I.id);
-        auto basePtr = corpus_.find(baseID);
-        MRDOCS_CHECK_OR_CONTINUE(basePtr);
-        auto* baseRecord = basePtr->asRecordPtr();
-        MRDOCS_CHECK_OR_CONTINUE(baseRecord);
-        operator()(*baseRecord);
-
-        // Decide whether inherited members should be relocated. The base class
-        // is documented on its own page only when the symbol it names is
-        // regular; for a specialization that is the primary template
-        // (`baseName.id`), so a specialization of a documented template counts
-        // as documented. When it is documented, members keep their real
-        // location; otherwise they are relocated to the base-specifier in the
-        // derived class (falling back to the derived class's own location).
-        Symbol const* namedBase = corpus_.find(baseName.id);
-        SourceInfo relocateLoc;
-        if (!namedBase || namedBase->Extraction != ExtractionMode::Regular)
-        {
-            relocateLoc = baseI.Loc.DefLoc || !baseI.Loc.Loc.empty()
-                ? baseI.Loc
-                : I.Loc;
-        }
-        // `baseName.id` is the base as written: for a specialization it is
-        // the primary template, the class the reader can see, so it is what
-        // copied members record as the class they are inherited from.
-        inheritBaseMembers(I, *baseRecord, baseName.id, baseI.Access, relocateLoc);
+        Optional<ResolvedBase> base = resolveBase(corpus_, config_, I, baseI);
+        MRDOCS_CHECK_OR_CONTINUE(base);
+        operator()(*base->Record);
+        inheritBaseMembers(
+            I, *base->Record, base->AsWritten, baseI.Access, base->RelocateLoc);
     }
     finalized_.emplace(I.id);
 }

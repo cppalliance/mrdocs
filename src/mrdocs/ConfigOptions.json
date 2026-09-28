@@ -327,6 +327,19 @@
         "default": "copy-dependencies"
       },
       {
+        "name": "inherit-hidden-friends",
+        "brief": "Determine how derived classes inherit hidden friends of base classes",
+        "details": "Determine how derived classes inherit hidden friends of base classes, that is, friend functions found only through argument-dependent lookup on the class. When set to `never`, hidden friends of base classes are not inherited at all, and no relationship is stored: a hidden friend appears only on the class that declares it. When set to `reference`, derived classes list hidden friends of base classes but references are still linked to the base class. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency. When set to `copy-all`, a copy is created for each hidden friend as if it were declared alongside the derived class. If the base class is a dependency, the extraction mode is copied from the new parent. Through a protected or private base, only hidden friends whose parameters never name the base are inherited: calling any other would need a derived-to-base conversion the caller cannot perform.",
+        "type": "enum",
+        "values": [
+          "never",
+          "reference",
+          "copy-dependencies",
+          "copy-all"
+        ],
+        "default": "copy-dependencies"
+      },
+      {
         "name": "sort-members",
         "brief": "Sort the members of a record",
         "details": "When set to `true`, sort the members of a record by the criterion determined in the `sort-members-by` option. When set to `false`, the members are included in the declaration order they are extracted.",

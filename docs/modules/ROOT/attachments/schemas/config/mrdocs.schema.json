@@ -413,6 +413,17 @@
       ],
       "title": "Determine how derived classes inherit base members"
     },
+    "inherit-hidden-friends": {
+      "default": "copy-dependencies",
+      "description": "Determine how derived classes inherit hidden friends of base classes, that is, friend functions found only through argument-dependent lookup on the class. When set to `never`, hidden friends of base classes are not inherited at all, and no relationship is stored: a hidden friend appears only on the class that declares it. When set to `reference`, derived classes list hidden friends of base classes but references are still linked to the base class. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency. When set to `copy-all`, a copy is created for each hidden friend as if it were declared alongside the derived class. If the base class is a dependency, the extraction mode is copied from the new parent. Through a protected or private base, only hidden friends whose parameters never name the base are inherited: calling any other would need a derived-to-base conversion the caller cannot perform.",
+      "enum": [
+        "never",
+        "reference",
+        "copy-dependencies",
+        "copy-all"
+      ],
+      "title": "Determine how derived classes inherit hidden friends of base classes"
+    },
     "input": {
       "default": [
         "<source-root>/."

@@ -390,6 +390,7 @@ private:
     std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;
 
     friend class BaseMembersFinalizer;
+    friend class HiddenFriendsFinalizer;
     friend class OverloadsFinalizer;
     friend class SortMembersFinalizer;
     friend class DocCommentFinalizer;

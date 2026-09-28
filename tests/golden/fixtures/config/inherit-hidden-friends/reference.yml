@@ -1,0 +1,3 @@
+inherit-hidden-friends: reference
+exclude-symbols:
+  - lib::detail::**

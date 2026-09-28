@@ -21,6 +21,7 @@
 #include "Metadata/Finalizers/DerivedFinalizer.hpp"
 #include "Metadata/Finalizers/DocCommentFinalizer.hpp"
 #include "Metadata/Finalizers/FunctionObjectFinalizer.hpp"
+#include "Metadata/Finalizers/HiddenFriendsFinalizer.hpp"
 #include "Metadata/Finalizers/NamespacesFinalizer.hpp"
 #include "Metadata/Finalizers/OverloadsFinalizer.hpp"
 #include "Metadata/Finalizers/SortMembersFinalizer.hpp"
@@ -580,6 +581,13 @@ Corpus::finalize(Config const& config)
     {
         report::debug("  - Finalizing base members");
         BaseMembersFinalizer finalizer(*this, config);
+        finalizer.build();
+    }
+
+    if (config.inheritHiddenFriends != ConfigSchema::BaseMemberInheritance::Never)
+    {
+        report::debug("  - Finalizing hidden friends");
+        HiddenFriendsFinalizer finalizer(*this, config);
         finalizer.build();
     }
 

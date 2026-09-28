@@ -1,0 +1,4 @@
+inherit-hidden-friends: copy-dependencies
+see-below:
+  - lib::detail
+warn-no-paramdoc: false

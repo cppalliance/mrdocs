@@ -1,4 +1,4 @@
 {{! Hidden friend NOTE admonition. }}
 {{~#if symbol.hiddenFriendOf}}
-{{#> markup/admonition kind="note"}}This function is a {{#> markup/a href="https://en.cppreference.com/w/cpp/language/friend"}}hidden friend{{/markup/a}} of {{#with (@root.mrdocs.corpus.get symbol.hiddenFriendOf)}}{{> symbol/name}}{{/with}}: it is declared only inside that class and can be found only through argument-dependent lookup.{{/markup/admonition}}
+{{#> markup/admonition kind="note"}}This function is a {{#> markup/a href="https://en.cppreference.com/w/cpp/language/friend"}}hidden friend{{/markup/a}} of {{#with (@root.mrdocs.corpus.get symbol.hiddenFriendOf)}}{{> symbol/name}}{{/with}}, declared {{#unless symbol.inheritedFrom}}only inside that class{{else if (@root.mrdocs.corpus.isImplementationDefined symbol.inheritedFrom)}}inside an implementation-defined base class{{else}}inside its base class {{#with (@root.mrdocs.corpus.get symbol.inheritedFrom)}}{{> symbol/name}}{{/with}}{{/unless}}: it can be found only through argument-dependent lookup.{{/markup/admonition}}
 {{/if~}}

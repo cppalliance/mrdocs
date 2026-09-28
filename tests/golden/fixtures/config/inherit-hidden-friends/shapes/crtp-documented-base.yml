@@ -1,0 +1,2 @@
+inherit-hidden-friends: copy-all
+warn-no-paramdoc: false

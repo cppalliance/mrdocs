@@ -793,9 +793,11 @@ populate(
             clang::QualType const BT = B.getType();
             auto BaseType = toType(BT, BaseClass);
 
-            // When inheriting base members, only revisit bases whose extraction mode
-            // isn’t regular so we pick up their members/docs.
-            if (config_.inheritBaseMembers != ConfigSchema::BaseMemberInheritance::Never)
+            // When inheriting base members or hidden friends, only revisit
+            // bases whose extraction mode isn't regular so we pick up their
+            // members and friends.
+            if (config_.inheritBaseMembers != ConfigSchema::BaseMemberInheritance::Never ||
+                config_.inheritHiddenFriends != ConfigSchema::BaseMemberInheritance::Never)
             {
                 if (auto const* baseDecl = BT->getAsCXXRecordDecl();
                     baseDecl && baseDecl->isCompleteDefinition())
