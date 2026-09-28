@@ -12,18 +12,8 @@ Declared in `&lt;inherited&hyphen;members&hyphen;specialization&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-struct version
-    : &sol;&ast; implementation-defined &ast;&sol;
+struct version;
 ----
-
-=== Base Classes
-
-[cols="1,4"]
-|===
-| Name| Description
-| `&sol;&ast; implementation-defined &ast;&sol;`
-| CRTP base that lifts `compare()` into `operator&equals;&equals;` and `operator!&equals;`&period;
-|===
 
 === Member Functions
 
