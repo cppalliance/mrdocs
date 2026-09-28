@@ -4624,6 +4624,53 @@ container_helpers_edge_cases()
 }
 
 void
+container_helpers_callable_selectors()
+{
+    // Predicate counterparts of the key-based helpers: `filter`, `reject`,
+    // `any_of`, `group`, and `sort` with a callable apply a function
+    // (reached through the context) to each element instead of reading a
+    // key. The unsuffixed name is the predicate form; `*_by` stays
+    // key-only.
+    Handlebars hbs;
+    helpers::registerContainerHelpers(hbs);
+    dom::Object ctx;
+    ctx.set("nums", dom::Array({3, 1, 4, 0, 2}));
+    ctx.set("isEven", dom::makeInvocable([](dom::Value const& v) -> dom::Value
+    {
+        return v.getInteger() % 2 == 0;
+    }));
+    ctx.set("parity", dom::makeInvocable([](dom::Value const& v) -> dom::Value
+    {
+        return v.getInteger() % 2 == 0
+            ? dom::Value("even") : dom::Value("odd");
+    }));
+    ctx.set("neg", dom::makeInvocable([](dom::Value const& v) -> dom::Value
+    {
+        return -v.getInteger();
+    }));
+    hbs.registerHelper("ints", [](dom::Value const& v) -> dom::Value
+    {
+        std::string out;
+        for (dom::Value const& el : v.getArray())
+        {
+            if (!out.empty())
+            {
+                out += ",";
+            }
+            out += std::to_string(el.getInteger());
+        }
+        return out;
+    });
+    BOOST_TEST(hbs.render("{{any_of nums isEven}}", ctx) == "true");
+    BOOST_TEST(hbs.render("{{len (filter nums isEven)}}", ctx) == "3");
+    BOOST_TEST(hbs.render("{{len (reject nums isEven)}}", ctx) == "2");
+    BOOST_TEST(hbs.render("{{len (get (group nums parity) \"even\")}}", ctx) == "3");
+    BOOST_TEST(hbs.render("{{len (get (group nums parity) \"odd\")}}", ctx) == "2");
+    BOOST_TEST(hbs.render("{{ints (sort nums)}}", ctx) == "0,1,2,3,4");
+    BOOST_TEST(hbs.render("{{ints (sort nums neg)}}", ctx) == "4,3,2,1,0");
+}
+
+void
 run()
 {
     safe_string();
@@ -4652,6 +4699,7 @@ run()
     assume_objects();
     utils();
     container_helpers_edge_cases();
+    container_helpers_callable_selectors();
 }
 
 };
