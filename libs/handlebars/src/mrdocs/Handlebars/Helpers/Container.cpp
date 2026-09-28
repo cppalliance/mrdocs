@@ -82,6 +82,32 @@ matchesFilterKeys(dom::Value const& el, std::vector<dom::Value> const& keys)
     return false;
 }
 
+/* Resolve a selector against one element.
+
+   A selector is either a dotted-path string, resolved like `lookup`, or a
+   callable invoked with the element itself. The two forms give the key-based
+   helpers (`filter_by`, `sort_by`, `group_by`, ...) and their predicate
+   counterparts (`filter`, `sort`, `group`, ...) one shared building block, so
+   a signature change here reaches every selector-taking helper at once. A
+   callable's error propagates like `transform`'s.
+*/
+inline
+Expected<dom::Value, dom::Error>
+select(dom::Value const& element, dom::Value const& selector)
+{
+    if (selector.isString())
+    {
+        return element.lookup(selector.getString());
+    }
+    if (selector.isFunction())
+    {
+        dom::Array callArgs;
+        callArgs.emplace_back(element);
+        return selector.getFunction().call(callArgs);
+    }
+    return dom::Value(dom::Kind::Undefined);
+}
+
 auto size_fn = dom::makeInvocable([](
         dom::Value const& val)
     {
@@ -442,31 +468,63 @@ auto update_fn = dom::makeInvocable([](
         }
     });
 
-auto sort_fn = dom::makeInvocable([](
-        dom::Value container) -> dom::Value
+auto sort_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value, dom::Error>
     {
-        if (container.isArray())
-        {
-            auto const& arr = container.getArray();
-            std::vector<dom::Value> res;
-            std::size_t const n = arr.size();
-            for (std::size_t i = 0; i < n; ++i)
-            {
-                res.emplace_back(arr.at(i));
-            }
-            std::stable_sort(res.begin(), res.end(), [](auto const& a, auto const& b) {
-                return a < b;
-            });
-            dom::Array res2;
-            for (const auto & re : res) {
-                res2.emplace_back(re);
-            }
-            return res2;
-        }
-        else
+        dom::Value const container = arguments.at(0);
+        if (!container.isArray())
         {
             return container;
         }
+        auto const& arr = container.getArray();
+        std::vector<dom::Value> res;
+        std::size_t const n = arr.size();
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            res.emplace_back(arr.at(i));
+        }
+        // An optional trailing callable selects the sort key for each
+        // element; without one, elements compare directly, preserving the
+        // historical value sort. `sort_by` remains key-only, so `sort`
+        // with a function is the predicate counterpart (cf. `select`).
+        bool const hasFn = arguments.size() - 1 >= 2 &&
+            arguments.at(1).isFunction();
+        if (!hasFn)
+        {
+            std::stable_sort(res.begin(), res.end(), [](auto const& a, auto const& b) {
+                return a < b;
+            });
+        }
+        else
+        {
+            dom::Value const fnV = arguments.at(1);
+            std::vector<std::pair<dom::Value, dom::Value>> keyed;
+            keyed.reserve(res.size());
+            for (dom::Value const& el : res)
+            {
+                Expected<dom::Value, dom::Error> k = select(el, fnV);
+                if (!k)
+                {
+                    return Unexpected(k.error());
+                }
+                keyed.emplace_back(std::move(*k), el);
+            }
+            std::ranges::stable_sort(keyed, [](auto const& a, auto const& b)
+            {
+                return a.first < b.first;
+            });
+            res.clear();
+            for (auto& keyedEl : keyed)
+            {
+                res.emplace_back(std::move(keyedEl.second));
+            }
+        }
+        dom::Array res2;
+        for (auto const& re : res)
+        {
+            res2.emplace_back(re);
+        }
+        return res2;
     });
 
 auto sort_by_fn = dom::makeInvocable([](
@@ -663,6 +721,110 @@ auto any_of_by_fn = dom::makeVariadicInvocable([](
         return container;
     });
 
+auto filter_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value, dom::Error>
+    {
+        // Given an array and a callable, keep the elements for which the
+        // callable returns a truthy value. The callable -- a real function or
+        // one reached through the context (e.g. `@root.mrdocs.corpus.get`) --
+        // is applied through `select`.
+        if (arguments.size() - 1 < 2 || !arguments.at(1).isFunction())
+        {
+            return Unexpected(dom::Error(
+                "filter: expected (array, function)"));
+        }
+        dom::Value const rangeV = arguments.at(0);
+        if (!rangeV.isArray())
+        {
+            return rangeV;
+        }
+        dom::Value const fnV = arguments.at(1);
+        dom::Array const& range = rangeV.getArray();
+        dom::Array res;
+        for (std::size_t i = 0; i < range.size(); ++i)
+        {
+            dom::Value el = range.get(i);
+            Expected<dom::Value, dom::Error> r = select(el, fnV);
+            if (!r)
+            {
+                return Unexpected(r.error());
+            }
+            if (static_cast<bool>(*r))
+            {
+                res.emplace_back(el);
+            }
+        }
+        return dom::Value(res);
+    });
+
+auto reject_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value, dom::Error>
+    {
+        // Inverse of `filter`: keep only the elements for which the callable
+        // returns a falsy value.
+        if (arguments.size() - 1 < 2 || !arguments.at(1).isFunction())
+        {
+            return Unexpected(dom::Error(
+                "reject: expected (array, function)"));
+        }
+        dom::Value const rangeV = arguments.at(0);
+        if (!rangeV.isArray())
+        {
+            return rangeV;
+        }
+        dom::Value const fnV = arguments.at(1);
+        dom::Array const& range = rangeV.getArray();
+        dom::Array res;
+        for (std::size_t i = 0; i < range.size(); ++i)
+        {
+            dom::Value el = range.get(i);
+            Expected<dom::Value, dom::Error> r = select(el, fnV);
+            if (!r)
+            {
+                return Unexpected(r.error());
+            }
+            if (static_cast<bool>(*r))
+            {
+                continue;
+            }
+            res.emplace_back(el);
+        }
+        return dom::Value(res);
+    });
+
+auto any_of_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value, dom::Error>
+    {
+        // Given an array and a callable, return true as soon as the callable
+        // yields a truthy value for any element, false otherwise.
+        if (arguments.size() - 1 < 2 || !arguments.at(1).isFunction())
+        {
+            return Unexpected(dom::Error(
+                "any_of: expected (array, function)"));
+        }
+        dom::Value const rangeV = arguments.at(0);
+        if (!rangeV.isArray())
+        {
+            return rangeV;
+        }
+        dom::Value const fnV = arguments.at(1);
+        dom::Array const& range = rangeV.getArray();
+        for (std::size_t i = 0; i < range.size(); ++i)
+        {
+            dom::Value el = range.get(i);
+            Expected<dom::Value, dom::Error> r = select(el, fnV);
+            if (!r)
+            {
+                return Unexpected(r.error());
+            }
+            if (static_cast<bool>(*r))
+            {
+                return true;
+            }
+        }
+        return false;
+    });
+
 auto fill_fn = dom::makeInvocable([](
         dom::Value container,
         dom::Value const& fill_value,
@@ -822,6 +984,7 @@ registerContainerSearchHelpers(Handlebars& hbs)
     hbs.registerHelper("exist_any", has_any_fn);
     hbs.registerHelper("contains_any", has_any_fn);
     hbs.registerHelper("any_of_by", any_of_by_fn);
+    hbs.registerHelper("any_of", any_of_fn);
 }
 
 // Ordering & selection: reorder a range or select a subset of it.
@@ -834,6 +997,8 @@ registerContainerOrderingHelpers(Handlebars& hbs)
     hbs.registerHelper("sort_by", sort_by_fn);
     hbs.registerHelper("filter_by", filter_by_fn);
     hbs.registerHelper("reject_by", reject_by_fn);
+    hbs.registerHelper("filter", filter_fn);
+    hbs.registerHelper("reject", reject_fn);
 }
 
 // Mutation: remove, combine, or overwrite entries.
@@ -963,6 +1128,49 @@ registerContainerTransformHelpers(Handlebars& hbs)
             res.set(group_name, group);
         }
         return res;
+    }));
+    hbs.registerHelper("group", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value, dom::Error>
+    {
+        // Predicate counterpart of `group_by`: the callable yields each
+        // element's group name (rendered through `toString`), and the result
+        // maps each name to an array of its elements. `group` with a
+        // callable is the key-free form; `group_by` stays key-only.
+        if (arguments.size() - 1 < 2 || !arguments.at(1).isFunction())
+        {
+            return Unexpected(dom::Error(
+                "group: expected (array, function)"));
+        }
+        dom::Value const rangeV = arguments.at(0);
+        if (!rangeV.isArray())
+        {
+            return rangeV;
+        }
+        dom::Value const fnV = arguments.at(1);
+        dom::Array const& range = rangeV.getArray();
+        dom::Object res;
+        for (std::size_t i = 0; i < range.size(); ++i)
+        {
+            dom::Value el = range.get(i);
+            Expected<dom::Value, dom::Error> r = select(el, fnV);
+            if (!r)
+            {
+                return Unexpected(r.error());
+            }
+            std::string group_name(toString(*r));
+            if (res.exists(group_name))
+            {
+                dom::Value existing = res.get(group_name);
+                existing.getArray().emplace_back(el);
+            }
+            else
+            {
+                dom::Array group;
+                group.emplace_back(el);
+                res.set(group_name, std::move(group));
+            }
+        }
+        return dom::Value(res);
     }));
     hbs.registerHelper("pluck", dom::makeInvocable([](
         dom::Value rangeV, dom::Value const& keyV) -> dom::Value
