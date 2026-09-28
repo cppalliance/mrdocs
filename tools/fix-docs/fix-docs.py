@@ -576,7 +576,7 @@ def tasks_for(sym, by_id, shared=frozenset()):
         return []
     # A member copied from a base class carries the base's documentation;
     # the strict check skips these too. The task belongs to the original.
-    if sym.get("isCopyFromInherited"):
+    if sym.get("inheritedFrom"):
         return []
     kind = sym.get("kind", "?")
     name = qualified_name(sym, by_id)
@@ -723,7 +723,7 @@ def shared_comment_lines(symbols):
     declarations, which all receive the comment written above the macro."""
     signatures = {}
     for s in symbols:
-        if s.get("kind") != "function" or s.get("isCopyFromInherited"):
+        if s.get("kind") != "function" or s.get("inheritedFrom"):
             continue
         loc = symbol_loc(s)
         if not loc:

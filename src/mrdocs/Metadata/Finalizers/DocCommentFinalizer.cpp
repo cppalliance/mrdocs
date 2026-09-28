@@ -1721,7 +1721,7 @@ DocCommentFinalizer::warnUndocumented()
             // a symbol that gained documentation from a redeclaration
             MRDOCS_CHECK_OR_CONTINUE(!I->doc);
             // a symbol that was turned into an inherited copy
-            MRDOCS_CHECK_OR_CONTINUE(!I->IsCopyFromInherited);
+            MRDOCS_CHECK_OR_CONTINUE(!I->InheritedFrom);
             // a symbol that was folded onto a template specialization's
             // primary and so borrows the primary's documentation
             MRDOCS_CHECK_OR_CONTINUE(!inFoldedSpecialization(*I));
@@ -1760,7 +1760,7 @@ warnNoBrief()
             break;
         }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        MRDOCS_CHECK_OR_CONTINUE(!I->InheritedFrom);
         // Overload sets synthesize their page from members and never carry a
         // brief of their own, so they are exempt.
         MRDOCS_CHECK_OR_CONTINUE(!I->isOverloads());
@@ -1815,7 +1815,7 @@ warnDocErrors()
             break;
         }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        MRDOCS_CHECK_OR_CONTINUE(!I->InheritedFrom);
         if (I->isFunction())
         {
             warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
@@ -1986,7 +1986,7 @@ warnNoParamDocs()
             break;
         }
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        MRDOCS_CHECK_OR_CONTINUE(!I->InheritedFrom);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         if (I->isFunction())
         {
@@ -2083,7 +2083,7 @@ warnUnnamedParams()
         }
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
-        MRDOCS_CHECK_OR_CONTINUE(I->IsCopyFromInherited == false);
+        MRDOCS_CHECK_OR_CONTINUE(!I->InheritedFrom);
         MRDOCS_CHECK_OR_CONTINUE(I->doc);
         warnUnnamedParams(dynamic_cast<FunctionSymbol const&>(*I));
     }

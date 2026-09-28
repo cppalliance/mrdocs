@@ -31,12 +31,21 @@ class BaseMembersFinalizer
     Config const& config_;
     std::unordered_set<SymbolID> finalized_;
 
+    // `baseId` is the base as written in the base-specifier: the primary
+    // template for a specialization. Copied members record it as the class
+    // they are inherited from.
     void
-    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A, SourceInfo const& baseLoc);
+    inheritBaseMembers(
+        RecordSymbol& I,
+        RecordSymbol const& B,
+        SymbolID const& baseId,
+        AccessKind A,
+        SourceInfo const& baseLoc);
 
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
+        SymbolID const& baseId,
         RecordInterface& derived,
         RecordInterface const& base,
         AccessKind A,
@@ -45,6 +54,7 @@ class BaseMembersFinalizer
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
+        SymbolID const& baseId,
         RecordTranche& derived,
         RecordTranche const& base,
         SourceInfo const& baseLoc);
@@ -52,6 +62,7 @@ class BaseMembersFinalizer
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
+        SymbolID const& baseId,
         std::vector<SymbolID>& derived,
         std::vector<SymbolID> const& base,
         std::unordered_set<std::string> const& derivedNames,

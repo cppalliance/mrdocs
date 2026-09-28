@@ -5070,7 +5070,7 @@
   <id>2HbAewB9H28gVhF9WxrLHPYn4M5U</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>3pLhsfQMKRFTcBEMn7o3vpKPQ21m</inheritedFrom>
   <parent>34diK6kRPHFbPRQhFZ3Xu7XoVB7k</parent>
   <keyKind>struct</keyKind>
   <template>
@@ -5131,7 +5131,7 @@
   <id>2NbUfRFumTvb8aVWqJT56nYwtwLj</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>3pLhsfQMKRFTcBEMn7o3vpKPQ21m</inheritedFrom>
   <parent>34diK6kRPHFbPRQhFZ3Xu7XoVB7k</parent>
   <returnType>
     <named>
@@ -5591,7 +5591,7 @@
   <id>6eypuZ1xCdz5c3Jv8oJ3bUzmbWt</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>2Tn7urosfp5FELFjzH88AzaPnWkx</inheritedFrom>
   <parent>2vXe1dnnEQ2uCQxLAL7rgFCmxnBL</parent>
   <returnType>
     <named>
@@ -6481,7 +6481,7 @@
   <id>2vWsriPQJ2CoMz3Zi6SztVUBPVvL</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>EqdRUQzY98qR8wFazCLJYQ21oUC</inheritedFrom>
   <parent>2h1GdiLVjGQXvCdraXqSVKYdgmaJ</parent>
   <keyKind>struct</keyKind>
   <template>
@@ -6542,7 +6542,7 @@
   <id>3GCqr1E5MCkgWxJ7trk3MvvsoEnr</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>EqdRUQzY98qR8wFazCLJYQ21oUC</inheritedFrom>
   <parent>2h1GdiLVjGQXvCdraXqSVKYdgmaJ</parent>
   <returnType>
     <named>
@@ -7114,7 +7114,7 @@
   <id>4ZBDjiKZoQ61Q8WbEmiWrQCWWqei</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>28ctwcbsCycg2unTKeY7dduUPwxs</inheritedFrom>
   <parent>3hTz1iBeoxVzARitzZu6sy7XgxPP</parent>
   <returnType>
     <named>

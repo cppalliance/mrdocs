@@ -90,7 +90,7 @@
   <id>2wdTPZUP7KTkLzFYybFwgXbb8EFH</id>
   <access>public</access>
   <extraction>regular</extraction>
-  <isCopyFromInherited/>
+  <inheritedFrom>6c8R2K9StsMvLSvEhUgun7xo3EU</inheritedFrom>
   <parent>2Nkohq7e7VYjm412uPP8Ja4rS6tz</parent>
   <returnType>
     <lValueReference>

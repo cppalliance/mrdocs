@@ -18,15 +18,21 @@ namespace mrdocs {
 
 void
 BaseMembersFinalizer::
-inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind const A, SourceInfo const& baseLoc)
+inheritBaseMembers(
+    RecordSymbol& I,
+    RecordSymbol const& B,
+    SymbolID const& baseId,
+    AccessKind const A,
+    SourceInfo const& baseLoc)
 {
-    inheritBaseMembers(I.id, I.Interface, B.Interface, A, baseLoc);
+    inheritBaseMembers(I.id, baseId, I.Interface, B.Interface, A, baseLoc);
 }
 
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
+    SymbolID const& baseId,
     RecordInterface& derived,
     RecordInterface const& base,
     AccessKind const A,
@@ -39,8 +45,8 @@ inheritBaseMembers(
         // members of the derived class and all protected members of the base
         // class are accessible as protected members of the derived class.
         // Private members of the base are never accessible unless friended.
-        inheritBaseMembers(derivedId, derived.Public, base.Public, baseLoc);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Public, base.Public, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Protected, base.Protected, baseLoc);
     }
     else if (A == AccessKind::Protected)
     {
@@ -48,8 +54,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as protected members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Protected, base.Public, baseLoc);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Protected, base.Public, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Protected, base.Protected, baseLoc);
     }
     else if (A == AccessKind::Private && config_.extractPrivate)
     {
@@ -57,8 +63,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as private members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Private, base.Public, baseLoc);
-        inheritBaseMembers(derivedId, derived.Private, base.Protected, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Private, base.Public, baseLoc);
+        inheritBaseMembers(derivedId, baseId, derived.Private, base.Protected, baseLoc);
     }
 }
 
@@ -66,6 +72,7 @@ void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
+    SymbolID const& baseId,
     RecordTranche& derived,
     RecordTranche const& base,
     SourceInfo const& baseLoc)
@@ -76,8 +83,8 @@ inheritBaseMembers(
 
     describe::for_each_member<RecordTranche>([&](auto const d) {
         inheritBaseMembers(
-            derivedId, derived.*d.pointer, base.*d.pointer, derivedNames,
-            baseLoc);
+            derivedId, baseId, derived.*d.pointer, base.*d.pointer,
+            derivedNames, baseLoc);
     });
 }
 
@@ -114,6 +121,7 @@ void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
+    SymbolID const& baseId,
     std::vector<SymbolID>& derived,
     std::vector<SymbolID> const& base,
     std::unordered_set<std::string> const& derivedNames,
@@ -200,7 +208,13 @@ inheritBaseMembers(
             otherCopy->id = SymbolID::createFromString(
                 std::format("{}-{}", toBase16Str(otherCopy->Parent),
                             toBase16Str(otherInfo.id)));
-            otherCopy->IsCopyFromInherited = true;
+            // A member the base itself inherited already names the class
+            // that declares it; only a member the base declares is marked
+            // as coming from the base.
+            if (!otherCopy->InheritedFrom)
+            {
+                otherCopy->InheritedFrom = baseId;
+            }
             // A base that is not itself a regular (documented) symbol - an
             // excluded or external base - has no page of its own, so its
             // members' locations point outside the documented project. For
@@ -327,7 +341,10 @@ operator()(RecordSymbol& I)
                 ? baseI.Loc
                 : I.Loc;
         }
-        inheritBaseMembers(I, *baseRecord, baseI.Access, relocateLoc);
+        // `baseName.id` is the base as written: for a specialization it is
+        // the primary template, the class the reader can see, so it is what
+        // copied members record as the class they are inherited from.
+        inheritBaseMembers(I, *baseRecord, baseName.id, baseI.Access, relocateLoc);
     }
     finalizeRecords(I.Interface.Public.Records);
     finalizeRecords(I.Interface.Protected.Records);

@@ -33,9 +33,9 @@ Info for concepts.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -96,9 +96,9 @@ Info for enum constants.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -155,9 +155,9 @@ Metadata for an enumeration declaration.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -222,9 +222,9 @@ Metadata for a function or method.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -397,9 +397,9 @@ Info for deduction guides.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -468,9 +468,9 @@ Info for preprocessor macros.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -535,9 +535,9 @@ Info for namespace aliases.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -594,9 +594,9 @@ Describes a namespace and its members.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -665,9 +665,9 @@ Represents a set of function overloads.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -736,9 +736,9 @@ Metadata for struct, class, or union.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -839,9 +839,9 @@ Info for typedef and using declarations.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -906,9 +906,9 @@ Info for using declarations.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
@@ -973,9 +973,9 @@ A variable.
 |`string`
 |Determine why a symbol is extracted. One of: `regular`, `see-below`, `implementation-defined`, `dependency`.
 
-|`isCopyFromInherited`
-|`boolean`
-|Whether this a copy of an inherited method, as produced when `inherit-base-members` is not `never`.
+|`inheritedFrom`
+|`string`
+|Optional. The base class this symbol was inherited from.
 
 |`kind`
 |`string`
