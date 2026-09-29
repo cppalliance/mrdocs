@@ -139,12 +139,38 @@ public:
     void
     reportUnknownConfigKeys() const;
 
+    /** Warn about deprecated options that were supplied.
+
+        Each warning carries the deprecation note the schema records for
+        the option. Deferred for the same reason as
+        @ref reportUnknownConfigKeys: the log level is configured only
+        after loading finishes.
+    */
+    void
+    reportDeprecatedConfigKeys() const;
+
+    /** Record a supplied option for @ref reportDeprecatedConfigKeys when
+        the schema marks it deprecated.
+
+        @param key The option name as supplied in the file or on the
+        command line.
+    */
+    void
+    noteIfDeprecated(std::string_view key);
+
 private:
     /** Keys found in the configuration file that match no known option.
 
         Populated during load and surfaced by @ref reportUnknownConfigKeys.
     */
     std::vector<std::string> unknownConfigKeys;
+
+    /** Deprecated options supplied in the file or on the command line.
+
+        Populated during load and surfaced by
+        @ref reportDeprecatedConfigKeys.
+    */
+    std::vector<std::string> deprecatedConfigKeys;
 };
 
 // Config adds no reflected options of its own; it only inherits the
