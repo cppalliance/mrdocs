@@ -14,6 +14,7 @@
 
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/detail/Corpus.hpp>
+#include <vector>
 
 namespace mrdocs {
 
@@ -72,12 +73,6 @@ class BaseMembersFinalizer
     std::unordered_set<std::string>
     memberNames(RecordTranche const& T) const;
 
-    void
-    finalizeRecords(std::vector<SymbolID> const& ids);
-
-    void
-    finalizeNamespaces(std::vector<SymbolID> const& ids);
-
 public:
     BaseMembersFinalizer(
         Corpus& corpus, Config const& config)
@@ -85,22 +80,37 @@ public:
         , config_(config)
     {}
 
+    /** The ids of every record in the corpus, in source order.
+
+        A snapshot to iterate while symbols are inserted into the corpus,
+        ordered by definition location and then by id so the output does
+        not depend on the corpus's iteration order. Shared with
+        `HiddenFriendsFinalizer`.
+    */
+    static
+    std::vector<SymbolID>
+    recordsInSourceOrder(Corpus const& corpus);
+
+
     void
     build()
     {
-        Symbol* info = corpus_.find(SymbolID::global);
-        MRDOCS_CHECK_OR(info);
-        operator()(info->asNamespace());
+        // Every record is visited from a snapshot of the corpus, since
+        // copies are inserted while inheriting; the snapshot is in source
+        // order, so a derived class is handled after the ones declared
+        // before it and the output stays deterministic.
+        std::vector<SymbolID> const records = recordsInSourceOrder(corpus_);
+        for (SymbolID const& id : records)
+        {
+            Symbol* symbol = corpus_.find(id);
+            MRDOCS_CHECK_OR_CONTINUE(symbol && symbol->isRecord());
+            operator()(symbol->asRecord());
+        }
     }
-
-    void
-    operator()(NamespaceSymbol& I);
 
     void
     operator()(RecordSymbol& I);
 
-    void
-    operator()(Symbol&) {}
 };
 
 } // mrdocs

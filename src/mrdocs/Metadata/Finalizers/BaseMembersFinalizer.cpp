@@ -13,6 +13,7 @@
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <format>
+#include <tuple>
 
 namespace mrdocs {
 
@@ -241,43 +242,60 @@ inheritBaseMembers(
     }
 }
 
-void
+std::vector<SymbolID>
 BaseMembersFinalizer::
-finalizeRecords(std::vector<SymbolID> const& ids)
+recordsInSourceOrder(Corpus const& corpus)
 {
-    for (SymbolID const& id: ids)
+    std::vector<Symbol const*> records;
+    for (auto const& symbol : corpus.info_)
     {
-        Symbol* infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* record = infoPtr->asRecordPtr();
-        MRDOCS_CHECK_OR_CONTINUE(record);
-        operator()(*record);
+        if (symbol->isRecord())
+        {
+            records.push_back(symbol.get());
+        }
     }
-}
-
-void
-BaseMembersFinalizer::
-finalizeNamespaces(std::vector<SymbolID> const& ids)
-{
-    for (SymbolID const& id: ids)
+    // The definition when there is one, otherwise the first declaration.
+    auto const location = [](Symbol const& s) -> Location const*
     {
-        Symbol* infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* ns = infoPtr->asNamespacePtr();
-        MRDOCS_CHECK_OR_CONTINUE(ns);
-        operator()(*ns);
+        if (s.Loc.DefLoc)
+        {
+            return &*s.Loc.DefLoc;
+        }
+        if (!s.Loc.Loc.empty())
+        {
+            return &s.Loc.Loc.front();
+        }
+        return nullptr;
+    };
+    std::ranges::sort(records, [&](Symbol const* a, Symbol const* b)
+    {
+        Location const* la = location(*a);
+        Location const* lb = location(*b);
+        if (la && lb)
+        {
+            auto const key = [](Location const& l)
+            {
+                return std::tie(l.SourcePath, l.LineNumber, l.ColumnNumber);
+            };
+            if (key(*la) != key(*lb))
+            {
+                return key(*la) < key(*lb);
+            }
+        }
+        else if (la || lb)
+        {
+            // Records without a location go last.
+            return la != nullptr;
+        }
+        return a->id < b->id;
+    });
+    std::vector<SymbolID> ids;
+    ids.reserve(records.size());
+    for (Symbol const* record : records)
+    {
+        ids.push_back(record->id);
     }
-}
-
-void
-BaseMembersFinalizer::
-operator()(NamespaceSymbol& I)
-{
-    report::trace(
-        "Extracting base members for namespace '{}'",
-        corpus_.Corpus::qualifiedName(I));
-    finalizeRecords(I.Members.Records);
-    finalizeNamespaces(I.Members.Namespaces);
+    return ids;
 }
 
 void
@@ -346,9 +364,6 @@ operator()(RecordSymbol& I)
         // copied members record as the class they are inherited from.
         inheritBaseMembers(I, *baseRecord, baseName.id, baseI.Access, relocateLoc);
     }
-    finalizeRecords(I.Interface.Public.Records);
-    finalizeRecords(I.Interface.Protected.Records);
-    finalizeRecords(I.Interface.Private.Records);
     finalized_.emplace(I.id);
 }
 
