@@ -11,6 +11,9 @@
 //
 
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/TArg.hpp>
+#include <mrdocs/Support/Error/Expected.hpp>
+#include <algorithm>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
@@ -736,5 +739,201 @@ innermostType(Polymorphic<Type>& TI) noexcept
 {
     return innermostTypeImpl<Polymorphic<Type>&>(TI);
 }
+
+namespace {
+
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs,
+    NameEquality const& sameName);
+
+
+// Check if two types are equal after decay
+//
+// The isInner template parameter indicates if
+// we are comparing inner types (e.g., pointee types)
+// or root types (e.g., function parameter types) because
+// the rules are slightly different depending
+// on the level of the type specifiers.
+//
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    NameEquality const& sameName)
+{
+    // Polymorphic
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    // Type
+    bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
+    if (!decayToPointer)
+    {
+        MRDOCS_CHECK_OR(lhs->Kind == rhs->Kind, false);
+    }
+    else
+    {
+        // in root types, arrays are decayed to pointers
+        MRDOCS_CHECK_OR(lhs->isArray() || lhs->isPointer(), false);
+        MRDOCS_CHECK_OR(rhs->isArray() || rhs->isPointer(), false);
+    }
+    MRDOCS_CHECK_OR(lhs->IsPackExpansion == rhs->IsPackExpansion, false);
+    if constexpr (isInner)
+    {
+        // const and volatile are ignored from root types
+        // in function parameters
+        MRDOCS_CHECK_OR(lhs->IsConst == rhs->IsConst, false);
+        MRDOCS_CHECK_OR(lhs->IsVolatile == rhs->IsVolatile, false);
+    }
+    MRDOCS_CHECK_OR(lhs->Constraints == rhs->Constraints, false);
+    switch (lhs->Kind)
+    {
+    // Types that never decay are compared directly, but we
+    // only compare the fields of the type, without reevaluating
+    // the fields of Type.
+    case TypeKind::Named:
+    {
+        Name const& lhsName = *lhs->asNamed().Name;
+        Name const& rhsName = *rhs->asNamed().Name;
+        MRDOCS_CHECK_OR(sameName(lhsName, rhsName), false);
+        // Specializations of one template are distinct types unless their
+        // template arguments agree as well.
+        MRDOCS_CHECK_OR(
+            lhsName.isSpecialization() == rhsName.isSpecialization(), false);
+        if (!lhsName.isSpecialization())
+        {
+            return true;
+        }
+        auto const& lhsArgs = lhsName.asSpecialization().TemplateArgs;
+        auto const& rhsArgs = rhsName.asSpecialization().TemplateArgs;
+        MRDOCS_CHECK_OR(lhsArgs.size() == rhsArgs.size(), false);
+        return std::ranges::equal(
+            lhsArgs, rhsArgs,
+            [&](Polymorphic<TArg> const& a, Polymorphic<TArg> const& b)
+            {
+                return isEqual(a, b, sameName);
+            });
+    }
+    case TypeKind::Decltype:
+    {
+        return lhs->asDecltype().Operand ==
+               rhs->asDecltype().Operand;
+    }
+    case TypeKind::Auto:
+    {
+        auto const& lhsAuto = lhs->asAuto();
+        auto const& rhsAuto = rhs->asAuto();
+        return lhsAuto.Keyword == rhsAuto.Keyword &&
+               lhsAuto.Constraint == rhsAuto.Constraint;
+    }
+    case TypeKind::LValueReference:
+    {
+        return
+            isDecayedEqualImpl<true>(
+                lhs->asLValueReference().PointeeType,
+                rhs->asLValueReference().PointeeType,
+                sameName);
+    }
+    case TypeKind::RValueReference:
+    {
+        return
+            isDecayedEqualImpl<true>(
+                dynamic_cast<RValueReferenceType const&>(*lhs).PointeeType,
+                dynamic_cast<RValueReferenceType const&>(*rhs).PointeeType,
+                sameName);
+    }
+    case TypeKind::MemberPointer:
+    {
+        auto const& lhsMP = dynamic_cast<MemberPointerType const&>(*lhs);
+        auto const& rhsMP = dynamic_cast<MemberPointerType const&>(*rhs);
+        return
+            isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType, sameName) &&
+            isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType, sameName);
+    }
+    case TypeKind::Function:
+    {
+        auto const& lhsF = dynamic_cast<FunctionType const&>(*lhs);
+        auto const& rhsF = dynamic_cast<FunctionType const&>(*rhs);
+        MRDOCS_CHECK_OR(lhsF.RefQualifier == rhsF.RefQualifier, false);
+        MRDOCS_CHECK_OR(lhsF.ExceptionSpec == rhsF.ExceptionSpec, false);
+        MRDOCS_CHECK_OR(lhsF.IsVariadic == rhsF.IsVariadic, false);
+        MRDOCS_CHECK_OR(isDecayedEqualImpl<true>(lhsF.ReturnType, rhsF.ReturnType, sameName), false);
+        MRDOCS_CHECK_OR(lhsF.ParamTypes.size() == rhsF.ParamTypes.size(), false);
+        for (std::size_t i = 0; i < lhsF.ParamTypes.size(); ++i)
+        {
+            MRDOCS_CHECK_OR(isDecayedEqualImpl<false>(lhsF.ParamTypes[i], rhsF.ParamTypes[i], sameName), false);
+        }
+        return true;
+    }
+    // Types that should decay
+    case TypeKind::Pointer:
+    case TypeKind::Array:
+    {
+        auto const I1 = innerType(*lhs);
+        auto const I2 = innerType(*rhs);
+        // Both inner types must be present or absent, otherwise not equal
+        MRDOCS_CHECK_OR(static_cast<bool>(I1) == static_cast<bool>(I2), false);
+        // Both inner types are absent: they are equal
+        MRDOCS_CHECK_OR(static_cast<bool>(I1) && static_cast<bool>(I2), true);
+        // Both inner types are present: compare them internally
+        return isDecayedEqualImpl<true>(*I1, *I2, sameName);
+    }
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+    return true;
+}
+
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs,
+    NameEquality const& sameName)
+{
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) && static_cast<bool>(rhs), true);
+    return isDecayedEqualImpl<isInner>(*lhs, *rhs, sameName);
+}
+
+} // (anon)
+
+bool
+isDecayedEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    NameEquality const& sameName)
+{
+    return isDecayedEqualImpl<false>(lhs, rhs, sameName);
+}
+
+bool
+isEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    NameEquality const& sameName)
+{
+    return isDecayedEqualImpl<true>(lhs, rhs, sameName);
+}
+
+bool
+isDecayedEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs)
+{
+    return isDecayedEqual(lhs, rhs, isSameName);
+}
+
+bool
+isEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs)
+{
+    return isEqual(lhs, rhs, isSameName);
+}
+
 
 } // mrdocs

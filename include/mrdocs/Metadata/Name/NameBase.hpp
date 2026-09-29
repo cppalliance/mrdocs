@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/Name/NameKind.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
+#include <functional>
 
 namespace mrdocs {
 
@@ -181,6 +182,28 @@ operator<=>(Polymorphic<Name> const&, Polymorphic<Name> const&);
 MRDOCS_DECL
 bool
 operator==(Polymorphic<Name> const&, Polymorphic<Name> const&);
+
+/** How two names are judged equal when comparing types.
+
+    The default is @ref isSameName: the same symbol, or the same spelling
+    for a name that names no symbol.
+*/
+using NameEquality = std::function<bool(Name const&, Name const&)>;
+
+/** Determine whether two extracted names are the same name.
+
+    Two names are the same when they name the same symbol. A name that
+    names no symbol, a fundamental type or a template parameter, is
+    compared as written, prefix by prefix. This is the default equality
+    used when comparing types and template arguments.
+
+    @param a One name
+    @param b The other name
+    @return Whether the two names are the same
+*/
+MRDOCS_DECL
+bool
+isSameName(Name const& a, Name const& b);
 
 } // mrdocs
 

@@ -95,6 +95,58 @@ toString(
     Type const& T,
     std::string_view Name = "");
 
+/** Compare two types for equality for the purposes of overload resolution.
+
+    Top-level const and volatile are ignored and arrays decay to pointers,
+    as they do for function parameters; the comparison recurses through
+    references, pointers, member pointers, function types, and the
+    template arguments of specializations. How two names are judged equal
+    is up to the caller: by symbol id for extracted declarations, or by
+    resolving what a documentation reference wrote.
+
+    @param lhs One type
+    @param rhs The other type
+    @param sameName How two names are judged equal
+    @return Whether the two types are equal for overload resolution
+*/
+MRDOCS_DECL
+bool
+isDecayedEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    NameEquality const& sameName);
+
+/// @copydoc isDecayedEqual(Polymorphic<Type> const&, Polymorphic<Type> const&, NameEquality const&)
+MRDOCS_DECL
+bool
+isDecayedEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs);
+
+/** Compare two types for equality.
+
+    Unlike @ref isDecayedEqual, cv-qualifiers are significant and arrays do
+    not decay, as for a template argument or the pointee of a pointer.
+
+    @param lhs One type
+    @param rhs The other type
+    @param sameName How two names are judged equal
+    @return Whether the two types are equal
+*/
+MRDOCS_DECL
+bool
+isEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    NameEquality const& sameName);
+
+/// @copydoc isEqual(Polymorphic<Type> const&, Polymorphic<Type> const&, NameEquality const&)
+MRDOCS_DECL
+bool
+isEqual(
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs);
+
 
 } // mrdocs
 

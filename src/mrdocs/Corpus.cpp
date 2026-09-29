@@ -88,16 +88,14 @@ findFirstParentInfo(
 
 bool
 qualifiedNameCompare(
-    Polymorphic<Name> const& lhs0,
-    Polymorphic<Name> const& rhs0,
+    Name const& lhs0,
+    Name const& rhs0,
     Symbol const& context,
     Corpus const& corpus)
 {
-    MRDOCS_ASSERT(!lhs0.valueless_after_move());
-    MRDOCS_ASSERT(!rhs0.valueless_after_move());
     // Compare each component of the qualified name
-    Name const* lhs = &*lhs0;
-    Name const* rhs = &*rhs0;
+    Name const* lhs = &lhs0;
+    Name const* rhs = &rhs0;
     while (lhs && rhs)
     {
         if (lhs->Identifier != rhs->Identifier)
@@ -145,152 +143,10 @@ qualifiedNameCompare(
     return !curName;
 }
 
-template <bool isInner>
-bool
-isDecayedEqualImpl(
-    Optional<Polymorphic<Type>> const& lhs,
-    Optional<Polymorphic<Type>> const& rhs,
-    Symbol const& context,
-    Corpus const& corpus);
-
-// Check if two types are equal after decay
-//
-// The isInner template parameter indicates if
-// we are comparing inner types (e.g., pointee types)
-// or root types (e.g., function parameter types) because
-// the rules are slightly different depending
-// on the level of the type specifiers.
-//
-template <bool isInner>
-bool
-isDecayedEqualImpl(
-    Polymorphic<Type> const& lhs,
-    Polymorphic<Type> const& rhs,
-    Symbol const& context,
-    Corpus const& corpus)
-{
-    // Polymorphic
-    MRDOCS_ASSERT(!lhs.valueless_after_move());
-    MRDOCS_ASSERT(!rhs.valueless_after_move());
-    // Type
-    bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
-    if (!decayToPointer)
-    {
-        MRDOCS_CHECK_OR(lhs->Kind == rhs->Kind, false);
-    }
-    else
-    {
-        // in root types, arrays are decayed to pointers
-        MRDOCS_CHECK_OR(lhs->isArray() || lhs->isPointer(), false);
-        MRDOCS_CHECK_OR(rhs->isArray() || rhs->isPointer(), false);
-    }
-    MRDOCS_CHECK_OR(lhs->IsPackExpansion == rhs->IsPackExpansion, false);
-    if constexpr (isInner)
-    {
-        // const and volatile are ignored from root types
-        // in function parameters
-        MRDOCS_CHECK_OR(lhs->IsConst == rhs->IsConst, false);
-        MRDOCS_CHECK_OR(lhs->IsVolatile == rhs->IsVolatile, false);
-    }
-    MRDOCS_CHECK_OR(lhs->Constraints == rhs->Constraints, false);
-    switch (lhs->Kind)
-    {
-    // Types that never decay are compared directly, but we
-    // only compare the fields of the type, without reevaluating
-    // the fields of Type.
-    case TypeKind::Named:
-    {
-        return
-            qualifiedNameCompare(
-                lhs->asNamed().Name,
-                rhs->asNamed().Name,
-                context, corpus);
-    }
-    case TypeKind::Decltype:
-    {
-        return lhs->asDecltype().Operand ==
-               rhs->asDecltype().Operand;
-    }
-    case TypeKind::Auto:
-    {
-        auto const& lhsAuto = lhs->asAuto();
-        auto const& rhsAuto = rhs->asAuto();
-        return lhsAuto.Keyword == rhsAuto.Keyword &&
-               lhsAuto.Constraint == rhsAuto.Constraint;
-    }
-    case TypeKind::LValueReference:
-    {
-        return
-            isDecayedEqualImpl<true>(
-                lhs->asLValueReference().PointeeType,
-                rhs->asLValueReference().PointeeType,
-                context, corpus);
-    }
-    case TypeKind::RValueReference:
-    {
-        return
-            isDecayedEqualImpl<true>(
-                dynamic_cast<RValueReferenceType const&>(*lhs).PointeeType,
-                dynamic_cast<RValueReferenceType const&>(*rhs).PointeeType,
-                context, corpus);
-    }
-    case TypeKind::MemberPointer:
-    {
-        auto const& lhsMP = dynamic_cast<MemberPointerType const&>(*lhs);
-        auto const& rhsMP = dynamic_cast<MemberPointerType const&>(*rhs);
-        return
-            isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType, context, corpus) &&
-            isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType, context, corpus);
-    }
-    case TypeKind::Function:
-    {
-        auto const& lhsF = dynamic_cast<FunctionType const&>(*lhs);
-        auto const& rhsF = dynamic_cast<FunctionType const&>(*rhs);
-        MRDOCS_CHECK_OR(lhsF.RefQualifier == rhsF.RefQualifier, false);
-        MRDOCS_CHECK_OR(lhsF.ExceptionSpec == rhsF.ExceptionSpec, false);
-        MRDOCS_CHECK_OR(lhsF.IsVariadic == rhsF.IsVariadic, false);
-        MRDOCS_CHECK_OR(isDecayedEqualImpl<true>(lhsF.ReturnType, rhsF.ReturnType, context, corpus), false);
-        MRDOCS_CHECK_OR(lhsF.ParamTypes.size() == rhsF.ParamTypes.size(), false);
-        for (std::size_t i = 0; i < lhsF.ParamTypes.size(); ++i)
-        {
-            MRDOCS_CHECK_OR(isDecayedEqualImpl<false>(lhsF.ParamTypes[i], rhsF.ParamTypes[i], context, corpus), false);
-        }
-        return true;
-    }
-    // Types that should decay
-    case TypeKind::Pointer:
-    case TypeKind::Array:
-    {
-        auto const I1 = innerType(*lhs);
-        auto const I2 = innerType(*rhs);
-        // Both inner types must be present or absent, otherwise not equal
-        MRDOCS_CHECK_OR(static_cast<bool>(I1) == static_cast<bool>(I2), false);
-        // Both inner types are absent: they are equal
-        MRDOCS_CHECK_OR(static_cast<bool>(I1) && static_cast<bool>(I2), true);
-        // Both inner types are present: compare them internally
-        return isDecayedEqualImpl<true>(*I1, *I2, context, corpus);
-    }
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-    return true;
-}
-
-template <bool isInner>
-bool
-isDecayedEqualImpl(
-    Optional<Polymorphic<Type>> const& lhs,
-    Optional<Polymorphic<Type>> const& rhs,
-    Symbol const& context,
-    Corpus const& corpus)
-{
-    MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
-    MRDOCS_CHECK_OR(static_cast<bool>(lhs) && static_cast<bool>(rhs), true);
-    return isDecayedEqualImpl<isInner>(*lhs, *rhs, context, corpus);
-}
-
-/* Compare two types for equality for the purposes of
-   overload resolution.
+/* Compare two types for equality for the purposes of overload resolution,
+   judging names as a documentation reference would: resolved relative to
+   `context`, so an unqualified name written in a comment matches the
+   qualified name of the symbol it refers to.
  */
 bool
 isDecayedEqual(
@@ -299,33 +155,28 @@ isDecayedEqual(
     Symbol const& context,
     Corpus const& corpus)
 {
-    return isDecayedEqualImpl<false>(lhs, rhs, context, corpus);
+    return isDecayedEqual(lhs, rhs, [&](Name const& a, Name const& b)
+    {
+        return qualifiedNameCompare(a, b, context, corpus);
+    });
 }
 
 bool
-isDecayedEqual(
+isEqual(
     Polymorphic<TArg> const& lhs,
     Polymorphic<TArg> const& rhs,
     Symbol const& context,
     Corpus const& corpus)
 {
-    if (lhs->Kind != rhs->Kind)
+    return isEqual(lhs, rhs, [&](Name const& a, Name const& b)
     {
-        return false;
-    }
-    if (lhs->isType())
-    {
-        return isDecayedEqualImpl<true>(static_cast<const TypeTArg &>(*lhs).Type,
-                                        static_cast<const TypeTArg &>(*rhs).Type,
-                                        context, corpus);
-    }
-    if (lhs->isConstant())
-    {
-        return trim(static_cast<ConstantTArg const&>(*lhs).Value.Written) ==
-               trim(static_cast<ConstantTArg const&>(*rhs).Value.Written);
-    }
-    return false;
+        return qualifiedNameCompare(a, b, context, corpus);
+    });
 }
+
+} // (anon)
+
+namespace {
 }
 
 //------------------------------------------------
@@ -1036,7 +887,7 @@ lookupImpl(
                 {
                     auto& lhsType = templateInfo->Args[i];
                     auto& rhsType  = component.TemplateArguments[i];
-                    MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
+                    MRDOCS_CHECK_OR(isEqual(lhsType, rhsType, context, *this), matchRes);
                 }
             }
             matchRes = MatchLevel::TemplateArgs;
