@@ -32,12 +32,24 @@
 
 namespace mrdocs {
 
+// Returns the extension without the leading dot,
+// or an empty string when the file has none.
+static
+llvm::StringRef
+extensionOf(
+    std::string_view filename)
+{
+    llvm::StringRef ext = llvm::sys::path::extension(filename);
+    ext.consume_front(".");
+    return ext;
+}
+
 static
 bool
 isCXXSrcFile(
     std::string_view filename)
 {
-    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = extensionOf(filename);
     clang::driver::types::ID extensionId = clang::driver::types::lookupTypeForExtension(ext);
     return clang::driver::types::isCXX(extensionId);
 }
@@ -47,7 +59,7 @@ bool
 isCXXHeaderFile(
     std::string_view filename)
 {
-    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = extensionOf(filename);
     return ext == "hpp" || ext == "hh" || ext == "hxx" || ext == "h++";
 }
 
@@ -56,7 +68,7 @@ bool
 isCSrcFile(
     std::string_view filename)
 {
-    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = extensionOf(filename);
     return ext == "c";
 }
 
@@ -65,7 +77,7 @@ bool
 isCHeaderFile(
     std::string_view filename)
 {
-    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = extensionOf(filename);
     return ext == "h";
 }
 
@@ -526,6 +538,7 @@ MrDocsCompilationDatabase(
     isClangCL_ = mrdocs::isClangCL(allCommands.front());
     AllCommands_.reserve(allCommands.size());
     SmallPathString temp;
+    std::size_t nSkipped = 0;
     for (CompileCommand const& cmd0 : allCommands)
     {
         CompileCommand cmd;
@@ -555,8 +568,15 @@ MrDocsCompilationDatabase(
         }
         else
         {
-          report::info(std::format("Skipping non-C++ file: {}", cmd.Filename));
+            report::debug(std::format("Skipping non-C++ file: {}", cmd.Filename));
+            ++nSkipped;
         }
+    }
+    if (nSkipped != 0)
+    {
+        report::info(std::format(
+            "Skipped {} compilation database entries that aren't C or C++ files",
+            nSkipped));
     }
 }
 
