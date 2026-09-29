@@ -404,17 +404,9 @@ load(
             {
                 c.unknownConfigKeys.emplace_back(key);
             }
-            else
+            else if (ConfigSchema::isDeprecated(key))
             {
-                c.noteIfDeprecated(key);
-                if (key == "extract-implicit-specializations")
-                {
-                    // A deprecated key that keeps working by forwarding its
-                    // value to the option that replaced it, so a configuration
-                    // written before the rename does not silently lose its
-                    // setting.
-                    c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
-                }
+                c.handleDeprecatedKey(key);
             }
         }
     }
@@ -591,13 +583,10 @@ applyCommandLineOverrides(Config& c, char const** argv)
         });
     for (auto const& [key, values] : supplied)
     {
-        c.noteIfDeprecated(key);
-    }
-    // A deprecated key keeps accepting its legacy command-line spelling by
-    // forwarding the value onto the option that replaced it.
-    if (supplied.contains("extract-implicit-specializations"))
-    {
-        c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
+        if (ConfigSchema::isDeprecated(key))
+        {
+            c.handleDeprecatedKey(key);
+        }
     }
     return result;
 }
@@ -658,6 +647,12 @@ load_file(
     // Startup forces the log level low (errors only) so option parsing stays
     // quiet; now that the configured level is known, restore it and surface
     // the unknown-key warnings that were deferred until this point.
+    static_assert(
+        static_cast<unsigned>(ConfigSchema::LogLevel::Trace) ==
+        static_cast<unsigned>(report::Level::trace));
+    static_assert(
+        static_cast<unsigned>(ConfigSchema::LogLevel::Fatal) ==
+        static_cast<unsigned>(report::Level::fatal));
     report::setMinimumLevel(static_cast<report::Level>(c.logLevel));
     c.reportUnknownConfigKeys();
     c.reportDeprecatedConfigKeys();
@@ -984,20 +979,6 @@ struct ConfigSchemaVisitor {
             return {};
         }
 
-        if (name == "report" && std::cmp_not_equal(value, static_cast<unsigned>(-1)))
-        {
-            static_assert(
-                static_cast<unsigned>(ConfigSchema::LogLevel::Trace) ==
-                static_cast<unsigned>(report::Level::trace));
-            static_assert(
-                static_cast<unsigned>(ConfigSchema::LogLevel::Fatal) ==
-                static_cast<unsigned>(report::Level::fatal));
-            auto const logLevel = static_cast<ConfigSchema::LogLevel>(value);
-            auto logLevelStr = ConfigSchema::toString(logLevel);
-            report::warn("`report` option: setting `log-level` to \"{}\"", logLevelStr);
-            self.logLevel = logLevel;
-            return {};
-        }
         return {};
     }
 
@@ -1178,17 +1159,15 @@ reportUnknownConfigKeys() const
 
 void
 Config::
-noteIfDeprecated(std::string_view const key)
+handleDeprecatedKey(std::string_view const key)
 {
-    if (!ConfigSchema::deprecationNote(key))
-    {
-        return;
-    }
+    MRDOCS_ASSERT(ConfigSchema::isDeprecated(key));
     if (std::ranges::find(deprecatedConfigKeys, key) ==
         deprecatedConfigKeys.end())
     {
         deprecatedConfigKeys.emplace_back(key);
     }
+    forwardDeprecated(key);
 }
 
 void

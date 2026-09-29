@@ -516,6 +516,56 @@ def generate_config_schema_hpp(config):
     contents += '        return std::nullopt;\n'
     contents += '    }\n\n'
 
+    contents += '    /** Whether an option is deprecated.\n'
+    contents += '        \n'
+    contents += '        @param name The option name\n'
+    contents += '     */\n'
+    contents += '    static\n'
+    contents += '    bool\n'
+    contents += '    isDeprecated(std::string_view name) noexcept\n'
+    contents += '    {\n'
+    contents += '        return deprecationNote(name).has_value();\n'
+    contents += '    }\n\n'
+
+    # Forwarding of deprecated options onto their replacements, so a
+    # configuration written before a rename keeps its setting.
+    names = {option['name'] for option in flat_options}
+    contents += '    /** Forward a supplied deprecated option onto its replacement.\n'
+    contents += '        \n'
+    contents += '        Generated from the `replaced-by` field of the schema. A value\n'
+    contents += '        equal to the deprecated option\'s default is left alone, so an\n'
+    contents += '        untouched default never overrides the replacement.\n'
+    contents += '        \n'
+    contents += '        @param name The deprecated option that was supplied\n'
+    contents += '     */\n'
+    contents += '    void\n'
+    contents += '    forwardDeprecated(std::string_view name)\n'
+    contents += '    {\n'
+    for option in flat_options:
+        if 'replaced-by' not in option:
+            continue
+        if 'deprecated' not in option:
+            raise ValueError(f'{option["name"]}: `replaced-by` requires `deprecated`')
+        target_name = option['replaced-by']
+        if target_name not in names:
+            raise ValueError(f'{option["name"]}: `replaced-by` names unknown option {target_name}')
+        target = next(o for o in flat_options if o['name'] == target_name)
+        src = to_camel_case(option['name'])
+        dst = to_camel_case(target_name)
+        src_type = to_cpp_type(option)
+        dst_type = to_cpp_type(target)
+        default = to_cpp_default_value(option, False)
+        if default is None:
+            raise ValueError(f'{option["name"]}: `replaced-by` requires a `default`')
+        cast_type = f'static_cast<{src_type}>' if src_type in ['bool', 'unsigned', 'int'] else src_type
+        value = f'{src}' if src_type == dst_type else f'static_cast<{dst_type}>({src})'
+        contents += f'        if (name == {escape_as_cpp_string(option["name"])} &&\n'
+        contents += f'            {src} != {cast_type}({default}))\n'
+        contents += '        {\n'
+        contents += f'            {dst} = {value};\n'
+        contents += '        }\n'
+    contents += '    }\n\n'
+
     # Function to visit every option (name and member reference).
     contents += '    /** Call `f(name, member)` for every option\n'
     contents += '        \n'

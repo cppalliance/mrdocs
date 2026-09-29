@@ -288,7 +288,8 @@
         "details": "When set to `true`, MrDocs extracts implicit template specializations that appear as base classes, treating them as dependencies. This gives it the metadata it needs to resolve the derived class's inherited members, as controlled by the `inherit-base-members` option.",
         "type": "bool",
         "default": true,
-        "deprecated": "Use `extract-implicit-base-classes` instead"
+        "deprecated": "Use `extract-implicit-base-classes` instead",
+        "replaced-by": "extract-implicit-base-classes"
       },
       {
         "name": "extract-implicit-base-classes",
@@ -608,7 +609,8 @@
         "default": -1,
         "min-value": -1,
         "max-value": 5,
-        "deprecated": "Use `log-level` instead"
+        "deprecated": "Use `log-level` instead",
+        "replaced-by": "log-level"
       },
       {
         "name": "log-level",

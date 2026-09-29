@@ -149,14 +149,18 @@ public:
     void
     reportDeprecatedConfigKeys() const;
 
-    /** Record a supplied option for @ref reportDeprecatedConfigKeys when
-        the schema marks it deprecated.
+    /** Handle a supplied option that the schema marks deprecated.
+
+        Records it for @ref reportDeprecatedConfigKeys and forwards its
+        value onto the option that replaced it, when the schema names one.
+
+        @pre `ConfigSchema::isDeprecated(key)`
 
         @param key The option name as supplied in the file or on the
         command line.
     */
     void
-    noteIfDeprecated(std::string_view key);
+    handleDeprecatedKey(std::string_view key);
 
 private:
     /** Keys found in the configuration file that match no known option.
