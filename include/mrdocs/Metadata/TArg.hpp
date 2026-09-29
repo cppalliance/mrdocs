@@ -46,6 +46,31 @@ operator==(Polymorphic<TArg> const& a, Polymorphic<TArg> const& b)
 }
 
 
+/** Compare two template arguments for equality.
+
+    A type argument is compared with @ref isEqual, so cv-qualifiers are
+    significant and arrays do not decay; a constant argument is compared
+    by its written value.
+
+    @param lhs One template argument
+    @param rhs The other template argument
+    @param sameName How two names are judged equal
+    @return Whether the two template arguments are equal
+*/
+MRDOCS_DECL
+bool
+isEqual(
+    Polymorphic<TArg> const& lhs,
+    Polymorphic<TArg> const& rhs,
+    NameEquality const& sameName);
+
+/// @copydoc isEqual(Polymorphic<TArg> const&, Polymorphic<TArg> const&, NameEquality const&)
+MRDOCS_DECL
+bool
+isEqual(
+    Polymorphic<TArg> const& lhs,
+    Polymorphic<TArg> const& rhs);
+
 } // mrdocs
 
 #endif

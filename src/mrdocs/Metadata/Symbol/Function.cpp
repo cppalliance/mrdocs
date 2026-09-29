@@ -13,11 +13,13 @@
 //
 
 #include <mrdocs/Metadata/Symbol/Function.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
 #include <mrdocs/Support/TypeTraits/TypeTraits.hpp>
 #include <algorithm>
+#include <ranges>
 #include <iterator>
 #include <span>
 #include <utility>
@@ -487,22 +489,32 @@ isSpecialMemberFunction(FunctionSymbol const& func)
         || isMoveAssignment(func);
 }
 
-MRDOCS_DECL
 bool
-overrides(FunctionSymbol const& base, FunctionSymbol const& derived)
+sameSignature(FunctionSymbol const& a, FunctionSymbol const& b)
 {
-    auto toOverrideTuple = [](FunctionSymbol const& f) {
+    auto toSignatureTuple = [](FunctionSymbol const& f) {
         return std::forward_as_tuple(
             f.Name,
-            f.Params,
+            f.IsRecordMethod,
             f.Template,
             f.IsVariadic,
             f.IsConst,
             f.RefQualifier
         );
     };
-    return toOverrideTuple(base) == toOverrideTuple(derived);
+    if (toSignatureTuple(a) != toSignatureTuple(b) ||
+        a.Params.size() != b.Params.size())
+    {
+        return false;
+    }
+    // Parameter names and default arguments do not participate in overload
+    // resolution, so only the parameter types are compared.
+    return std::ranges::equal(
+        a.Params, b.Params,
+        [](Param const& x, Param const& y)
+        {
+            return isDecayedEqual(x.Type, y.Type);
+        });
 }
 
 } // mrdocs
-

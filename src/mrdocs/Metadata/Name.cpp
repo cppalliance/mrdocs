@@ -140,4 +140,22 @@ toString(Name const& N)
 }
 
 
+bool
+isSameName(Name const& a, Name const& b)
+{
+    if (a.id || b.id)
+    {
+        return a.id == b.id;
+    }
+    if (a.Identifier != b.Identifier)
+    {
+        return false;
+    }
+    if (static_cast<bool>(a.Prefix) != static_cast<bool>(b.Prefix))
+    {
+        return false;
+    }
+    return !a.Prefix || isSameName(**a.Prefix, **b.Prefix);
+}
+
 } // mrdocs

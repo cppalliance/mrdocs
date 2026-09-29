@@ -219,6 +219,22 @@ merge(FunctionSymbol& I, FunctionSymbol&& Other);
 
 
 
+/** Determine whether two declarations declare the same function.
+
+    Two declarations are the same function when they agree on the name, on
+    being a member or not, on the template head, and on the variadic, const,
+    and ref qualifiers, and their parameter types are equal for the purposes
+    of overload resolution: named types are the same symbol, top-level cv is
+    ignored, and arrays decay to pointers. Parameter names and default
+    arguments never take part, and neither does the return type.
+
+    @param a One declaration
+    @param b The other declaration
+*/
+MRDOCS_DECL
+bool
+sameSignature(FunctionSymbol const& a, FunctionSymbol const& b);
+
 /** Check whether a function is a default constructor.
 
     A default constructor is a constructor for which each
@@ -299,15 +315,6 @@ isMoveAssignment(FunctionSymbol const& func);
 MRDOCS_DECL
 bool
 isSpecialMemberFunction(FunctionSymbol const& func);
-
-/** Determine if one function would override the other
-
-    @param base The base function
-    @param derived The derived function
-*/
-MRDOCS_DECL
-bool
-overrides(FunctionSymbol const& base, FunctionSymbol const& derived);
 
 } // mrdocs
 

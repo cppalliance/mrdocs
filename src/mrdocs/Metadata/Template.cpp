@@ -14,6 +14,8 @@
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/TArg.hpp>
+#include <mrdocs/Support/String/String.hpp>
 
 namespace mrdocs {
 
@@ -130,5 +132,38 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     }
 }
 
+
+bool
+isEqual(
+    Polymorphic<TArg> const& lhs,
+    Polymorphic<TArg> const& rhs,
+    NameEquality const& sameName)
+{
+    if (lhs->Kind != rhs->Kind)
+    {
+        return false;
+    }
+    if (lhs->isType())
+    {
+        return isEqual(
+            static_cast<TypeTArg const&>(*lhs).Type,
+            static_cast<TypeTArg const&>(*rhs).Type,
+            sameName);
+    }
+    if (lhs->isConstant())
+    {
+        return trim(static_cast<ConstantTArg const&>(*lhs).Value.Written) ==
+               trim(static_cast<ConstantTArg const&>(*rhs).Value.Written);
+    }
+    return false;
+}
+
+bool
+isEqual(
+    Polymorphic<TArg> const& lhs,
+    Polymorphic<TArg> const& rhs)
+{
+    return isEqual(lhs, rhs, isSameName);
+}
 
 } // mrdocs

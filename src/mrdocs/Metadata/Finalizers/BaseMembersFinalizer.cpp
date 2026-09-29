@@ -160,8 +160,8 @@ inheritBaseMembers(
         MRDOCS_CHECK_OR_CONTINUE(
             !otherInfo.isUsing() || !derivedNames.contains(otherInfo.Name));
 
-        // Check if derived class has a member that shadows the base member
-        auto shadowIt = std::ranges::find_if(
+        // A base member the derived class already declares adds nothing.
+        auto declaredIt = std::ranges::find_if(
             derived,
             [&](SymbolID const& id)
             {
@@ -171,19 +171,19 @@ inheritBaseMembers(
                 MRDOCS_CHECK_OR(info.Kind == otherInfo.Kind, false);
                 if (info.isFunction())
                 {
-                    // If it's a function, it's only a shadow if the signatures
-                    // are the same
+                    // A function is already declared only when the
+                    // signatures are the same
                     auto const& otherFunc = static_cast<FunctionSymbol const&>(otherInfo);
                     auto const& func = static_cast<FunctionSymbol const&>(info);
-                    return overrides(func, otherFunc);
+                    return sameSignature(func, otherFunc);
                 }
-                // For other kinds of members, it's a shadow if the names
-                // are the same
+                // Any other kind of member is already declared when the
+                // names are the same
                 return info.Name == otherInfo.Name;
             });
-        MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
+        MRDOCS_CHECK_OR_CONTINUE(declaredIt == derived.end());
 
-        // Not a shadow, so inherit the base member
+        // Not declared by the derived class, so inherit the base member
         if (!shouldCopy(config_, otherInfo))
         {
             // When it's a dependency, we don't create a reference to
