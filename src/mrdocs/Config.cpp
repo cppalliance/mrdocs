@@ -299,7 +299,7 @@ assignConfigValue(T& out, dom::Value const& v)
 // this translation unit; the only public entry points are load / load_file,
 // which route through it. Defined below, after the reflection helpers it uses.
 Expected<void>
-applyCommandLineOverrides(ConfigSchema& c, char const** argv);
+applyCommandLineOverrides(Config& c, char const** argv);
 
 } // (anon)
 
@@ -356,6 +356,7 @@ load(
     // reported once the log level is configured (see reportUnknownConfigKeys),
     // because config loading runs before that.
     c.unknownConfigKeys.clear();
+    c.deprecatedConfigKeys.clear();
     llvm::SourceMgr SM;
     llvm::yaml::Stream stream(configYaml, SM);
     llvm::yaml::document_iterator I = stream.begin();
@@ -403,22 +404,17 @@ load(
             {
                 c.unknownConfigKeys.emplace_back(key);
             }
-            else if (key == "extract-implicit-specializations")
+            else
             {
-                // A deprecated key that keeps working by forwarding its value
-                // to the option that replaced it, so a configuration written
-                // before the rename does not silently lose its setting.
-                report::warn(
-                    "`extract-implicit-specializations` option is deprecated, "
-                    "use `extract-implicit-base-classes` instead");
-                c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
-            }
-            else if (key == "extract-friends")
-            {
-                report::warn(
-                    "`extract-friends` option is deprecated: friends are "
-                    "always extracted; hide them in the generator templates "
-                    "instead");
+                c.noteIfDeprecated(key);
+                if (key == "extract-implicit-specializations")
+                {
+                    // A deprecated key that keeps working by forwarding its
+                    // value to the option that replaced it, so a configuration
+                    // written before the rename does not silently lose its
+                    // setting.
+                    c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
+                }
             }
         }
     }
@@ -479,7 +475,7 @@ isBooleanOptionKey(ConfigSchema const& c, std::string_view const key)
 }
 
 Expected<void>
-applyCommandLineOverrides(ConfigSchema& c, char const** argv)
+applyCommandLineOverrides(Config& c, char const** argv)
 {
     if (!argv)
     {
@@ -593,20 +589,15 @@ applyCommandLineOverrides(ConfigSchema& c, char const** argv)
                 }
             }
         });
+    for (auto const& [key, values] : supplied)
+    {
+        c.noteIfDeprecated(key);
+    }
     // A deprecated key keeps accepting its legacy command-line spelling by
     // forwarding the value onto the option that replaced it.
     if (supplied.contains("extract-implicit-specializations"))
     {
-        report::warn(
-            "`extract-implicit-specializations` option is deprecated, "
-            "use `extract-implicit-base-classes` instead");
         c.extractImplicitBaseClasses = c.extractImplicitSpecializations;
-    }
-    if (supplied.contains("extract-friends"))
-    {
-        report::warn(
-            "`extract-friends` option is deprecated: friends are always "
-            "extracted; hide them in the generator templates instead");
     }
     return result;
 }
@@ -669,6 +660,7 @@ load_file(
     // the unknown-key warnings that were deferred until this point.
     report::setMinimumLevel(static_cast<report::Level>(c.logLevel));
     c.reportUnknownConfigKeys();
+    c.reportDeprecatedConfigKeys();
     return {};
 }
 
@@ -1000,9 +992,6 @@ struct ConfigSchemaVisitor {
             static_assert(
                 static_cast<unsigned>(ConfigSchema::LogLevel::Fatal) ==
                 static_cast<unsigned>(report::Level::fatal));
-            MRDOCS_ASSERT(opts.deprecated);
-            report::warn(
-                "`report` option is deprecated, use `log-level` instead");
             auto const logLevel = static_cast<ConfigSchema::LogLevel>(value);
             auto logLevelStr = ConfigSchema::toString(logLevel);
             report::warn("`report` option: setting `log-level` to \"{}\"", logLevelStr);
@@ -1184,6 +1173,34 @@ reportUnknownConfigKeys() const
     for (std::string const& key : unknownConfigKeys)
     {
         report::log(level, "unknown configuration key: \"{}\"", key);
+    }
+}
+
+void
+Config::
+noteIfDeprecated(std::string_view const key)
+{
+    if (!ConfigSchema::deprecationNote(key))
+    {
+        return;
+    }
+    if (std::ranges::find(deprecatedConfigKeys, key) ==
+        deprecatedConfigKeys.end())
+    {
+        deprecatedConfigKeys.emplace_back(key);
+    }
+}
+
+void
+Config::
+reportDeprecatedConfigKeys() const
+{
+    for (std::string const& key : deprecatedConfigKeys)
+    {
+        report::warn(
+            "`{}` option is deprecated: {}",
+            key,
+            *ConfigSchema::deprecationNote(key));
     }
 }
 

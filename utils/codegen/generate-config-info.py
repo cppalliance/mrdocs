@@ -497,6 +497,25 @@ def generate_config_schema_hpp(config):
     contents += '        return infos;\n'
     contents += '    }\n\n'
 
+    # Deprecation notes, so the loader warns with the schema's own wording.
+    contents += '    /** The deprecation note of a deprecated option.\n'
+    contents += '        \n'
+    contents += '        Generated from the `deprecated` field of the schema.\n'
+    contents += '        Returns nothing for an option that is not deprecated.\n'
+    contents += '     */\n'
+    contents += '    static\n'
+    contents += '    std::optional<std::string_view>\n'
+    contents += '    deprecationNote(std::string_view name) noexcept\n'
+    contents += '    {\n'
+    for option in flat_options:
+        if 'deprecated' in option:
+            contents += f'        if (name == {escape_as_cpp_string(option["name"])})\n'
+            contents += '        {\n'
+            contents += f'            return {escape_as_cpp_string(option["deprecated"])};\n'
+            contents += '        }\n'
+    contents += '        return std::nullopt;\n'
+    contents += '    }\n\n'
+
     # Function to visit every option (name and member reference).
     contents += '    /** Call `f(name, member)` for every option\n'
     contents += '        \n'
