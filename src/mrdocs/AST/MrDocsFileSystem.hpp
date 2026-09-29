@@ -331,10 +331,13 @@ public:
     }
 };
 
+// A physical file system keeps a working directory of its own, so the
+// `ClangTool` parsing each unit does not change the process's.
 inline llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem>
 createMrDocsFileSystem(Config const &Cfg)
 {
-    auto Real = llvm::vfs::getRealFileSystem();
+    llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> Real(
+        llvm::vfs::createPhysicalFileSystem());
     return { new MrDocsFileSystem(Real, Cfg) };
 }
 
