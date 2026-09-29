@@ -331,10 +331,17 @@ public:
     }
 };
 
+// Each translation unit gets its own file system, and the ClangTool that
+// parses it sets the working directory to the compile command's and later
+// restores it. The file system returned by getRealFileSystem() shares the
+// working directory of the process, so two units parsed concurrently could
+// leave the process in the directory of either; a physical file system
+// keeps a working directory of its own.
 inline llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem>
 createMrDocsFileSystem(Config const &Cfg)
 {
-    auto Real = llvm::vfs::getRealFileSystem();
+    llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> Real(
+        llvm::vfs::createPhysicalFileSystem().release());
     return { new MrDocsFileSystem(Real, Cfg) };
 }
 
