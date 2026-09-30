@@ -66,6 +66,13 @@ Examples:
         help="CMake preset name",
     )
     build_group.add_argument(
+        "--remove-preset",
+        action="append",
+        default=None,
+        metavar="NAME",
+        help="Remove a preset bootstrap created, with its run configurations (repeatable)",
+    )
+    build_group.add_argument(
         "--sanitizer",
         choices=[s for s in SANITIZERS if s],
         default=None,
