@@ -104,7 +104,7 @@ html {
   hyphens: none;
   /* Landing leading. The frame says 1.2; 0.9 was the explicit ask. */
   line-height: 0.9;
-  margin: 1rem 0 0;
+  margin-block: 1rem 0;
 }
 
 .doc h1 {
@@ -450,7 +450,13 @@ html {
 .doc .partintro,
 .doc details,
 .doc hr {
-  margin: 1rem 0 0;
+  /* Block axis only, so the inline margins stay with
+     `.doc > * { margin-inline: auto }` (0,1,0), which this (0,2,0) rule
+     outranks whenever a block is a DIRECT child of the article. That is every
+     page without section headings: the contents rail is dropped, the column
+     widens past the 779 measure, and the title and the body copy must centre
+     together rather than the title alone. */
+  margin-block: 1rem 0;
 }
 
 .doc > table.tableblock,
@@ -653,7 +659,7 @@ html {
 }
 
 .doc .admonitionblock {
-  margin: 1.4rem 0 0;
+  margin-block: 1.4rem 0;
 }
 
 .doc .admonitionblock p,
@@ -1291,7 +1297,7 @@ html {
 
 .doc .colist {
   font-size: calc(16 / var(--rem-base) * 1rem);
-  margin: 0.25rem 0 -0.25rem;
+  margin-block: 0.25rem -0.25rem;
 }
 
 .doc .colist > table > tr > :first-child,
