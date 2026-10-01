@@ -94,13 +94,6 @@ public:
 
 //------------------------------------------------
 
-/** Return a level from an integer.
-*/
-MRDOCS_DECL
-Level
-getLevel(
-    unsigned level) noexcept;
-
 /** Formatted reporting to a live stream.
 
     A trailing newline will be added automatically.
@@ -109,23 +102,7 @@ MRDOCS_DECL
 void
 call_impl(
     Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const* loc,
-    Error const* e = nullptr);
-
-/** Formatted reporting to a live stream.
-
-    A trailing newline will be added automatically.
-*/
-inline void
-call(
-    Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const& loc =
-        source_location::current())
-{
-    call_impl(level, std::move(f), &loc);
-}
+    std::function<void(llvm::raw_ostream&)> f);
 
 } // report
 

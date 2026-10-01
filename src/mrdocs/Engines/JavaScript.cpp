@@ -503,7 +503,7 @@ invokeHelper(Value const& fn, dom::Array const& args)
     auto ret = fn.apply(callArgs);
     if (!ret)
     {
-        return Unexpected(dom::Error(std::string(ret.error().message())));
+        return Unexpected(dom::Error(std::string(ret.error().reason())));
     }
     return ret->getDom();
 }
