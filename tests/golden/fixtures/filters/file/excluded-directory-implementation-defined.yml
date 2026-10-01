@@ -1,0 +1,6 @@
+# The directory of the header is excluded, but the mark inside the header
+# still decides how the type renders where the public function mentions
+# it, as it does for a header excluded by a pattern.
+exclude:
+  - excluded-directory
+generator: adoc

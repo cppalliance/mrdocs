@@ -1,0 +1,12 @@
+# The twin of mrdocs.yml: the vendor directory is now one of the inputs,
+# only excluded, so the same declaration is reported. That shows the
+# vendor symbol reaches the corpus, and that its being outside the
+# inputs is what keeps the other run quiet.
+source-root: .
+input:
+  - api
+  - vendor
+exclude:
+  - vendor
+includes:
+  - vendor

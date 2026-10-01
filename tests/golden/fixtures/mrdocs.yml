@@ -12,5 +12,8 @@ warn-if-undocumented: false
 warn-no-paramdoc: false
 warn-unnamed-param: false
 warn-if-undoc-enum-val: false
+# Several fixtures exist to exercise a filtered symbol reached from the
+# documented API, which is exactly the situation this warning is for.
+warn-if-filtered-in-public-api: false
 tagfile: ""
 no-default-styles: true
