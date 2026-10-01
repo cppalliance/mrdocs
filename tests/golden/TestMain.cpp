@@ -121,7 +121,6 @@ accepted and applied like the mrdocs tool.
     auto ll = ConfigSchema::LogLevel::Info;
     ConfigSchema::fromString(testCliArgs.logLevel, ll);
     report::setMinimumLevel(static_cast<report::Level>(ll));
-    report::setSourceLocationWarnings(false);
 
     if (!testCliArgs.inputs.empty())
     {

@@ -102,17 +102,6 @@ Level
 */
 getMinimumLevel() noexcept;
 
-/** If true, source location information will be
-    printed with warnings, errors, and fatal messages.
-
-    @param b true to enable source location
-    information, false to disable it. The default
-    value is true.
-*/
-MRDOCS_DECL
-void
-setSourceLocationWarnings(bool b) noexcept;
-
 /** Report a message to the console.
 
     @param text The message to print. A
@@ -132,17 +121,12 @@ print(
     @param text The message to print. A
     trailing newline will be added to the
     message automatically.
-
-    @param loc The source location of the report.
-    If this value is null, no location is printed.
 */
 MRDOCS_DECL
 void
 print(
     Level level,
-    std::string const& text,
-    source_location const* loc = nullptr,
-    Error const* e = nullptr);
+    std::string const& text);
 
 /** Parameter type that adds a source location to a value.
 */
@@ -190,7 +174,7 @@ log_impl(
 {
   std::string str =
       std::vformat(fs.value, std::make_format_args(arg0, args...));
-  return print(level, str, &fs.where);
+  return print(level, str);
 }
 
 template<class... Args>
@@ -201,17 +185,9 @@ log_impl(
     Error const& e,
     Args&&... args)
 {
-    // When the message is an error, we send split
-    // the information relevant to the user from
-    // the information relevant for bug tracking
-    // so that users can understand the message.
     std::string str =
         std::vformat(fs.value, std::make_format_args(e.reason(), args...));
-    return print(
-        level,
-        str,
-        &fs.where,
-        &e);
+    return print(level, str);
 }
 
 inline
@@ -221,7 +197,7 @@ log_impl(
     Located<std::string_view> fs)
 {
   std::string str(fs.value);
-  return print(level, str, &fs.where);
+  return print(level, str);
 }
 }
 
