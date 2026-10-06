@@ -34,11 +34,29 @@ if (LLVM_ROOT)
     endif()
     message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
 endif()
+# Clang must come from the same install as LLVM. A Clang_ROOT that points
+# elsewhere (typically a stale LLVM_ROOT in the environment picked up by the
+# base presets while the user preset overrides only LLVM_ROOT) makes
+# find_package(Clang) load a different LLVM's exports and fail with
+# "imported targets are referenced, but are missing: LLVM".
 if (Clang_ROOT)
     get_filename_component(Clang_ROOT "${Clang_ROOT}" ABSOLUTE)
-    set(LLVM_ROOT "${LLVM_ROOT}" CACHE PATH "Root of Clang install." FORCE)
+    if (LLVM_ROOT AND NOT Clang_ROOT STREQUAL LLVM_ROOT)
+        message(FATAL_ERROR
+            "Clang_ROOT (${Clang_ROOT}) differs from LLVM_ROOT (${LLVM_ROOT}). "
+            "MrDocs needs Clang from the same LLVM install. Unset Clang_ROOT "
+            "(or the LLVM_ROOT environment variable the presets read it from) "
+            "or point both at the same directory.")
+    endif()
+    set(Clang_ROOT "${Clang_ROOT}" CACHE PATH "Root of Clang install." FORCE)
+    if (NOT EXISTS "${Clang_ROOT}/lib/cmake/clang")
+        message(FATAL_ERROR "Clang_ROOT (${Clang_ROOT}) is invalid: no <Clang_ROOT>/lib/cmake/clang.")
+    endif()
 elseif (LLVM_ROOT)
     set(Clang_ROOT "${LLVM_ROOT}" CACHE PATH "Root of Clang install." FORCE)
+    if (NOT EXISTS "${Clang_ROOT}/lib/cmake/clang")
+        message(FATAL_ERROR "LLVM_ROOT (${LLVM_ROOT}) is invalid: no <LLVM_ROOT>/lib/cmake/clang. Provide an LLVM install that includes Clang.")
+    endif()
 endif()
 
 #-------------------------------------------------
@@ -50,6 +68,13 @@ find_package(LLVM REQUIRED CONFIG)
 # Clang gives per-component targets (clangTooling, clangAST, ...) that
 # link LLVM libraries transitively but not the headers or definitions.
 find_package(Clang REQUIRED CONFIG)
+# Both config files record the prefix they were installed to. If they
+# disagree, Clang was resolved from another install (see Clang_ROOT above).
+if (NOT CLANG_INSTALL_PREFIX STREQUAL LLVM_INSTALL_PREFIX)
+    message(FATAL_ERROR
+        "Clang (${CLANG_INSTALL_PREFIX}) and LLVM (${LLVM_INSTALL_PREFIX}) come from "
+        "different installs. Set LLVM_ROOT and Clang_ROOT to the same directory.")
+endif()
 # Find libc++ headers, which are not part of the LLVM/Clang CMake packages. The
 # include dir is always <LLVM_ROOT>/include/c++/v1.
 set(LIBCXX_DIR "${LLVM_INCLUDE_DIR}/c++/v1" CACHE PATH "Path to libc++ include directory")

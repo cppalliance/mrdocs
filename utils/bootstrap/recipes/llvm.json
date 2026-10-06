@@ -2,7 +2,7 @@
   "name": "llvm",
   "version": "77e43ec11cd8fbe1de491118b54de9bba94510a8",
   "tags": [],
-  "package_root_var": "LLVM_ROOT",
+  "package_root_var": ["LLVM_ROOT", "Clang_ROOT"],
   "source": {
     "type": "archive",
     "url": "https://github.com/llvm/llvm-project/archive/77e43ec11cd8fbe1de491118b54de9bba94510a8.zip",
