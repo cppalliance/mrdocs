@@ -455,9 +455,9 @@
       {
         "name": "non-standard-attributes",
         "brief": "Include non-standard attributes in the documentation",
-        "details": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+        "details": "When set to `false`, only the standard C++ attributes (such as `[[noreturn]]`, `[[nodiscard]]`, or `[[deprecated]]`) are documented, so implementation-detail attributes do not clutter the output. When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, `__nonnull__`, or the `__visibility__` and `__exclude_from_explicit_instantiation__` attributes that export macros and standard library headers put on declarations.",
         "type": "bool",
-        "default": true
+        "default": false
       }
     ]
   },

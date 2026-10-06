@@ -3,3 +3,4 @@ multipage: false
 no-default-styles: true
 warn-if-undocumented: false
 source-root: .
+non-standard-attributes: true
