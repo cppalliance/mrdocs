@@ -62,7 +62,7 @@ from .recipes import (
     generate_cache_key,
     detect_compiler_for_cache_key,
 )
-from .presets import create_cmake_presets
+from .presets import create_cmake_presets, remove_cmake_presets
 from .configs import generate_run_configs, generate_pretty_printer_configs
 
 
@@ -621,6 +621,15 @@ class MrDocsInstaller:
             dry_run=self.options.dry_run,
             ui=self.ui,
         )
+        removed = remove_cmake_presets(
+            self.options.source_dir,
+            self.cmd_line_args.get("remove_preset") or [],
+            keep=self.options.preset,
+            dry_run=self.options.dry_run,
+            ui=self.ui,
+        )
+        for name in removed:
+            self.ui.ok(f"Removed preset '{name}'")
 
     def generate_configs(self):
         """Generate IDE run configurations."""
