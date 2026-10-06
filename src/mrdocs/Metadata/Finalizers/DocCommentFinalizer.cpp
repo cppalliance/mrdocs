@@ -19,6 +19,7 @@
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/InputFiles.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/SmallVector.h>
@@ -1570,6 +1571,7 @@ DocCommentFinalizer::emitWarnings()
     warnDocErrors();
     warnNoParamDocs();
     warnUnnamedParams();
+    warnFilteredInPublicApi();
 
     auto const level = !config_.warnAsError ?
                            report::Level::warn :
@@ -2121,6 +2123,139 @@ warnUnnamedParams(FunctionSymbol const& I)
                 i + 1,
                 orderSuffix(i));
         }
+    }
+}
+
+namespace {
+
+bool
+isFilteredProjectSymbol(Symbol const& I, Config const& config)
+{
+    MRDOCS_CHECK_OR(I.Extraction == ExtractionMode::Dependency, false);
+    Optional<Location> const loc = getPrimaryLocation(I);
+    MRDOCS_CHECK_OR(loc, false);
+    return isInputFile(config, loc->FullPath);
+}
+
+} // (anon)
+
+void
+DocCommentFinalizer::
+warnFilteredInPublicApi()
+{
+    MRDOCS_CHECK_OR(config_.warnIfFilteredInPublicApi);
+    for (std::unique_ptr<Symbol> const& I : corpus_.info_)
+    {
+        MRDOCS_ASSERT(I);
+        if (I->Extraction == ExtractionMode::Regular)
+        {
+            warnFilteredInPublicApi(*I);
+        }
+    }
+}
+
+void
+DocCommentFinalizer::
+warnFilteredInPublicApi(Symbol const& I)
+{
+    visit(I, [&]<typename SymbolTy>(SymbolTy const& sym)
+    {
+        if constexpr (SymbolTy::isFunction())
+        {
+            warnIfFiltered(sym, sym.ReturnType);
+            for (Param const& param : sym.Params)
+            {
+                warnIfFiltered(sym, param.Type);
+            }
+        }
+        else if constexpr (SymbolTy::isRecord())
+        {
+            for (BaseInfo const& base : sym.Bases)
+            {
+                if (base.Access == AccessKind::Public)
+                {
+                    warnIfFiltered(sym, base.Type);
+                }
+            }
+        }
+        else if constexpr (SymbolTy::isTypedef() || SymbolTy::isVariable())
+        {
+            warnIfFiltered(sym, sym.Type);
+        }
+    });
+}
+
+void
+DocCommentFinalizer::
+warnIfFiltered(Symbol const& referrer, Polymorphic<Type> const& type)
+{
+    MRDOCS_CHECK_OR(type);
+    MRDOCS_ASSERT(!type.valueless_after_move());
+
+    // The specifiers around the type say nothing about what is named:
+    // `detail::token const&` names the same symbol as `detail::token`.
+    Polymorphic<Type> const& named = innermostType(type);
+    MRDOCS_CHECK_OR(named);
+    MRDOCS_CHECK_OR(named->isNamed());
+    MRDOCS_CHECK_OR(named->asNamed().Name);
+    warnIfFiltered(referrer, *named->asNamed().Name);
+}
+
+void
+DocCommentFinalizer::
+warnIfFiltered(Symbol const& referrer, Name const& name)
+{
+    // The `id` of a specialization, such as `detail::impl<int>`, is its
+    // primary template, which is reported like any other name. A member
+    // reached through a specialization of its enclosing template, such
+    // as `inner` in `outer<int>::inner`, is not: the primary template
+    // documents it.
+    bool reachedThroughSpecialization = false;
+    for (Name const* current = &name;
+         current;
+         current = current->Prefix ? &**current->Prefix : nullptr)
+    {
+        if (current->isSpecialization())
+        {
+            reachedThroughSpecialization |= current != &name;
+            warnIfFiltered(referrer, current->asSpecialization().TemplateArgs);
+        }
+    }
+    if (!reachedThroughSpecialization)
+    {
+        warnIfFiltered(referrer, name.id);
+    }
+}
+
+void
+DocCommentFinalizer::
+warnIfFiltered(
+    Symbol const& referrer,
+    std::vector<Polymorphic<TArg>> const& args)
+{
+    for (Polymorphic<TArg> const& arg : args)
+    {
+        if (!arg.valueless_after_move() && arg->Kind == TArgKind::Type)
+        {
+            warnIfFiltered(referrer, arg->asType().Type);
+        }
+    }
+}
+
+void
+DocCommentFinalizer::
+warnIfFiltered(Symbol const& referrer, SymbolID const& id)
+{
+    Symbol const* target =
+        id != SymbolID::invalid ? corpus_.find(id) : nullptr;
+    Optional<Location> const loc = getPrimaryLocation(referrer);
+    if (target && loc && isFilteredProjectSymbol(*target, config_))
+    {
+        this->warn(
+            *loc,
+            "'{}' names '{}', which the filters exclude",
+            corpus_.Corpus::qualifiedName(referrer),
+            corpus_.Corpus::qualifiedName(*target));
     }
 }
 
