@@ -41,7 +41,7 @@ luaToDom(Access& A, int idx)
     }
     case LUA_TTABLE:
     {
-        dom::Object obj;
+        std::vector<std::pair<std::string, dom::Value>> entries;
         int const absIdx = lua_absindex(A, idx);
         lua_pushnil(A);
         while (lua_next(A, absIdx) != 0)
@@ -50,13 +50,13 @@ luaToDom(Access& A, int idx)
             {
                 std::size_t klen;
                 char const* kdata = lua_tolstring(A, -2, &klen);
-                obj.set(
-                    std::string_view(kdata, klen),
+                entries.emplace_back(
+                    std::string(kdata, klen),
                     luaToDom(A, -1));
             }
             lua_pop(A, 1); // pop value, keep key for next iteration
         }
-        return dom::Value(std::move(obj));
+        return dom::Value(objectInKeyOrder(std::move(entries)));
     }
     case LUA_TUSERDATA:
     {
