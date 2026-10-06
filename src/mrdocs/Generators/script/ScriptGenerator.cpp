@@ -129,7 +129,7 @@ buildOutputApi(OutputSink& sink)
                         doAppend);
                     !wrote)
                 {
-                    result = Unexpected(dom::Error(std::string(wrote.error().message())));
+                    result = Unexpected(dom::Error(std::string(wrote.error().reason())));
                 }
                 else
                 {
@@ -212,7 +212,7 @@ build(Corpus const& corpus, Config const& config) const
     if (!invoked)
     {
         result = Unexpected(formatError(
-            "generator '{}': {}", id_, invoked.error().message()));
+            "generator '{}': {}", id_, invoked.error().reason()));
     }
     return result;
 }

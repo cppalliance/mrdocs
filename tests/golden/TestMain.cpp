@@ -121,7 +121,6 @@ accepted and applied like the mrdocs tool.
     auto ll = ConfigSchema::LogLevel::Info;
     ConfigSchema::fromString(testCliArgs.logLevel, ll);
     report::setMinimumLevel(static_cast<report::Level>(ll));
-    report::setSourceLocationWarnings(false);
 
     if (!testCliArgs.inputs.empty())
     {
@@ -136,14 +135,11 @@ accepted and applied like the mrdocs tool.
     return EXIT_SUCCESS;
 }
 
-#ifdef _NDEBUG
+#ifdef NDEBUG
 static void reportUnhandledException(
     std::exception const& ex)
 {
-    namespace sys = llvm::sys;
-
     report::error("Unhandled exception: {}\n", ex.what());
-    sys::PrintStackTrace(llvm::errs());
 }
 #endif
 
@@ -152,7 +148,7 @@ static void reportUnhandledException(
 
 int main(int argc, char const** argv)
 {
-#ifndef _NDEBUG
+#ifndef NDEBUG
     return mrdocs::test_main(argc, argv);
 #else
     try
