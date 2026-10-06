@@ -182,6 +182,12 @@ def load_recipe_files(
             continue
 
         src = data.get("source", {})
+        # "package_root_var" is one <Package>_ROOT name or a list of them.
+        # A recipe that provides several CMake packages (LLVM provides LLVM
+        # and Clang) lists every root that must point at its install dir.
+        root_vars = data.get("package_root_var") or []
+        if isinstance(root_vars, str):
+            root_vars = [root_vars]
         recipe = Recipe(
             name=data.get("name") or os.path.splitext(path)[0],
             version=str(data.get("version", "")),
@@ -202,7 +208,8 @@ def load_recipe_files(
             build_type=data.get("build_type", "Release"),
             build=data.get("build", []),
             tags=data.get("tags", []),
-            package_root_var=data.get("package_root_var"),
+            package_root_var=root_vars[0] if root_vars else None,
+            package_root_aliases=root_vars[1:],
             install_scope=data.get("install_scope", "per-preset"),
         )
 

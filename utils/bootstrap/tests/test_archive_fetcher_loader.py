@@ -492,6 +492,14 @@ class TestRecipeFields(unittest.TestCase):
         f2 = _recipe_fields(r)
         self.assertEqual(f1, f2)
 
+    def test_package_root_aliases_do_not_change_fields(self):
+        """Root aliases only affect the generated preset, never the build,
+        so adding one must not invalidate existing stamps (an LLVM rebuild)."""
+        plain = _make_recipe(package_root_var="LLVM_ROOT")
+        aliased = _make_recipe(package_root_var="LLVM_ROOT",
+                               package_root_aliases=["Clang_ROOT"])
+        self.assertEqual(_recipe_fields(plain), _recipe_fields(aliased))
+
 
 class TestPlatformInfo(unittest.TestCase):
     def test_has_required_keys(self):
@@ -827,6 +835,48 @@ class TestLoadRecipeFiles(unittest.TestCase):
         self.assertEqual(recipes[0].version, "18.0")
         # Paths should be set by loader, not the json
         self.assertIn("third-party", recipes[0].source_dir)
+
+    def test_package_root_var_string(self):
+        self._write_recipe("lua", {
+            "name": "lua",
+            "version": "5.4",
+            "package_root_var": "Lua_ROOT",
+            "source": {"type": "git", "url": "https://github.com/lua/lua.git"},
+        })
+        recipes = load_recipe_files(
+            self.recipes_dir, self.tmpdir, "preset", "Release", ui=TextUI(),
+        )
+        self.assertEqual(recipes[0].package_root_var, "Lua_ROOT")
+        self.assertEqual(recipes[0].package_root_aliases, [])
+        self.assertEqual(recipes[0].package_root_vars, ["Lua_ROOT"])
+
+    def test_package_root_var_list(self):
+        """A recipe that provides several CMake packages lists every root;
+        the first is the primary one, the rest are aliases."""
+        self._write_recipe("llvm", {
+            "name": "llvm",
+            "version": "18.0",
+            "package_root_var": ["LLVM_ROOT", "Clang_ROOT"],
+            "source": {"type": "git", "url": "https://github.com/llvm/llvm-project.git"},
+        })
+        recipes = load_recipe_files(
+            self.recipes_dir, self.tmpdir, "preset", "Release", ui=TextUI(),
+        )
+        self.assertEqual(recipes[0].package_root_var, "LLVM_ROOT")
+        self.assertEqual(recipes[0].package_root_aliases, ["Clang_ROOT"])
+        self.assertEqual(recipes[0].package_root_vars, ["LLVM_ROOT", "Clang_ROOT"])
+
+    def test_package_root_var_absent(self):
+        self._write_recipe("hdr", {
+            "name": "hdr",
+            "version": "1",
+            "source": {"type": "git", "url": "https://github.com/x/hdr.git"},
+        })
+        recipes = load_recipe_files(
+            self.recipes_dir, self.tmpdir, "preset", "Release", ui=TextUI(),
+        )
+        self.assertIsNone(recipes[0].package_root_var)
+        self.assertEqual(recipes[0].package_root_vars, [])
 
     def test_empty_dir(self):
         recipes = load_recipe_files(

@@ -546,6 +546,7 @@ class TestInstallDependencies(unittest.TestCase):
         r.version = version
         r.dependencies = []
         r.package_root_var = f"{name}_ROOT"
+        r.package_root_vars = [f"{name}_ROOT"]
         r.install_dir = f"/opt/{name}"
         r.source_dir = f"/tmp/{name}-src"
         r.build_dir = f"/tmp/{name}-build"
@@ -575,6 +576,43 @@ class TestInstallDependencies(unittest.TestCase):
         mock_build.assert_called_once()
         mock_stamp.assert_called_once()
         self.assertIn("llvm_ROOT", inst.package_roots)
+
+    @patch("src.installer.write_recipe_stamp")
+    @patch("src.installer.build_recipe")
+    @patch("src.installer.apply_recipe_patches")
+    @patch("src.installer.fetch_recipe_source")
+    @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
+    @patch("src.installer.load_recipe_files")
+    def test_install_dependencies_registers_every_package_root(
+        self, mock_load, mock_topo, mock_fetch, mock_patch, mock_build, mock_stamp
+    ):
+        """A recipe providing several CMake packages registers one root per
+        package, all pointing at the same install dir (LLVM + Clang)."""
+        recipe = self._make_recipe()
+        recipe.package_root_vars = ["LLVM_ROOT", "Clang_ROOT"]
+        mock_load.return_value = [recipe]
+
+        inst = _make_installer()
+        inst.install_dependencies()
+
+        self.assertEqual(inst.package_roots["LLVM_ROOT"], "/opt/llvm")
+        self.assertEqual(inst.package_roots["Clang_ROOT"], "/opt/llvm")
+        self.assertIn("Clang_ROOT", inst.valid_package_root_vars)
+
+    @patch("src.installer.is_recipe_up_to_date", return_value="")
+    @patch("src.installer.topo_sort_recipes", side_effect=lambda x: x)
+    @patch("src.installer.load_recipe_files")
+    def test_install_dependencies_skips_up_to_date_registers_every_package_root(
+        self, mock_load, mock_topo, mock_uptodate
+    ):
+        recipe = self._make_recipe()
+        recipe.package_root_vars = ["LLVM_ROOT", "Clang_ROOT"]
+        mock_load.return_value = [recipe]
+
+        inst = _make_installer()
+        inst.install_dependencies()
+
+        self.assertEqual(inst.package_roots["Clang_ROOT"], "/opt/llvm")
 
     @patch("src.installer.load_recipe_files")
     def test_install_dependencies_no_recipes_raises(self, mock_load):

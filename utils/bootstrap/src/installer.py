@@ -432,7 +432,7 @@ class MrDocsInstaller:
         # Collect valid package root variable names from all recipes
         # (before filtering) so stale roots can be cleaned from presets
         self.valid_package_root_vars = [
-            r.package_root_var for r in recipes if r.package_root_var
+            var for r in recipes for var in r.package_root_vars
         ]
 
         if self.options.recipe_filter:
@@ -500,8 +500,8 @@ class MrDocsInstaller:
                 self.ui.ok(f"[{recipe.name}] already up to date ({resolved_ref or 'HEAD'}). Skipping build.")
                 self.print_recipe_summary(recipe)
                 self.recipe_info[recipe.name] = recipe
-                if recipe.package_root_var:
-                    self.package_roots[recipe.package_root_var] = recipe.install_dir
+                for var in recipe.package_root_vars:
+                    self.package_roots[var] = recipe.install_dir
                 continue
 
             if stale_reason:
@@ -585,8 +585,8 @@ class MrDocsInstaller:
             self.print_recipe_summary(recipe)
 
             self.recipe_info[recipe.name] = recipe
-            if recipe.package_root_var:
-                self.package_roots[recipe.package_root_var] = recipe.install_dir
+            for var in recipe.package_root_vars:
+                self.package_roots[var] = recipe.install_dir
 
     def setup_ninja(self):
         """Set up Ninja build system."""

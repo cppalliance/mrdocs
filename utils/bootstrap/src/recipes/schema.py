@@ -57,4 +57,16 @@ class Recipe:
     build: List[Dict[str, Any]] = field(default_factory=list)
     tags: List[str] = field(default_factory=list)
     package_root_var: Optional[str] = None
+    # Other <Package>_ROOT names that must point at the same install dir,
+    # for a recipe that provides more than one CMake package (LLVM provides
+    # LLVM and Clang). Written to the generated preset next to
+    # package_root_var; not part of the build stamp, since they don't
+    # change what gets built.
+    package_root_aliases: List[str] = field(default_factory=list)
     install_scope: str = "per-preset"  # "per-preset" (default) or "global"
+
+    @property
+    def package_root_vars(self) -> List[str]:
+        """Every <Package>_ROOT variable that must point at install_dir."""
+        roots = [self.package_root_var] if self.package_root_var else []
+        return roots + list(self.package_root_aliases)
