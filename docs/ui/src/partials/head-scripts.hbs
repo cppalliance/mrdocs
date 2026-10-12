@@ -2,6 +2,20 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id={{this}}"></script>
     <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','{{this}}')</script>
     {{/with}}
+    {{! Plausible: privacy-friendly analytics. Only injected on the production
+        host so local, preview and tunnel builds never send hits. }}
+    {{#with site.keys.plausible}}
+    <script>
+    if (/(^|\.)mrdocs\.com$/.test(location.hostname)) {
+      var s = document.createElement('script'); s.async = true
+      s.src = 'https://plausible.io/js/pa-{{this}}.js'
+      document.head.appendChild(s)
+      window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }
+      plausible.init = plausible.init || function (i) { plausible.o = i || {} }
+      plausible.init()
+    }
+    </script>
+    {{/with}}
     {{! MathJax typesets the \(...\) and \[...\] delimiters that Asciidoctor
         emits for stem/latexmath (enabled via the playbook `stem` attribute). }}
     <script>

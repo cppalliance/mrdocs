@@ -55,6 +55,18 @@
     };
     </script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Plausible: privacy-friendly analytics. Only injected on the production
+         host so local, preview and tunnel builds never send hits. -->
+    <script>
+    if (/(^|\.)mrdocs\.com$/.test(location.hostname)) {
+      var s = document.createElement('script'); s.async = true
+      s.src = 'https://plausible.io/js/pa-9u6_WLdyyzLuX2qxn1BEm.js'
+      document.head.appendChild(s)
+      window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }
+      plausible.init = plausible.init || function (i) { plausible.o = i || {} }
+      plausible.init()
+    }
+    </script>
     <script>
       /* Apply the saved theme before first paint (shared key with the docs
          site). Falls back to the page's default dark theme when unset. */
