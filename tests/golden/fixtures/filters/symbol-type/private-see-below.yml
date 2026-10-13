@@ -1,0 +1,4 @@
+# A private member marked `@seebelow` would get a page reachable only
+# through the private members that `extract-private: false` hides, so
+# the command is ignored and the member stays a dependency.
+extract-private: false
