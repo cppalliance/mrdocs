@@ -1713,6 +1713,13 @@ populate<std::uint64_t>(
     clang::Expr const* E,
     llvm::APInt const& V);
 
+template
+void
+ASTVisitor::
+populate<std::uint64_t>(
+    ConstantExprInfo<std::uint64_t>& I,
+    clang::Expr const* E);
+
 
 void
 ASTVisitor::
