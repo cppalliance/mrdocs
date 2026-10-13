@@ -41,8 +41,7 @@ void YamlReporter::diag(llvm::SMDiagnostic const &D, void *) {
   }
 
   report::call_impl(
-      level, [&](llvm::raw_ostream &os) { D.print("mrdocs", os, true, true); },
-      nullptr);
+      level, [&](llvm::raw_ostream &os) { D.print("mrdocs", os, true, true); });
 }
 
 } // mrdocs

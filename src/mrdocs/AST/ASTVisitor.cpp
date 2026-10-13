@@ -2265,10 +2265,7 @@ addMember(
         addMember(I.Members.Macros, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into members of namespace {}",
-        Member.Name,
-        mrdocs::toString(Member.Kind),
-        I.Name);
+    MRDOCS_UNREACHABLE();
 }
 
 void
@@ -2355,9 +2352,7 @@ addMember(RecordTranche& T, Symbol const& Member)
         addMember(T.Usings, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into tranche",
-        Member.Name,
-        mrdocs::toString(Member.Kind));
+    MRDOCS_UNREACHABLE();
 }
 
 void
@@ -2369,10 +2364,7 @@ addMember(EnumSymbol& I, Symbol const& Member) const
         addMember(I.Constants, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into members of enum {}",
-        Member.Name,
-        mrdocs::toString(Member.Kind),
-        I.Name);
+    MRDOCS_UNREACHABLE();
 }
 
 void
@@ -2384,10 +2376,7 @@ addMember(OverloadsSymbol& I, Symbol const& Member) const
         addMember(I.Members, Member);
         return;
     }
-    report::error("Cannot push {} of type {} into members of enum {}",
-        Member.Name,
-        mrdocs::toString(Member.Kind),
-        I.Name);
+    MRDOCS_UNREACHABLE();
 }
 
 void

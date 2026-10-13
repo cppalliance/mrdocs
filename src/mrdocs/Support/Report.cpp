@@ -12,12 +12,10 @@
 #include <mrdocs/Platform.hpp>
 #include "ReportImpl.hpp"
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Version.hpp>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cstdlib>
-#include <format>
 #include <mutex>
 
 #ifdef _MSC_VER
@@ -55,7 +53,6 @@ namespace report {
 
 static llvm::sys::Mutex mutex_;
 static Level level_ = Level::debug;
-static bool sourceLocationWarnings_ = true;
 
 constinit Results results{};
 
@@ -69,12 +66,6 @@ Level
 getMinimumLevel() noexcept
 {
     return level_;
-}
-
-void
-setSourceLocationWarnings(bool b) noexcept
-{
-    sourceLocationWarnings_ = b;
 }
 
 void
@@ -94,32 +85,16 @@ print(
 void
 print(
     Level level,
-    std::string const& text,
-    source_location const* loc,
-    Error const* e)
+    std::string const& text)
 {
     call_impl(level,
         [&](llvm::raw_ostream& os)
         {
             os << text;
-        }, loc, e);
+        });
 }
 
 //------------------------------------------------
-
-Level
-getLevel(unsigned level) noexcept
-{
-    switch(level)
-    {
-    case 0: return Level::debug;
-    case 1: return Level::info;
-    case 2: return Level::warn;
-    case 3: return Level::error;
-    default:
-        return Level::fatal;
-    }
-}
 
 constexpr
 llvm::raw_ostream::Colors
@@ -148,42 +123,13 @@ getLevelColor(Level level)
 void
 call_impl(
     Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const* loc,
-    Error const* e)
+    std::function<void(llvm::raw_ostream&)> f)
 {
     std::string s;
     if(level >= level_)
     {
         llvm::raw_string_ostream os(s);
         f(os);
-        using LT = std::underlying_type_t<Level>;
-        if(sourceLocationWarnings_ &&
-           loc &&
-           static_cast<LT>(level) >= static_cast<LT>(Level::error))
-        {
-            os << "\n\n";
-            os << "An issue occurred during execution.\n";
-            os << "If you believe this is a bug, please report it at https://github.com/cppalliance/mrdocs/issues\n"
-                  "with the following details:\n";
-            os << std::format("    MrDocs Release: {}\n",
-                              project_release_with_build.empty()
-                                  ? std::string_view("unknown")
-                                  : project_release_with_build);
-            os << std::format("    MrDocs Version: {} (Build: {})\n",
-                              project_version, project_version_build);
-            if (e)
-            {
-              os << std::format(
-                  "    Error Location: `{}` at line {}\n",
-                  files::makeProjectRelative(e->location().file_name()),
-                  e->location().line());
-            }
-            os << std::format("    Reported From: `{}` at line {}\n",
-                              files::makeProjectRelative(loc->file_name()),
-                              loc->line());
-            // VFALCO attach a stack trace for Level::fatal
-        }
         os << '\n';
     }
 
