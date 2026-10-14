@@ -41,6 +41,7 @@
 #include <clang/UnifiedSymbolResolution/USRGeneration.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Process.h>
 #include <llvm/Support/SHA1.h>
 #include <array>
@@ -3993,6 +3994,37 @@ findFileInfo(clang::Decl const* D)
     return findFileInfo(Loc);
 }
 
+namespace {
+
+// Return `path` with "." and ".." removed when that still names the file
+// the compiler opened, and `path` as written otherwise: a ".." after a
+// symlinked directory leads elsewhere than its lexical collapse.
+std::string
+normalizeIfSameFile(std::string_view path)
+{
+    std::string const written = files::makePosixStyle(path);
+    std::string result = files::makePosixStyle(files::normalizePath(path));
+    if (result != written && !llvm::sys::fs::equivalent(path, result))
+    {
+        result = written;
+    }
+    return result;
+}
+
+} // (anon)
+
+std::string const&
+ASTVisitor::
+normalPrefix(std::string_view prefix)
+{
+    std::string& normal = normalPrefixes_[std::string(prefix)];
+    if (normal.empty())
+    {
+        normal = normalizeIfSameFile(prefix);
+    }
+    return normal;
+}
+
 ASTVisitor::FileInfo
 ASTVisitor::
 buildFileInfo(std::string_view path)
@@ -4022,14 +4054,18 @@ buildFileInfo(std::string_view path)
                 file_info.full_path, config_.sourceRoot);
         }
     }
+    else
+    {
+        file_info.full_path = normalizeIfSameFile(file_info.full_path);
+    }
 
     if (!files::isPosixStyle(file_info.full_path))
     {
         file_info.full_path = files::makePosixStyle(file_info.full_path);
     }
 
-    // The recorded path stays exactly as written: a file reached through a
-    // symlink keeps its as-written name. For locating the relative path we
+    // The recorded path is normalized only lexically: a file reached through
+    // a symlink keeps its as-written name. For locating the relative path we
     // resolve symlinks generously, so a file spelled through a symlinked
     // directory is still matched against a `source-root` or include directory
     // that uses the real path. The real form is computed only on demand, so
@@ -4063,8 +4099,8 @@ buildFileInfo(std::string_view path)
     };
 
     // Get the path relative to `prefix`, matching generously: the file may be
-    // under `prefix` as written, or only after resolving symlinks on both
-    // sides. The relative remainder is kept as written.
+    // under `prefix` once both are normalized, or only after resolving
+    // symlinks on both sides.
     auto tryGetRelativePath =
         [&](std::string_view const prefix) -> Optional<std::string>
     {
@@ -4072,14 +4108,11 @@ buildFileInfo(std::string_view path)
         {
             return std::nullopt;
         }
-        std::string const posixPrefix = files::isPosixStyle(prefix)
-            ? std::string(prefix)
-            : files::makePosixStyle(prefix);
-        if (auto rel = stripPrefix(file_info.full_path, posixPrefix))
+        if (auto rel = stripPrefix(file_info.full_path, normalPrefix(prefix)))
         {
             return rel;
         }
-        return stripPrefix(realFull(), files::makeRealPath(posixPrefix));
+        return stripPrefix(realFull(), files::makeRealPath(prefix));
     };
 
     // Populate file relative to source-root
