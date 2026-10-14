@@ -138,6 +138,25 @@ underlyingConversion(clang::NamedDecl const* D)
     return dyn_cast<clang::CXXConversionDecl>(target);
 }
 
+// Name an inheriting constructor after the class it inherits from.
+//
+// `using Base::Base;` declares the constructors of `Base`, but Clang names
+// the declaration as a constructor of the derived class, and, where the
+// base depends on a template parameter, as a constructor of a type with no
+// class behind it. The prefix built from the qualifier spells the class as
+// written: a class, a class template specialization, an alias or a
+// template parameter.
+void
+nameInheritingConstructor(UsingSymbol& I, clang::DeclarationName const& Name)
+{
+    if (Name.getNameKind() == clang::DeclarationName::CXXConstructorName &&
+        I.IntroducedName->Prefix)
+    {
+        I.Name = (*I.IntroducedName->Prefix)->Identifier;
+        I.IntroducedName->Identifier = I.Name;
+    }
+}
+
 } // unnamed namespace
 
 void
@@ -1458,6 +1477,7 @@ populate(
     {
         I.IntroducedName->Identifier = conversionNameAsWritten(CD);
     }
+    nameInheritingConstructor(I, Name);
     for (clang::UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
@@ -1486,6 +1506,7 @@ populateDependentUsing(
     auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
+    nameInheritingConstructor(I, Name);
 }
 
 void
