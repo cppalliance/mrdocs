@@ -126,7 +126,7 @@ jobs:
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
         with:
-          cmake-version: '>=3.26'
+          cmake-version: ${{ runner.os == 'Windows' && '>=3.29' || '>=3.26' }}
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
