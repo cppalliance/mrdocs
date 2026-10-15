@@ -93,6 +93,10 @@ endfunction()
 
 function(mrdocs_package)
     set(CPACK_PACKAGE_VENDOR "mrdocs")
+    set(CPACK_COMPONENT_DEVELOPMENT_DISPLAY_NAME "Library and headers")
+    set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION
+            "The mrdocs-core static library and the MrDocs headers, for building against MrDocs.")
+    set(CPACK_COMPONENT_DOCUMENTATION_DISPLAY_NAME "Documentation")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
     set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
     set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
