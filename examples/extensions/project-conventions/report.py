@@ -4,8 +4,10 @@
 The Corpus Transforms page shows the warnings this example produces. Rather than
 hard-code them in prose, where they would drift as the extension or MrDocs'
 wording changed, this script runs the example and writes the warning lines to
-warnings.txt, which the page includes. `--check` re-runs the capture and
-compares it to the committed warnings.txt, so CI fails if the two drift apart.
+warnings.txt, which the page includes: next to this script, or in the
+directory given by `--output=<dir>`. The build's example test runs it that
+way and compares the result with the committed warnings.txt, so CI fails if
+the two drift apart.
 
 Both the JavaScript and Lua versions of the extension are present, so each
 warning is emitted twice; duplicates are collapsed and the lines sorted, so
@@ -22,7 +24,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MRDOCS = os.environ.get("MRDOCS", "mrdocs")
-REPORT = os.path.join(HERE, "warnings.txt")
+REPORT = "warnings.txt"
 ANSI = re.compile(r"\x1b\[[0-9;]*m")
 WARNING = re.compile(r".*: low-quality brief: .*")
 
@@ -43,21 +45,20 @@ def capture(extra):
 
 
 def main():
-    flags = sys.argv[1:]
-    extra = [a for a in flags if a not in ("--check", "--write")]
+    output = HERE
+    extra = []
+    for arg in sys.argv[1:]:
+        if arg.startswith("--output="):
+            output = arg[len("--output="):]
+        else:
+            extra.append(arg)
     report = capture(extra)
     if not report:
         sys.exit("no warnings captured; is MRDOCS set and the extension loaded?")
-
-    if "--check" in flags:
-        current = open(REPORT).read() if os.path.exists(REPORT) else ""
-        if report != current:
-            sys.exit("warnings.txt is out of date; run `python report.py` to update it.")
-        print("warnings.txt is up to date.")
-    else:
-        with open(REPORT, "w") as f:
-            f.write(report)
-        print(f"Wrote {REPORT}")
+    path = os.path.join(output, REPORT)
+    with open(path, "w", newline="\n") as f:
+        f.write(report)
+    print(f"Wrote {path}")
 
 
 if __name__ == "__main__":
