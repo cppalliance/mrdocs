@@ -31,6 +31,7 @@ import shutil
 from ..core.platform import is_windows
 from ..core.filesystem import write_text
 from ..core.ui import get_default_ui
+from .run_configs import PER_PRESET_SCRIPT_BASES
 
 # just recipe names are NAME = [a-zA-Z_][a-zA-Z0-9_-]*
 _VALID_RECIPE_ID = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_-]*$")
@@ -521,6 +522,7 @@ def _build_generated_recipes(configs, source_dir, build_dir, active_preset,
     # Bases that have per-preset variants, for stale-by-name pruning.
     generated_bases = {"configure", "build"}
     generated_bases.update(f"build-{slugify_token(t)}" for t in targets)
+    generated_bases.update(slugify_recipe_id(b) for b in PER_PRESET_SCRIPT_BASES)
 
     # Config-derived recipes first, so their groups (Test, Run, Documentation,
     # ...) appear before the Build group in first-appearance order.
