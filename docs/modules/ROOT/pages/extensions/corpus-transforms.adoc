@@ -7,6 +7,8 @@ A Mr.Docs *extension* is a Lua or JavaScript script that runs as part of a build
 
 A script declares a transform with `mrdocs.register_transform(id, fn)` and a generator with `mrdocs.register_generator(id, fn)`. Either way the registered function receives a single context object, `ctx`.
 
+A xref:extensions/plugins.adoc[plugin] can install corpus transforms written in {cpp} as well. Those run before the transforms the scripts register, and keep to the same rules.
+
 == Languages and locations
 
 Extensions are scripts dropped under `extensions/` inside a Mr.Docs xref:configuration/output.adoc#addons[addon directory], the same roots that hold the xref:extensions/handlebars-extensions.adoc[Handlebars templates], with the `.js` or `.lua` extension. Mr.Docs aggregates scripts across every addon root and runs them in alphabetical order by full path, with the two languages interleaved.
@@ -189,6 +191,8 @@ include::example$examples/extensions/project-conventions/warnings.txt[]
 == Modifying the corpus
 
 Scripts modify the corpus by assigning to fields on a symbol proxy. Each assignment lands directly in the underlying Mr.Docs symbol. The runtime validates each assignment and raises an exception on an invalid value. An uncaught error in an extension aborts the build and includes the script's path and the error message.
+
+include::partial$transform-invariants.adoc[]
 
 Most extensions read some attribute of a symbol and write back a string, an enumerator, or a small structured value. For instance, a codebase that follows "any function whose name starts with `is_<name>` is a predicate returning `true` if its `<name>` holds" encodes information that the brief could repeat verbatim:
 

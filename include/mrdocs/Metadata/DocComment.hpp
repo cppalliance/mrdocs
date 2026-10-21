@@ -130,7 +130,6 @@ struct MRDOCS_DECL DocComment {
 
     /** Constructor.
     */
-    MRDOCS_DECL
     DocComment() noexcept;
 
     /** Constructor

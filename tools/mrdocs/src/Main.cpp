@@ -16,6 +16,7 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Plugin.hpp>
 #include <mrdocs/Support/Chrono.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
@@ -230,6 +231,17 @@ DoGenerateAction(
 
     // --------------------------------------------------------------
     //
+    // Load plugins
+    //
+    // --------------------------------------------------------------
+    // Plugins come first: one that cannot install what it provides
+    // fails the run, while an addon generator directory whose id is
+    // already taken is skipped. The registry holds the transforms they
+    // installed, which apply once the corpus is built.
+    MRDOCS_TRY(PluginRegistry plugins, loadPlugins(config));
+
+    // --------------------------------------------------------------
+    //
     // Discover addon-defined generators
     //
     // --------------------------------------------------------------
@@ -265,6 +277,16 @@ DoGenerateAction(
         report::warn("Corpus is empty, not generating docs");
         return {};
     }
+
+    // --------------------------------------------------------------
+    //
+    // Apply plugin transforms
+    //
+    // --------------------------------------------------------------
+    // Plugin transforms run first, which is what this call site ahead of
+    // the extension one decides: what MrDocs was set up with applies
+    // before what a user script asks for.
+    MRDOCS_TRY(plugins.applyTransforms(corpus, config));
 
     // --------------------------------------------------------------
     //

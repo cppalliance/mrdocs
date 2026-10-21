@@ -15,6 +15,7 @@
 
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 #include <ranges>
 #include <vector>
@@ -121,6 +122,7 @@ struct NamespaceSymbol final
 
     /** Compare namespaces by attributes and member lists.
     */
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(NamespaceSymbol const&) const;
 };
