@@ -442,14 +442,6 @@
   --z-index-toolbar: var(--ds-z-toolbar);
   --z-index-page-version-menu: var(--ds-z-menu);
   --z-index-navbar: var(--ds-z-navbar);
-
-  /* background gradient position variables */
-  --x1: 20%;
-  --y1: 20%;
-  --x2: 75%;
-  --y2: 25%;
-  --x3: 50%;
-  --y3: 50%;
 }
 
 /* ---- DARK theme overrides (only the semantic brand tokens change) ---- */
