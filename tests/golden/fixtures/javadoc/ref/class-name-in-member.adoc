@@ -1,0 +1,308 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Gadget[`Gadget`] 
+| A gadget, with overloaded constructors&period;
+| link:#Widget[`Widget`] 
+| A widget&period;
+|===
+
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#WidgetAlias[`WidgetAlias`] 
+| Another name for link:#Widget[`Widget`]&period;
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#make[`make`] 
+| Make one&period; See link:#Widget-2constructor[`WidgetAlias&colon;&colon;Widget`] and link:#Widget-2constructor[`WidgetAlias&colon;&colon;WidgetAlias`]&period;
+| link:#use[`use`] 
+| Use one&period; See link:#Widget[`Widget`]&period;
+|===
+
+
+[#WidgetAlias]
+== WidgetAlias
+
+Another name for link:#Widget[`Widget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using WidgetAlias = link:#Widget[Widget];
+----
+
+[#Gadget]
+== Gadget
+
+A gadget, with overloaded constructors&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Gadget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Gadget-2constructor-0d[`Gadget`]         [.small]#[constructor]#
+| Constructors
+| link:#Gadget-reset[`reset`] 
+| Reset it&period; See link:#Gadget-2constructor-0d[`Gadget&colon;&colon;Gadget`]&period;
+| link:#Gadget-resize[`resize`] 
+| Resize it&period; See `Gadget`&period;
+|===
+
+
+[#Gadget-2constructor-0d]
+== link:#Gadget[Gadget]::Gadget
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+Construct an empty gadget&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Gadget-2constructor-0e[Gadget]();
+----
+
+[.small]#link:#Gadget-2constructor-0e[_» more&period;&period;&period;_]#
+
+Construct a gadget of a given size&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+link:#Gadget-2constructor-06[Gadget](int n);
+----
+
+[.small]#link:#Gadget-2constructor-06[_» more&period;&period;&period;_]#
+
+[#Gadget-2constructor-0e]
+== link:#Gadget[Gadget]::Gadget
+
+Construct an empty gadget&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Gadget();
+----
+
+[#Gadget-2constructor-06]
+== link:#Gadget[Gadget]::Gadget
+
+Construct a gadget of a given size&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Gadget(int n);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *n*
+| The value to construct from
+|===
+
+[#Gadget-reset]
+== link:#Gadget[Gadget]::reset
+
+Reset it&period; See link:#Gadget-2constructor-0d[`Gadget&colon;&colon;Gadget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+reset();
+----
+
+[#Gadget-resize]
+== link:#Gadget[Gadget]::resize
+
+Resize it&period; See link:#Gadget[`Gadget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize(int n);
+----
+
+[#Widget]
+== Widget
+
+A widget&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Widget-2constructor[`Widget`]         [.small]#[constructor]#
+| Construct an empty widget&period;
+| link:#Widget-reset[`reset`] 
+| Reset it&period; See link:#Widget-2constructor[`Widget&colon;&colon;Widget`]&period;
+| link:#Widget-resize[`resize`] 
+| Resize it&period; See `Widget`&period;
+|===
+
+
+=== Non-Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#make[`make`]
+| Make one&period; See link:#Widget-2constructor[`WidgetAlias&colon;&colon;Widget`] and link:#Widget-2constructor[`WidgetAlias&colon;&colon;WidgetAlias`]&period;
+| link:#use[`use`]
+| Use one&period; See `Widget`&period;
+|===
+
+[#Widget-2constructor]
+== link:#Widget[Widget]::Widget
+
+Construct an empty widget&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Widget();
+----
+
+[#Widget-reset]
+== link:#Widget[Widget]::reset
+
+Reset it&period; See link:#Widget-2constructor[`Widget&colon;&colon;Widget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+reset();
+----
+
+[#Widget-resize]
+== link:#Widget[Widget]::resize
+
+Resize it&period; See link:#Widget[`Widget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize(int n);
+----
+
+[#make]
+== make
+
+Make one&period; See link:#Widget-2constructor[`WidgetAlias&colon;&colon;Widget`] and link:#Widget-2constructor[`WidgetAlias&colon;&colon;WidgetAlias`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Widget[Widget]
+make();
+----
+
+=== Return Value
+
+A widget&period;
+
+[#use]
+== use
+
+Use one&period; See link:#Widget[`Widget`]&period;
+
+=== Synopsis
+
+Declared in `&lt;class&hyphen;name&hyphen;in&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+use(link:#Widget[Widget]& w);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *w*
+| A widget&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
