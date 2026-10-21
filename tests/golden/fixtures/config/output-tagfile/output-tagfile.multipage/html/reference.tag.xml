@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tagfile>
+<compound kind="namespace">
+  <name>ns</name>
+  <filename>ns.html</filename>
+  <class kind="class">ns::outer</class>
+  <class kind="class">ns::response_factory</class>
+</compound>
+<compound kind="class">
+  <name>ns::outer</name>
+  <filename>ns/outer.html</filename>
+  <class kind="class">ns::outer::config</class>
+  <class kind="class">ns::outer::mode</class>
+  <member kind="function">
+    <type>void</type>
+    <name>method</name>
+    <anchorfile>ns/outer/method.html</anchorfile>
+    <anchor/>
+    <arglist>()</arglist>
+  </member>
+</compound>
+<compound kind="class">
+  <name>ns::outer::config</name>
+  <filename>ns/outer/config.html</filename>
+  <member kind="function">
+    <type>void</type>
+    <name>apply</name>
+    <anchorfile>ns/outer/config/apply.html</anchorfile>
+    <anchor/>
+    <arglist>()</arglist>
+  </member>
+</compound>
+<compound kind="class">
+  <name>ns::outer::mode</name>
+  <filename>ns/outer/mode.html</filename>
+</compound>
+<compound kind="class">
+  <name>ns::response_factory</name>
+  <filename>ns/response_factory.html</filename>
+  <member kind="function">
+    <type>int</type>
+    <name>make</name>
+    <anchorfile>ns/response_factory/make.html</anchorfile>
+    <anchor/>
+    <arglist>()</arglist>
+  </member>
+</compound>
+</tagfile>

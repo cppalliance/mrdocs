@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#area]
+== area
+
+Compute the area of a circle of radius `r`&period;
+
+=== Synopsis
+
+Declared in `&lt;input&hyphen;tagfiles&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+area(double r);
+----
+
+=== Description
+
+The result is what https://geom.example/docs/geom/circle/area.html[`geom&colon;&colon;circle&colon;&colon;area`] reports for a https://geom.example/docs/geom/circle.html[`geom&colon;&colon;circle`] of that radius&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

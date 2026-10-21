@@ -125,11 +125,11 @@ include::example$snippets/options/base-url/base-url.adoc[tags=!footer]
 
 == External docs
 
-xref:configuration/reference.adoc#tagfile_option[`tagfile`] writes a Doxygen-compatible tag file alongside the documentation. The expected use is cross-linking: other MrDocs runs can read it to resolve `@ref` targets that live in your library, and Doxygen-generated docs can consume it for the same purpose. Reach for it when you publish a library that other people's docs need to link to.
+xref:configuration/reference.adoc#output-tagfile_option[`output-tagfile`] writes a Doxygen-compatible tag file alongside the documentation. The expected use is cross-linking: other MrDocs runs can read it to resolve `@ref` targets that live in your library, and Doxygen-generated docs can consume it for the same purpose. Reach for it when you publish a library that other people's docs need to link to.
 
 TIP: A few projects use the tag file in a less obvious way: they read it from their own site-generation scripts to build a navigation tree or a search index from the symbol list, rather than maintaining one by hand.
 
-NOTE: The inverse direction (consuming tag files emitted by other projects so that your pages link to *their* symbols) is handled by the xref:extensions/antora.adoc#antora-cpp-tagfiles-extension[`antora-cpp-tagfiles-extension`]. Point it at one or more tag files in your Antora playbook, and references like `boost::asio::io_context` resolve to the Boost.Asio site automatically.
+For the other direction (consuming tagfiles emitted by other projects, so that your pages link to *their* docs), see xref:configuration/inputs.adoc#_other_documentation_sets[Other documentation sets].
 
 == Styling
 

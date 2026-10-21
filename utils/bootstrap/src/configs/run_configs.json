@@ -99,7 +99,7 @@
         "--addons=${mrdocs_src_dir}/data/mrdocs/addons",
         "--stdlib-includes=${mrdocs_stdlib_includes}",
         "--libc-includes=${mrdocs_src_dir}/data/mrdocs/headers/libc-stubs",
-        "--tagfile=reference.tag.xml",
+        "--output-tagfile=reference.tag.xml",
         "--multipage=true",
         "--concurrency=${num_cores}",
         "--log-level=debug"
