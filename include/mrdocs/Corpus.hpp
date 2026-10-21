@@ -492,6 +492,7 @@ private:
     lookupImpl(
         SymbolID const& contextId,
         ParsedRefComponent const& component,
+        ParsedRefComponent const* qualifier,
         ParsedRef const& ref,
         bool checkParameters) const;
 
