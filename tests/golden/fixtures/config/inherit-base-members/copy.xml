@@ -1115,7 +1115,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
-  <anchor>do_derived_shadowed-0a</anchor>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -1348,7 +1348,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
-  <anchor>do_derived_shadowed-0d</anchor>
+  <anchor>do_derived_shadowed-0</anchor>
   <loc>
     <loc>
       <location>
@@ -1795,7 +1795,7 @@
 </record>
 <function>
   <name>derived_shadowed</name>
-  <anchor>derived_shadowed-0a</anchor>
+  <anchor>derived_shadowed-0-0a</anchor>
   <loc>
     <loc>
       <location>
@@ -1856,7 +1856,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
-  <anchor>do_derived_shadowed-0e</anchor>
+  <anchor>do_derived_shadowed</anchor>
   <loc>
     <loc>
       <location>
@@ -2103,7 +2103,7 @@
 </function>
 <function>
   <name>derived_shadowed</name>
-  <anchor>derived_shadowed-0f</anchor>
+  <anchor>derived_shadowed-0-0f</anchor>
   <loc>
     <loc>
       <location>
@@ -2351,7 +2351,7 @@
 </function>
 <function>
   <name>do_derived_shadowed</name>
-  <anchor>do_derived_shadowed-06</anchor>
+  <anchor>do_derived_shadowed-0</anchor>
   <loc>
     <loc>
       <location>

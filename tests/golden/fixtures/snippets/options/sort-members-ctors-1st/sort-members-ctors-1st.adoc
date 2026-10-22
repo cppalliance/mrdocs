@@ -20,7 +20,7 @@ struct widget;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#widget-2constructor-05[`widget`]         [.small]#[constructor]#
+| link:#widget-2constructor[`widget`]         [.small]#[constructor]#
 | Constructors
 | link:#widget-hide[`hide`] 
 | Hide the widget&period;
@@ -28,7 +28,8 @@ struct widget;
 | Show the widget&period;
 |===
 
-[#widget-2constructor-05]
+
+[#widget-2constructor]
 == link:#widget[widget]::widget
 
 Constructors
@@ -42,22 +43,22 @@ Construct an empty widget&period;
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#widget-2constructor-03[widget]();
+link:#widget-2constructor-0[widget]();
 ----
 
-[.small]#link:#widget-2constructor-03[_» more&period;&period;&period;_]#
+[.small]#link:#widget-2constructor-0[_» more&period;&period;&period;_]#
 
 Construct a widget with the given label&period;
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#widget-2constructor-0a[widget](char const* label);
+link:#widget-2constructor-1[widget](char const* label);
 ----
 
-[.small]#link:#widget-2constructor-0a[_» more&period;&period;&period;_]#
+[.small]#link:#widget-2constructor-1[_» more&period;&period;&period;_]#
 
-[#widget-2constructor-03]
+[#widget-2constructor-0]
 == link:#widget[widget]::widget
 
 Construct an empty widget&period;
@@ -71,7 +72,7 @@ Declared in `&lt;sort&hyphen;members&hyphen;ctors&hyphen;1st&period;cpp&gt;`
 widget();
 ----
 
-[#widget-2constructor-0a]
+[#widget-2constructor-1]
 == link:#widget[widget]::widget
 
 Construct a widget with the given label&period;

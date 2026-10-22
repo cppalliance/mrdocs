@@ -237,7 +237,7 @@
 </function>
 <record>
   <name>S</name>
-  <anchor>S-04</anchor>
+  <anchor>S</anchor>
   <loc>
     <defLoc>
       <shortPath>doc-comment-macro-prefixed-inherited.cpp</shortPath>

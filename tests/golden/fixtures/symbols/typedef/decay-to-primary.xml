@@ -122,7 +122,7 @@
 </typedef>
 <record>
   <name>S0</name>
-  <anchor>S0-03</anchor>
+  <anchor>S0</anchor>
   <loc>
     <defLoc>
       <shortPath>decay-to-primary.cpp</shortPath>

@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>Foo</name>
-  <anchor>Foo-02</anchor>
+  <anchor>Foo</anchor>
   <loc>
     <defLoc>
       <shortPath>base-self-template.cpp</shortPath>
@@ -101,7 +101,7 @@
 </function>
 <record>
   <name>Foo</name>
-  <anchor>Foo-0f</anchor>
+  <anchor>Foo-1</anchor>
   <loc>
     <defLoc>
       <shortPath>base-self-template.cpp</shortPath>

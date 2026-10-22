@@ -34,7 +34,7 @@
 </namespace>
 <overloads>
   <name>f</name>
-  <anchor>f-08</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -101,7 +101,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-039</anchor>
+  <anchor>f-0</anchor>
   <loc>
     <loc>
       <location>
@@ -144,7 +144,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-01</anchor>
+  <anchor>f-1</anchor>
   <loc>
     <loc>
       <location>
@@ -203,7 +203,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-037</anchor>
+  <anchor>f-2</anchor>
   <loc>
     <loc>
       <location>
@@ -276,7 +276,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0f</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -335,7 +335,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-02</anchor>
+  <anchor>f-using</anchor>
   <loc>
     <loc>
       <location>
@@ -368,7 +368,7 @@
 </using>
 <overloads>
   <name>f</name>
-  <anchor>f-08</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -435,7 +435,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-039</anchor>
+  <anchor>f-0</anchor>
   <loc>
     <loc>
       <location>
@@ -478,7 +478,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-01</anchor>
+  <anchor>f-1</anchor>
   <loc>
     <loc>
       <location>
@@ -537,7 +537,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-037</anchor>
+  <anchor>f-2</anchor>
   <loc>
     <loc>
       <location>

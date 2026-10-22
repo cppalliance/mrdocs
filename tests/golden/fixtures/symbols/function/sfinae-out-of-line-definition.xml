@@ -34,7 +34,7 @@
 </namespace>
 <record>
   <name>enable_if</name>
-  <anchor>enable_if-07</anchor>
+  <anchor>enable_if</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae-out-of-line-definition.cpp</shortPath>
@@ -119,7 +119,7 @@
 </record>
 <record>
   <name>enable_if</name>
-  <anchor>enable_if-00</anchor>
+  <anchor>enable_if-2</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae-out-of-line-definition.cpp</shortPath>
@@ -239,7 +239,7 @@
 </typedef>
 <record>
   <name>is_integral</name>
-  <anchor>is_integral-01</anchor>
+  <anchor>is_integral</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae-out-of-line-definition.cpp</shortPath>
@@ -329,7 +329,7 @@
 </variable>
 <record>
   <name>is_integral</name>
-  <anchor>is_integral-08</anchor>
+  <anchor>is_integral-1</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae-out-of-line-definition.cpp</shortPath>

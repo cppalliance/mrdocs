@@ -146,7 +146,7 @@
 </typedef>
 <record>
   <name>A</name>
-  <anchor>A-03</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>dependency-propagation.cpp</shortPath>

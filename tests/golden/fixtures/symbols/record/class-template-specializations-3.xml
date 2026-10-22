@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -43,7 +43,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-07</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -94,7 +94,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-09</anchor>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -122,7 +122,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0f</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -161,7 +161,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-00</anchor>
+  <anchor>B-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -223,7 +223,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-09</anchor>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -251,7 +251,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0d</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -290,7 +290,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-0c</anchor>
+  <anchor>A-1-long</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -333,7 +333,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0b</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -392,7 +392,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-00</anchor>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -420,7 +420,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0b</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -459,7 +459,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0d</anchor>
+  <anchor>B-1-double</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -521,7 +521,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0c</anchor>
+  <anchor>D</anchor>
   <loc>
     <loc>
       <location>
@@ -550,7 +550,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-03</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -589,7 +589,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-00</anchor>
+  <anchor>A-1-short</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -632,7 +632,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0e</anchor>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -661,7 +661,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-07</anchor>
+  <anchor>B-1-double</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -725,7 +725,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-015b</anchor>
+  <anchor>D</anchor>
   <loc>
     <loc>
       <location>
@@ -754,7 +754,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0150</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -793,7 +793,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-00</anchor>
+  <anchor>B-1-void</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -855,7 +855,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-03</anchor>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
@@ -883,7 +883,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-07</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-3.cpp</shortPath>
