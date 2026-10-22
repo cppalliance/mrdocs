@@ -59,7 +59,7 @@
 </record>
 <overloads>
   <name>foo</name>
-  <anchor>foo-04</anchor>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -103,7 +103,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0a</anchor>
+  <anchor>foo-0</anchor>
   <loc>
     <loc>
       <location>
@@ -141,7 +141,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-08</anchor>
+  <anchor>foo-0-const</anchor>
   <loc>
     <loc>
       <location>
@@ -227,7 +227,7 @@
 </record>
 <overloads>
   <name>foo</name>
-  <anchor>foo-04</anchor>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -271,7 +271,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0a</anchor>
+  <anchor>foo-0</anchor>
   <loc>
     <loc>
       <location>
@@ -309,7 +309,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-08</anchor>
+  <anchor>foo-0-const</anchor>
   <loc>
     <loc>
       <location>

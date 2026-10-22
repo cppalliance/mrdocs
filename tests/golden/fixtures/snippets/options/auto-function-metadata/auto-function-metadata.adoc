@@ -20,7 +20,7 @@ struct vec2;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#vec2-2constructor-0f[`vec2`]         [.small]#[constructor]#
+| link:#vec2-2constructor[`vec2`]         [.small]#[constructor]#
 | Construct from `x` and `y` components&period;
 | link:#vec2-2destructor[`&#126;vec2`] [.small]#[destructor]#
 | Destructor
@@ -35,7 +35,7 @@ struct vec2;
 |===
 
 
-[#vec2-2constructor-0f]
+[#vec2-2constructor]
 == link:#vec2[vec2]::vec2
 
 Construct from `x` and `y` components&period;
@@ -49,34 +49,34 @@ Copy constructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#vec2-2constructor-0c[vec2](link:#vec2[vec2] const& other);
+link:#vec2-2constructor-1-const-vec2-ref[vec2](link:#vec2[vec2] const& other);
 ----
 
-[.small]#link:#vec2-2constructor-0c[_» more&period;&period;&period;_]#
+[.small]#link:#vec2-2constructor-1-const-vec2-ref[_» more&period;&period;&period;_]#
 
 Move constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#vec2-2constructor-05[vec2](link:#vec2[vec2]&& other) noexcept;
+link:#vec2-2constructor-1-vec2-rref[vec2](link:#vec2[vec2]&& other) noexcept;
 ----
 
-[.small]#link:#vec2-2constructor-05[_» more&period;&period;&period;_]#
+[.small]#link:#vec2-2constructor-1-vec2-rref[_» more&period;&period;&period;_]#
 
 Construct from `x` and `y` components&period;
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#vec2-2constructor-04[vec2](
+link:#vec2-2constructor-2[vec2](
     double x,
     double y);
 ----
 
-[.small]#link:#vec2-2constructor-04[_» more&period;&period;&period;_]#
+[.small]#link:#vec2-2constructor-2[_» more&period;&period;&period;_]#
 
-[#vec2-2constructor-0c]
+[#vec2-2constructor-1-const-vec2-ref]
 == link:#vec2[vec2]::vec2
 
 Copy constructor
@@ -99,7 +99,7 @@ vec2(link:#vec2[vec2] const& other);
 | The object to copy construct from
 |===
 
-[#vec2-2constructor-05]
+[#vec2-2constructor-1-vec2-rref]
 == link:#vec2[vec2]::vec2
 
 Move constructor
@@ -122,7 +122,7 @@ vec2(link:#vec2[vec2]&& other) noexcept;
 | The object to move construct from
 |===
 
-[#vec2-2constructor-04]
+[#vec2-2constructor-2]
 == link:#vec2[vec2]::vec2
 
 Construct from `x` and `y` components&period;

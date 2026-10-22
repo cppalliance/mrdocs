@@ -12,7 +12,7 @@
 </namespace>
 <record>
   <name>T</name>
-  <anchor>T-00</anchor>
+  <anchor>T</anchor>
   <loc>
     <defLoc>
       <shortPath>ns-variables.cpp</shortPath>
@@ -196,7 +196,7 @@
 </variable>
 <variable>
   <name>t</name>
-  <anchor>t-07</anchor>
+  <anchor>t-2variable</anchor>
   <loc>
     <loc>
       <location>

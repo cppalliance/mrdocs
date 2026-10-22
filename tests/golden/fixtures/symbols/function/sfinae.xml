@@ -60,7 +60,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-09</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -121,7 +121,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-07</anchor>
+  <anchor>A-1</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -178,7 +178,7 @@
 </record>
 <record>
   <name>S</name>
-  <anchor>S-02</anchor>
+  <anchor>S</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>
@@ -297,7 +297,7 @@
 </function>
 <record>
   <name>S</name>
-  <anchor>S-08</anchor>
+  <anchor>S-2</anchor>
   <loc>
     <defLoc>
       <shortPath>sfinae.cpp</shortPath>

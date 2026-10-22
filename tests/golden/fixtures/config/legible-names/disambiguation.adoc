@@ -1,0 +1,1044 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#N[`N`] 
+|===
+
+
+=== Types
+
+[cols="1"]
+|===
+| Name
+| link:#Access[`Access`] 
+| link:#Box[`Box`] 
+| link:#Guarded[`Guarded`] 
+| link:#Holder[`Holder`] 
+| link:#Index-class[`Index`] 
+| link:#Pair[`Pair`] 
+| link:#Settings[`Settings`] 
+| link:#Shared[`Shared`] 
+| link:#Widget[`Widget`] 
+| link:#Wrapper[`Wrapper`] 
+| link:#X[`X`] 
+| link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[`a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor`] 
+| link:#quantity[`quantity`] 
+| link:#stat[`stat`] 
+|===
+
+
+=== Type Aliases
+
+[cols="1"]
+|===
+| Name
+| link:#x-typedef[`x`] 
+|===
+
+
+=== Functions
+
+[cols="1"]
+|===
+| Name
+| link:#stat-2function[`stat`] 
+|===
+
+
+=== Concepts
+
+[cols="1"]
+|===
+| Name
+| link:#Quantity-concept[`Quantity`] 
+|===
+
+
+=== Using Declarations
+
+[cols="1"]
+|===
+| Name
+| link:#X-using[`X`] 
+|===
+
+
+[#N]
+== N
+
+=== Functions
+
+[cols="1"]
+|===
+| Name
+| link:#N-X[`X`] 
+|===
+
+
+[#N-X]
+== link:#N[N]::X
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+X();
+----
+
+[#x-typedef]
+== x
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using x = int;
+----
+
+[#Access]
+== Access
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Access;
+----
+
+=== Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Access-set[`set`] 
+|===
+
+
+=== Protected Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Access-set-protected[`set`] 
+|===
+
+
+[#Access-set]
+== link:#Access[Access]::set
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Access-set-0[set]();
+----
+
+[.small]#link:#Access-set-0[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Access-set-1-int[set](int n);
+----
+
+[.small]#link:#Access-set-1-int[_» more&period;&period;&period;_]#
+
+[#Access-set-0]
+== link:#Access[Access]::set
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set();
+----
+
+[#Access-set-1-int]
+== link:#Access[Access]::set
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set(int n);
+----
+
+[#Access-set-protected]
+== link:#Access[Access]::set
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Access-set-1-char[set](char c);
+----
+
+[.small]#link:#Access-set-1-char[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Access-set-1-double[set](double d);
+----
+
+[.small]#link:#Access-set-1-double[_» more&period;&period;&period;_]#
+
+[#Access-set-1-char]
+== link:#Access[Access]::set
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set(char c);
+----
+
+[#Access-set-1-double]
+== link:#Access[Access]::set
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+set(double d);
+----
+
+[#Box]
+== Box
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct Box;
+----
+
+=== Specializations
+
+[cols="1"]
+|===
+| Name
+| link:#Box-1[`Box&lt;char&gt;`] 
+|===
+
+
+[#Box-1]
+== link:#Box[Box]&lt;char&gt;
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#Box[Box]&lt;char&gt;;
+----
+
+[#Guarded]
+== Guarded
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Guarded;
+----
+
+=== Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Guarded-foo[`foo`] 
+|===
+
+
+=== Protected Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Guarded-foo-1[`foo`] 
+|===
+
+
+[#Guarded-foo]
+== link:#Guarded[Guarded]::foo
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(int n);
+----
+
+[#Guarded-foo-1]
+== link:#Guarded[Guarded]::foo
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(double d);
+----
+
+[#Holder]
+== Holder
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct Holder;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Holder-2constructor[`Holder`]         [.small]#[constructor]#
+| Construct from `T`
+|===
+
+
+=== Deduction Guides
+
+[cols="1"]
+|===
+| Name
+| link:#Holder-2guide-1-int[`Holder&lt;long&gt;`] 
+| link:#Holder-2guide-1-const-char-ptr[`Holder&lt;char const*&gt;`] 
+|===
+
+
+[#Holder-2constructor]
+== link:#Holder[Holder]::Holder
+
+Construct from `T`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Holder(T value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The object to construct from
+|===
+
+[#Index-class]
+== Index
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Index;
+----
+
+[#Pair]
+== Pair
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class U&gt;
+struct Pair;
+----
+
+=== Specializations
+
+[cols="1"]
+|===
+| Name
+| link:#Pair-2-int-int[`Pair&lt;int, int&gt;`] 
+| link:#Pair-2-T-ptr-T[`Pair&lt;T*, T&gt;`] 
+|===
+
+
+[#Pair-2-int-int]
+== link:#Pair[Pair]&lt;int, int&gt;
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#Pair[Pair]&lt;int, int&gt;;
+----
+
+[#Pair-2-T-ptr-T]
+== link:#Pair[Pair]&lt;T*, T&gt;
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct link:#Pair[Pair]&lt;T*, T&gt;;
+----
+
+[#Settings]
+== Settings
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Settings;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Settings-apply[`apply`] 
+| 
+| link:#Settings-2conversion-h90f546b8[`operator Wrapper&lt;a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor&gt;`] 
+| Conversion to `Wrapper`
+|===
+
+
+[#Settings-apply]
+== link:#Settings[Settings]::apply
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Settings-apply-1-int[apply](int n);
+----
+
+[.small]#link:#Settings-apply-1-int[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Settings-apply-1-h6eb6be3f[apply](link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor] const& p);
+----
+
+[.small]#link:#Settings-apply-1-h6eb6be3f[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Settings-apply-1-hd1fa4865[apply](link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor]&& p);
+----
+
+[.small]#link:#Settings-apply-1-hd1fa4865[_» more&period;&period;&period;_]#
+
+[#Settings-apply-1-int]
+== link:#Settings[Settings]::apply
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+apply(int n);
+----
+
+[#Settings-apply-1-h6eb6be3f]
+== link:#Settings[Settings]::apply
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+apply(link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor] const& p);
+----
+
+[#Settings-apply-1-hd1fa4865]
+== link:#Settings[Settings]::apply
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+apply(link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor]&& p);
+----
+
+[#Settings-2conversion-h90f546b8]
+== link:#Settings[Settings]::operator link:#Wrapper[Wrapper&lt;a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor&gt;]
+
+Conversion to `Wrapper`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator link:#Wrapper[Wrapper&lt;a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor&gt;]();
+----
+
+=== Return Value
+
+The object converted to `Wrapper`
+
+[#Shared]
+== Shared
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Shared;
+----
+
+=== Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Shared-bar[`bar`] 
+|===
+
+
+=== Static Member Functions
+
+[cols="1"]
+|===
+| Name
+| link:#Shared-bar-1[`bar`] 
+|===
+
+
+[#Shared-bar]
+== link:#Shared[Shared]::bar
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+bar(int n);
+----
+
+[#Shared-bar-1]
+== link:#Shared[Shared]::bar
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+void
+bar(double d);
+----
+
+[#Widget]
+== Widget
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Widget;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Widget-at[`at`] 
+| 
+| link:#Widget-resize[`resize`] 
+| 
+| link:#Widget-2conversion-bool[`operator bool`] 
+| Conversion to `bool`
+| link:#Widget-2conversion-double[`operator double`] 
+| Conversion to `double`
+| link:#Widget-2conversion-int[`operator int`] 
+| Conversion operators
+|===
+
+
+[#Widget-at]
+== link:#Widget[Widget]::at
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+link:#Widget-at-1-int[at](int i);
+----
+
+[.small]#link:#Widget-at-1-int[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int const&
+link:#Widget-at-1-int-const[at](int i) const;
+----
+
+[.small]#link:#Widget-at-1-int-const[_» more&period;&period;&period;_]#
+
+[#Widget-at-1-int]
+== link:#Widget[Widget]::at
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+at(int i);
+----
+
+[#Widget-at-1-int-const]
+== link:#Widget[Widget]::at
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int const&
+at(int i) const;
+----
+
+[#Widget-resize]
+== link:#Widget[Widget]::resize
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Widget-resize-0[resize]();
+----
+
+[.small]#link:#Widget-resize-0[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Widget-resize-1[resize](int n);
+----
+
+[.small]#link:#Widget-resize-1[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Widget-resize-2-double-int[resize](
+    double n,
+    int m);
+----
+
+[.small]#link:#Widget-resize-2-double-int[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#Widget-resize-2-int-int[resize](
+    int n,
+    int m);
+----
+
+[.small]#link:#Widget-resize-2-int-int[_» more&period;&period;&period;_]#
+
+[#Widget-resize-0]
+== link:#Widget[Widget]::resize
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize();
+----
+
+[#Widget-resize-1]
+== link:#Widget[Widget]::resize
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize(int n);
+----
+
+[#Widget-resize-2-double-int]
+== link:#Widget[Widget]::resize
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize(
+    double n,
+    int m);
+----
+
+[#Widget-resize-2-int-int]
+== link:#Widget[Widget]::resize
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+resize(
+    int n,
+    int m);
+----
+
+[#Widget-2conversion-bool]
+== link:#Widget[Widget]::operator bool
+
+Conversion to `bool`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator bool();
+----
+
+=== Return Value
+
+The object converted to `bool`
+
+[#Widget-2conversion-double]
+== link:#Widget[Widget]::operator double
+
+Conversion to `double`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator double() const;
+----
+
+=== Return Value
+
+The object converted to `double`
+
+[#Widget-2conversion-int]
+== link:#Widget[Widget]::operator int
+
+Conversion operators
+
+=== Synopses
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+Conversion to `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator int() const;
+----
+
+[.small]#link:#Widget-2conversion-int-0-const[_» more&period;&period;&period;_]#
+
+Conversion to `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator int();
+----
+
+[.small]#link:#Widget-2conversion-int-0[_» more&period;&period;&period;_]#
+
+[#Widget-2conversion-int-0-const]
+== link:#Widget[Widget]::operator int
+
+Conversion to `int`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator int() const;
+----
+
+=== Return Value
+
+The object converted to `int`
+
+[#Widget-2conversion-int-0]
+== link:#Widget[Widget]::operator int
+
+Conversion to `int`
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator int();
+----
+
+=== Return Value
+
+The object converted to `int`
+
+[#Wrapper]
+== Wrapper
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct Wrapper;
+----
+
+[#X]
+== X
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+[#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor]
+== a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor;
+----
+
+[#quantity]
+== quantity
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct quantity;
+----
+
+[#stat]
+== stat
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct stat;
+----
+
+[#stat-2function]
+== stat
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+stat(
+    char const* path,
+    link:#stat[stat]* buf);
+----
+
+[#Quantity-concept]
+== Quantity
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+concept Quantity = true;
+----
+
+[#Holder-2guide-1-int]
+== link:#Holder[Holder&lt;long&gt;]
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Holder[Holder&lt;long&gt;](int) -> link:#Holder[Holder&lt;long&gt;];
+----
+
+[#Holder-2guide-1-const-char-ptr]
+== link:#Holder[Holder&lt;char const*&gt;]
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Holder[Holder&lt;char const*&gt;](char const*) -> link:#Holder[Holder&lt;char const*&gt;];
+----
+
+[#X-using]
+== X
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using N::X;
+----
+
+=== Introduced Symbols
+
+[cols="1"]
+|===
+| Name
+| link:#N-X[`X`] 
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

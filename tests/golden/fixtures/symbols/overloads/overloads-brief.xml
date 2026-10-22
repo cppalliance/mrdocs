@@ -53,7 +53,7 @@
 </record>
 <overloads>
   <name>A</name>
-  <anchor>2constructor-0f</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -117,7 +117,7 @@
 </overloads>
 <function>
   <name>A</name>
-  <anchor>2constructor-03</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -162,7 +162,7 @@
 </function>
 <function>
   <name>A</name>
-  <anchor>2constructor-01</anchor>
+  <anchor>2constructor-1</anchor>
   <loc>
     <loc>
       <location>
@@ -236,7 +236,7 @@
 </function>
 <overloads>
   <name>operator=</name>
-  <anchor>operator_assign-04c</anchor>
+  <anchor>operator_assign</anchor>
   <loc>
     <loc>
       <location>
@@ -322,7 +322,7 @@
 </overloads>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-045</anchor>
+  <anchor>operator_assign-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -424,7 +424,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-06</anchor>
+  <anchor>operator_assign-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -520,7 +520,7 @@
 </function>
 <overloads>
   <name>operator+</name>
-  <anchor>operator_plus-00</anchor>
+  <anchor>operator_plus</anchor>
   <loc>
     <loc>
       <location>
@@ -601,7 +601,7 @@
 </overloads>
 <function>
   <name>operator+</name>
-  <anchor>operator_plus-0c</anchor>
+  <anchor>operator_plus-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -692,7 +692,7 @@
 </function>
 <function>
   <name>operator+</name>
-  <anchor>operator_plus-0e</anchor>
+  <anchor>operator_plus-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -789,7 +789,7 @@
 </function>
 <overloads>
   <name>operator-</name>
-  <anchor>operator_minus-09</anchor>
+  <anchor>operator_minus</anchor>
   <loc>
     <loc>
       <location>
@@ -853,7 +853,7 @@
 </overloads>
 <function>
   <name>operator-</name>
-  <anchor>operator_minus-02</anchor>
+  <anchor>operator_minus-0</anchor>
   <loc>
     <loc>
       <location>
@@ -921,7 +921,7 @@
 </function>
 <function>
   <name>operator-</name>
-  <anchor>operator_minus-0c</anchor>
+  <anchor>operator_minus-1</anchor>
   <loc>
     <loc>
       <location>
@@ -1060,7 +1060,7 @@
 </record>
 <overloads>
   <name>no_way_to_infer_this_brief</name>
-  <anchor>no_way_to_infer_this_brief-04</anchor>
+  <anchor>no_way_to_infer_this_brief</anchor>
   <loc>
     <loc>
       <location>
@@ -1132,7 +1132,7 @@
 </overloads>
 <function>
   <name>no_way_to_infer_this_brief</name>
-  <anchor>no_way_to_infer_this_brief-02</anchor>
+  <anchor>no_way_to_infer_this_brief-0</anchor>
   <loc>
     <loc>
       <location>
@@ -1175,7 +1175,7 @@
 </function>
 <function>
   <name>no_way_to_infer_this_brief</name>
-  <anchor>no_way_to_infer_this_brief-01</anchor>
+  <anchor>no_way_to_infer_this_brief-1</anchor>
   <loc>
     <loc>
       <location>
@@ -1247,7 +1247,7 @@
 </function>
 <overloads>
   <name>operator+</name>
-  <anchor>operator_plus-09</anchor>
+  <anchor>operator_plus</anchor>
   <loc>
     <loc>
       <location>
@@ -1310,7 +1310,7 @@
 </overloads>
 <function>
   <name>operator+</name>
-  <anchor>operator_plus-0d</anchor>
+  <anchor>operator_plus-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -1407,7 +1407,7 @@
 </function>
 <function>
   <name>operator+</name>
-  <anchor>operator_plus-06</anchor>
+  <anchor>operator_plus-1-const-B-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -1504,7 +1504,7 @@
 </function>
 <overloads>
   <name>sameBrief</name>
-  <anchor>sameBrief-07</anchor>
+  <anchor>sameBrief</anchor>
   <loc>
     <loc>
       <location>
@@ -1577,7 +1577,7 @@
 </overloads>
 <function>
   <name>sameBrief</name>
-  <anchor>sameBrief-0a</anchor>
+  <anchor>sameBrief-1</anchor>
   <loc>
     <loc>
       <location>
@@ -1649,7 +1649,7 @@
 </function>
 <function>
   <name>sameBrief</name>
-  <anchor>sameBrief-0e</anchor>
+  <anchor>sameBrief-2</anchor>
   <loc>
     <loc>
       <location>

@@ -53,7 +53,7 @@
 </namespace>
 <record>
   <name>writable_field_traits</name>
-  <anchor>writable_field_traits-07</anchor>
+  <anchor>writable_field_traits</anchor>
   <loc>
     <defLoc>
       <shortPath>record-two-params.cpp</shortPath>
@@ -124,7 +124,7 @@
 </record>
 <record>
   <name>writable_field_traits</name>
-  <anchor>writable_field_traits-01</anchor>
+  <anchor>writable_field_traits-2-T-void-01</anchor>
   <loc>
     <defLoc>
       <shortPath>record-two-params.cpp</shortPath>
@@ -184,7 +184,7 @@
 </record>
 <record>
   <name>writable_field_traits</name>
-  <anchor>writable_field_traits-0e</anchor>
+  <anchor>writable_field_traits-2-T-void-0e</anchor>
   <loc>
     <defLoc>
       <shortPath>record-two-params.cpp</shortPath>
