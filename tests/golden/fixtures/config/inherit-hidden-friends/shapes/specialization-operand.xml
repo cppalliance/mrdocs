@@ -56,7 +56,7 @@
 </namespace>
 <record>
   <name>base</name>
-  <anchor>base-04</anchor>
+  <anchor>base</anchor>
   <loc>
     <defLoc>
       <shortPath>specialization-operand.cpp</shortPath>
@@ -94,7 +94,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-01</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>specialization-operand.cpp</shortPath>
@@ -147,7 +147,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0b</anchor>
+  <anchor>operator_eq-2-base-T-base-T</anchor>
   <loc>
     <defLoc>
       <shortPath>specialization-operand.cpp</shortPath>
@@ -310,7 +310,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-08</anchor>
+  <anchor>operator_eq-2-base-int-base-int</anchor>
   <loc>
     <loc>
       <location>

@@ -33,7 +33,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-04</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>c_mct_expl_inline.cpp</shortPath>
@@ -97,7 +97,7 @@
 </function>
 <record>
   <name>B</name>
-  <anchor>B-01</anchor>
+  <anchor>B-1</anchor>
   <loc>
     <defLoc>
       <shortPath>c_mct_expl_inline.cpp</shortPath>

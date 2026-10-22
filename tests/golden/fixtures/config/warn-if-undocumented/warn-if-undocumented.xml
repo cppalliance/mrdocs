@@ -12,7 +12,7 @@
 </namespace>
 <record>
   <name>Box</name>
-  <anchor>Box-01</anchor>
+  <anchor>Box</anchor>
   <loc>
     <defLoc>
       <shortPath>warn-if-undocumented.cpp</shortPath>
@@ -101,7 +101,7 @@
 </function>
 <record>
   <name>Box</name>
-  <anchor>Box-0f</anchor>
+  <anchor>Box-1</anchor>
   <loc>
     <defLoc>
       <shortPath>warn-if-undocumented.cpp</shortPath>

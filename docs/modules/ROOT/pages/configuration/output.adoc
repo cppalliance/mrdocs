@@ -102,6 +102,27 @@ NOTE: When `show-enum-constants` is off (the default), enumerators are folded in
 
 xref:configuration/reference.adoc#global-namespace-index_option[`global-namespace-index`] turns the global-namespace page into a project-wide index of every top-level symbol. xref:configuration/reference.adoc#legible-names_option[`legible-names`] uses readable symbol names in file names and URLs (the alternative is short opaque hashes).
 
+When members of a scope share a name, ignoring case, at most one of them keeps the plain name, and each of the others adds the words that tell it apart. In the example below, the class keeps `quantity` and the concept adds its kind (`Quantity-concept`). The overload set keeps `at`, and its functions add the number of their parameters, then the types and qualifiers (`at-1-int`, `at-1-int-const`). The primary template keeps `pair`, and the specialization adds the number of its template arguments (`pair-2`).
+
+Overload sets that a class splits by access leave the plain name to the most accessible one, and the others add their access and `static`. Using-declarations add `using` and the class they name the member in. A conversion function is named after the type it converts to, such as `2conversion-int`, so only conversions to one type share a name. When the words that spell the parameters and qualifiers of a function, the arguments of a specialization or the type a conversion function converts to would take more than 64 characters, they are replaced by `h` and the first eight hex digits of their xxh3 hash. Two classes whose names differ only in case have nothing else to tell them apart: neither keeps the plain name, and each ends with a few characters of its symbol ID.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/legible-names/legible-names.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/legible-names/legible-names.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/legible-names/legible-names.adoc[tags=!footer]
+========
+
 == Source links
 
 xref:configuration/reference.adoc#base-url_option[`base-url`] is the prefix MrDocs joins with each source file's path to build the "Declared in" link. Set it to your repository's blob URL so every symbol page links to the code that defines it:

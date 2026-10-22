@@ -42,7 +42,7 @@
 </record>
 <overloads>
   <name>A</name>
-  <anchor>2constructor-0f</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -108,7 +108,7 @@
 </overloads>
 <function>
   <name>A</name>
-  <anchor>2constructor-0b</anchor>
+  <anchor>2constructor-1-char</anchor>
   <loc>
     <loc>
       <location>
@@ -182,7 +182,7 @@
 </function>
 <function>
   <name>A</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor-1-double</anchor>
   <loc>
     <loc>
       <location>
@@ -256,7 +256,7 @@
 </function>
 <function>
   <name>A</name>
-  <anchor>2constructor-01</anchor>
+  <anchor>2constructor-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -330,7 +330,7 @@
 </function>
 <function>
   <name>A</name>
-  <anchor>2constructor-02</anchor>
+  <anchor>2constructor-1-U</anchor>
   <loc>
     <loc>
       <location>
@@ -412,7 +412,7 @@
 </function>
 <function>
   <name>operator U</name>
-  <anchor>2conversion-0f</anchor>
+  <anchor>2conversion-U</anchor>
   <loc>
     <loc>
       <location>
@@ -486,7 +486,7 @@
 </function>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion-00</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -552,7 +552,7 @@
 </function>
 <function>
   <name>operator char</name>
-  <anchor>2conversion-04</anchor>
+  <anchor>2conversion-char</anchor>
   <loc>
     <loc>
       <location>
@@ -618,7 +618,7 @@
 </function>
 <function>
   <name>operator double</name>
-  <anchor>2conversion-01</anchor>
+  <anchor>2conversion-double</anchor>
   <loc>
     <loc>
       <location>

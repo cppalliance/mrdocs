@@ -12,7 +12,7 @@
 </namespace>
 <record>
   <name>flag</name>
-  <anchor>flag-0e6</anchor>
+  <anchor>flag</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
@@ -126,7 +126,7 @@
 </variable>
 <variable>
   <name>flag</name>
-  <anchor>flag-0e0</anchor>
+  <anchor>flag-2variable</anchor>
   <loc>
     <defLoc>
       <shortPath>default-constructed-instance.cpp</shortPath>
