@@ -42,7 +42,7 @@
 </record>
 <record>
   <name>impl</name>
-  <anchor>impl-0e</anchor>
+  <anchor>impl</anchor>
   <loc>
     <loc>
       <location>
@@ -87,7 +87,7 @@
 </record>
 <record>
   <name>impl</name>
-  <anchor>impl-00</anchor>
+  <anchor>impl-2</anchor>
   <loc>
     <defLoc>
       <shortPath>nested-private-template.cpp</shortPath>

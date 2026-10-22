@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>value</name>
-  <anchor>value-0c</anchor>
+  <anchor>value</anchor>
   <loc>
     <loc>
       <location>
@@ -71,7 +71,7 @@
 </overloads>
 <function>
   <name>value</name>
-  <anchor>value-05</anchor>
+  <anchor>value-1</anchor>
   <loc>
     <loc>
       <location>
@@ -135,7 +135,7 @@
 </function>
 <function>
   <name>value</name>
-  <anchor>value-06</anchor>
+  <anchor>value-2</anchor>
   <loc>
     <loc>
       <location>

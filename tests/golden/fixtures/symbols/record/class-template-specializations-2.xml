@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -38,7 +38,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-06</anchor>
+  <anchor>A-1-double</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -81,7 +81,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-0b</anchor>
+  <anchor>D</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -114,7 +114,7 @@
 </record>
 <record>
   <name>E</name>
-  <anchor>E-01</anchor>
+  <anchor>E</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -142,7 +142,7 @@
 </record>
 <record>
   <name>E</name>
-  <anchor>E-04</anchor>
+  <anchor>E-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -215,7 +215,7 @@
 </record>
 <record>
   <name>D</name>
-  <anchor>D-04</anchor>
+  <anchor>D-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -259,7 +259,7 @@
 </record>
 <record>
   <name>G</name>
-  <anchor>G-06</anchor>
+  <anchor>G</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -287,7 +287,7 @@
 </record>
 <record>
   <name>G</name>
-  <anchor>G-0c</anchor>
+  <anchor>G-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -337,7 +337,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-03</anchor>
+  <anchor>A-1-T-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -391,7 +391,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-05</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -419,7 +419,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0b</anchor>
+  <anchor>B-1-int</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>
@@ -458,7 +458,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-01</anchor>
+  <anchor>B-1-U-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-2.cpp</shortPath>

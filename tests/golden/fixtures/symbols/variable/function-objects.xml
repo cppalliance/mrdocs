@@ -428,7 +428,7 @@
 </record>
 <overloads>
   <name>all_special_fn</name>
-  <anchor>2constructor-03</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -470,7 +470,7 @@
 </overloads>
 <function>
   <name>all_special_fn</name>
-  <anchor>2constructor-0e</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -515,7 +515,7 @@
 </function>
 <function>
   <name>all_special_fn</name>
-  <anchor>2constructor-02</anchor>
+  <anchor>2constructor-1-const-all_special_fn-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -595,7 +595,7 @@
 </function>
 <function>
   <name>all_special_fn</name>
-  <anchor>2constructor-09</anchor>
+  <anchor>2constructor-1-all_special_fn-rref</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -719,7 +719,7 @@
 </function>
 <overloads>
   <name>operator=</name>
-  <anchor>operator_assign-0e1</anchor>
+  <anchor>operator_assign</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -767,7 +767,7 @@
 </overloads>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-0e9</anchor>
+  <anchor>operator_assign-1-const-all_special_fn-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -864,7 +864,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-05</anchor>
+  <anchor>operator_assign-1-all_special_fn-rref</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -2675,7 +2675,7 @@
 </record>
 <overloads>
   <name>operator()</name>
-  <anchor>operator_call-0e</anchor>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -2761,7 +2761,7 @@
 </overloads>
 <function>
   <name>operator()</name>
-  <anchor>operator_call-0d</anchor>
+  <anchor>operator_call-0</anchor>
   <loc>
     <loc>
       <location>
@@ -2819,7 +2819,7 @@
 </function>
 <function>
   <name>operator()</name>
-  <anchor>operator_call-04</anchor>
+  <anchor>operator_call-2</anchor>
   <loc>
     <loc>
       <location>
@@ -3726,7 +3726,7 @@
 </record>
 <overloads>
   <name>template_ctor_fn</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -3776,7 +3776,7 @@
 </overloads>
 <function>
   <name>template_ctor_fn</name>
-  <anchor>2constructor-058</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <defLoc>
       <shortPath>function-objects.cpp</shortPath>
@@ -3821,7 +3821,7 @@
 </function>
 <function>
   <name>template_ctor_fn</name>
-  <anchor>2constructor-057</anchor>
+  <anchor>2constructor-1</anchor>
   <loc>
     <loc>
       <location>
@@ -5023,7 +5023,7 @@
 </function>
 <overloads>
   <name>multi_overload</name>
-  <anchor>multi_overload-06</anchor>
+  <anchor>multi_overload</anchor>
   <loc>
     <loc>
       <location>
@@ -5116,7 +5116,7 @@
 </overloads>
 <function>
   <name>multi_overload</name>
-  <anchor>multi_overload-0d</anchor>
+  <anchor>multi_overload-0</anchor>
   <loc>
     <loc>
       <location>
@@ -5171,7 +5171,7 @@
 </function>
 <function>
   <name>multi_overload</name>
-  <anchor>multi_overload-00</anchor>
+  <anchor>multi_overload-2</anchor>
   <loc>
     <loc>
       <location>

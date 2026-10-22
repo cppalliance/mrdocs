@@ -109,7 +109,7 @@
 </typedef>
 <record>
   <name>enable_if</name>
-  <anchor>enable_if-03</anchor>
+  <anchor>enable_if</anchor>
   <loc>
     <defLoc>
       <shortPath>using-alias-template-dependent.cpp</shortPath>
@@ -188,7 +188,7 @@
 </typedef>
 <record>
   <name>enable_if</name>
-  <anchor>enable_if-0e</anchor>
+  <anchor>enable_if-2</anchor>
   <loc>
     <defLoc>
       <shortPath>using-alias-template-dependent.cpp</shortPath>
