@@ -130,3 +130,15 @@ struct X {};
 using x = int;
 
 using N::X;
+
+// A member whose name Windows reserves for a device, ignoring case, adds
+// the word of its kind, since a multipage output names a file and a
+// directory after its anchor.
+namespace aux
+{
+void reset();
+}
+
+struct Nul {};
+
+void com1();

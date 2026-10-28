@@ -6,10 +6,10 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q</namespaces>
+    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q 338nz5mjELQrBLJjnPkD6Rm31AwZ</namespaces>
     <typedefs>3bTa6hZH47eKcEmtzUEw1Us7DSPL</typedefs>
-    <records>2aBcJkTmjhBkR2T3iCLY4tJRBtRN LJ1yt2sfDsAj17Xjh5m3tdhrWGt NTPFVZjKAjhERVprgwe1D54Nq4W 28rsf6rF9B46B6aJ5dC5aeyE2VwP 21Yh5PF5ewVmWeNR3NwSbcFHNTrQ 2TLPFWofGKQRmTUdMCbJoKrfZBca 2yktL3JDnf69do3bumiUwB2UdYqf kwpnL1koP5nNRsobKe5wkNTGXUP 4NmqQG4ksd9wcYq4m62yWtxpFJAW 2JjwUMjb4FpMYxMm9iWd3sz1ip9W 2TgqbCtH8p71Wa4FpDEvaekNZhpw 4STgDrwLeHv7mqV5anD6cJEd6K4T 4JZQEEn4kfMSM2zWqmMKSH3X4FNy 3pckmfiVbXAYjwBs44JCuEmQATU1 2qkvfo6sMXGL7B6qCweBGadGrHVd 33eB6EXuS9cfn9ZPnZpZYtkw1Z4k 4QcXBaguRn8ZkQ4p6Vm9UMTghCCt</records>
-    <functions>2sCaE5gRv6nNHhqehP9TR8AcaC6n</functions>
+    <records>2aBcJkTmjhBkR2T3iCLY4tJRBtRN LJ1yt2sfDsAj17Xjh5m3tdhrWGt NTPFVZjKAjhERVprgwe1D54Nq4W 28rsf6rF9B46B6aJ5dC5aeyE2VwP 21Yh5PF5ewVmWeNR3NwSbcFHNTrQ 2TLPFWofGKQRmTUdMCbJoKrfZBca 27me98JemjsLen2EZWA3TTAdDs1j 2yktL3JDnf69do3bumiUwB2UdYqf kwpnL1koP5nNRsobKe5wkNTGXUP 4NmqQG4ksd9wcYq4m62yWtxpFJAW 2JjwUMjb4FpMYxMm9iWd3sz1ip9W 2TgqbCtH8p71Wa4FpDEvaekNZhpw 4STgDrwLeHv7mqV5anD6cJEd6K4T 4JZQEEn4kfMSM2zWqmMKSH3X4FNy 3pckmfiVbXAYjwBs44JCuEmQATU1 2qkvfo6sMXGL7B6qCweBGadGrHVd 33eB6EXuS9cfn9ZPnZpZYtkw1Z4k 4QcXBaguRn8ZkQ4p6Vm9UMTghCCt</records>
+    <functions>3iHPdWAjm2Lt6u1Z8FaajyBXJuLs 2sCaE5gRv6nNHhqehP9TR8AcaC6n</functions>
     <concepts>fHqkeF1qQtJAUNmQ776a3ocAUKF</concepts>
     <guides>2BuhVGU6opJQiJo2RW6kMFAxxMfY 4GRDyApoq5SwT7WfWjH5QBDony26</guides>
     <usings>327WmbvPy2P7iiF6o8goG4Am7nq7</usings>
@@ -53,6 +53,58 @@
   <id>2JUC9WPphSr9b41QJqpRi5oBJ6cn</id>
   <extraction>regular</extraction>
   <parent>3RnCpjXqT9XkHX6pwCXim3WgD44Q</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<namespace>
+  <name>aux</name>
+  <anchor>aux-namespace</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>137</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>338nz5mjELQrBLJjnPkD6Rm31AwZ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>mDr26YfoEFxVXZ1V2RNsap2cU3C</functions>
+  </members>
+</namespace>
+<function>
+  <name>reset</name>
+  <anchor>reset</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>139</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>mDr26YfoEFxVXZ1V2RNsap2cU3C</id>
+  <extraction>regular</extraction>
+  <parent>338nz5mjELQrBLJjnPkD6Rm31AwZ</parent>
   <returnType>
     <named>
       <kind>named</kind>
@@ -700,6 +752,23 @@
   </loc>
   <kind>record</kind>
   <id>2TLPFWofGKQRmTUdMCbJoKrfZBca</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>Nul</name>
+  <anchor>Nul-class</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>142</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>27me98JemjsLen2EZWA3TTAdDs1j</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <keyKind>struct</keyKind>
@@ -2163,6 +2232,37 @@
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <keyKind>struct</keyKind>
 </record>
+<function>
+  <name>com1</name>
+  <anchor>com1-2function</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>144</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3iHPdWAjm2Lt6u1Z8FaajyBXJuLs</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
 <function>
   <name>stat</name>
   <anchor>stat-2function</anchor>

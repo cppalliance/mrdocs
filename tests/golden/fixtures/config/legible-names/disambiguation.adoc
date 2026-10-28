@@ -10,6 +10,7 @@
 |===
 | Name
 | link:#N[`N`] 
+| link:#aux-namespace[`aux`] 
 |===
 
 
@@ -23,6 +24,7 @@
 | link:#Guarded[`Guarded`] 
 | link:#Holder[`Holder`] 
 | link:#Index-class[`Index`] 
+| link:#Nul-class[`Nul`] 
 | link:#Pair[`Pair`] 
 | link:#Settings[`Settings`] 
 | link:#Shared[`Shared`] 
@@ -49,6 +51,7 @@
 [cols="1"]
 |===
 | Name
+| link:#com1-2function[`com1`] 
 | link:#stat-2function[`stat`] 
 |===
 
@@ -94,6 +97,31 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 ----
 void
 X();
+----
+
+[#aux-namespace]
+== aux
+
+=== Functions
+
+[cols="1"]
+|===
+| Name
+| link:#aux-namespace-reset[`reset`] 
+|===
+
+
+[#aux-namespace-reset]
+== link:#aux-namespace[aux]::reset
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+reset();
 ----
 
 [#x-typedef]
@@ -397,6 +425,18 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Index;
+----
+
+[#Nul-class]
+== Nul
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Nul;
 ----
 
 [#Pair]
@@ -966,6 +1006,19 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct stat;
+----
+
+[#com1-2function]
+== com1
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+com1();
 ----
 
 [#stat-2function]

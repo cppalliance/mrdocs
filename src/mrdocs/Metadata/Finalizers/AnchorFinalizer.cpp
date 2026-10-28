@@ -822,9 +822,41 @@ separateDuplicates(std::vector<ScopeEntry>& scope)
     }
 }
 
+// Whether Windows reserves a name, ignoring case, for a device: alone or
+// followed by an extension, it names the device rather than a file, and
+// Git for Windows refuses a path that holds it.
+bool
+isDeviceName(std::string_view name)
+{
+    static constexpr std::string_view devices[] = {
+        "con", "prn", "aux", "nul", "conin$", "conout$"};
+    static constexpr std::string_view numberedDevices[] = {"com", "lpt"};
+    bool const numbered = name.size() == 4 && isDigit(name[3]) &&
+        std::ranges::any_of(numberedDevices, [name](std::string_view device)
+            { return ciEqual(name.substr(0, 3), device); });
+    return numbered ||
+        std::ranges::any_of(devices, [name](std::string_view device)
+            { return ciEqual(name, device); });
+}
+
+// Add the word of its kind to the anchor of each member that is a device
+// name, such as `aux`: a multipage output names the member's page, and
+// the directory of its members, after its anchor.
+void
+avoidDeviceNames(std::vector<ScopeEntry>& scope)
+{
+    for (ScopeEntry& entry : scope)
+    {
+        if (isDeviceName(entry.anchor))
+        {
+            appendWord(entry.anchor, kindWord(*entry.symbol));
+        }
+    }
+}
+
 // Name the members of one scope. Members that share a name, ignoring
 // case, are named together; a member whose name no other one shares
-// keeps it.
+// keeps it, unless it is a device name.
 void
 nameScope(std::vector<ScopeEntry>& scope, Corpus const& corpus)
 {
@@ -840,6 +872,7 @@ nameScope(std::vector<ScopeEntry>& scope, Corpus const& corpus)
             nameGroup(group, corpus);
         }
     }
+    avoidDeviceNames(scope);
     separateDuplicates(scope);
 }
 
