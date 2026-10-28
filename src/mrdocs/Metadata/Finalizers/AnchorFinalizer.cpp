@@ -1011,9 +1011,62 @@ separateDuplicates(std::vector<ScopeEntry>& scope)
     }
 }
 
+// Whether a file or a directory so named, ignoring case, is refused by
+// Windows or by Git for Windows. Windows reserves the names that
+// Microsoft lists in
+// https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file
+// for devices, so that they designate the device rather than a file, and
+// takes CONIN$ and CONOUT$, which the list omits, for the console. We
+// leave out the COM and LPT forms with a superscript digit, which cannot
+// appear in an identifier.
+//
+// Git for Windows refuses all of these, and some names that Windows
+// allows as well: LPT0, which names no device, and, since Windows 11, a
+// device name followed by an extension, such as aux.html, which names a
+// file. A page is named after its anchor plus an extension, so once an
+// anchor is no device name, its page's name isn't one followed by an
+// extension either.
+bool
+isWindowsDeviceName(std::string_view name)
+{
+    struct NumberedDevice
+    {
+        std::string_view prefix;
+        char firstDigit;
+    };
+    static constexpr std::string_view devices[] = {
+        "con", "prn", "aux", "nul", "conin$", "conout$"};
+    static constexpr NumberedDevice numberedDevices[] = {
+        {"com", '1'}, {"lpt", '0'}};
+    bool const isNumbered = name.size() == 4 &&
+        std::ranges::any_of(numberedDevices,
+            [name](NumberedDevice const& device)
+            { return ciEqual(name.substr(0, 3), device.prefix) &&
+                name.back() >= device.firstDigit && name.back() <= '9'; });
+    return isNumbered ||
+        std::ranges::any_of(devices, [name](std::string_view device)
+            { return ciEqual(name, device); });
+}
+
+// Add the word of its kind to the anchor of each member that is a
+// Windows device name, such as `aux`: a multipage output names the
+// member's page, and the directory of its members, after its anchor.
+void
+avoidWindowsDeviceNames(std::vector<ScopeEntry>& scope)
+{
+    for (ScopeEntry& entry : scope)
+    {
+        if (isWindowsDeviceName(entry.anchor))
+        {
+            appendWord(entry.anchor, kindWord(*entry.symbol));
+        }
+    }
+}
+
 // Name the members of one scope. Members that share a name, ignoring
 // case, are named together; a member whose name no other one shares
-// keeps it.
+// keeps it. Then each member whose anchor is a Windows device name adds
+// the word of its kind, also when it keeps the plain name of its group.
 void
 nameScope(std::vector<ScopeEntry>& scope, Corpus const& corpus)
 {
@@ -1029,6 +1082,7 @@ nameScope(std::vector<ScopeEntry>& scope, Corpus const& corpus)
             nameGroup(group, corpus);
         }
     }
+    avoidWindowsDeviceNames(scope);
     separateDuplicates(scope);
 }
 

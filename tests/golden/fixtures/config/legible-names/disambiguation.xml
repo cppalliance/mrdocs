@@ -6,11 +6,12 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q 2Njt5TmsNbXSDWVCAUVZTANqRdT6</namespaces>
-    <namespaceAliases>33Y6VdNzGvpN3TohfbZco5mA2bLi</namespaceAliases>
+    <namespaces>3RnCpjXqT9XkHX6pwCXim3WgD44Q 2Njt5TmsNbXSDWVCAUVZTANqRdT6 338nz5mjELQrBLJjnPkD6Rm31AwZ</namespaces>
+    <namespaceAliases>2GR39B9cGLUXpRZ5tVYfDHA7mK8J 33Y6VdNzGvpN3TohfbZco5mA2bLi</namespaceAliases>
     <typedefs>3bTa6hZH47eKcEmtzUEw1Us7DSPL</typedefs>
-    <records>2aBcJkTmjhBkR2T3iCLY4tJRBtRN 39CmxvTiV9796y615BiaBDS3WHNd 3G3nU3RH8mXfpXJvDUaHmt9rpkLt LJ1yt2sfDsAj17Xjh5m3tdhrWGt NTPFVZjKAjhERVprgwe1D54Nq4W 3p64NZpsvpCSrpYnjgybEy3jzj96 4YrxkDkvjEXpj9JaK4KE39pxfygZ 4GxKQBf3wt9aDZsbafDH9ATjGPFL 28rsf6rF9B46B6aJ5dC5aeyE2VwP 21Yh5PF5ewVmWeNR3NwSbcFHNTrQ 2TLPFWofGKQRmTUdMCbJoKrfZBca 2fudN41QzAKLTaC7xft1Lm5itR9Z 2SVVHU9o2gQVPbasgu36wTAubhdd 2xWCn1JE1EuYxybYix2MfmRKhn9W 2c7kqikbVP78czFBcijY9ub5dJeH 4GHG5X1Zxk32PmLpjC3SWNYur4er 29stsLGWN57mJzMBw42vkNwYMdhK jSXsqs3Ve6P41VGbPxCumJ7RfuL 2yktL3JDnf69do3bumiUwB2UdYqf kwpnL1koP5nNRsobKe5wkNTGXUP 3i5JTiYLyzQZjti8D8m8AnqFRUQJ 2THV1rPzLhbzYPCdF6kWzr8b11rP 4NmqQG4ksd9wcYq4m62yWtxpFJAW 3Dc8HGWpux5m8xird4KKf6RLPvSc 2JjwUMjb4FpMYxMm9iWd3sz1ip9W 2TgqbCtH8p71Wa4FpDEvaekNZhpw b9MAdvy2XwoDLqWgg2ZFWkShmuq 4STgDrwLeHv7mqV5anD6cJEd6K4T 4JZQEEn4kfMSM2zWqmMKSH3X4FNy 3pckmfiVbXAYjwBs44JCuEmQATU1 2qkvfo6sMXGL7B6qCweBGadGrHVd 33eB6EXuS9cfn9ZPnZpZYtkw1Z4k 4QcXBaguRn8ZkQ4p6Vm9UMTghCCt</records>
-    <functions>4JXo7G62Sr4wya5jdLR9bofqcd76 2sCaE5gRv6nNHhqehP9TR8AcaC6n</functions>
+    <records>2aBcJkTmjhBkR2T3iCLY4tJRBtRN 39CmxvTiV9796y615BiaBDS3WHNd 3G3nU3RH8mXfpXJvDUaHmt9rpkLt LJ1yt2sfDsAj17Xjh5m3tdhrWGt NTPFVZjKAjhERVprgwe1D54Nq4W 3zsEXcPGYFczVYwiLPm6Kg5eHpDa 3p64NZpsvpCSrpYnjgybEy3jzj96 4YrxkDkvjEXpj9JaK4KE39pxfygZ 4GxKQBf3wt9aDZsbafDH9ATjGPFL 28rsf6rF9B46B6aJ5dC5aeyE2VwP 21Yh5PF5ewVmWeNR3NwSbcFHNTrQ 2TLPFWofGKQRmTUdMCbJoKrfZBca 2fudN41QzAKLTaC7xft1Lm5itR9Z 2SVVHU9o2gQVPbasgu36wTAubhdd 2xWCn1JE1EuYxybYix2MfmRKhn9W 2c7kqikbVP78czFBcijY9ub5dJeH 27me98JemjsLen2EZWA3TTAdDs1j 4GHG5X1Zxk32PmLpjC3SWNYur4er 29stsLGWN57mJzMBw42vkNwYMdhK jSXsqs3Ve6P41VGbPxCumJ7RfuL 2yktL3JDnf69do3bumiUwB2UdYqf kwpnL1koP5nNRsobKe5wkNTGXUP 3i5JTiYLyzQZjti8D8m8AnqFRUQJ 2THV1rPzLhbzYPCdF6kWzr8b11rP 4NmqQG4ksd9wcYq4m62yWtxpFJAW 3Dc8HGWpux5m8xird4KKf6RLPvSc 2JjwUMjb4FpMYxMm9iWd3sz1ip9W 2TgqbCtH8p71Wa4FpDEvaekNZhpw b9MAdvy2XwoDLqWgg2ZFWkShmuq 4STgDrwLeHv7mqV5anD6cJEd6K4T 4JZQEEn4kfMSM2zWqmMKSH3X4FNy 3pckmfiVbXAYjwBs44JCuEmQATU1 2qkvfo6sMXGL7B6qCweBGadGrHVd 3kFVYJVk9xquyXDxXbB4JmsyPWRd E2azMzaaW3ztRx1kCY3cqw8usUe 33eB6EXuS9cfn9ZPnZpZYtkw1Z4k 4QcXBaguRn8ZkQ4p6Vm9UMTghCCt</records>
+    <functions>3iHPdWAjm2Lt6u1Z8FaajyBXJuLs QKj4SdrZU9gUCZZXAuVQ5NRdCJE 4JXo7G62Sr4wya5jdLR9bofqcd76 2sCaE5gRv6nNHhqehP9TR8AcaC6n</functions>
+    <variables>3FwPgobj6jrqQfz9NAB1g3LMoorx JzfyPV35tvirtd1GFWLh3Ay4Fnn</variables>
     <concepts>fHqkeF1qQtJAUNmQ776a3ocAUKF</concepts>
     <guides>2BuhVGU6opJQiJo2RW6kMFAxxMfY 4GRDyApoq5SwT7WfWjH5QBDony26</guides>
     <usings>327WmbvPy2P7iiF6o8goG4Am7nq7</usings>
@@ -106,6 +107,81 @@
   <parent>2Njt5TmsNbXSDWVCAUVZTANqRdT6</parent>
   <keyKind>struct</keyKind>
 </record>
+<namespace>
+  <name>aux</name>
+  <anchor>aux-namespace</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>246</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>338nz5mjELQrBLJjnPkD6Rm31AwZ</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>mDr26YfoEFxVXZ1V2RNsap2cU3C</functions>
+  </members>
+</namespace>
+<function>
+  <name>reset</name>
+  <anchor>reset</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>248</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>mDr26YfoEFxVXZ1V2RNsap2cU3C</id>
+  <extraction>regular</extraction>
+  <parent>338nz5mjELQrBLJjnPkD6Rm31AwZ</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<namespaceAlias>
+  <name>AUX</name>
+  <anchor>AUX-2namespace-alias</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>276</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace-alias</kind>
+  <id>2GR39B9cGLUXpRZ5tVYfDHA7mK8J</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <aliasedSymbol>
+    <kind>identifier</kind>
+    <id>338nz5mjELQrBLJjnPkD6Rm31AwZ</id>
+    <identifier>aux</identifier>
+  </aliasedSymbol>
+</namespaceAlias>
 <namespaceAlias>
   <name>region</name>
   <anchor>region-2namespace-alias</anchor>
@@ -1196,6 +1272,23 @@
   <isListedOnPrimary/>
 </record>
 <record>
+  <name>COM0</name>
+  <anchor>COM0</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>263</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3zsEXcPGYFczVYwiLPm6Kg5eHpDa</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
   <name>Exposed</name>
   <anchor>Exposed</anchor>
   <loc>
@@ -1816,6 +1909,23 @@
       </type>
     </params>
   </template>
+</record>
+<record>
+  <name>Nul</name>
+  <anchor>Nul-class</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>251</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>27me98JemjsLen2EZWA3TTAdDs1j</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
 </record>
 <record>
   <name>Offset</name>
@@ -4008,6 +4118,40 @@
   <keyKind>struct</keyKind>
 </record>
 <record>
+  <name>con</name>
+  <anchor>con-class</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>267</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3kFVYJVk9xquyXDxXbB4JmsyPWRd</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
+  <name>conout$</name>
+  <anchor>conout$-class</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>260</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>E2azMzaaW3ztRx1kCY3cqw8usUe</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <keyKind>struct</keyKind>
+</record>
+<record>
   <name>quantity</name>
   <anchor>quantity</anchor>
   <loc>
@@ -4041,6 +4185,85 @@
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <keyKind>struct</keyKind>
 </record>
+<function>
+  <name>com1</name>
+  <anchor>com1-2function</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>253</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>3iHPdWAjm2Lt6u1Z8FaajyBXJuLs</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<function>
+  <name>con</name>
+  <anchor>con-2function</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>disambiguation.cpp</shortPath>
+        <sourcePath>disambiguation.cpp</sourcePath>
+        <lineNumber>269</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>QKj4SdrZU9gUCZZXAuVQ5NRdCJE</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>n</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+</function>
 <overloads>
   <name>make</name>
   <anchor>make</anchor>
@@ -4304,6 +4527,62 @@
   </params>
   <funcClass>normal</funcClass>
 </function>
+<variable>
+  <name>lpt0</name>
+  <anchor>lpt0-2variable</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>258</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>3FwPgobj6jrqQfz9NAB1g3LMoorx</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+</variable>
+<variable>
+  <name>lpt9</name>
+  <anchor>lpt9-2variable</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>disambiguation.cpp</shortPath>
+      <sourcePath>disambiguation.cpp</sourcePath>
+      <lineNumber>255</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>JzfyPV35tvirtd1GFWLh3Ay4Fnn</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+</variable>
 <concept>
   <name>Quantity</name>
   <anchor>Quantity-concept</anchor>

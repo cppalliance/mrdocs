@@ -11,6 +11,7 @@
 | Name
 | link:#N[`N`] 
 | link:#Region[`Region`] 
+| link:#aux-namespace[`aux`] 
 |===
 
 
@@ -19,6 +20,7 @@
 [cols="1"]
 |===
 | Name
+| link:#AUX-2namespace-alias[`AUX`] 
 | link:#region-2namespace-alias[`region`] 
 |===
 
@@ -32,6 +34,7 @@
 | link:#Adjusted[`Adjusted`] 
 | link:#Boundaries[`Boundaries`] 
 | link:#Box[`Box`] 
+| link:#COM0[`COM0`] 
 | link:#Exposed[`Exposed`] 
 | link:#Größe[`Größe`] 
 | link:#Grüße[`Grüße`] 
@@ -40,6 +43,7 @@
 | link:#Index-class[`Index`] 
 | link:#Key[`Key`] 
 | link:#Many[`Many`] 
+| link:#Nul-class[`Nul`] 
 | link:#Offset[`Offset`] 
 | link:#Pair[`Pair`] 
 | link:#Punctuated[`Punctuated`] 
@@ -50,6 +54,8 @@
 | link:#Wrapper[`Wrapper`] 
 | link:#X[`X`] 
 | link:#a_parameter_type_whose_name_is_too_long_to_spell_in_an_anchor[`a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor`] 
+| link:#con-class[`con`] 
+| link:#conout$-class[`conout$`] 
 | link:#quantity[`quantity`] 
 | link:#stat[`stat`] 
 |===
@@ -69,8 +75,20 @@
 [cols="1"]
 |===
 | Name
+| link:#com1-2function[`com1`] 
+| link:#con-2function[`con`] 
 | link:#make[`make`] 
 | link:#stat-2function[`stat`] 
+|===
+
+
+=== Variables
+
+[cols="1"]
+|===
+| Name
+| link:#lpt0-2variable[`lpt0`] 
+| link:#lpt9-2variable[`lpt9`] 
 |===
 
 
@@ -139,6 +157,43 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Area;
+----
+
+[#aux-namespace]
+== aux
+
+=== Functions
+
+[cols="1"]
+|===
+| Name
+| link:#aux-namespace-reset[`reset`] 
+|===
+
+
+[#aux-namespace-reset]
+== link:#aux-namespace[aux]::reset
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+reset();
+----
+
+[#AUX-2namespace-alias]
+== AUX
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+namespace AUX = link:#aux-namespace[aux];
 ----
 
 [#region-2namespace-alias]
@@ -588,6 +643,18 @@ template&lt;&gt;
 struct link:#Box[Box]&lt;char&gt;;
 ----
 
+[#COM0]
+== COM0
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct COM0;
+----
+
 [#Exposed]
 == Exposed
 
@@ -890,6 +957,18 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 ----
 template&lt;class&period;&period;&period; T&gt;
 struct Many;
+----
+
+[#Nul-class]
+== Nul
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Nul;
 ----
 
 [#Offset]
@@ -1711,6 +1790,30 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 struct a&lowbar;parameter&lowbar;type&lowbar;whose&lowbar;name&lowbar;is&lowbar;too&lowbar;long&lowbar;to&lowbar;spell&lowbar;in&lowbar;an&lowbar;anchor;
 ----
 
+[#con-class]
+== con
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct con;
+----
+
+[#conout$-class]
+== conout$
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct conout$;
+----
+
 [#quantity]
 == quantity
 
@@ -1733,6 +1836,32 @@ Declared in `&lt;disambiguation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct stat;
+----
+
+[#com1-2function]
+== com1
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+com1();
+----
+
+[#con-2function]
+== con
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+con(int n);
 ----
 
 [#make]
@@ -1837,6 +1966,30 @@ int
 stat(
     char const* path,
     link:#stat[stat]* buf);
+----
+
+[#lpt0-2variable]
+== lpt0
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int lpt0;
+----
+
+[#lpt9-2variable]
+== lpt9
+
+=== Synopsis
+
+Declared in `&lt;disambiguation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int lpt9;
 ----
 
 [#Quantity-concept]

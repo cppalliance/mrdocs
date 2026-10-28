@@ -239,3 +239,38 @@ struct X {};
 using x = int;
 
 using N::X;
+
+// A member whose name Windows reserves for a device, ignoring case, adds
+// the word of its kind, since a multipage output names a file and a
+// directory after its anchor.
+namespace aux
+{
+void reset();
+}
+
+struct Nul {};
+
+void com1();
+
+int lpt9;
+
+// Windows has no device LPT0, but Git for Windows refuses the name.
+int lpt0;
+
+struct conout$ {};
+
+// Neither Windows nor Git for Windows minds COM0, which keeps its name.
+struct COM0 {};
+
+// The member that keeps a Windows device name it shares with another
+// member adds the word of its kind as well.
+struct con {};
+
+void con(int n);
+
+// `AUX` shares its name, ignoring case, with the namespace `aux`, which
+// keeps the plain name, so the alias adds `2namespace-alias`. The
+// namespace then adds `namespace`, since `aux` is a Windows device name.
+// The two words differ, so `AUX-2namespace-alias` and `aux-namespace`
+// need no symbol ID to tell them apart.
+namespace AUX = aux;
