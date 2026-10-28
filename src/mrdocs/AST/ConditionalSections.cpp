@@ -57,6 +57,16 @@ mayHoldMarker(clang::RawComment const& rc, clang::SourceManager const& sm)
         });
 }
 
+bool
+isMarkerCommand(
+    clang::ASTContext const& ctx,
+    clang::comments::VerbatimLineComment const* C)
+{
+    llvm::StringRef const name =
+        C->getCommandName(ctx.getCommentCommandTraits());
+    return name == "cond" || name == "endcond";
+}
+
 // Find the markers in the doc comments of one file, in source order.
 class MarkerCollector
 {
@@ -71,10 +81,11 @@ class MarkerCollector
     }
 
     void
-    addMarker(clang::comments::VerbatimLineComment const* C, bool isEnd)
+    addMarker(clang::comments::VerbatimLineComment const* C)
     {
         markers_.push_back({
-            .isEnd = isEnd,
+            .isEnd = C->getCommandName(ctx_.getCommentCommandTraits())
+                == "endcond",
             .loc = C->getBeginLoc(),
             .begin = offsetOf(C->getBeginLoc()),
             .end = offsetOf(C->getEndLoc()),
@@ -86,11 +97,9 @@ class MarkerCollector
     void
     visit(clang::comments::VerbatimLineComment const* C)
     {
-        llvm::StringRef const name =
-            C->getCommandName(ctx_.getCommentCommandTraits());
-        if (name == "cond" || name == "endcond")
+        if (isMarkerCommand(ctx_, C))
         {
-            addMarker(C, name == "endcond");
+            addMarker(C);
         }
     }
 
@@ -253,15 +262,48 @@ public:
     }
 };
 
+// Determine whether `[begin, end)` overlaps any of the sorted, disjoint ranges.
 bool
-containsOffset(
+overlapsRange(
     std::vector<ConditionalSections::OffsetRange> const& ranges,
-    unsigned offset)
+    unsigned begin,
+    unsigned end)
 {
+    // The first range that ends after `begin` is the only candidate.
     std::vector<ConditionalSections::OffsetRange>::const_iterator next =
         std::ranges::upper_bound(
-            ranges, offset, {}, &ConditionalSections::OffsetRange::begin);
-    return next != ranges.begin() && offset < std::prev(next)->end;
+            ranges, begin, {}, &ConditionalSections::OffsetRange::end);
+    return next != ranges.end() && next->begin < end;
+}
+
+bool
+isMarkerBlock(
+    clang::ASTContext const& ctx,
+    clang::comments::Comment const* block)
+{
+    return block->getCommentKind()
+            == clang::comments::CommentKind::VerbatimLineComment
+        && isMarkerCommand(
+            ctx,
+            static_cast<clang::comments::VerbatimLineComment const*>(block));
+}
+
+// Whether a block of a doc comment renders anything when it is enabled. The
+// `\cond` and `\endcond` markers never do, and neither does the whitespace
+// Clang leaves in a paragraph of its own around a command.
+bool
+rendersContent(
+    clang::ASTContext const& ctx,
+    clang::comments::Comment const* block)
+{
+    bool result = !isMarkerBlock(ctx, block);
+    if (block->getCommentKind()
+        == clang::comments::CommentKind::ParagraphComment)
+    {
+        result = !static_cast<clang::comments::ParagraphComment const*>(
+            block)->isWhitespace();
+    }
+    return result;
 }
 
 } // (anon)
@@ -292,20 +334,82 @@ regionsOf(clang::FileID fid)
     return it->second;
 }
 
-bool
+std::pair<ConditionalSections::Regions const*, unsigned>
 ConditionalSections::
-isDisabled(clang::SourceLocation loc)
+locate(clang::SourceLocation loc)
 {
-    bool result = false;
+    Regions const* regions = nullptr;
+    unsigned offset = 0;
     if (loc.isValid())
     {
         std::pair<clang::FileID, unsigned> const where =
             ctx_.getSourceManager().getDecomposedExpansionLoc(loc);
         if (where.first.isValid())
         {
-            result = containsOffset(
-                regionsOf(where.first).disabled, where.second);
+            regions = &regionsOf(where.first);
+            offset = where.second;
         }
+    }
+    return { regions, offset };
+}
+
+bool
+ConditionalSections::
+isDisabled(clang::SourceLocation loc)
+{
+    std::pair<Regions const*, unsigned> const where = locate(loc);
+    return where.first
+        && overlapsRange(where.first->disabled, where.second, where.second + 1);
+}
+
+bool
+ConditionalSections::
+touchesDisabledRegion(clang::RawComment const& rc)
+{
+    std::pair<Regions const*, unsigned> const where =
+        locate(rc.getBeginLoc());
+    unsigned const end = ctx_.getSourceManager()
+        .getDecomposedExpansionLoc(rc.getEndLoc()).second;
+    return where.first
+        && overlapsRange(where.first->disabled, where.second, end);
+}
+
+bool
+ConditionalSections::
+hasHiddenBlock(clang::comments::FullComment const& FC)
+{
+    return std::ranges::any_of(
+        FC.getBlocks(),
+        [&](clang::comments::Comment const* block)
+        {
+            return isMarkerBlock(ctx_, block)
+                || isDisabled(block->getBeginLoc());
+        });
+}
+
+bool
+ConditionalSections::
+hasRenderedBlock(clang::comments::FullComment const& FC)
+{
+    return std::ranges::any_of(
+        FC.getBlocks(),
+        [&](clang::comments::Comment const* block)
+        {
+            return rendersContent(ctx_, block)
+                && !isDisabled(block->getBeginLoc());
+        });
+}
+
+bool
+ConditionalSections::
+hidesAll(clang::RawComment const& rc, clang::Decl const* D)
+{
+    bool result = false;
+    if (touchesDisabledRegion(rc)
+        || mayHoldMarker(rc, ctx_.getSourceManager()))
+    {
+        clang::comments::FullComment const* FC = rc.parse(ctx_, &pp_, D);
+        result = FC && hasHiddenBlock(*FC) && !hasRenderedBlock(*FC);
     }
     return result;
 }

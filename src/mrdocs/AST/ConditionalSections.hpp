@@ -13,11 +13,17 @@
 
 #include <clang/Basic/SourceLocation.h>
 #include <map>
+#include <utility>
 #include <vector>
 
 namespace clang {
 class ASTContext;
+class Decl;
 class Preprocessor;
+class RawComment;
+namespace comments {
+class FullComment;
+} // comments
 } // clang
 
 namespace mrdocs {
@@ -116,7 +122,40 @@ public:
     bool
     isDisabled(clang::SourceLocation loc);
 
+    /** Determine whether a doc comment has no content left to render.
+
+        A comment is hidden when it has at least one block that lies in
+        a disabled region or is a `\cond` or `\endcond` marker, and no
+        block that renders. A comment with nothing to render to begin
+        with, such as an empty one, is not hidden.
+
+        @param rc The doc comment to look at.
+        @param D The declaration the comment is attached to.
+    */
+    bool
+    hidesAll(clang::RawComment const& rc, clang::Decl const* D);
+
 private:
+    // Return the regions of the file `loc` expands in, with the offset of
+    // `loc` within it. The regions are null if `loc` is not in a file.
+    std::pair<Regions const*, unsigned>
+    locate(clang::SourceLocation loc);
+
+    // Determine whether a doc comment overlaps a disabled region, so that
+    // some of its blocks may lie in one.
+    bool
+    touchesDisabledRegion(clang::RawComment const& rc);
+
+    // Determine whether a block of the comment is a marker or lies in a
+    // disabled region.
+    bool
+    hasHiddenBlock(clang::comments::FullComment const& FC);
+
+    // Determine whether a block of the comment renders and lies outside
+    // every disabled region.
+    bool
+    hasRenderedBlock(clang::comments::FullComment const& FC);
+
     clang::ASTContext const& ctx_;
     clang::Preprocessor const& pp_;
     Config const& config_;

@@ -1,8 +1,7 @@
-/** Brief of first.
+int first = 0; /**< Brief of first.
     \cond INTERNAL
     Hidden text of first.
 */
-int first(int x);
 
 /** Hidden brief of middle.
 

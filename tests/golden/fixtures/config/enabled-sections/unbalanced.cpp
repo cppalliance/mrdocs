@@ -1,8 +1,7 @@
-/** Brief of open.
+int open = 0; /**< Brief of open.
     \cond INTERNAL
     Hidden text of open.
 */
-int open(int x);
 
 /** Brief of later.
 

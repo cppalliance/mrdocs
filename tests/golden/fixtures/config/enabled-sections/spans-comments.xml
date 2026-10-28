@@ -6,69 +6,10 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <functions>kxiazhP9yK2hpM9h4pJBfhpBT5i 3VZ8ZtC8c3ndS2eG1JLfSCvu6bBs 4QqqepwEWqs6kL5DYNDAPDLFQ98a</functions>
+    <functions>3VZ8ZtC8c3ndS2eG1JLfSCvu6bBs</functions>
+    <variables>YLM1kRe33dFXGmxxEtaTzEVmytR</variables>
   </members>
 </namespace>
-<function>
-  <name>first</name>
-  <anchor>first</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>spans-comments.cpp</shortPath>
-        <sourcePath>spans-comments.cpp</sourcePath>
-        <lineNumber>5</lineNumber>
-        <columnNumber>1</columnNumber>
-        <documented/>
-      </location>
-    </loc>
-  </loc>
-  <kind>function</kind>
-  <id>kxiazhP9yK2hpM9h4pJBfhpBT5i</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <doc>
-    <brief>
-      <kind>brief</kind>
-      <children>
-        <text>
-          <kind>text</kind>
-          <literal>Brief of first.</literal>
-        </text>
-      </children>
-    </brief>
-  </doc>
-  <returnType>
-    <named>
-      <kind>named</kind>
-      <name>
-        <identifier>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </identifier>
-      </name>
-      <fundamentalType>int</fundamentalType>
-    </named>
-  </returnType>
-  <params>
-    <param>
-      <type>
-        <named>
-          <kind>named</kind>
-          <name>
-            <identifier>
-              <kind>identifier</kind>
-              <identifier>int</identifier>
-            </identifier>
-          </name>
-          <fundamentalType>int</fundamentalType>
-        </named>
-      </type>
-      <name>x</name>
-    </param>
-  </params>
-  <funcClass>normal</funcClass>
-</function>
 <function>
   <name>last</name>
   <anchor>last</anchor>
@@ -77,7 +18,7 @@
       <location>
         <shortPath>spans-comments.cpp</shortPath>
         <sourcePath>spans-comments.cpp</sourcePath>
-        <lineNumber>17</lineNumber>
+        <lineNumber>16</lineNumber>
         <columnNumber>1</columnNumber>
         <documented/>
       </location>
@@ -129,25 +70,34 @@
   </params>
   <funcClass>normal</funcClass>
 </function>
-<function>
-  <name>middle</name>
-  <anchor>middle</anchor>
+<variable>
+  <name>first</name>
+  <anchor>first</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>spans-comments.cpp</shortPath>
-        <sourcePath>spans-comments.cpp</sourcePath>
-        <lineNumber>11</lineNumber>
-        <columnNumber>1</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>spans-comments.cpp</shortPath>
+      <sourcePath>spans-comments.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
-  <kind>function</kind>
-  <id>4QqqepwEWqs6kL5DYNDAPDLFQ98a</id>
+  <kind>variable</kind>
+  <id>YLM1kRe33dFXGmxxEtaTzEVmytR</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <returnType>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of first.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <type>
     <named>
       <kind>named</kind>
       <name>
@@ -158,24 +108,7 @@
       </name>
       <fundamentalType>int</fundamentalType>
     </named>
-  </returnType>
-  <params>
-    <param>
-      <type>
-        <named>
-          <kind>named</kind>
-          <name>
-            <identifier>
-              <kind>identifier</kind>
-              <identifier>int</identifier>
-            </identifier>
-          </name>
-          <fundamentalType>int</fundamentalType>
-        </named>
-      </type>
-      <name>x</name>
-    </param>
-  </params>
-  <funcClass>normal</funcClass>
-</function>
+  </type>
+  <initializer>0</initializer>
+</variable>
 </mrdocs>

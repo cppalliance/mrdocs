@@ -187,6 +187,9 @@ populateMacros()
         MRDOCS_CHECK_OR_CONTINUE(mode != ExtractionMode::Dependency);
         MRDOCS_CHECK_OR_CONTINUE(checkFileFilters(file->full_path));
 
+        // A macro defined inside a disabled `\cond` region is hidden too.
+        MRDOCS_CHECK_OR_CONTINUE(!conditionalSections_.isDisabled(defLoc));
+
         auto sym = std::make_unique<MacroSymbol>(id);
         sym->Name = name;
         // Macros have no C++ scope, so they live in the global
@@ -659,7 +662,7 @@ populate(SourceInfo& I, DeclTy const* D)
             I,
             Loc,
             isDefinition(D),
-            isDocumented(D));
+            hasVisibleDocumentation(D));
     }
 }
 
@@ -1397,7 +1400,7 @@ populate(
     // The newly traversed info might need to inherit the
     // documentation from the FriendDecl when the friend
     // is the only declaration.
-    MRDOCS_CHECK_OR(isDocumented(D));
+    MRDOCS_CHECK_OR(hasVisibleDocumentation(D));
     Symbol* TI = find(I.id);
     MRDOCS_CHECK_OR(TI);
     MRDOCS_CHECK_OR(!TI->doc);
@@ -3598,6 +3601,29 @@ checkDocCommentExtractionFlag(clang::Decl const* D)
     return std::nullopt;
 }
 
+bool
+ASTVisitor::
+hasVisibleDocumentation(clang::Decl const* D)
+{
+    clang::RawComment const* RC = getDocumentation(D);
+    return RC && !conditionalSections_.hidesAll(*RC, D);
+}
+
+std::optional<ExtractionMode>
+ASTVisitor::
+checkSourceExtractionMode(clang::Decl const* D)
+{
+    // An out-of-line definition takes the place of the declaration it
+    // defines, which is where its documentation belongs.
+    clang::Decl const* placed = D->isOutOfLine() ? D->getCanonicalDecl() : D;
+    std::optional<ExtractionMode> mode = checkDocCommentExtractionFlag(D);
+    if (!mode && conditionalSections_.isDisabled(placed->getBeginLoc()))
+    {
+        mode = ExtractionMode::Dependency;
+    }
+    return mode;
+}
+
 ASTVisitor::ExtractionInfo
 ASTVisitor::
 checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
@@ -3633,12 +3659,21 @@ checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
     // same rules used for the globs (members of a see-below record
     // become dependencies, etc.).
     //
+    // A declaration that begins inside a disabled `\cond` region is hidden
+    // like an excluded symbol, and so is an out-of-line definition of one.
+    // It ranks after the doc commands, so `@implementationdefined` and
+    // `@seebelow` still apply to it, and before every configured filter.
+    // Its members are inside the region too, and the out-of-line
+    // definitions of its members are hidden by the extraction mode of the
+    // record.
+    //
     // Cheap to call: the comment parse is cached on the ASTContext, and
     // checkSymbolFilters caches its own result via `updateCache`, so each
     // Decl is inspected once.
-    if (auto const docFlag = checkDocCommentExtractionFlag(D))
+    if (std::optional<ExtractionMode> const sourceMode =
+            checkSourceExtractionMode(D))
     {
-        return updateCache({*docFlag, ExtractionMatchType::Strict});
+        return updateCache({*sourceMode, ExtractionMatchType::Strict});
     }
 
     // Function to check if parent is of a certain extraction mode
@@ -4241,7 +4276,7 @@ checkUndocumented(
     // If `extract-all` is disabled, we don't need to
     // warn for undocumented symbols because that's
     // the expected behavior. We use this to fail early.
-    bool const hasDoc = isDocumented(D);
+    bool const hasDoc = hasVisibleDocumentation(D);
     if (!config_.extractAll &&
         !hasDoc)
     {

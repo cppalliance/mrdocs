@@ -6,74 +6,23 @@
   <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
   <extraction>regular</extraction>
   <members>
-    <functions>2NYGp3ktTyCsW9UmKVoLhTcPZhbo 3pWvAwq9QLj3Vp69jJwZxMM2Kndd</functions>
+    <variables>tDtj9sLbLTYGsTVfa8QbF7sJ1uV</variables>
   </members>
 </namespace>
-<function>
-  <name>later</name>
-  <anchor>later</anchor>
-  <loc>
-    <loc>
-      <location>
-        <shortPath>unbalanced.cpp</shortPath>
-        <sourcePath>unbalanced.cpp</sourcePath>
-        <lineNumber>11</lineNumber>
-        <columnNumber>1</columnNumber>
-        <documented/>
-      </location>
-    </loc>
-  </loc>
-  <kind>function</kind>
-  <id>2NYGp3ktTyCsW9UmKVoLhTcPZhbo</id>
-  <extraction>regular</extraction>
-  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
-  <returnType>
-    <named>
-      <kind>named</kind>
-      <name>
-        <identifier>
-          <kind>identifier</kind>
-          <identifier>int</identifier>
-        </identifier>
-      </name>
-      <fundamentalType>int</fundamentalType>
-    </named>
-  </returnType>
-  <params>
-    <param>
-      <type>
-        <named>
-          <kind>named</kind>
-          <name>
-            <identifier>
-              <kind>identifier</kind>
-              <identifier>int</identifier>
-            </identifier>
-          </name>
-          <fundamentalType>int</fundamentalType>
-        </named>
-      </type>
-      <name>x</name>
-    </param>
-  </params>
-  <funcClass>normal</funcClass>
-</function>
-<function>
+<variable>
   <name>open</name>
   <anchor>open</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>unbalanced.cpp</shortPath>
-        <sourcePath>unbalanced.cpp</sourcePath>
-        <lineNumber>5</lineNumber>
-        <columnNumber>1</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>unbalanced.cpp</shortPath>
+      <sourcePath>unbalanced.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
-  <kind>function</kind>
-  <id>3pWvAwq9QLj3Vp69jJwZxMM2Kndd</id>
+  <kind>variable</kind>
+  <id>tDtj9sLbLTYGsTVfa8QbF7sJ1uV</id>
   <extraction>regular</extraction>
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <doc>
@@ -87,7 +36,7 @@
       </children>
     </brief>
   </doc>
-  <returnType>
+  <type>
     <named>
       <kind>named</kind>
       <name>
@@ -98,24 +47,7 @@
       </name>
       <fundamentalType>int</fundamentalType>
     </named>
-  </returnType>
-  <params>
-    <param>
-      <type>
-        <named>
-          <kind>named</kind>
-          <name>
-            <identifier>
-              <kind>identifier</kind>
-              <identifier>int</identifier>
-            </identifier>
-          </name>
-          <fundamentalType>int</fundamentalType>
-        </named>
-      </type>
-      <name>x</name>
-    </param>
-  </params>
-  <funcClass>normal</funcClass>
-</function>
+  </type>
+  <initializer>0</initializer>
+</variable>
 </mrdocs>

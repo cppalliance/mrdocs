@@ -755,12 +755,6 @@ getDocumentation(clang::Decl const* D)
 }
 
 bool
-isDocumented(clang::Decl const* D)
-{
-    return getDocumentation(D) != nullptr;
-}
-
-bool
 isClangCL(clang::tooling::CompileCommand const& cc)
 {
     auto const& cmdline = cc.CommandLine;

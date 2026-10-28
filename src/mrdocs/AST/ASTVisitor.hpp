@@ -1207,6 +1207,23 @@ private:
     std::optional<ExtractionMode>
     checkDocCommentExtractionFlag(clang::Decl const* D);
 
+    /** Determine whether @p D has a doc comment with something left to
+        render once the disabled `\cond` regions are left out.
+    */
+    bool
+    hasVisibleDocumentation(clang::Decl const* D);
+
+    /** Return the extraction mode that @p D's own source asks for.
+
+        The doc commands of @ref checkDocCommentExtractionFlag come
+        first. A declaration that begins inside a disabled `\cond`
+        region is a `Dependency` otherwise, and so is an out-of-line
+        definition of one, which is placed where the declaration it
+        defines is. Returns `std::nullopt` if neither applies.
+    */
+    std::optional<ExtractionMode>
+    checkSourceExtractionMode(clang::Decl const* D);
+
     /* The strategy for checking filters in `checkSymbolFilters`
      */
     enum SymbolCheckType {
