@@ -13,6 +13,7 @@
 //
 
 #include "ExtractDocComment.hpp"
+#include "ConditionalSections.hpp"
 #include "ParseRef.hpp"
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DocComment/Inline/Parts.hpp>
@@ -291,6 +292,7 @@ class DocCommentVisitor
     clang::ASTContext const& ctx_;
     clang::SourceManager const& sm_;
     clang::comments::FullComment const* FC_;
+    ConditionalSections& sections_;
     Diagnostics& diags_;
 
     DocComment jd_;
@@ -1063,6 +1065,25 @@ class DocCommentVisitor
         jd_.Document.emplace_back(std::move(*tbExp));
     }
 
+    // Visit the top-level blocks of the comment, skipping the ones inside a
+    // disabled `\cond` region. A block cannot straddle a region boundary
+    // because the markers are blocks themselves, so checking where a block
+    // begins covers every node it contains.
+    void
+    visitEnabledBlocks()
+    {
+        Cursor cur(FC_);
+        while (!cur.done())
+        {
+            clang::comments::Comment const* block = cur.cur();
+            if (!sections_.isDisabled(block->getBeginLoc()))
+            {
+                visitNode(block, cur);
+            }
+            cur.advance();
+        }
+    }
+
     // Single-dispatch “node” entry that can use/modify the cursor
     void
     visitNode(clang::comments::Comment const* C, Cursor& cur)
@@ -1112,7 +1133,8 @@ class DocCommentVisitor
             return;
 
         case CommentKind::VerbatimLineComment:
-            // not used
+            // Includes the `\cond` and `\endcond` markers, which never
+            // render. `ConditionalSections` accounts for them.
             return;
 
         default:
@@ -2025,12 +2047,14 @@ public:
         clang::comments::FullComment const* FC,
         clang::ASTContext const& ctx,
         Config const& config,
+        ConditionalSections& sections,
         Diagnostics& diags,
         bool warnings)
         : config_(config)
         , ctx_(ctx)
         , sm_(ctx_.getSourceManager())
         , FC_(FC)
+        , sections_(sections)
         , diags_(diags)
         , warnings_(warnings)
     {}
@@ -2039,7 +2063,7 @@ public:
     build()
     {
         MRDOCS_COMMENT_TRACE(FC_, ctx_);
-        visitChildrenWithCursor(FC_);
+        visitEnabledBlocks();
         return std::move(jd_);
     }
 };
@@ -2067,11 +2091,12 @@ populateDocComment(
     clang::comments::FullComment const* FC,
     clang::ASTContext const& ctx,
     Config const& config,
+    ConditionalSections& sections,
     Diagnostics& diags,
     bool warnings)
 {
     MRDOCS_COMMENT_TRACE(FC, ctx);
-    DocCommentVisitor visitor(FC, ctx, config, diags, warnings);
+    DocCommentVisitor visitor(FC, ctx, config, sections, diags, warnings);
     auto result = visitor.build();
     if (!result.empty())
     {

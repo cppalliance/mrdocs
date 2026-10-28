@@ -17,6 +17,7 @@
 
 #include <mrdocs/Support/ExecutionContext.hpp>
 #include "ClangHelpers.hpp"
+#include "ConditionalSections.hpp"
 #include "MacroCollector.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata/Name.hpp>
@@ -82,6 +83,9 @@ class ASTVisitor
     // Macros captured by `MacroCollector` during preprocessing.
     // Owned by `ASTAction`.
     std::vector<CollectedMacro>& macroDefs_;
+
+    // The conditional sections of the files in this translation unit.
+    ConditionalSections conditionalSections_;
 
     // An unordered set of all extracted Info declarations
     detail::SymbolSet info_;

@@ -18,6 +18,7 @@
 #include <mrdocs/Support/Radix.hpp>
 #include "ASTVisitor.hpp"
 #include "ClangHelpers.hpp"
+#include "ConditionalSections.hpp"
 #include "ExtractDocComment.hpp"
 #include "NameBuilder.hpp"
 #include "TypeBuilder.hpp"
@@ -69,6 +70,7 @@ ASTVisitor(
     , source_(context.getSourceManager())
     , sema_(sema)
     , macroDefs_(macroDefs)
+    , conditionalSections_(context, sema.getPreprocessor(), config)
 {
     // Install handlers for our custom commands
     initCustomCommentCommands(context_);
@@ -249,7 +251,8 @@ populate(MacroSymbol& I, clang::MacroInfo const* MI)
             context_.getTranslationUnitDecl());
         if (FC)
         {
-            populateDocComment(I.doc, FC, context_, config_, diags_);
+            populateDocComment(
+                I.doc, FC, context_, config_, conditionalSections_, diags_);
         }
     }
 }
@@ -680,6 +683,7 @@ populate(
         FC,
         D->getASTContext(),
         config_,
+        conditionalSections_,
         diags_,
         mode != ExtractionMode::Dependency);
     return true;
