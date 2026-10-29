@@ -89,3 +89,18 @@ include::example$snippets/commands/regex.cpp[]
 ========
 include::example$snippets/commands/regex.adoc[tags=!footer]
 ========
+
+== Conditional sections
+
+xref:commands/reference.adoc#cmd-conditional-section[`@cond`] and `@endcond` hide the text and the declarations between them unless the section's label is listed in the xref:configuration/reference.adoc#enabled-sections_option[`enabled-sections`] option. The commands are honored so that a project migrating from Doxygen does not publish what its sections hid.
+
+.Conditional section
+[source,cpp]
+----
+include::example$snippets/commands/conditional-section.cpp[]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/commands/conditional-section.adoc[tags=!footer]
+========

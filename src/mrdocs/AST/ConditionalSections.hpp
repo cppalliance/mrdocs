@@ -18,7 +18,6 @@
 
 namespace clang {
 class ASTContext;
-class Decl;
 class Preprocessor;
 class RawComment;
 namespace comments {
@@ -30,23 +29,25 @@ namespace mrdocs {
 
 class Config;
 
-/** The `\cond` ... `\endcond` regions of the files in a translation unit.
+/** The conditional regions of the files in a translation unit.
 
-    Within one file, a region runs from a `\cond` (or `@cond`) marker to
-    its matching `\endcond` (or `@endcond`) marker. Markers are matched as
-    a stack across all the doc comments of the file, in source order, so a
-    region can span several comments and nest inside another one.
+    Within one file, a region runs from a `cond` marker to its matching
+    `endcond` marker, each written with a backslash or an at sign.
+    Markers are matched as a stack across all the doc comments of the
+    file, in source order, so a region can span several comments and nest
+    inside another one.
 
     A region is enabled when it has a label, the label is listed in the
     `enabled-sections` option, and every enclosing region is enabled. All
-    other regions are disabled, including the ones whose `\cond` has no
-    label. A `\cond` with no matching `\endcond` extends to the end of its
-    file.
+    other regions are disabled, including the ones whose `cond` marker has
+    no label. A `cond` marker with no matching `endcond` marker extends to
+    the end of its file.
 
     The regions of a file are computed on first use and cached, so a file
     that is never queried is never scanned. The markers are found with
-    Clang's comment parser, so a marker inside a `\code` or `\verbatim`
-    block is not a marker.
+    Clang's comment parser, so a marker inside a code block or a verbatim
+    block is not a marker, and neither is one inside a Markdown code span,
+    that is, between two runs of the same number of backticks on one line.
 */
 class ConditionalSections
 {
@@ -55,9 +56,9 @@ public:
     */
     enum class MarkerKind
     {
-        /// A `\cond` with no matching `\endcond`.
+        /// A `cond` marker with no matching `endcond` marker.
         UnmatchedCond,
-        /// An `\endcond` with no `\cond` to close.
+        /// An `endcond` marker with no `cond` marker to close.
         StrayEndcond
     };
 
@@ -92,6 +93,9 @@ public:
 
         /// The markers that do not pair up, in source order.
         std::vector<Marker> malformed{};
+
+        /// The offset of every marker, in source order.
+        std::vector<unsigned> markerOffsets{};
     };
 
     /** Constructor.
@@ -112,6 +116,11 @@ public:
     Regions const&
     regionsOf(clang::FileID fid);
 
+    /** Return the files whose regions have been computed so far.
+    */
+    std::map<clang::FileID, Regions> const&
+    computedFiles() const noexcept;
+
     /** Determine whether a location lies in a disabled region.
 
         The expansion location of `loc` is used, so a location produced
@@ -124,16 +133,15 @@ public:
 
     /** Determine whether a doc comment has no content left to render.
 
-        A comment is hidden when it has at least one block that lies in
-        a disabled region or is a `\cond` or `\endcond` marker, and no
-        block that renders. A comment with nothing to render to begin
-        with, such as an empty one, is not hidden.
+        A comment is hidden when it overlaps a disabled region or holds
+        a `cond` or `endcond` marker, and it has blocks, none of which
+        renders. A comment with no blocks, such as an empty one, is not
+        hidden, and neither is one that reaches no section.
 
         @param rc The doc comment to look at.
-        @param D The declaration the comment is attached to.
     */
     bool
-    hidesAll(clang::RawComment const& rc, clang::Decl const* D);
+    hidesAll(clang::RawComment const& rc);
 
 private:
     // Return the regions of the file `loc` expands in, with the offset of
@@ -141,15 +149,11 @@ private:
     std::pair<Regions const*, unsigned>
     locate(clang::SourceLocation loc);
 
-    // Determine whether a doc comment overlaps a disabled region, so that
-    // some of its blocks may lie in one.
+    // Determine whether a doc comment reaches a section, that is, overlaps
+    // a disabled region or holds a marker, so that some of its blocks may
+    // be hidden.
     bool
-    touchesDisabledRegion(clang::RawComment const& rc);
-
-    // Determine whether a block of the comment is a marker or lies in a
-    // disabled region.
-    bool
-    hasHiddenBlock(clang::comments::FullComment const& FC);
+    reachesSection(clang::RawComment const& rc);
 
     // Determine whether a block of the comment renders and lies outside
     // every disabled region.

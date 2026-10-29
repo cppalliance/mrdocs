@@ -517,8 +517,14 @@ class DocCommentVisitor
 
     // --- Visiting using Cursor (no member iterators)
 
+    // With `skipDisabled`, skip the children inside a disabled `cond`
+    // section. Only the top-level blocks need it: a block cannot straddle a
+    // section boundary because the markers are blocks themselves, so
+    // checking where a block begins covers every node it contains.
     void
-    visitChildrenWithCursor(clang::comments::Comment const* C)
+    visitChildrenWithCursor(
+        clang::comments::Comment const* C,
+        bool skipDisabled = false)
     {
         MRDOCS_COMMENT_TRACE(C, ctx_);
         Cursor cur(C);
@@ -526,7 +532,10 @@ class DocCommentVisitor
         {
             auto* n = cur.cur();
             MRDOCS_COMMENT_TRACE(n, ctx_);
-            visitNode(n, cur); // may advance/consume
+            if (!skipDisabled || !sections_.isDisabled(n->getBeginLoc()))
+            {
+                visitNode(n, cur); // may advance/consume
+            }
             cur.advance();
         }
     }
@@ -1065,25 +1074,6 @@ class DocCommentVisitor
         jd_.Document.emplace_back(std::move(*tbExp));
     }
 
-    // Visit the top-level blocks of the comment, skipping the ones inside a
-    // disabled `\cond` region. A block cannot straddle a region boundary
-    // because the markers are blocks themselves, so checking where a block
-    // begins covers every node it contains.
-    void
-    visitEnabledBlocks()
-    {
-        Cursor cur(FC_);
-        while (!cur.done())
-        {
-            clang::comments::Comment const* block = cur.cur();
-            if (!sections_.isDisabled(block->getBeginLoc()))
-            {
-                visitNode(block, cur);
-            }
-            cur.advance();
-        }
-    }
-
     // Single-dispatch “node” entry that can use/modify the cursor
     void
     visitNode(clang::comments::Comment const* C, Cursor& cur)
@@ -1133,8 +1123,9 @@ class DocCommentVisitor
             return;
 
         case CommentKind::VerbatimLineComment:
-            // Includes the `\cond` and `\endcond` markers, which never
-            // render. `ConditionalSections` accounts for them.
+            // Every verbatim line command is dropped. This includes the
+            // `cond` and `endcond` markers, which never render, and which
+            // `ConditionalSections` accounts for.
             return;
 
         default:
@@ -2063,7 +2054,7 @@ public:
     build()
     {
         MRDOCS_COMMENT_TRACE(FC_, ctx_);
-        visitEnabledBlocks();
+        visitChildrenWithCursor(FC_, true);
         return std::move(jd_);
     }
 };

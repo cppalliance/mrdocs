@@ -391,6 +391,8 @@ PREDEFINED = JZON_DOCUMENTATION_BUILD=1
 --
 ======
 
+Configuration is the recommended way to hide symbols: the xref:configuration/reference.adoc#exclude-symbols_option[`exclude-symbols`], xref:configuration/reference.adoc#implementation-defined_option[`implementation-defined`] and xref:configuration/reference.adoc#see-below_option[`see-below`] options keep the markup out of the source, and a separate run with its own configuration file produces the documentation for another audience, such as the maintainers. A project that already hides its internals with `\cond INTERNAL` ... `\endcond` keeps working all the same: Mr.Docs honors the two commands, so a migration does not start publishing what those sections hid. A section is shown only when its label is listed in the xref:configuration/reference.adoc#enabled-sections_option[`enabled-sections`] option, and a `\cond` with no matching `\endcond` hides everything up to the end of its file and warns. See xref:commands/reference.adoc#cmd-conditional-section[`@cond`] for the details.
+
 Many other idioms collapse into a one-line configuration option or a single doc command: exposition-only "see-below" synopses, hidden friend operators, related-symbol grouping, deprecated-but-documented overloads, and so on. The xref:commands/reference.adoc[Commands] and xref:configuration/reference.adoc[Options] references are the place to look when you find yourself reaching for a preprocessor conditional.
 
 [#handling-dependencies]
