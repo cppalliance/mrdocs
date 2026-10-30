@@ -47,7 +47,7 @@
 </record>
 <function>
   <name>isPositive</name>
-  <anchor>isPositive-0d</anchor>
+  <anchor>isPositive</anchor>
   <loc>
     <defLoc>
       <shortPath>macro-shared-comment.cpp</shortPath>
@@ -114,7 +114,7 @@
 </function>
 <function>
   <name>isPositive</name>
-  <anchor>isPositive-0e</anchor>
+  <anchor>isPositive-1</anchor>
   <loc>
     <defLoc>
       <shortPath>macro-shared-comment.cpp</shortPath>

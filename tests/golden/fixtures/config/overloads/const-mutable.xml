@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>foo</name>
-  <anchor>foo-0e</anchor>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -77,7 +77,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0b</anchor>
+  <anchor>foo-0</anchor>
   <loc>
     <loc>
       <location>
@@ -115,7 +115,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-07</anchor>
+  <anchor>foo-0-const</anchor>
   <loc>
     <loc>
       <location>

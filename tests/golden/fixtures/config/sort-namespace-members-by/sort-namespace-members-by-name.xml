@@ -48,7 +48,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0b</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -80,7 +80,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-04</anchor>
+  <anchor>B-2-int-char</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -133,7 +133,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-05</anchor>
+  <anchor>B-2-int-U</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -192,7 +192,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-0f</anchor>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -241,7 +241,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-03</anchor>
+  <anchor>C-1</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -279,7 +279,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-0d</anchor>
+  <anchor>C-2</anchor>
   <loc>
     <defLoc>
       <shortPath>sort-namespace-members-by-name.cpp</shortPath>
@@ -371,7 +371,7 @@
 </record>
 <overloads>
   <name>Z</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -421,7 +421,7 @@
 </overloads>
 <function>
   <name>Z</name>
-  <anchor>2constructor-05</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -465,7 +465,7 @@
 </function>
 <function>
   <name>Z</name>
-  <anchor>2constructor-06</anchor>
+  <anchor>2constructor-1</anchor>
   <loc>
     <loc>
       <location>
@@ -625,7 +625,7 @@
 </function>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -1123,7 +1123,7 @@
 </function>
 <overloads>
   <name>g</name>
-  <anchor>g-0f</anchor>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -1191,7 +1191,7 @@
 </overloads>
 <function>
   <name>g</name>
-  <anchor>g-0e3</anchor>
+  <anchor>g-0</anchor>
   <loc>
     <loc>
       <location>
@@ -1222,7 +1222,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-06</anchor>
+  <anchor>g-1-double</anchor>
   <loc>
     <loc>
       <location>
@@ -1269,7 +1269,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-04</anchor>
+  <anchor>g-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -1322,7 +1322,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-03a</anchor>
+  <anchor>g-2</anchor>
   <loc>
     <loc>
       <location>
@@ -1383,7 +1383,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-0a</anchor>
+  <anchor>g-3-char-char-char</anchor>
   <loc>
     <loc>
       <location>
@@ -1458,7 +1458,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-03c</anchor>
+  <anchor>g-3-T-T-T</anchor>
   <loc>
     <loc>
       <location>
@@ -1540,7 +1540,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-0e4</anchor>
+  <anchor>g-3-int-int-int</anchor>
   <loc>
     <loc>
       <location>

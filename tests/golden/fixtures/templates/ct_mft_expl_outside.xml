@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_outside.cpp</shortPath>
@@ -84,7 +84,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-00</anchor>
+  <anchor>A-1</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_outside.cpp</shortPath>
@@ -127,7 +127,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-0a</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_outside.cpp</shortPath>
@@ -166,7 +166,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-03</anchor>
+  <anchor>f-0-t1</anchor>
   <loc>
     <loc>
       <location>
@@ -208,7 +208,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f-0-t0</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_outside.cpp</shortPath>

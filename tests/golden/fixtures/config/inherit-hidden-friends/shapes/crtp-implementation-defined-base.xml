@@ -56,7 +56,7 @@
 </namespace>
 <record>
   <name>crtp_base</name>
-  <anchor>crtp_base-07</anchor>
+  <anchor>crtp_base</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-implementation-defined-base.cpp</shortPath>
@@ -94,7 +94,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-01</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-implementation-defined-base.cpp</shortPath>
@@ -147,7 +147,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-02c</anchor>
+  <anchor>operator_eq-2-crtp_base-crtp_base</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-implementation-defined-base.cpp</shortPath>
@@ -278,7 +278,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-02d</anchor>
+  <anchor>operator_eq-2-crtp_base-derived-crtp_base-derived</anchor>
   <loc>
     <loc>
       <location>

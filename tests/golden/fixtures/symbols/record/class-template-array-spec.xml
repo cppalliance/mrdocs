@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-000</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-array-spec.cpp</shortPath>
@@ -102,7 +102,7 @@
 </record>
 <record>
   <name>A</name>
-  <anchor>A-004</anchor>
+  <anchor>A-3</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-array-spec.cpp</shortPath>
