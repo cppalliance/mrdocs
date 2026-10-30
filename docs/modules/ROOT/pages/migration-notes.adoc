@@ -391,7 +391,7 @@ PREDEFINED = JZON_DOCUMENTATION_BUILD=1
 --
 ======
 
-Many other idioms collapse into a one-line configuration option or a single doc command: exposition-only "see-below" synopses, hidden friend operators, related-symbol grouping, deprecated-but-documented overloads, and so on. The xref:commands/reference.adoc[Commands] and xref:configuration/reference.adoc[Options] references are the place to look when you find yourself reaching for a preprocessor conditional.
+Many other idioms collapse into a one-line configuration option or a single doc command: exposition-only "see-below" synopses, hidden friend operators, related-symbol grouping, deprecated-but-documented overloads, and so on. The xref:commands/reference.adoc[Commands] and xref:configuration/reference.adoc[Options] references are the place to look when you find yourself reaching for a preprocessor conditional, and xref:commands/doxygen.adoc[Doxygen Compatibility] lists every Doxygen command with its status.
 
 [#handling-dependencies]
 == Handling dependencies

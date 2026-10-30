@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Check that the commands registry stays in sync with the source.
+"""Check the commands registry and the Doxygen page against the source.
 
-Five checks:
+Six checks:
 
   1. Every node type declared in BlockNodes.inc, BlockCommandNodes.inc,
      or InlineNodes.inc has a registry entry. An entry names its node
@@ -10,7 +10,7 @@ Five checks:
      entries count: the node exists even if the parser does not yet
      produce it.
   2. Every parser-dispatched command name from the C++ source appears
-     in some entry's `syntaxes` list.
+     in some entry's `syntaxes` list, except those in `EXEMPT_COMMANDS`.
   3. Every entry carries what commands-registry-extension.js needs to
      render it: a `heading`, a `description` string, and a `partial` of
      the form commands/<slug>.adoc (the extension only generates a
@@ -27,6 +27,10 @@ Five checks:
      `@endcode` is part of the same construct and is not looked up.
      Syntaxes that do not begin with `@` (Markdown, HTML tags, the
      backslash math spellings) are not covered.
+  6. The command tables of the Doxygen compatibility page agree with the
+     parser, except for the commands in `EXEMPT_COMMANDS`. The row
+     format and the rules are described in the comment at the top of
+     the page.
 
 Runs in the utility-tests CI step. Reads source files only; does not
 need mrdocs built.
@@ -100,11 +104,12 @@ def collect_declared_types(root):
 
 # Commands that the registry documents and that ExtractDocComment.cpp
 # handles without ever naming them, so the source scans below cannot see
-# them and check 5 would wrongly report them. This is not a list of every
-# command Clang delivers by comment kind (other verbatim block commands
-# also end up as code blocks). Walking Clang's `CommandTraits` at script
-# time would require building Clang, so each entry is listed here with the
-# code path that handles it. Add an entry only after tracing that path.
+# them, and checks 5 and 6 would wrongly report the registry syntaxes and
+# page rows that name them. This is not a list of every command Clang
+# delivers by comment kind (other verbatim block commands also end up as
+# code blocks). Walking Clang's `CommandTraits` at script time would
+# require building Clang, so each entry is listed here with the code path
+# that handles it. Add an entry only after tracing that path.
 # A command the extractor ignores must not be listed, whether Clang knows it
 # but no `case` handles it, or Clang does not know it at all (`@strong`).
 KIND_HANDLED_COMMANDS = {
@@ -123,6 +128,13 @@ KIND_HANDLED_COMMANDS = {
     "c",
     "p",
 }
+
+
+# Dispatched commands that have neither a registry entry (check 2) nor a
+# `Supported` page row (check 6). The parser dispatches `@n` but emits only a
+# newline text that merges into a space, so the page lists it as
+# `Not supported`.
+EXEMPT_COMMANDS = {"n"}
 
 
 def extract_kci_commands(path):
@@ -299,6 +311,12 @@ def registry_all_syntaxes(entries):
     return syntaxes
 
 
+# The opening `@word` of a syntax or of a page spelling. The formula
+# spellings `@f$`, `@f[`, `@f{` and `@f(` begin with `@f` but name no
+# command, so they do not match.
+OPENING_COMMAND_RE = re.compile(r"@(?!f[$\[{(])(\w+)")
+
+
 def syntax_to_command_name(syntax):
     """Reduce a registry syntax string to a key comparable with the dispatch.
 
@@ -316,7 +334,7 @@ def syntax_to_command_name(syntax):
     result = s
 
     # Keep the first command only, without its `[...]` or `{...}` suffix.
-    m = re.match(r"@(\w+)", s)
+    m = OPENING_COMMAND_RE.match(s)
     if m:
         result = m.group(1)
     else:
@@ -354,12 +372,7 @@ def check_commands_covered(dispatched_commands, html_commands, entries):
 
     errors = []
 
-    for cmd in sorted(dispatched_commands):
-        # `@n` is parser-dispatched but only emits a newline inside a
-        # TextInline; it has no documentation entry, like the `Text` node
-        # type itself.
-        if cmd == "n":
-            continue
+    for cmd in sorted(dispatched_commands - EXEMPT_COMMANDS):
         if cmd not in registry_cmds:
             errors.append(
                 f"  Parser-dispatched command '@{cmd}' not found in registry syntaxes"
@@ -486,6 +499,164 @@ def example_file_errors(example, heading, root):
 
 
 # ---------------------------------------------------------------------------
+# 6. The Doxygen compatibility page
+# ---------------------------------------------------------------------------
+
+PAGE_PATH = "docs/modules/ROOT/pages/commands/doxygen.adoc"
+
+# A row is one cell per line: spellings, status, effect, link.
+PAGE_ROW_CELLS = 4
+
+# The statuses that say the parser handles the command.
+SUPPORTED_STATUSES = ("Supported", "MrDocs only")
+PAGE_STATUSES = SUPPORTED_STATUSES + ("Different idiom", "Not supported")
+
+
+def page_tables(text):
+    """Return (line number, cells, stray lines) for each table of the page.
+
+    A table runs between two `|===` lines. Its first line is the header
+    row, written on one line, and is skipped. Every other line that starts
+    with `|` is one cell, kept with its line number. Any other non-blank
+    line is a stray (a wrapped cell), kept with its line number.
+    """
+    tables = []
+    in_table = False
+    header_pending = False
+    for number, line in enumerate(text.splitlines(), start=1):
+        if line.startswith("|==="):
+            in_table = not in_table
+            header_pending = in_table
+            if in_table:
+                tables.append((number, [], []))
+        elif in_table and line.startswith("|") and header_pending:
+            header_pending = False
+        elif in_table and line.startswith("|"):
+            tables[-1][1].append((number, line[1:].strip()))
+        elif in_table and line.strip():
+            tables[-1][2].append((number, line.strip()))
+    return tables
+
+
+def table_rows(start, cells, strays):
+    """Return (rows, errors) for one table; a malformed table has no rows."""
+    errors = [
+        f"  {PAGE_PATH}:{number}: line inside a table does not start with "
+        f"'|' (a cell must sit on one line): {text}"
+        for number, text in strays
+    ]
+    if len(cells) % PAGE_ROW_CELLS:
+        errors.append(
+            f"  {PAGE_PATH}:{start}: the table has {len(cells)} cells, not "
+            f"a multiple of {PAGE_ROW_CELLS}: a row has the wrong number "
+            f"of cells"
+        )
+    rows = []
+    if not errors:
+        rows = [
+            (cells[i][0], [c for _, c in cells[i:i + PAGE_ROW_CELLS]])
+            for i in range(0, len(cells), PAGE_ROW_CELLS)
+        ]
+    return rows, errors
+
+
+def page_rows(text):
+    """Return (rows, errors): each row is (line number, four cells)."""
+    rows = []
+    errors = []
+    for start, cells, strays in page_tables(text):
+        table, table_errors = table_rows(start, cells, strays)
+        rows.extend(table)
+        errors.extend(table_errors)
+    return rows, errors
+
+
+def row_commands(first_cell):
+    """Return the command names looked up in a row's first cell."""
+    spans = re.findall(r"`\+?([^`]+)`", first_cell)
+    matches = map(OPENING_COMMAND_RE.match, spans)
+    return [m.group(1) for m in matches if m]
+
+
+def page_row_errors(dispatched, required, row):
+    """Return the problems with one table row."""
+    number, (first, status, _effect, _link) = row
+    errors = []
+    if status not in PAGE_STATUSES:
+        errors.append(
+            f"  {PAGE_PATH}:{number}: unknown status '{status}' (expected "
+            f"one of: {', '.join(PAGE_STATUSES)})"
+        )
+    else:
+        errors.extend(
+            status_errors(dispatched, required, number, first, status))
+    return errors
+
+
+def status_errors(dispatched, required, number, first, status):
+    """Return the commands of a row whose status contradicts the parser."""
+    supported = status in SUPPORTED_STATUSES
+    errors = []
+    for cmd in row_commands(first):
+        if supported and cmd not in dispatched:
+            errors.append(
+                f"  {PAGE_PATH}:{number}: row marked '{status}' names "
+                f"'@{cmd}', which the parser does not dispatch"
+            )
+        elif not supported and cmd in required:
+            errors.append(
+                f"  {PAGE_PATH}:{number}: row marked '{status}' names "
+                f"'@{cmd}', which the parser dispatches"
+            )
+    return errors
+
+
+def page_supported_commands(rows):
+    """Return every command named by a `Supported` or `MrDocs only` row."""
+    return {
+        cmd
+        for _, (first, status, _, _) in rows
+        if status in SUPPORTED_STATUSES
+        for cmd in row_commands(first)
+    }
+
+
+def page_coverage_errors(required, rows):
+    """Return one error per required command without a supporting row."""
+    supported = page_supported_commands(rows)
+    return [
+        f"  Parser-dispatched command '@{cmd}' has no Supported or "
+        f"MrDocs only row in {PAGE_PATH}"
+        for cmd in sorted(required - supported)
+    ]
+
+
+def page_mismatches(dispatched, text):
+    """Return (errors, row count) for the text of the page."""
+    required = dispatched - EXEMPT_COMMANDS
+    rows, errors = page_rows(text)
+    malformed = bool(errors)
+    for row in rows:
+        errors.extend(page_row_errors(dispatched, required, row))
+    if not malformed:
+        # A malformed table hides its rows, so coverage would only repeat
+        # the damage as a list of missing commands.
+        errors.extend(page_coverage_errors(required, rows))
+    return errors, len(rows)
+
+
+def check_page_matches_parser(dispatched, root):
+    """Check 6: the page's command tables agree with the parser."""
+    path = os.path.join(root, PAGE_PATH)
+    if os.path.isfile(path):
+        with open(path, encoding="utf-8") as f:
+            result = page_mismatches(dispatched, f.read())
+    else:
+        result = ([f"  {PAGE_PATH} does not exist"], 0)
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -498,6 +669,7 @@ def build_checks(root):
     declared_types = collect_declared_types(root)
     dispatched, html_commands = collect_dispatched_commands(root)
     entries = load_registry(root)
+    page_errors, page_row_count = check_page_matches_parser(dispatched, root)
     return (
         ("declared node types have a registry entry",
          check_node_types_covered(declared_types, entries),
@@ -514,6 +686,8 @@ def build_checks(root):
         ("registry syntaxes name dispatched commands",
          check_syntaxes_dispatched(dispatched, entries),
          f"{len(entries)} entries", "undispatched"),
+        ("Doxygen page rows match the dispatched commands",
+         page_errors, f"{page_row_count} rows", "mismatches"),
     )
 
 

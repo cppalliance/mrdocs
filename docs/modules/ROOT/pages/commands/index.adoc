@@ -22,6 +22,8 @@ Each doc comment in the example above starts with a brief sentence, optionally f
 Doc comments can also carry special commands like `@param`, `@returns`, or `@throws` that attach structured information to the declaration.
 MrDocs supports most commands you would already use in a Javadoc or Doxygen comment.
 The xref:commands/reference.adoc[Commands Reference] lists every command MrDocs understands, grouped by category.
+Coming from Doxygen?
+The xref:commands/doxygen.adoc[Doxygen Compatibility] page lists every Doxygen command with its status, and says what happens to the text of those MrDocs does not understand.
 
 == Documentation Comment Formats
 
