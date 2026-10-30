@@ -18,6 +18,17 @@ insert&lowbar;sorted(
     int value);
 ----
 
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *v*
+| The sorted vector to insert into&period;
+| *value*
+| The value to insert&period;
+|===
+
 === Exceptions
 
 [cols="1,4"]
@@ -30,17 +41,6 @@ insert&lowbar;sorted(
 === Return Value
 
 An iterator to the inserted element&period;
-
-=== Parameters
-
-[cols="1,4"]
-|===
-| Name| Description
-| *v*
-| The sorted vector to insert into&period;
-| *value*
-| The value to insert&period;
-|===
 
 === Preconditions
 
