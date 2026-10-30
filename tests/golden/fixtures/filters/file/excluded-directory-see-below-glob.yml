@@ -1,0 +1,9 @@
+# The glob matches the type in the excluded directory, but only a command
+# written on the declaration overrides the exclusion of its file, so the
+# type stays a dependency: it has no page, and the signature prints its
+# name.
+see-below:
+  - 'detail::**'
+exclude:
+  - excluded-directory
+generator: adoc

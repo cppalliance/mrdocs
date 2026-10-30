@@ -1,0 +1,5 @@
+# The glob matches a private member, but only a command on the member
+# itself overrides the filter that drops private members, so the member
+# stays a dependency.
+implementation-defined:
+  - 'widget::token'

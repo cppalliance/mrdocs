@@ -1,0 +1,7 @@
+# The documented API names filtered symbols only where the warning must
+# stay quiet, so a run with the warning on is clean.
+source-root: .
+input:
+  - .
+exclude-symbols:
+  - 'detail::**'

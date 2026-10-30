@@ -1,0 +1,7 @@
+# The header is in a subdirectory, which is not an input when `recursive`
+# is off. A mark in a file outside the inputs speaks for another library,
+# so the type is still dropped, and the signature prints its name.
+input:
+  - '.'
+recursive: false
+generator: adoc
