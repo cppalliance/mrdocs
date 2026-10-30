@@ -16,8 +16,11 @@
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/raw_ostream.h>
+#include <algorithm>
 #include <format>
 #include <print>
+#include <string>
+#include <utility>
 
 // Lua's upstream headers are C-only and ship without `extern "C"` guards.
 // Wrap the includes here.
@@ -50,6 +53,17 @@ static void domValue_push(Access& A, dom::Value const&);
 // (tables become objects or arrays based on key shape).
 static dom::Value luaValueToDom(lua_State* L, int index);
 
+// The entries of a Lua table with string keys, as a `dom::Object` whose
+// members follow the order of the keys. `lua_next` visits a table in an
+// order that changes from run to run, so anything a script serializes
+// from the object would otherwise change with it.
+static dom::Object
+objectInKeyOrder(dom::Object::storage_type entries)
+{
+    std::ranges::sort(entries, {}, &dom::Object::value_type::key);
+    return dom::Object(std::move(entries));
+}
+
 static dom::Value
 luaTableToDom(lua_State* L, int absIdx)
 {
@@ -71,7 +85,7 @@ luaTableToDom(lua_State* L, int absIdx)
 
     if (hasStringKey)
     {
-        dom::Object obj;
+        dom::Object::storage_type entries;
         lua_pushnil(L);
         while (lua_next(L, absIdx) != 0)
         {
@@ -79,13 +93,13 @@ luaTableToDom(lua_State* L, int absIdx)
             {
                 std::size_t klen = 0;
                 char const* kdata = lua_tolstring(L, -2, &klen);
-                obj.set(
-                    std::string_view(kdata, klen),
+                entries.emplace_back(
+                    dom::String(std::string_view(kdata, klen)),
                     luaValueToDom(L, -1));
             }
             lua_pop(L, 1);
         }
-        return dom::Value(std::move(obj));
+        return dom::Value(objectInKeyOrder(std::move(entries)));
     }
 
     dom::Array arr;
