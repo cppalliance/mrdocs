@@ -244,6 +244,24 @@ traverseImpl(doc::ListItem& item, F&& func)
     }
 }
 
+template <bool bottomUp, class F>
+void
+traverseImpl(doc::TableCell& cell, F&& func)
+{
+    if constexpr (!bottomUp && std::invocable<F, doc::TableCell&>)
+    {
+        func(cell);
+    }
+    for (Polymorphic<doc::Inline>& child : cell.children)
+    {
+        traverseImpl<bottomUp>(child, func);
+    }
+    if constexpr (bottomUp && std::invocable<F, doc::TableCell&>)
+    {
+        func(cell);
+    }
+}
+
 // Traverse a derived node
 template <bool bottomUp, DocCommentNode NodeTy, class F>
 requires(!std::same_as<NodeTy, doc::Block> && !std::same_as<NodeTy, doc::Inline>)
@@ -278,6 +296,17 @@ traverseImpl(NodeTy& N, F&& func)
         for (auto& item: N.items)
         {
             traverseImpl<bottomUp>(item, func);
+        }
+    }
+
+    if constexpr (std::same_as<NodeTy, doc::TableBlock>)
+    {
+        for (doc::TableRow& row: N.items)
+        {
+            for (doc::TableCell& cell: row.Cells)
+            {
+                traverseImpl<bottomUp>(cell, func);
+            }
         }
     }
 

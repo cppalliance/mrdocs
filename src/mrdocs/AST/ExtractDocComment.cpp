@@ -303,12 +303,6 @@ class DocCommentVisitor
     // user's to fix, so their findings go to the debug log instead.
     bool warnings_{ true };
 
-    // A `\f$...\f$` inline formula is a verbatim block command to Clang, so it
-    // splits the surrounding paragraph in two. When that happens we record the
-    // source line just past the formula; a paragraph that starts on the next
-    // line (no blank line between) is merged back so the formula stays inline.
-    unsigned mergeParagraphAfterLine_{ 0 };
-
     // --- inline assembly
 
     template <std::derived_from<doc::Inline> InlineTy, class... Args>
@@ -516,16 +510,103 @@ class DocCommentVisitor
     // --- Visiting using Cursor (no member iterators)
 
     void
-    visitChildrenWithCursor(clang::comments::Comment const* C)
+    visitCursor(Cursor cur)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
-        Cursor cur(C);
         while (!cur.done())
         {
             auto* n = cur.cur();
             MRDOCS_COMMENT_TRACE(n, ctx_);
             visitNode(n, cur); // may advance/consume
             cur.advance();
+        }
+    }
+
+    void
+    visitChildrenWithCursor(clang::comments::Comment const* C)
+    {
+        MRDOCS_COMMENT_TRACE(C, ctx_);
+        visitCursor(Cursor(C));
+    }
+
+    // --- Paragraphs split by inline formulas
+
+    bool
+    isInlineFormula(clang::comments::Comment const* c) const
+    {
+        using namespace clang::comments;
+        return c->getCommentKind() == CommentKind::VerbatimBlockComment
+               && static_cast<VerbatimBlockComment const*>(c)->getCommandName(
+                      ctx_.getCommentCommandTraits()) == "f$";
+    }
+
+    unsigned
+    lineOf(clang::SourceLocation loc) const
+    {
+        return sm_.getPresumedLoc(loc).getLine();
+    }
+
+    // Whether `next`, the sibling after `prev`, continues the paragraph
+    // `prev` belongs to: it is a formula, or the text after one, and no blank
+    // line separates the two.
+    bool
+    continuesParagraph(
+        clang::comments::Comment const* prev,
+        clang::comments::Comment const* next) const
+    {
+        using namespace clang::comments;
+        bool const joinable
+            = next != nullptr
+              && (isInlineFormula(next)
+                  || (isInlineFormula(prev)
+                      && next->getCommentKind()
+                             == CommentKind::ParagraphComment));
+        return joinable
+               && lineOf(next->getBeginLoc()) <= lineOf(prev->getEndLoc()) + 1;
+    }
+
+    static void
+    appendToParagraph(Cursor& paragraph, clang::comments::Comment const* c)
+    {
+        if (c->getCommentKind()
+            == clang::comments::CommentKind::ParagraphComment)
+        {
+            paragraph.children.append(c->child_begin(), c->child_end());
+        }
+        else
+        {
+            paragraph.children.push_back(c);
+        }
+    }
+
+    // Clang ends a paragraph at a `\f$...\f$` inline formula, which it models
+    // as a verbatim block, and puts the text after the formula in a new
+    // paragraph. Collect the nodes of the paragraph (or formula) at `cur.i`
+    // and of the siblings that continue it, leaving `cur.i` at the last of
+    // them, so that they are visited as one paragraph: the formulas stay
+    // inline, and an HTML table around them finds its end tag.
+    Cursor
+    joinFormulaSplitParagraph(Cursor& cur) const
+    {
+        Cursor paragraph;
+        appendToParagraph(paragraph, cur.cur());
+        while (continuesParagraph(cur.cur(), cur.peek()))
+        {
+            cur.advance();
+            appendToParagraph(paragraph, cur.cur());
+        }
+        return paragraph;
+    }
+
+    void
+    visitTopLevelParagraph(Cursor& cur)
+    {
+        Cursor joined = joinFormulaSplitParagraph(cur);
+        doc::ParagraphBlock paragraph;
+        BlockScope scope = enterScope(paragraph);
+        visitCursor(std::move(joined));
+        if (!paragraph.empty())
+        {
+            jd_.Document.emplace_back(std::move(paragraph));
         }
     }
 
@@ -1087,7 +1168,7 @@ class DocCommentVisitor
             return;
 
         case CommentKind::ParagraphComment:
-            visitParagraph(static_cast<ParagraphComment const*>(C));
+            visitParagraph(static_cast<ParagraphComment const*>(C), cur);
             return;
 
         case CommentKind::BlockCommandComment:
@@ -1103,7 +1184,14 @@ class DocCommentVisitor
             return;
 
         case CommentKind::VerbatimBlockComment:
-            visitVerbatimBlock(static_cast<VerbatimBlockComment const*>(C));
+            if (!curInlines_ && isInlineFormula(C))
+            {
+                visitTopLevelParagraph(cur);
+            }
+            else
+            {
+                visitVerbatimBlock(static_cast<VerbatimBlockComment const*>(C));
+            }
             return;
 
         case CommentKind::VerbatimBlockLineComment:
@@ -1571,34 +1659,16 @@ class DocCommentVisitor
     }
 
     void
-    visitParagraph(clang::comments::ParagraphComment const* C)
+    visitParagraph(clang::comments::ParagraphComment const* C, Cursor& cur)
     {
         MRDOCS_COMMENT_TRACE(C, ctx_);
         if (curInlines_)
         {
             visitChildrenWithCursor(C);
-            return;
         }
-        // Merge back a paragraph split off by a preceding `\f$...\f$` inline
-        // formula, but only when it is contiguous (no blank line between).
-        unsigned const mergeLine = std::exchange(mergeParagraphAfterLine_, 0);
-        if (mergeLine != 0
-            && !jd_.Document.empty()
-            && jd_.Document.back()->Kind == doc::BlockKind::Paragraph
-            && sm_.getPresumedLoc(C->getBeginLoc()).getLine() <= mergeLine + 1)
+        else
         {
-            auto& inlines = static_cast<doc::InlineContainer&>(
-                jd_.Document.back()->asParagraph());
-            auto scope = enterScope(inlines);
-            visitChildrenWithCursor(C);
-            return;
-        }
-        doc::ParagraphBlock paragraph;
-        auto scope = enterScope(paragraph);
-        visitChildrenWithCursor(C);
-        if (!paragraph.empty())
-        {
-            jd_.Document.emplace_back(std::move(paragraph));
+            visitTopLevelParagraph(cur);
         }
     }
 
@@ -1931,31 +2001,8 @@ class DocCommentVisitor
         if (name == "f$")
         {
             // Inline formula. Clang positions the verbatim block outside the
-            // surrounding paragraph, so emit into the current inline flow when
-            // one is open, append to the paragraph that was just closed, or
-            // otherwise wrap it in its own paragraph.
-            if (curInlines_)
-            {
-                emplaceInline<doc::MathInline>(true, std::move(payload));
-                return;
-            }
-            doc::InlineContainer* inlines = nullptr;
-            if (!jd_.Document.empty()
-                && jd_.Document.back()->Kind == doc::BlockKind::Paragraph)
-            {
-                inlines = &static_cast<doc::InlineContainer&>(
-                    jd_.Document.back()->asParagraph());
-            }
-            else
-            {
-                jd_.Document.emplace_back(doc::ParagraphBlock{});
-                inlines = &static_cast<doc::InlineContainer&>(
-                    jd_.Document.back()->asParagraph());
-            }
-            inlines->children.emplace_back(
-                std::in_place_type<doc::MathInline>, std::move(payload));
-            mergeParagraphAfterLine_
-                = sm_.getPresumedLoc(C->getEndLoc()).getLine();
+            // surrounding paragraph; visitTopLevelParagraph puts it back.
+            emplaceInline<doc::MathInline>(true, std::move(payload));
             return;
         }
         if (name == "f[")
