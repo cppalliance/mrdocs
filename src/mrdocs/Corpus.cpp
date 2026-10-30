@@ -34,14 +34,99 @@
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Path.hpp>
+#include <mrdocs/Support/String/String.hpp>
+#include <mrdocs/Support/TagfileReader.hpp>
 #include <algorithm>
 #include <chrono>
 #include <compare>
+#include <optional>
 #include <ranges>
 
 namespace mrdocs {
 
 namespace {
+// The symbols every configured tagfile documents, in one index.
+Expected<detail::TagfileIndex>
+loadInputTagfiles(Config const& config)
+{
+    detail::TagfileIndex index;
+    for (auto const& [path, baseUrl]: config.inputTagfiles)
+    {
+        std::string const file = files::makeAbsolute(path, config.configDir());
+        std::size_t const known = index.size();
+        MRDOCS_TRY(loadTagfile(index, file, baseUrl));
+        report::debug("  - \"{}\": {} symbols documented elsewhere",
+            path, index.size() - known);
+    }
+    return index;
+}
+
+// The name a tagfile lists one component of a reference under.
+std::string
+tagfileComponentName(ParsedRefComponent const& component)
+{
+    std::string result;
+    if (component.isConversion())
+    {
+        result = "operator ";
+        result += toString(**component.ConversionType);
+    }
+    else
+    {
+        result = trim(component.Name);
+    }
+    return result;
+}
+
+/*  The name a tagfile lists a referenced symbol under: the components of
+    the reference, without template arguments or a parameter list.
+*/
+std::string
+tagfileName(ParsedRef const& ref)
+{
+    std::string result;
+    for (ParsedRefComponent const& component: ref.Components)
+    {
+        if (!result.empty())
+        {
+            result += "::";
+        }
+        result += tagfileComponentName(component);
+    }
+    return result;
+}
+
+/*  The URL of the first entry a name reaches, qualified by each scope
+    from `innermost` outward, and finally on its own.
+*/
+std::optional<std::string>
+findOutward(
+    Corpus const& corpus,
+    detail::TagfileIndex const& index,
+    SymbolID const& innermost,
+    std::string_view name)
+{
+    std::optional<std::string> found;
+    Symbol const* scope = corpus.find(innermost);
+    while (scope && !found)
+    {
+        std::string candidate = corpus.qualifiedName(*scope);
+        if (!candidate.empty())
+        {
+            candidate += "::";
+            candidate += name;
+            found = index.find(candidate);
+        }
+        scope = corpus.find(scope->Parent);
+    }
+    if (!found)
+    {
+        found = index.find(name);
+    }
+    return found;
+}
+
 bool
 isTransparent(Symbol const& info)
 {
@@ -206,6 +291,13 @@ Corpus::build(
     // Create empty corpus
     // ------------------------------------------
     Corpus corpus;
+
+    // ------------------------------------------
+    // Read the tagfiles of other documentation sets
+    // ------------------------------------------
+    // Before extracting anything: a tagfile that cannot be read should
+    // not cost the time a large library takes to extract.
+    MRDOCS_TRY(corpus.externalSymbols_, loadInputTagfiles(config));
 
     // ------------------------------------------
     // Execution context
@@ -654,6 +746,39 @@ Corpus::
 lookup(SymbolID const& context, std::string_view name)
 {
     return lookupImpl(*this, context, name);
+}
+
+Expected<std::string>
+Corpus::
+externalUrl(SymbolID const& context, std::string_view name) const
+{
+    std::optional<std::string> found;
+    if (!externalSymbols_.empty())
+    {
+        Expected<ParsedRef> const ref = parse<ParsedRef>(name);
+        if (ref.has_value())
+        {
+            std::string const key = tagfileName(*ref);
+            found = ref->IsFullyQualified
+                ? externalSymbols_.find(key)
+                : findOutward(
+                    *this,
+                    externalSymbols_,
+                    findFirstParentInfo(info_, context),
+                    key);
+        }
+    }
+    Expected<std::string> result;
+    if (found)
+    {
+        result = *std::move(found);
+    }
+    else
+    {
+        result = Unexpected(formatError(
+            "No tagfile documents '{}'", name));
+    }
+    return result;
 }
 
 template <class Self>
