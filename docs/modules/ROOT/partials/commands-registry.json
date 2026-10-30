@@ -44,7 +44,7 @@
           {
             "name": "title",
             "type": "Text",
-            "description": "The heading text, on the same line as `@par`. If omitted, no heading is emitted."
+            "description": "The heading text, on the same line as `@par`. If omitted, the first line of the section body becomes the heading."
           },
           {
             "name": "content",
@@ -280,7 +280,7 @@
         "see_also": [
           "Paragraph"
         ],
-        "description": "The `@brief` command marks its content as the brief description (summary) of the documented symbol.\nThe first sentence of a doc comment is automatically treated as the brief, so you only need `@brief` when you want to override that behavior or when the automatic detection does not capture what you intend.\n\n`@short` is an alias for `@brief`.",
+        "description": "The `@brief` command marks its content as the brief description (summary) of the documented symbol.\nThe first paragraph of a doc comment is automatically treated as the brief, so you only need `@brief` when you want to override that behavior or when the automatic detection does not capture what you intend.\n\n`@short` is an alias for `@brief`.",
         "parameters": [
           {
             "name": "text",
@@ -533,7 +533,7 @@
           "commands/see-below"
         ],
         "see_also": [],
-        "description": "Marks the symbol so its synopsis renders as `/* see below */` instead of the full declaration, for interfaces whose exact form is unspecified."
+        "description": "Marks the symbol so its synopsis renders as `/* see-below */` instead of the full declaration, for interfaces whose exact form is unspecified."
       },
       {
         "flag": "ImplementationDefined",

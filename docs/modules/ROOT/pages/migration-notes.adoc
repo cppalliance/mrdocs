@@ -148,7 +148,7 @@ The type is part of the public API, and callers may need to name it, but the doc
 Mr.Docs::
 +
 --
-The type is declared normally and tagged with the `@seebelow` doc command. The synopsis is rendered as "see below" and the members are omitted, but the type itself remains a documented symbol in the corpus. No configuration entry is needed; the command on the symbol is enough:
+The type is declared normally and tagged with the `@seebelow` doc command. The synopsis body is rendered as `+/* see-below */+` and the members are omitted, but the type itself remains a documented symbol in the corpus. No configuration entry is needed; the command on the symbol is enough:
 
 .`include/netz/buffer_view.hpp`
 [source,c++]
@@ -167,7 +167,7 @@ include::example$snippets/options/see-below/include/netz/stream.hpp[tag=body]
 The `see-below` configuration option also accepts a glob of symbol names for cases where the doc-command treatment is not practical, for example when the same rule has to apply across many types or when the source can't be changed. The `@implementationdefined` command and the matching `implementation-defined` configuration option work the same way.
 ====
 
-.The type keeps its page, but the members collapse into a "see below" placeholder
+.The type keeps its page, but the members collapse into a "see-below" placeholder
 [.adoc-preview]
 ========
 include::example$snippets/options/see-below/see-below.adoc[tags=!footer]

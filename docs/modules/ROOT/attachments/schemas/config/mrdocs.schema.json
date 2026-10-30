@@ -19,12 +19,12 @@
     },
     "auto-brief": {
       "default": true,
-      "description": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+      "description": "When set to `true`, Mr.Docs uses the first paragraph of the comment as the brief of the symbol. When set to `false`, only the `@brief`, `@short`, `@copybrief`, and `@copydoc` commands set a brief.",
       "enum": [
         true,
         false
       ],
-      "title": "Use the first line of the comment as the brief",
+      "title": "Use the first paragraph of the comment as the brief",
       "type": "boolean"
     },
     "auto-function-metadata": {
