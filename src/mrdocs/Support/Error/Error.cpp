@@ -108,7 +108,7 @@ Error(
     for(auto const& err : errors)
     {
         reason_.append("    ");
-        reason_.append(err.message());
+        reason_.append(err.reason());
         reason_.push_back('\n');
     }
     message_ = formatMessage(reason_, where_);

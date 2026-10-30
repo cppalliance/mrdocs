@@ -95,7 +95,7 @@ ExtensionRegistry::applyTransforms(Corpus& corpus, Config const& config) const
             {
                 return Unexpected(formatError(
                     "extension transform '{}': {}",
-                    id, invoked.error().message()));
+                    id, invoked.error().reason()));
             }
         }
     }

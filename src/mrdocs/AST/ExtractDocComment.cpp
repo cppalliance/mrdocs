@@ -200,9 +200,6 @@ convertDirection(clang::comments::ParamCommandPassDirection d)
     case D::InOut:
         return doc::ParamDirection::inout;
     }
-    report::error(
-        "error: unsupported ParamCommandPassDirection <{}>",
-        static_cast<int>(d));
     MRDOCS_UNREACHABLE();
 }
 
@@ -219,7 +216,6 @@ convertCopydoc(unsigned id)
     case T::KCI_copydetails:
         return doc::Parts::description;
     default:
-        report::error("error: unsupported CommandTrait id <{}>", id);
         MRDOCS_UNREACHABLE();
     }
 }
@@ -793,7 +789,7 @@ class DocCommentVisitor
         Expected<doc::TableCell> cellExp = parseTableCell(sub);
         if (!cellExp)
         {
-            warnNear(s, cellExp.error().message());
+            warnNear(s, cellExp.error().reason());
             return;
         }
         row.Cells.push_back(std::move(*cellExp));
@@ -894,7 +890,7 @@ class DocCommentVisitor
         Expected<doc::TableRow> rowExp = parseTableRow(sub);
         if (!rowExp)
         {
-            warnNear(s, rowExp.error().message());
+            warnNear(s, rowExp.error().reason());
             return;
         }
         // Skip rows whose cells all failed to parse: a row with
@@ -1049,7 +1045,7 @@ class DocCommentVisitor
         Expected<doc::TableBlock> tbExp = parseTable(cur);
         if (!tbExp)
         {
-            warnNear(C, tbExp.error().message());
+            warnNear(C, tbExp.error().reason());
             return;
         }
         // A table with no rows (e.g., because every row's content
@@ -1185,7 +1181,7 @@ class DocCommentVisitor
             // written; the rest of the phrase follows as ordinary text.
             if (isSupportedHTMLTag(C->getTagName()))
             {
-                warnOnce(filename, loc.getLine(), compsExp.error().message());
+                warnOnce(filename, loc.getLine(), compsExp.error().reason());
             }
             emplaceInline<doc::TextInline>(
                 C->hasTrailingNewline(),
@@ -1210,7 +1206,7 @@ class DocCommentVisitor
                 // problem in the user's doc comment, not in Mr.Docs: warn
                 // with the location and keep the text instead of failing
                 // the whole run with an internal-error banner.
-                warnOnce(filename, loc.getLine(), r.error().message());
+                warnOnce(filename, loc.getLine(), r.error().reason());
                 emplaceInline<doc::TextInline>(
                     C->hasTrailingNewline(),
                     ensureUTF8(std::move(comps.text)));
@@ -1276,7 +1272,7 @@ class DocCommentVisitor
             auto srcAttr = getAttr("src");
             if (!srcAttr)
             {
-                warnOnce(filename, loc.getLine(), srcAttr.error().message());
+                warnOnce(filename, loc.getLine(), srcAttr.error().reason());
                 return;
             }
             std::string alt = getAttr("alt").value_or(std::string());
@@ -1360,7 +1356,7 @@ class DocCommentVisitor
             warnOnce(
                 files::makePosixStyle(loc.getFilename()),
                 loc.getLine(),
-                r.error().message());
+                r.error().reason());
         }
         else if (comps.tag == "em")
         {
@@ -1761,9 +1757,6 @@ class DocCommentVisitor
         case T::KCI_copybrief:
         case T::KCI_copydetails:
         case T::KCI_copydoc:
-            report::error(
-                "error: inline command {} should be handled elsewhere",
-                cmd->Name);
             MRDOCS_UNREACHABLE();
 
         default:

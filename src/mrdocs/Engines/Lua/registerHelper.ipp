@@ -155,7 +155,7 @@ invokeHelperRef(
 
     int const rc = lua_pcall(A, static_cast<int>(narg), 1, 0);
     if (rc != LUA_OK)
-        return Unexpected(dom::Error(std::string(luaM_popError(A).message())));
+        return Unexpected(dom::Error(std::string(luaM_popError(A).reason())));
 
     dom::Value result = luaToDom(A, lua_gettop(A));
     lua_pop(A, 1);
@@ -184,7 +184,7 @@ invokeRef(
 
     int const rc = lua_pcall(A, static_cast<int>(narg), 1, 0);
     if (rc != LUA_OK)
-        return Unexpected(dom::Error(std::string(luaM_popError(A).message())));
+        return Unexpected(dom::Error(std::string(luaM_popError(A).reason())));
 
     dom::Value result = luaToDom(A, lua_gettop(A));
     lua_pop(A, 1);

@@ -603,7 +603,8 @@ load_file(
 {
     auto ft = files::getFileType(configPath);
     MRDOCS_CHECK(ft, formatError(
-        "Config file does not exist: \"{}\"", ft.error(), configPath));
+        "Cannot determine the type of config file \"{}\": {}",
+        configPath, ft.error().reason()));
     if (ft.value() == files::FileType::regular)
     {
         c.config = configPath;
@@ -631,7 +632,8 @@ load_file(
     std::string configYaml;
     auto ft = files::getFileType(configPath);
     MRDOCS_CHECK(ft, formatError(
-        "Config file does not exist: \"{}\"", ft.error(), configPath));
+        "Cannot determine the type of config file \"{}\": {}",
+        configPath, ft.error().reason()));
     if (ft.value() == files::FileType::regular)
     {
         c.config = configPath;
@@ -1121,9 +1123,7 @@ struct ConfigSchemaVisitor {
         MRDOCS_TRY(
             std::string_view const baseDir,
             getBaseDir(referenceDirKey, dirs, settings));
-        if (pos != std::string::npos) {
-            value = value.substr(pos + 1);
-        }
+        value = pos != std::string::npos ? value.substr(pos + 1) : ".";
         return std::string(baseDir);
     }
 };
