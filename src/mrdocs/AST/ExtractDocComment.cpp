@@ -1717,6 +1717,7 @@ class DocCommentVisitor
             return;
         }
         case T::KCI_li:
+        case T::KCI_arg:
         {
             if (jd_.Document.empty() || !jd_.Document.back()->isList())
             {
@@ -1735,6 +1736,7 @@ class DocCommentVisitor
             return;
         }
         case T::KCI_see:
+        case T::KCI_sa:
         {
             auto see = parseBlock(std::in_place_type<doc::SeeBlock>);
             jd_.sees.push_back(std::move(see));
