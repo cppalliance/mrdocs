@@ -286,7 +286,7 @@
 </function>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-04</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>copy-dependencies.cpp</shortPath>
@@ -330,7 +330,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-08</anchor>
+  <anchor>operator_eq-2-base-base</anchor>
   <loc>
     <defLoc>
       <shortPath>copy-dependencies.cpp</shortPath>
@@ -481,7 +481,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-06</anchor>
+  <anchor>operator_eq-2-value-value</anchor>
   <loc>
     <defLoc>
       <shortPath>copy-dependencies.cpp</shortPath>

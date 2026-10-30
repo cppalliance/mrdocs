@@ -98,7 +98,7 @@
 </record>
 <function>
   <name>operator CArray&amp;</name>
-  <anchor>2conversion-0251</anchor>
+  <anchor>2conversion-CArray-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -176,7 +176,7 @@
 </function>
 <function>
   <name>operator MyAlias</name>
-  <anchor>2conversion-0252</anchor>
+  <anchor>2conversion-MyAlias</anchor>
   <loc>
     <loc>
       <location>
@@ -232,7 +232,7 @@
 </function>
 <overloads>
   <name>operator Range</name>
-  <anchor>2conversion-05</anchor>
+  <anchor>2conversion-Range</anchor>
   <loc>
     <loc>
       <location>
@@ -283,7 +283,7 @@
 </overloads>
 <function>
   <name>operator Range</name>
-  <anchor>2conversion-01</anchor>
+  <anchor>2conversion-Range-0-const-t1</anchor>
   <loc>
     <loc>
       <location>
@@ -357,7 +357,7 @@
 </function>
 <function>
   <name>operator Range</name>
-  <anchor>2conversion-02a</anchor>
+  <anchor>2conversion-Range-0-const-t2</anchor>
   <loc>
     <loc>
       <location>
@@ -448,7 +448,7 @@
 </function>
 <function>
   <name>operator T</name>
-  <anchor>2conversion-00</anchor>
+  <anchor>2conversion-T</anchor>
   <loc>
     <loc>
       <location>
@@ -512,7 +512,7 @@
 </function>
 <function>
   <name>operator T&amp;</name>
-  <anchor>2conversion-08</anchor>
+  <anchor>2conversion-T-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -581,7 +581,7 @@
 </function>
 <function>
   <name>operator T::type</name>
-  <anchor>2conversion-07</anchor>
+  <anchor>2conversion-T-type</anchor>
   <loc>
     <loc>
       <location>

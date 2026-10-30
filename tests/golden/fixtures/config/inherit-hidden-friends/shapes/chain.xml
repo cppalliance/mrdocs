@@ -372,7 +372,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-04</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>chain.cpp</shortPath>
@@ -429,7 +429,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-00e</anchor>
+  <anchor>operator_eq-2-mid-mid</anchor>
   <loc>
     <defLoc>
       <shortPath>chain.cpp</shortPath>
@@ -580,7 +580,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-007</anchor>
+  <anchor>operator_eq-2-leaf-leaf</anchor>
   <loc>
     <defLoc>
       <shortPath>chain.cpp</shortPath>

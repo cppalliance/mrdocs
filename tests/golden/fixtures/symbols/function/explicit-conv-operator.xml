@@ -33,7 +33,7 @@
 </record>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -148,7 +148,7 @@
 </record>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -243,7 +243,7 @@
 </record>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -338,7 +338,7 @@
 </record>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>

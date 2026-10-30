@@ -9,14 +9,14 @@
 [cols="1,4"]
 |===
 | Name| Description
-| link:#A-09[`A`] 
+| link:#A[`A`] 
 | Primary class template&period;
-| link:#B-00[`B`] 
+| link:#B[`B`] 
 | Class template with deduction guides&period;
 |===
 
 
-[#A-09]
+[#A]
 == A
 
 Primary class template&period;
@@ -38,17 +38,17 @@ struct A;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#A-060[`A&lt;int, int&gt;`] 
+| link:#A-2-int-int[`A&lt;int, int&gt;`] 
 | Specialization for two ints&period;
-| link:#A-00[`A&lt;T&, U&gt;`] 
+| link:#A-2-T-ref-U[`A&lt;T&, U&gt;`] 
 | Specialization for a reference&period;
-| link:#A-06c[`A&lt;T*, U&gt;`] 
+| link:#A-2-T-ptr-U[`A&lt;T*, U&gt;`] 
 | Specialization for a pointer&period;
 |===
 
 
-[#A-060]
-== link:#A-09[A]&lt;int, int&gt;
+[#A-2-int-int]
+== link:#A[A]&lt;int, int&gt;
 
 Specialization for two ints&period;
 
@@ -59,11 +59,11 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct link:#A-09[A]&lt;int, int&gt;;
+struct link:#A[A]&lt;int, int&gt;;
 ----
 
-[#A-00]
-== link:#A-09[A]&lt;T&, U&gt;
+[#A-2-T-ref-U]
+== link:#A[A]&lt;T&, U&gt;
 
 Specialization for a reference&period;
 
@@ -76,11 +76,11 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 template&lt;
     typename T,
     typename U&gt;
-struct link:#A-09[A]&lt;T&, U&gt;;
+struct link:#A[A]&lt;T&, U&gt;;
 ----
 
-[#A-06c]
-== link:#A-09[A]&lt;T*, U&gt;
+[#A-2-T-ptr-U]
+== link:#A[A]&lt;T*, U&gt;
 
 Specialization for a pointer&period;
 
@@ -93,10 +93,10 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 template&lt;
     typename T,
     typename U&gt;
-struct link:#A-09[A]&lt;T*, U&gt;;
+struct link:#A[A]&lt;T*, U&gt;;
 ----
 
-[#B-00]
+[#B]
 == B
 
 Class template with deduction guides&period;
@@ -116,7 +116,7 @@ struct B;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#B-00-2constructor[`B`]         [.small]#[constructor]#
+| link:#B-2constructor[`B`]         [.small]#[constructor]#
 | Constructor&period;
 |===
 
@@ -126,19 +126,19 @@ struct B;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#B-05[`B&lt;T&gt;`] 
+| link:#B-2guide[`B&lt;T&gt;`] 
 | Guide taking a pointer&period;
-| link:#B-0a7[`B&lt;char&gt;`] 
+| link:#B-2guide-1-int[`B&lt;char&gt;`] 
 | Guide deducing a different specialization, so what it deduces decides its place rather than what it takes&period;
-| link:#B-0c[`B&lt;int&gt;`] 
+| link:#B-2guide-1-bool[`B&lt;int&gt;`] 
 | Guide taking a bool&period;
-| link:#B-0ad[`B&lt;int&gt;`] 
+| link:#B-2guide-1-char[`B&lt;int&gt;`] 
 | Guide taking a char&period;
 |===
 
 
-[#B-00-2constructor]
-== link:#B-00[B]::B
+[#B-2constructor]
+== link:#B[B]::B
 
 Constructor&period;
 
@@ -160,8 +160,8 @@ B(T value);
 | The object to construct from
 |===
 
-[#B-05]
-== link:#B-00[B&lt;T&gt;]
+[#B-2guide]
+== link:#B[B&lt;T&gt;]
 
 Guide taking a pointer&period;
 
@@ -172,11 +172,11 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-link:#B-00[B&lt;T&gt;](T*) -> link:#B-00[B&lt;T&gt;];
+link:#B[B&lt;T&gt;](T*) -> link:#B[B&lt;T&gt;];
 ----
 
-[#B-0a7]
-== link:#B-00[B&lt;char&gt;]
+[#B-2guide-1-int]
+== link:#B[B&lt;char&gt;]
 
 Guide deducing a different specialization, so what it deduces decides its place rather than what it takes&period;
 
@@ -186,11 +186,11 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#B-00[B&lt;char&gt;](int) -> link:#B-00[B&lt;char&gt;];
+link:#B[B&lt;char&gt;](int) -> link:#B[B&lt;char&gt;];
 ----
 
-[#B-0c]
-== link:#B-00[B&lt;int&gt;]
+[#B-2guide-1-bool]
+== link:#B[B&lt;int&gt;]
 
 Guide taking a bool&period;
 
@@ -200,11 +200,11 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#B-00[B&lt;int&gt;](bool) -> link:#B-00[B&lt;int&gt;];
+link:#B[B&lt;int&gt;](bool) -> link:#B[B&lt;int&gt;];
 ----
 
-[#B-0ad]
-== link:#B-00[B&lt;int&gt;]
+[#B-2guide-1-char]
+== link:#B[B&lt;int&gt;]
 
 Guide taking a char&period;
 
@@ -214,7 +214,7 @@ Declared in `&lt;specialization&hyphen;order&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#B-00[B&lt;int&gt;](char) -> link:#B-00[B&lt;int&gt;];
+link:#B[B&lt;int&gt;](char) -> link:#B[B&lt;int&gt;];
 ----
 
 

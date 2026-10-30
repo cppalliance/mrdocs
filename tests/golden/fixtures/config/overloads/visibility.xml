@@ -38,7 +38,7 @@
 </record>
 <overloads>
   <name>foo</name>
-  <anchor>foo-0e</anchor>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -77,7 +77,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0b</anchor>
+  <anchor>foo-0</anchor>
   <loc>
     <loc>
       <location>
@@ -110,7 +110,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-06</anchor>
+  <anchor>foo-1-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -159,7 +159,7 @@
 </function>
 <overloads>
   <name>foo</name>
-  <anchor>foo-03</anchor>
+  <anchor>foo-public-static</anchor>
   <loc>
     <loc>
       <location>
@@ -198,7 +198,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0fc</anchor>
+  <anchor>foo-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -248,7 +248,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-05</anchor>
+  <anchor>foo-2-int-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -312,7 +312,7 @@
 </function>
 <overloads>
   <name>foo</name>
-  <anchor>foo-04c</anchor>
+  <anchor>foo-protected</anchor>
   <loc>
     <loc>
       <location>
@@ -351,7 +351,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0a</anchor>
+  <anchor>foo-2-int-int</anchor>
   <loc>
     <loc>
       <location>
@@ -414,7 +414,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-0c</anchor>
+  <anchor>foo-3-int-int-bool</anchor>
   <loc>
     <loc>
       <location>
@@ -491,7 +491,7 @@
 </function>
 <overloads>
   <name>foo</name>
-  <anchor>foo-048</anchor>
+  <anchor>foo-protected-static</anchor>
   <loc>
     <loc>
       <location>
@@ -530,7 +530,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-00</anchor>
+  <anchor>foo-3-int-int-int</anchor>
   <loc>
     <loc>
       <location>
@@ -608,7 +608,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-0f5</anchor>
+  <anchor>foo-4</anchor>
   <loc>
     <loc>
       <location>

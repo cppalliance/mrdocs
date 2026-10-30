@@ -6,6 +6,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,13 +17,22 @@
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/String/String.hpp>
 #include <mrdocs/Support/TypeTraits/Concepts.hpp>
 #include <mrdocs/Support/TypeTraits/TypeTraits.hpp>
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <format>
+#include <map>
 #include <ranges>
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <utility>
+#include <vector>
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Support/xxhash.h>
 
 namespace mrdocs {
 namespace {
@@ -82,74 +92,818 @@ getUnnamedInfoName(Symbol const& I)
     return res;
 }
 
-// Computes each symbol's unqualified, URL-safe legible name, unique among
-// its siblings (siblings that would collide are disambiguated with a
-// suffix taken from the SymbolID). This is a build-time helper for the
-// disambiguation, which is inherently a per-scope pass: a name's suffix
-// length can grow as more same-named siblings are discovered, so the
-// results are settled here before build() writes each unqualified name
-// into the symbol's `Anchor`. The qualified fragment/path is assembled on
-// demand by the generator from the parent chain, so it is not stored.
+// A member of a scope, with the anchor it is getting.
+struct ScopeEntry
+{
+    Symbol const* symbol;
+
+    // The member's name as an anchor may hold it, before disambiguation.
+    std::string raw;
+
+    std::string anchor{};
+
+    // Whether the member keeps the plain name, so that no other member
+    // takes it from it. The global namespace has it from the start.
+    bool keepsPlainName = false;
+};
+
+// The kinds in the order in which they claim a name that members of
+// different kinds share, with the word that sets each one apart when a
+// kind that comes earlier keeps the plain name. Each word is a keyword or
+// starts with a digit, so it is never the name of a member: in a
+// single-page fragment, the anchor of a member follows the anchor of its
+// parent after a `-`. Every record has the word `class`, whatever its
+// key, so that a `struct` that becomes a `class` keeps its anchor.
+struct RankedKind
+{
+    SymbolKind kind;
+    std::string_view word;
+};
+
+constexpr RankedKind kindRanking[] = {
+    {SymbolKind::Namespace, "namespace"},
+    {SymbolKind::Record, "class"},
+    {SymbolKind::Enum, "enum"},
+    {SymbolKind::Typedef, "typedef"},
+    {SymbolKind::Concept, "concept"},
+    {SymbolKind::Variable, "2variable"},
+    {SymbolKind::Overloads, "2function"},
+    {SymbolKind::Guide, "2guide"},
+    {SymbolKind::Using, "using"},
+    {SymbolKind::NamespaceAlias, "namespace"},
+    {SymbolKind::EnumConstant, "2enumerator"},
+    {SymbolKind::Macro, "2macro"},
+};
+
+// The row of a member's kind in `kindRanking`. A function ranks with the
+// overload sets, since it shares its name with its set.
+std::size_t
+rankOf(Symbol const& I)
+{
+    SymbolKind const kind = I.isFunction() ? SymbolKind::Overloads : I.Kind;
+    RankedKind const* const found =
+        std::ranges::find(kindRanking, kind, &RankedKind::kind);
+    MRDOCS_ASSERT(found != std::ranges::end(kindRanking));
+    return static_cast<std::size_t>(found - std::ranges::begin(kindRanking));
+}
+
+std::string_view
+kindWord(Symbol const& I)
+{
+    return kindRanking[rankOf(I)].word;
+}
+
+// Append a word to the text of an anchor, after a `-` unless the text is
+// empty.
+void
+appendWord(std::string& text, std::string_view word)
+{
+    if (!text.empty())
+    {
+        text.push_back('-');
+    }
+    text.append(word);
+}
+
+bool
+isIdentifierChar(char c)
+{
+    return c == '_' || isAlphaNumeric(c);
+}
+
+// Append the word the spelling of a type starts with, if it starts with
+// one, and return how many characters of the spelling it took.
+std::size_t
+appendLeadingToken(std::string& text, std::string_view spelling)
+{
+    // Punctuation that the spelling of a type keeps in an anchor, as a
+    // word. Longer spellings come first, so that `&&` is not taken for
+    // two `&`.
+    using Spelled = std::pair<std::string_view, std::string_view>;
+    static constexpr Spelled spelledPunctuation[] = {
+        {"...", "pack"},
+        {"&&", "rref"},
+        {"&", "ref"},
+        {"*", "ptr"},
+    };
+    std::size_t used = 1;
+    if (isIdentifierChar(spelling.front()))
+    {
+        used = static_cast<std::size_t>(
+            std::ranges::find_if_not(spelling, isIdentifierChar) -
+            spelling.begin());
+        appendWord(text, spelling.substr(0, used));
+    }
+    else if (Spelled const* const match = std::ranges::find_if(
+                 spelledPunctuation,
+                 [spelling](Spelled const& p)
+                 { return spelling.starts_with(p.first); });
+             match != std::ranges::end(spelledPunctuation))
+    {
+        appendWord(text, match->second);
+        used = match->first.size();
+    }
+    return used;
+}
+
+// Append the spelling of a type or of a template argument, in the words
+// an anchor may hold: `const char*` becomes `const-char-ptr`.
+void
+appendSpelling(std::string& text, std::string_view spelling)
+{
+    std::size_t i = 0;
+    while (i < spelling.size())
+    {
+        i += appendLeadingToken(text, spelling.substr(i));
+    }
+}
+
+// An anchor takes at most this many characters of a signature, or of the
+// type a conversion function converts to. A longer one is replaced by a
+// hash of it.
+constexpr std::size_t maxSignatureLength = 64;
+
+// The spelled signature, or, if it is longer than an anchor takes, `h`
+// followed by the first eight hex digits of its xxh3 hash, which is the
+// same on every platform.
+std::string
+shortSignature(std::string text)
+{
+    std::string result = std::move(text);
+    if (result.size() > maxSignatureLength)
+    {
+        std::uint64_t const hash = llvm::xxh3_64bits(llvm::StringRef(result));
+        result = std::format("h{:08x}", hash >> 32);
+    }
+    return result;
+}
+
+// The parts that tell apart members of one kind by a list, such as their
+// parameters: the number of its elements, then their spelling.
+std::vector<std::string>
+countAndSpelling(std::size_t count, std::string spelling)
+{
+    return {std::to_string(count), shortSignature(std::move(spelling))};
+}
+
+void
+appendParameters(std::string& text, std::vector<Param> const& params)
+{
+    for (Param const& P : params)
+    {
+        appendSpelling(text, toString(*P.Type));
+    }
+}
+
+void
+appendQualifiers(std::string& text, FunctionSymbol const& F)
+{
+    std::pair<bool, std::string_view> const qualifiers[] = {
+        {F.IsVariadic, "variadic"},
+        {F.IsConst, "const"},
+        {F.IsVolatile, "volatile"},
+        {F.RefQualifier == ReferenceKind::LValue, "ref"},
+        {F.RefQualifier == ReferenceKind::RValue, "rref"},
+    };
+    for (auto const& [present, word] : qualifiers)
+    {
+        if (present)
+        {
+            appendWord(text, word);
+        }
+    }
+}
+
+// The parts of a function's signature that can tell it apart from its
+// overloads, from the coarsest to the finest: the number of parameters,
+// the parameter types with the qualifiers, and the number of template
+// parameters.
+std::vector<std::string>
+functionParts(FunctionSymbol const& F)
+{
+    std::string signature;
+    appendParameters(signature, F.Params);
+    appendQualifiers(signature, F);
+    std::vector<std::string> parts =
+        countAndSpelling(F.Params.size(), std::move(signature));
+    parts.push_back(F.Template
+        ? "t" + std::to_string(F.Template->Params.size())
+        : std::string());
+    return parts;
+}
+
+// The first function of an overload set, if the corpus has it.
+FunctionSymbol const*
+firstFunction(OverloadsSymbol const& O, Corpus const& corpus)
+{
+    Symbol const* const first =
+        O.Members.empty() ? nullptr : corpus.find(O.Members.front());
+    return first ? first->asFunctionPtr() : nullptr;
+}
+
+bool
+isStaticSet(OverloadsSymbol const& O, Corpus const& corpus)
+{
+    FunctionSymbol const* const F = firstFunction(O, corpus);
+    return F && F->StorageClass == StorageClassKind::Static;
+}
+
+// The type that a conversion function converts to.
+Type const&
+conversionTarget(FunctionSymbol const& F, Corpus const&)
+{
+    return *F.ReturnType;
+}
+
+// The type that the functions of an overload set of conversion functions
+// convert to. A set gathers the functions of one name, so they all spell
+// it alike, and the type of the first one stands for all of them.
+Type const&
+conversionTarget(OverloadsSymbol const& O, Corpus const& corpus)
+{
+    FunctionSymbol const* const F = firstFunction(O, corpus);
+    return F ? *F->ReturnType : *O.ReturnType;
+}
+
+// The name of a conversion function, or of an overload set of them, as an
+// anchor holds it: the reserved name followed by the spelling of the type
+// they convert to (`2conversion-int`), or by a hash of the spelling when
+// it is longer than an anchor takes, so that conversions to different
+// types never share a name.
+template <class FunctionLike>
+std::string
+conversionName(FunctionLike const& F, Corpus const& corpus)
+{
+    std::string target;
+    appendSpelling(target, toString(conversionTarget(F, corpus)));
+    std::string name = getUnnamedInfoName(F);
+    appendWord(name, shortSignature(std::move(target)));
+    return name;
+}
+
+// The part that tells apart overload sets of one name, which a class
+// splits by access and by whether the functions are static: the access,
+// followed by `static` for static functions.
+std::vector<std::string>
+overloadSetParts(OverloadsSymbol const& O, Corpus const& corpus)
+{
+    std::string words(toString(O.Access));
+    if (isStaticSet(O, corpus))
+    {
+        appendWord(words, "static");
+    }
+    return {std::move(words)};
+}
+
+// The part that tells apart using-declarations of one name: the class or
+// namespace each one names it in, which follows the word `using`.
+std::vector<std::string>
+usingParts(UsingSymbol const& U)
+{
+    std::vector<std::string> parts;
+    Name const& introduced = *U.IntroducedName;
+    if (introduced.Prefix)
+    {
+        std::string qualifier;
+        appendSpelling(qualifier, (*introduced.Prefix)->Identifier);
+        parts.push_back(std::move(qualifier));
+    }
+    return parts;
+}
+
+// The parts of a specialization that can tell it apart from the others:
+// the number of template arguments, and the arguments.
+std::vector<std::string>
+templateArgumentParts(TemplateInfo const& T)
+{
+    std::string arguments;
+    for (Polymorphic<TArg> const& A : T.Args)
+    {
+        appendSpelling(arguments, toString(*A));
+    }
+    return countAndSpelling(T.Args.size(), std::move(arguments));
+}
+
+std::vector<std::string>
+guideParts(GuideSymbol const& G)
+{
+    std::string parameters;
+    appendParameters(parameters, G.Params);
+    return countAndSpelling(G.Params.size(), std::move(parameters));
+}
+
+std::vector<std::string>
+signatureParts(Symbol const& I, Corpus const& corpus)
+{
+    return visit(I, [&corpus]<class SymbolTy>(SymbolTy const& S)
+        -> std::vector<std::string>
+    {
+        std::vector<std::string> parts;
+        if constexpr (std::same_as<SymbolTy, FunctionSymbol>)
+        {
+            parts = functionParts(S);
+        }
+        else if constexpr (std::same_as<SymbolTy, OverloadsSymbol>)
+        {
+            parts = overloadSetParts(S, corpus);
+        }
+        else if constexpr (std::same_as<SymbolTy, GuideSymbol>)
+        {
+            parts = guideParts(S);
+        }
+        else if constexpr (std::same_as<SymbolTy, UsingSymbol>)
+        {
+            parts = usingParts(S);
+        }
+        else if constexpr (requires { S.Template; })
+        {
+            if (S.Template && !S.Template->Args.empty())
+            {
+                parts = templateArgumentParts(*S.Template);
+            }
+        }
+        return parts;
+    });
+}
+
+// How strongly a symbol that is not a function claims the plain name: a
+// primary template most, a symbol that is no template less, and a
+// specialization not at all.
+int
+templateClaim(Symbol const& I)
+{
+    return visit(I, []<class SymbolTy>(SymbolTy const& S)
+    {
+        int claim = 1;
+        if constexpr (requires { S.Template; })
+        {
+            if (S.Template)
+            {
+                claim = S.Template->specializationKind() ==
+                    TemplateSpecKind::Primary ? 2 : 0;
+            }
+        }
+        return claim;
+    });
+}
+
+bool
+hasPlainCall(FunctionSymbol const& F)
+{
+    return F.Params.empty() && !F.IsVariadic && !F.IsConst &&
+        !F.IsVolatile && F.RefQualifier == ReferenceKind::None &&
+        !F.Template;
+}
+
+// How strongly a member claims the plain name by its access: a private
+// member least, then a protected one, and a public one, or one with no
+// access, such as a member of a namespace, most.
+int
+accessClaim(AccessKind access)
+{
+    static constexpr std::pair<AccessKind, int> claimByAccess[] = {
+        {AccessKind::None, 2},
+        {AccessKind::Public, 2},
+        {AccessKind::Protected, 1},
+        {AccessKind::Private, 0},
+    };
+    int claim = 0;
+    for (auto const& [kind, value] : claimByAccess)
+    {
+        if (kind == access)
+        {
+            claim = value;
+        }
+    }
+    return claim;
+}
+
+// How strongly a function that is in no overload set claims the plain
+// name: more the more accessible it is; of two functions with the same
+// access, more if it is not static, as for overload sets; and then more
+// if it is called with no arguments.
+int
+functionClaim(FunctionSymbol const& F)
+{
+    int const nonStatic = F.StorageClass == StorageClassKind::Static ? 0 : 1;
+    return (accessClaim(F.Access) * 2 + nonStatic) * 2 +
+        (hasPlainCall(F) ? 1 : 0);
+}
+
+// The weakest claim of an overload set, that of a private set of static
+// functions, which is above the claim of every function.
+constexpr int lowestSetClaim = 12;
+
+// How strongly an overload set claims the plain name: more than any
+// function, and more the more accessible it is; of two sets with the
+// same access, the set of non-static functions claims it more.
+int
+overloadSetClaim(OverloadsSymbol const& O, Corpus const& corpus)
+{
+    return lowestSetClaim + accessClaim(O.Access) * 2 +
+        (isStaticSet(O, corpus) ? 0 : 1);
+}
+
+// How strongly a member claims the plain name among the members of its
+// kind that share it: an overload set more than any function, and of two
+// sets, or of two functions, the more accessible one more; a primary
+// template more than a symbol that is no template, and a specialization
+// not at all.
+int
+nameClaim(Symbol const& I, Corpus const& corpus)
+{
+    int claim = 0;
+    if (OverloadsSymbol const* const O = I.asOverloadsPtr())
+    {
+        claim = overloadSetClaim(*O, corpus);
+    }
+    else if (FunctionSymbol const* const F = I.asFunctionPtr())
+    {
+        claim = functionClaim(*F);
+    }
+    else
+    {
+        claim = templateClaim(I);
+    }
+    return claim;
+}
+
+// The member with the strongest claim to the name of its kind, unless
+// another one has as strong a claim.
+ScopeEntry*
+findNameHolder(std::vector<ScopeEntry*> const& sameKind, Corpus const& corpus)
+{
+    int strongest = -1;
+    for (ScopeEntry const* const entry : sameKind)
+    {
+        strongest = std::max(strongest, nameClaim(*entry->symbol, corpus));
+    }
+    ScopeEntry* holder = nullptr;
+    std::size_t holders = 0;
+    for (ScopeEntry* const entry : sameKind)
+    {
+        if (nameClaim(*entry->symbol, corpus) == strongest)
+        {
+            holder = entry;
+            ++holders;
+        }
+    }
+    return holders == 1 ? holder : nullptr;
+}
+
+// The member its scope was seeded with as the holder of its name, if one
+// of them is: the global namespace, named as one of its own members.
+ScopeEntry*
+seededHolder(std::vector<ScopeEntry*> const& sameKind)
+{
+    std::vector<ScopeEntry*>::const_iterator const seeded =
+        std::ranges::find(sameKind, true, &ScopeEntry::keepsPlainName);
+    return seeded != sameKind.end() ? *seeded : nullptr;
+}
+
+// Whether `other` starts with the first `length` parts of `parts`, which
+// has at least that many.
+bool
+samePrefix(
+    std::vector<std::string> const& parts,
+    std::vector<std::string> const& other,
+    std::size_t length)
+{
+    return other.size() >= length &&
+        std::equal(parts.begin(), parts.begin() + length, other.begin());
+}
+
+bool
+uniquePrefix(
+    std::vector<std::vector<std::string>> const& parts,
+    std::size_t i,
+    std::size_t length)
+{
+    bool unique = true;
+    for (std::size_t j = 0; j < parts.size(); ++j)
+    {
+        unique = unique && (j == i || !samePrefix(parts[i], parts[j], length));
+    }
+    return unique;
+}
+
+// How many signature parts member `i` needs to tell it apart from the
+// others: the fewest that do, or all of them if none do.
+std::size_t
+partsNeeded(std::vector<std::vector<std::string>> const& parts, std::size_t i)
+{
+    std::size_t needed = parts[i].size();
+    for (std::size_t length = parts[i].size(); length > 0; --length)
+    {
+        if (uniquePrefix(parts, i, length))
+        {
+            needed = length;
+        }
+    }
+    return needed;
+}
+
+// Whether a part can be the first word a member adds to its name: it
+// starts with a digit or with a keyword, like the parts of an overload
+// set, so it is never the name of a member.
+bool
+startsSuffix(std::string_view part)
+{
+    static constexpr std::string_view keywords[] = {
+        "public", "protected", "private", "static"};
+    std::string_view const word = part.substr(0, part.find('-'));
+    return isDigit(word.front()) ||
+        std::ranges::find(keywords, word) != std::ranges::end(keywords);
+}
+
+// Append the first `count` parts of a member's signature to its anchor.
+// The first word a member adds must be a keyword or start with a digit,
+// so a first part that is neither, such as the class a using-declaration
+// names its member in, follows the word of the member's kind. A
+// using-declaration that adds no part, because it names its member in no
+// class (`using ::f;`), still carries the word `using`.
+void
+appendParts(
+    ScopeEntry& entry,
+    std::vector<std::string> const& parts,
+    std::size_t count)
+{
+    for (std::size_t k = 0; k < count; ++k)
+    {
+        if (!parts[k].empty())
+        {
+            if (entry.anchor == entry.raw && !startsSuffix(parts[k]))
+            {
+                appendWord(entry.anchor, kindWord(*entry.symbol));
+            }
+            appendWord(entry.anchor, parts[k]);
+        }
+    }
+    if (entry.anchor == entry.raw && entry.symbol->isUsing())
+    {
+        appendWord(entry.anchor, kindWord(*entry.symbol));
+    }
+}
+
+// Add to the anchor of each member the fewest parts of its signature that
+// tell it apart from the others.
+void
+nameBySignature(std::vector<ScopeEntry*> const& entries, Corpus const& corpus)
+{
+    std::vector<std::vector<std::string>> parts;
+    for (ScopeEntry const* const entry : entries)
+    {
+        parts.push_back(signatureParts(*entry->symbol, corpus));
+    }
+    for (std::size_t i = 0; i < entries.size(); ++i)
+    {
+        appendParts(*entries[i], parts[i], partsNeeded(parts, i));
+    }
+}
+
+// Start the anchor of a member with its name, followed by the word of its
+// kind when another kind keeps the plain name.
+void
+startAnchor(ScopeEntry& entry, bool holdsName, bool ownsPlainName)
+{
+    entry.anchor = entry.raw;
+    if (!ownsPlainName)
+    {
+        appendWord(entry.anchor, kindWord(*entry.symbol));
+    }
+    entry.keepsPlainName = holdsName && ownsPlainName;
+}
+
+// Name the members of one kind that share a name. The holder of the name
+// keeps it, and each of the other members adds the fewest parts of its
+// signature that tell it apart.
+void
+nameKind(
+    std::vector<ScopeEntry*> const& sameKind,
+    bool ownsPlainName,
+    Corpus const& corpus)
+{
+    ScopeEntry* const seeded = seededHolder(sameKind);
+    ScopeEntry* const holder =
+        seeded ? seeded : findNameHolder(sameKind, corpus);
+    std::vector<ScopeEntry*> others;
+    for (ScopeEntry* const entry : sameKind)
+    {
+        startAnchor(*entry, entry == holder, ownsPlainName);
+        if (entry != holder)
+        {
+            others.push_back(entry);
+        }
+    }
+    nameBySignature(others, corpus);
+}
+
+// Name the members of a scope that share a name, ignoring case: the kind
+// that ranks first keeps the plain name.
+void
+nameGroup(std::vector<ScopeEntry*> const& group, Corpus const& corpus)
+{
+    std::map<std::size_t, std::vector<ScopeEntry*>> byRank;
+    for (ScopeEntry* const entry : group)
+    {
+        byRank[rankOf(*entry->symbol)].push_back(entry);
+    }
+    bool ownsPlainName = true;
+    for (auto const& [rank, sameKind] : byRank)
+    {
+        nameKind(sameKind, ownsPlainName, corpus);
+        ownsPlainName = false;
+    }
+}
+
+// The members of a scope grouped by a text they hold, ignoring case, in
+// the order of the first member of each group: names that differ only in
+// case collide as files on a case-insensitive filesystem.
+std::vector<std::vector<ScopeEntry*>>
+groupIgnoringCase(
+    std::vector<ScopeEntry>& scope,
+    std::string ScopeEntry::* text)
+{
+    std::unordered_map<
+        std::string_view, std::size_t, CIStringHash, CIStringEqual> groupOf;
+    std::vector<std::vector<ScopeEntry*>> groups;
+    for (ScopeEntry& entry : scope)
+    {
+        auto const [found, added] =
+            groupOf.try_emplace(std::string_view(entry.*text), groups.size());
+        if (added)
+        {
+            groups.emplace_back();
+        }
+        groups[found->second].push_back(&entry);
+    }
+    return groups;
+}
+
+std::string
+symbolIdText(SymbolID const& id)
+{
+    return toBase16(std::string_view(
+        reinterpret_cast<char const*>(id.data()), id.size()), true);
+}
+
+// How many characters of its ID member `i` needs to differ from each of
+// the others: one more than the longest prefix it shares with any of them.
+std::size_t
+idCharsNeeded(std::vector<std::string> const& ids, std::size_t i)
+{
+    std::size_t needed = 1;
+    for (std::size_t j = 0; j < ids.size(); ++j)
+    {
+        if (j != i)
+        {
+            std::size_t const common = static_cast<std::size_t>(
+                std::ranges::mismatch(ids[i], ids[j]).in1 - ids[i].begin());
+            needed = std::max(needed, common + 1);
+        }
+    }
+    return needed;
+}
+
+// Separate members whose anchors coincide with a suffix from their symbol
+// IDs: `-0`, then as many characters of the ID as tell each member apart
+// from the others. The member that keeps the plain name keeps its anchor,
+// so at most one member of the set does.
+void
+appendIdSuffixes(std::vector<ScopeEntry*> const& same)
+{
+    std::vector<std::string> ids;
+    for (ScopeEntry const* const entry : same)
+    {
+        ids.push_back(symbolIdText(entry->symbol->id));
+    }
+    for (std::size_t i = 0; i < same.size(); ++i)
+    {
+        if (!same[i]->keepsPlainName)
+        {
+            same[i]->anchor += "-0";
+            same[i]->anchor.append(ids[i], 0, idCharsNeeded(ids, i));
+        }
+    }
+}
+
+// Give ID suffixes to the members whose anchors coincide, ignoring case,
+// and return whether any did.
+bool
+suffixCoincidingAnchors(std::vector<ScopeEntry>& scope)
+{
+    bool found = false;
+    for (std::vector<ScopeEntry*> const& same :
+         groupIgnoringCase(scope, &ScopeEntry::anchor))
+    {
+        if (same.size() > 1)
+        {
+            appendIdSuffixes(same);
+            found = true;
+        }
+    }
+    return found;
+}
+
+// Separate the members whose anchors still coincide, ignoring case: two
+// classes whose names differ only in case, say, two overloads that differ
+// only in their constraints, or a conversion function whose name, which
+// spells the type it converts to, matches the anchor that another member
+// reaches with its suffix. An ID suffix can make an anchor coincide with
+// another one, so the passes repeat until no two coincide, at most once
+// per member.
+void
+separateDuplicates(std::vector<ScopeEntry>& scope)
+{
+    bool again = true;
+    for (std::size_t pass = 0; again && pass < scope.size(); ++pass)
+    {
+        again = suffixCoincidingAnchors(scope);
+    }
+}
+
+// Whether Windows reserves a name, ignoring case, for a device: alone or
+// followed by an extension, it names the device rather than a file, and
+// Git for Windows refuses a path that holds it.
+bool
+isDeviceName(std::string_view name)
+{
+    static constexpr std::string_view devices[] = {
+        "con", "prn", "aux", "nul", "conin$", "conout$"};
+    static constexpr std::string_view numberedDevices[] = {"com", "lpt"};
+    bool const numbered = name.size() == 4 && isDigit(name[3]) &&
+        std::ranges::any_of(numberedDevices, [name](std::string_view device)
+            { return ciEqual(name.substr(0, 3), device); });
+    return numbered ||
+        std::ranges::any_of(devices, [name](std::string_view device)
+            { return ciEqual(name, device); });
+}
+
+// Add the word of its kind to the anchor of each member that is a device
+// name, such as `aux`: a multipage output names the member's page, and
+// the directory of its members, after its anchor.
+void
+avoidDeviceNames(std::vector<ScopeEntry>& scope)
+{
+    for (ScopeEntry& entry : scope)
+    {
+        if (isDeviceName(entry.anchor))
+        {
+            appendWord(entry.anchor, kindWord(*entry.symbol));
+        }
+    }
+}
+
+// Name the members of one scope. Members that share a name, ignoring
+// case, are named together; a member whose name no other one shares
+// keeps it, unless it is a device name.
+void
+nameScope(std::vector<ScopeEntry>& scope, Corpus const& corpus)
+{
+    for (std::vector<ScopeEntry*> const& group :
+         groupIgnoringCase(scope, &ScopeEntry::raw))
+    {
+        if (group.size() == 1)
+        {
+            startAnchor(*group.front(), true, true);
+        }
+        else
+        {
+            nameGroup(group, corpus);
+        }
+    }
+    avoidDeviceNames(scope);
+    separateDuplicates(scope);
+}
+
+// The members a scope names: its own, not the ones it inherits.
+constexpr Corpus::TraverseOptions memberTraversal = {.skipInherited = true};
+
+// The unqualified, URL-safe legible name of each symbol, unique among
+// its siblings. The names of a scope are settled together, since how a
+// member is told apart depends on the other members that share its name;
+// `build` then writes each name into the symbol's `Anchor`.
 class LegibleNameTable
 {
     Corpus const& corpus_;
 
-    /* Name used for the global namespace
-
-       This is typically "index" or "global"
-       if a symbol has the same name as the
-       global namespace, then it needs to be
-       disambiguated
-     */
-    std::string global_ns_;
-
-    /* The info related to the legible name for a symbol
-     */
-    struct LegibleName
-    {
-        /*  Raw unqualified name for the symbol
-         */
-        std::string unqualified;
-
-        /*  Number of characters from the SymbolID string
-            required to uniquely identify this symbol
-         */
-        std::uint8_t disambig_chars;
-
-        /*  SymbolID converted to a string
-         */
-        std::string id_str;
-    };
-
-    /* A map from SymbolID to legible name information
-     */
-    std::unordered_map<SymbolID, LegibleName> map_;
-
-    /* Maps unqualified names to all symbols with that name within the current
-       scope. Keys match case-insensitively so that names differing only in
-       case (which collide as a page or anchor on a case-insensitive
-       filesystem) are disambiguated against each other.
-     */
-    UnorderedCIStringMultiMap<LegibleName*> disambiguation_map_;
+    std::unordered_map<SymbolID, std::string> anchors_;
 
 public:
-    /*  Build the map of legible names for all symbols in the corpus
+    /*  Build the legible names of all symbols in the corpus. The global
+        namespace is named as one of its own members that keeps its name,
+        `globalName`, so that none of them takes it.
      */
-    LegibleNameTable(Corpus const& corpus, std::string_view const global_ns)
+    LegibleNameTable(Corpus const& corpus, std::string_view globalName)
         : corpus_(corpus)
-        , global_ns_(global_ns)
     {
         NamespaceSymbol const& global = corpus_.globalNamespace();
-
-        // Treat the global namespace as-if its "name"
-        // is in the same scope as its members
-        buildLegibleMember(global, global_ns_);
-        visit(global, *this);
-
-        // after generating legible names for every symbol,
-        // set the number of disambiguation characters
-        // used for the global namespace to zero
-        map_.at(global.id).disambig_chars = 0;
+        std::vector<ScopeEntry> scope;
+        scope.push_back({
+            .symbol = &global,
+            .raw = std::string(globalName),
+            .keepsPlainName = true});
+        nameMembers(global, std::move(scope));
     }
 
     /*  Visit a symbol and build legible names for its members
@@ -160,36 +914,74 @@ public:
     {
         if constexpr (SymbolParent<InfoTy> && !std::same_as<InfoTy, OverloadsSymbol>)
         {
-            // Visit the members of the symbol and build legible names
-            constexpr Corpus::TraverseOptions opts = {.skipInherited = true};
-            corpus_.traverse(opts, I, [this, &I](Symbol const& M)
-                {
-                    auto const raw = getRawUnqualified(M);
-                    buildLegibleMember(M, raw);
-
-                    // Traverse non inherited function overloads inline
-                    if (auto* MO = M.asOverloadsPtr())
-                    {
-                        corpus_.traverse(*MO, [this, &I](Symbol const& M2)
-                            {
-                                // Not inherited in regard to I
-                                MRDOCS_CHECK_OR(M2.Parent == I.id);
-                                auto const raw2 = getRawUnqualified(M2);
-                                buildLegibleMember(M2, raw2);
-                            });
-                    }
-                });
-
-            // Clear the disambiguation map for this scope
-            disambiguation_map_.clear();
-
-            // Visit the members of the symbol to build legible names
-            // for their members
-            corpus_.traverse(opts, I, [this](Symbol const& M)
-                {
-                    visit(M, *this);
-                });
+            nameMembers(I, {});
         }
+    }
+
+    /* Return the disambiguated unqualified legible name for a symbol.
+
+       The name is unique among the symbol's siblings when a scope reached
+       the symbol.
+     */
+    std::string
+    getUnqualified(SymbolID const& id) const
+    {
+        MRDOCS_ASSERT(corpus_.exists(id));
+        std::string result;
+        if (auto const it = anchors_.find(id); it != anchors_.end())
+        {
+            result = it->second;
+        }
+        else
+        {
+            // A symbol no scope reached: its plain name, which may not
+            // be unique among its siblings.
+            result = getRawUnqualified(corpus_.get(id));
+        }
+        return result;
+    }
+
+private:
+    /*  Name the members of a symbol, then the members of each of them.
+     */
+    template <class InfoTy>
+    void
+    nameMembers(InfoTy const& I, std::vector<ScopeEntry> scope)
+    {
+        collectMembers(I, scope);
+        nameScope(scope, corpus_);
+        for (ScopeEntry& entry : scope)
+        {
+            anchors_.emplace(entry.symbol->id, std::move(entry.anchor));
+        }
+        corpus_.traverse(memberTraversal, I, [this](Symbol const& M)
+            {
+                visit(M, *this);
+            });
+    }
+
+    /*  Add the members of a symbol to its scope, and the functions of the
+        overload sets among them.
+     */
+    template <class InfoTy>
+    void
+    collectMembers(InfoTy const& I, std::vector<ScopeEntry>& scope) const
+    {
+        corpus_.traverse(memberTraversal, I, [this, &I, &scope](Symbol const& M)
+            {
+                scope.push_back({&M, getRawUnqualified(M)});
+
+                // Traverse non inherited function overloads inline
+                if (OverloadsSymbol const* const MO = M.asOverloadsPtr())
+                {
+                    corpus_.traverse(*MO, [this, &I, &scope](Symbol const& M2)
+                        {
+                            // Not inherited in regard to I
+                            MRDOCS_CHECK_OR(M2.Parent == I.id);
+                            scope.push_back({&M2, getRawUnqualified(M2)});
+                        });
+                }
+            });
     }
 
     /*  Get the raw unqualified name for a symbol
@@ -201,7 +993,7 @@ public:
         on the type is returned instead.
      */
     std::string
-    getRawUnqualified(SymbolID const& id)
+    getRawUnqualified(SymbolID const& id) const
     {
         Symbol const* I = corpus_.find(id);
         MRDOCS_ASSERT(I);
@@ -211,7 +1003,7 @@ public:
     /* @copydoc getRawUnqualified(SymbolID const&)
      */
     std::string
-    getRawUnqualified(Symbol const& I)
+    getRawUnqualified(Symbol const& I) const
     {
         MRDOCS_ASSERT(I.id && I.id != SymbolID::global);
         if (I.Name.empty())
@@ -228,7 +1020,11 @@ public:
                 {
                     // functions can be explicitly specialized,
                     // and can be overloaded
-                    if (t.FuncClass != FunctionClass::Normal ||
+                    if (t.FuncClass == FunctionClass::Conversion)
+                    {
+                        return conversionName(t, corpus_);
+                    }
+                    else if (t.FuncClass != FunctionClass::Normal ||
                         t.OverloadedOperator != OperatorKind::None)
                     {
                         return getUnnamedInfoName(t);
@@ -252,121 +1048,6 @@ public:
                 }
                 return t.Name;
             });
-    }
-
-    /* Take the raw unqualified name for a symbol and build a legible name
-     */
-    void
-    buildLegibleMember(Symbol const& I,
-        std::string_view rawName)
-    {
-        // Generate the legible name information for this symbol
-        auto const idAsString = toBase16(std::string_view(
-            reinterpret_cast<char const*>(I.id.data()), I.id.size()), true);
-        LegibleName LI(std::string(rawName), 0, idAsString);
-        LegibleName& info = map_.emplace(I.id, std::move(LI)).first->second;
-
-        // Look for symbols with the same unqualified name. The map matches
-        // case-insensitively, so a name that differs from a sibling only in
-        // case is treated as a collision and disambiguated the same way an
-        // exact duplicate is.
-        auto [first, last] = disambiguation_map_.equal_range(rawName);
-        auto sameNames = std::ranges::subrange(first, last) | std::views::values;
-        if (std::ranges::empty(sameNames))
-        {
-            // Add this symbol to the disambiguation map
-            disambiguation_map_.emplace(rawName, &info);
-            // If there are no other symbols with the same name, then
-            // disambiguation is not required.
-            return;
-        }
-
-        // Iterate over the other symbols with the same raw unqualified name
-        // and update their legible name information
-        std::uint8_t suffix_size_required = 0;
-        for (LegibleName* other : sameNames)
-        {
-            // Find the first character that differs between the two symbol IDs
-            auto const mismatch_it = std::ranges::mismatch(
-                info.id_str, other->id_str).in1;
-            // Number of characters required to disambiguate
-            std::uint8_t n_required = std::distance(info.id_str.begin(), mismatch_it) + 1;
-            // Update the suffix size for the other symbol
-            other->disambig_chars = std::max(n_required, other->disambig_chars);
-            // Update the suffix size needed for this symbol
-            suffix_size_required = std::max(suffix_size_required, n_required);
-        }
-
-        // Use the longest suffix needed to disambiguate
-        // between all symbols with the same name in this scope
-        info.disambig_chars = suffix_size_required;
-
-        // Add this symbol to the disambiguation map
-        disambiguation_map_.emplace(rawName, &info);
-    }
-
-    void
-    getLegibleUnqualified(
-        std::string& result,
-        SymbolID const& id)
-    {
-        MRDOCS_ASSERT(corpus_.exists(id));
-
-        // Find the legible name information for this symbol
-        auto it = map_.find(id);
-        if (it == map_.end())
-        {
-            // Late-build a legible name for this symbol.
-            // NOTE: This may not perfectly disambiguate against siblings
-            // because the per-scope disambiguation_map_ is ephemeral,
-            // but it avoids a hard crash and produces a stable name.
-            Symbol const& I = corpus_.get(id);
-            auto const raw = getRawUnqualified(I);
-            buildLegibleMember(I, raw);
-            it = map_.find(I.id);
-            if (it == map_.end())
-            {
-                // Final, robust fallback: emit the raw SymbolID (legible-ish),
-                // and return without crashing.
-                result.append(toBase16Str(I.id));
-                return;
-            }
-        }
-
-        auto& [unqualified, n_disambig, id_str] = it->second;
-
-        // Append the unqualified name to the result
-        // The unqualified name has no reserved chars
-        result.reserve(
-            result.size() +
-            unqualified.size() +
-            n_disambig ? n_disambig + 2 : 0);
-        result.append(unqualified);
-
-        // Append a disambiguation suffix from the symbol ID if needed
-        if (n_disambig)
-        {
-            // KRYSTIAN FIXME: the SymbolID chars must be prefixed with
-            // a reserved character, otherwise there could be a
-            // conflict with a name in an inner scope. this could be
-            // resolved by using the base-10 representation of the SymbolID
-            result.append("-0");
-            result.append(id_str.c_str(), n_disambig);
-        }
-    }
-
-    /* Return the disambiguated unqualified legible name for a symbol.
-
-       The name is unique among the symbol's siblings. The qualified form
-       is assembled on demand by the generator, which walks the parent
-       chain joining these unqualified anchors, so it is not stored here.
-     */
-    std::string
-    getUnqualified(SymbolID const& id)
-    {
-        std::string result;
-        getLegibleUnqualified(result, id);
-        return result;
     }
 };
 

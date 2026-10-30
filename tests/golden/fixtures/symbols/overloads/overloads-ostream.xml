@@ -55,7 +55,7 @@
 </record>
 <overloads>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-00</anchor>
+  <anchor>operator_lshift</anchor>
   <loc>
     <loc>
       <location>
@@ -111,7 +111,7 @@
 </overloads>
 <function>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-0f</anchor>
+  <anchor>operator_lshift-1-unsigned-int</anchor>
   <loc>
     <loc>
       <location>
@@ -201,7 +201,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-0b</anchor>
+  <anchor>operator_lshift-1-char</anchor>
   <loc>
     <loc>
       <location>
@@ -453,7 +453,7 @@
 </record>
 <overloads>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-0f</anchor>
+  <anchor>operator_lshift</anchor>
   <loc>
     <loc>
       <location>
@@ -509,7 +509,7 @@
 </overloads>
 <function>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-0d</anchor>
+  <anchor>operator_lshift-2-OStream-ref-B</anchor>
   <loc>
     <loc>
       <location>
@@ -636,7 +636,7 @@
 </function>
 <function>
   <name>operator&lt;&lt;</name>
-  <anchor>operator_lshift-0a</anchor>
+  <anchor>operator_lshift-2-OStream-ref-C</anchor>
   <loc>
     <loc>
       <location>

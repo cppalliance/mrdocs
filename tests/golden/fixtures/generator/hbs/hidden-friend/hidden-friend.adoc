@@ -27,9 +27,9 @@
 [cols="1,4"]
 |===
 | Name| Description
-| link:#less-0a[`less`] 
+| link:#less[`less`] 
 | `less` overloads
-| link:#operator_eq-07[`operator&equals;&equals;`] 
+| link:#operator_eq[`operator&equals;&equals;`] 
 | Equality operators
 |===
 
@@ -53,7 +53,7 @@ struct base;
 [cols="1,4"]
 |===
 | Name| Description
-| `link:#less-0f[less]`
+| `link:#less-2-base-base[less]`
 | Order two bases&period;
 |===
 
@@ -85,7 +85,7 @@ struct label;
 [cols="1,4"]
 |===
 | Name| Description
-| `link:#operator_eq-05[operator&equals;&equals;]`
+| `link:#operator_eq-2-label-label[operator&equals;&equals;]`
 | Compare two labels&period;
 |===
 
@@ -117,7 +117,7 @@ struct point;
 [cols="1,4"]
 |===
 | Name| Description
-| `link:#operator_eq-08[operator&equals;&equals;]`
+| `link:#operator_eq-2-point-point[operator&equals;&equals;]`
 | Compare two points&period;
 |===
 
@@ -152,7 +152,7 @@ struct value;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#less-00[`less`]
+| link:#less-2-value-value[`less`]
 | Order two ops&period;
 |===
 
@@ -185,11 +185,11 @@ struct wrapped
 [cols="1,4"]
 |===
 | Name| Description
-| link:#less-0e[`less`]
+| link:#less-2-wrapped-wrapped[`less`]
 | Order two bases&period;
 |===
 
-[#less-0a]
+[#less]
 == less
 
 `less` overloads
@@ -204,12 +204,12 @@ Order two bases&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-link:#less-0f[less](
+link:#less-2-base-base[less](
     link:#base[base] a,
     link:#base[base] b);
 ----
 
-[.small]#link:#less-0f[_» more&period;&period;&period;_]#
+[.small]#link:#less-2-base-base[_» more&period;&period;&period;_]#
 
 Order two ops&period;
 
@@ -217,12 +217,12 @@ Order two ops&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-link:#less-00[less](
+link:#less-2-value-value[less](
     link:#value[value] a,
     link:#value[value] b);
 ----
 
-[.small]#link:#less-00[_» more&period;&period;&period;_]#
+[.small]#link:#less-2-value-value[_» more&period;&period;&period;_]#
 
 Order two bases&period;
 
@@ -230,14 +230,14 @@ Order two bases&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-link:#less-0e[less](
+link:#less-2-wrapped-wrapped[less](
     link:#wrapped[wrapped] a,
     link:#wrapped[wrapped] b);
 ----
 
-[.small]#link:#less-0e[_» more&period;&period;&period;_]#
+[.small]#link:#less-2-wrapped-wrapped[_» more&period;&period;&period;_]#
 
-[#less-0f]
+[#less-2-base-base]
 == less
 
 Order two bases&period;
@@ -270,7 +270,7 @@ This function is a https://en.cppreference.com/w/cpp/language/friend[hidden frie
 | A documented base carrying a hidden friend&period;
 |===
 
-[#less-00]
+[#less-2-value-value]
 == less
 
 Order two ops&period;
@@ -303,7 +303,7 @@ This function is a https://en.cppreference.com/w/cpp/language/friend[hidden frie
 | Derives from the implementation&hyphen;defined base&semi; the copied friend cannot name it&period;
 |===
 
-[#less-0e]
+[#less-2-wrapped-wrapped]
 == less
 
 Order two bases&period;
@@ -336,7 +336,7 @@ This function is a https://en.cppreference.com/w/cpp/language/friend[hidden frie
 | Derives from the documented base&semi; the copied friend names `base`&period;
 |===
 
-[#operator_eq-07]
+[#operator_eq]
 == operator&equals;&equals;
 
 Equality operators
@@ -351,12 +351,12 @@ Compare two points&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-link:#operator_eq-08[operator&equals;&equals;](
+link:#operator_eq-2-point-point[operator&equals;&equals;](
     link:#point[point] a,
     link:#point[point] b);
 ----
 
-[.small]#link:#operator_eq-08[_» more&period;&period;&period;_]#
+[.small]#link:#operator_eq-2-point-point[_» more&period;&period;&period;_]#
 
 Compare two labels&period;
 
@@ -364,14 +364,14 @@ Compare two labels&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-link:#operator_eq-05[operator&equals;&equals;](
+link:#operator_eq-2-label-label[operator&equals;&equals;](
     link:#label[label] a,
     link:#label[label] b);
 ----
 
-[.small]#link:#operator_eq-05[_» more&period;&period;&period;_]#
+[.small]#link:#operator_eq-2-label-label[_» more&period;&period;&period;_]#
 
-[#operator_eq-08]
+[#operator_eq-2-point-point]
 == operator&equals;&equals;
 
 Compare two points&period;
@@ -408,7 +408,7 @@ This function is a https://en.cppreference.com/w/cpp/language/friend[hidden frie
 | The right operand
 |===
 
-[#operator_eq-05]
+[#operator_eq-2-label-label]
 == operator&equals;&equals;
 
 Compare two labels&period;

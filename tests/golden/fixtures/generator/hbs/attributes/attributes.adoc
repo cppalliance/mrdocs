@@ -53,9 +53,9 @@
 | A deprecated function with a message&period;
 | link:#log_message[`log&lowbar;message`] 
 | A printf&hyphen;like function (an attribute with multiple arguments)&period;
-| link:#resize-06[`resize`] 
+| link:#resize[`resize`] 
 | An overload set with only one deprecated overload&colon; the set is not tagged&period;
-| link:#scale-02[`scale`]  [.small]#[deprecated]#
+| link:#scale[`scale`]  [.small]#[deprecated]#
 | An overload set whose every overload is deprecated&colon; the set is tagged&period;
 |===
 
@@ -338,7 +338,7 @@ void
 log&lowbar;message(char const* fmt, &period;&period;&period;);
 ----
 
-[#resize-06]
+[#resize]
 == resize
 
 An overload set with only one deprecated overload&colon; the set is not tagged&period;
@@ -353,10 +353,10 @@ An overload set with only one deprecated overload&colon; the set is not tagged&p
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-link:#resize-0b[resize]();
+link:#resize-0[resize]();
 ----
 
-[.small]#link:#resize-0b[_» more&period;&period;&period;_]#
+[.small]#link:#resize-0[_» more&period;&period;&period;_]#
 
 An overload set with only one deprecated overload&colon; the set is not tagged&period;
 
@@ -365,12 +365,12 @@ An overload set with only one deprecated overload&colon; the set is not tagged&p
 ----
 &lsqb;&lsqb;deprecated(&quot;use resize2&quot;)&rsqb;&rsqb;
 void
-link:#resize-0c[resize](int);
+link:#resize-1[resize](int);
 ----
 
-[.small]#link:#resize-0c[_» more&period;&period;&period;_]#
+[.small]#link:#resize-1[_» more&period;&period;&period;_]#
 
-[#resize-0b]
+[#resize-0]
 == resize
 
 An overload set with only one deprecated overload&colon; the set is not tagged&period;
@@ -385,7 +385,7 @@ void
 resize();
 ----
 
-[#resize-0c]
+[#resize-1]
 == resize
 
 An overload set with only one deprecated overload&colon; the set is not tagged&period;
@@ -405,7 +405,7 @@ resize(int);
 ====
 https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use resize2. Use of this entity is allowed but discouraged.
 ====
-[#scale-02]
+[#scale]
 == scale
 
 An overload set whose every overload is deprecated&colon; the set is tagged&period;
@@ -421,10 +421,10 @@ An overload set whose every overload is deprecated&colon; the set is tagged&peri
 ----
 &lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
 void
-link:#scale-07[scale]();
+link:#scale-0[scale]();
 ----
 
-[.small]#link:#scale-07[_» more&period;&period;&period;_]#
+[.small]#link:#scale-0[_» more&period;&period;&period;_]#
 
 An overload set whose every overload is deprecated&colon; the set is tagged&period;
 
@@ -433,16 +433,16 @@ An overload set whose every overload is deprecated&colon; the set is tagged&peri
 ----
 &lsqb;&lsqb;deprecated(&quot;use scale2&quot;)&rsqb;&rsqb;
 void
-link:#scale-05[scale](int);
+link:#scale-1[scale](int);
 ----
 
-[.small]#link:#scale-05[_» more&period;&period;&period;_]#
+[.small]#link:#scale-1[_» more&period;&period;&period;_]#
 
 [WARNING]
 ====
 https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use scale2. Use of this entity is allowed but discouraged.
 ====
-[#scale-07]
+[#scale-0]
 == scale
 
 An overload set whose every overload is deprecated&colon; the set is tagged&period;
@@ -462,7 +462,7 @@ scale();
 ====
 https://en.cppreference.com/cpp/language/attributes/deprecated[Deprecated^]: use scale2. Use of this entity is allowed but discouraged.
 ====
-[#scale-05]
+[#scale-1]
 == scale
 
 An overload set whose every overload is deprecated&colon; the set is tagged&period;
