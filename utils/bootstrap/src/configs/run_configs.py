@@ -50,6 +50,15 @@ _VAR_PATTERN = re.compile(r"\$(\w+)|\${([^}]+)}")
 # A generated per-preset entry name looks like "<base> (<preset>)".
 _PRESET_SUFFIX = re.compile(r"^(.*) \(([^()]+)\)$")
 
+# Base names of the script entries generated once per preset, named
+# "<base> (<preset>)". The generators prune them for a preset that is
+# gone, like the per-target entries.
+BOOTSTRAP_UPDATE_BASE = "Bootstrap Update"
+BOOTSTRAP_REFRESH_BASE = "Bootstrap Refresh"
+GENERATE_CONFIG_INFO_BASE = "Generate Config Info"
+PER_PRESET_SCRIPT_BASES = frozenset(
+    {BOOTSTRAP_UPDATE_BASE, BOOTSTRAP_REFRESH_BASE, GENERATE_CONFIG_INFO_BASE})
+
 
 def is_stale_preset_entry(name, generated_bases, valid_presets) -> bool:
     """True when ``name`` is a generator-owned per-preset entry whose preset
@@ -57,8 +66,8 @@ def is_stale_preset_entry(name, generated_bases, valid_presets) -> bool:
 
     An entry is pruned only when its base name (the part before the trailing
     " (preset)") is one we still generate AND the preset token is not in the
-    current preset set. This never matches user-authored entries, whose base
-    names are not in ``generated_bases``.
+    current preset set. Entries are recognized by name alone, so a
+    user-authored entry matches only if it is named like a generated one.
     """
     if not name:
         return False
@@ -67,6 +76,21 @@ def is_stale_preset_entry(name, generated_bases, valid_presets) -> bool:
         return False
     base, token = m.group(1), m.group(2)
     return base in generated_bases and token not in valid_presets
+
+
+def prune_stale_entries(entries_by_name, generated_bases, valid_presets,
+                        written_names=frozenset()) -> dict:
+    """Return ``entries_by_name`` without its stale per-preset entries.
+
+    An entry named in ``written_names``, which this run writes, is always
+    kept: "Generate Config Info (docs)" shares a base with the per-preset
+    entries but names no preset.
+    """
+    return {
+        name: entry for name, entry in entries_by_name.items()
+        if name in written_names
+        or not is_stale_preset_entry(name, generated_bases, valid_presets)
+    }
 
 
 def load_preset_names(source_dir: str) -> list:
@@ -195,7 +219,7 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": f"Bootstrap Update ({bootstrap_refresh_config_name})",
+            "name": f"{BOOTSTRAP_UPDATE_BASE} ({bootstrap_refresh_config_name})",
             "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
             "folder": "Bootstrap Update",
@@ -203,7 +227,7 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": f"Bootstrap Refresh ({bootstrap_refresh_config_name})",
+            "name": f"{BOOTSTRAP_REFRESH_BASE} ({bootstrap_refresh_config_name})",
             "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
             "folder": "Bootstrap Refresh",
@@ -219,7 +243,7 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": f"Generate Config Info ({bootstrap_refresh_config_name})",
+            "name": f"{GENERATE_CONFIG_INFO_BASE} ({bootstrap_refresh_config_name})",
             "group": "Codegen",
             "script": os.path.join(options.source_dir, "utils", "codegen", "generate-config-info.py"),
             "folder": "Generate Config Info",

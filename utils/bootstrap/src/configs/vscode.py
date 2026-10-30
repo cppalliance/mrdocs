@@ -22,7 +22,7 @@ from typing import Optional, List, Dict, Any
 
 from ..core.filesystem import ensure_dir, write_text, load_json_file
 from ..core.ui import TextUI, get_default_ui
-from .run_configs import is_stale_preset_entry
+from .run_configs import PER_PRESET_SCRIPT_BASES, prune_stale_entries
 
 
 def replace_with_placeholders(config: Dict[str, Any], source_dir: str) -> None:
@@ -239,20 +239,19 @@ def generate_vscode_run_configs(
         replace_with_placeholders(cmake_build_task, source_dir)
         vs_tasks_by_name[cmake_build_task["label"]] = cmake_build_task
 
-    # Prune entries left over from presets that no longer exist. Only
-    # generator-owned per-preset entries are considered (their base name is
-    # one we still produce); user-added entries are never touched.
+    # Prune entries left over from presets that no longer exist. Entries are
+    # recognized by name alone: only one named "<base> (<preset>)", with a
+    # base we still produce, is considered, so a user entry is left alone
+    # unless it is named like a generated one.
     valid_presets = set(all_presets or []) | {preset, bootstrap_refresh_config_name}
     launch_bases = {config["name"] for config in configs if "target" in config}
+    launch_bases |= PER_PRESET_SCRIPT_BASES
     task_bases = {f"CMake Configure"} | {f"CMake Build {t}" for t in unique_targets}
-    vs_configs_by_name = {
-        name: cfg for name, cfg in vs_configs_by_name.items()
-        if not is_stale_preset_entry(name, launch_bases, valid_presets)
-    }
-    vs_tasks_by_name = {
-        label: task for label, task in vs_tasks_by_name.items()
-        if not is_stale_preset_entry(label, task_bases, valid_presets)
-    }
+    script_names = {config["name"] for config in configs if "script" in config}
+    vs_configs_by_name = prune_stale_entries(
+        vs_configs_by_name, launch_bases, valid_presets, script_names)
+    vs_tasks_by_name = prune_stale_entries(
+        vs_tasks_by_name, task_bases, valid_presets)
 
     # Write back all configs
     launch_data["configurations"] = list(vs_configs_by_name.values())

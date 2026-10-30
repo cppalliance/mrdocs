@@ -11,20 +11,26 @@
 
 """Tests for CMake presets generation."""
 
+import copy
 import json
 import os
 import sys
 import tempfile
 import unittest
+from io import StringIO
 
 sys.path.insert(0, str(__file__).replace("\\", "/").rsplit("/", 2)[0])
 
+from unittest.mock import MagicMock, patch
+
 from src.presets.generator import (
+    BOOTSTRAP_VENDOR_KEY,
     get_host_system_name,
     get_parent_preset_name,
     get_display_name,
     normalize_preset_value,
     create_cmake_presets,
+    is_bootstrap_preset,
 )
 
 
@@ -153,25 +159,28 @@ class TestNormalizePresetValue(unittest.TestCase):
         self.assertEqual(result, "${sourceDir}/a;${sourceDir}/b")
 
 
-class TestCreateCmakePresetsCleanup(unittest.TestCase):
-    """Test that create_cmake_presets cleans up stale _ROOT variables."""
+class PresetsFileTestCase(unittest.TestCase):
+    """A test with a CMakeUserPresets.json in a temporary directory."""
 
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
+        self.path = os.path.join(self.tmpdir, "CMakeUserPresets.json")
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def _write_presets(self, presets_data):
-        path = os.path.join(self.tmpdir, "CMakeUserPresets.json")
-        with open(path, "w") as f:
+        with open(self.path, "w") as f:
             json.dump(presets_data, f)
 
     def _read_presets(self):
-        path = os.path.join(self.tmpdir, "CMakeUserPresets.json")
-        with open(path) as f:
+        with open(self.path) as f:
             return json.load(f)
+
+
+class TestCreateCmakePresetsCleanup(PresetsFileTestCase):
+    """Test that create_cmake_presets cleans up stale _ROOT variables."""
 
     def test_stale_roots_removed_from_current_preset(self):
         """Stale _ROOT vars should be removed from the updated preset."""
@@ -505,6 +514,147 @@ class TestCreateCmakePresetsCleanup(unittest.TestCase):
         self.assertIn("debug-macos", names)
         self.assertIn("release-macos", names,
                       "Other presets should be preserved, not deleted")
+
+
+class TestBootstrapPresetMarker(PresetsFileTestCase):
+    """A preset bootstrap writes records that bootstrap created it."""
+
+    def _created_preset(self):
+        create_cmake_presets(
+            source_dir=self.tmpdir,
+            preset_name="release-linux",
+            build_type="Release",
+            ui=MagicMock(),
+        )
+        return self._read_presets()["configurePresets"][0]
+
+    def test_created_preset_is_marked(self):
+        self.assertTrue(is_bootstrap_preset(self._created_preset()))
+
+    @patch("src.presets.generator.is_windows", return_value=True)
+    def test_marker_sits_beside_visual_studio_settings(self, _):
+        vendor = self._created_preset()["vendor"]
+        self.assertIn(BOOTSTRAP_VENDOR_KEY, vendor)
+        self.assertIn("microsoft.com/VisualStudioSettings/CMake/1.0", vendor)
+
+    def test_hand_written_preset_is_not_marked(self):
+        self.assertFalse(is_bootstrap_preset({"name": "mine"}))
+        self.assertFalse(is_bootstrap_preset(
+            {"name": "mine", "vendor": {"example.com/IDE/1.0": {}}}))
+
+    def test_an_old_preset_set_up_again_can_be_removed(self):
+        self._write_presets(
+            {"version": 6, "configurePresets": [{"name": "release-linux"}]})
+        self._created_preset()
+        create_cmake_presets(
+            source_dir=self.tmpdir, preset_name="current",
+            build_type="Release", remove_presets=["release-linux"],
+            ui=MagicMock())
+        names = [p["name"] for p in self._read_presets()["configurePresets"]]
+        self.assertEqual(names, ["current"])
+
+
+class TestPresetRemoval(PresetsFileTestCase):
+    """create_cmake_presets removes only the presets bootstrap created."""
+
+    def setUp(self):
+        super().setUp()
+        marked = {"vendor": {BOOTSTRAP_VENDOR_KEY: {}}}
+        self.presets = {
+            "version": 6,
+            "configurePresets": [
+                dict(name="old", **marked),
+                dict(name="current", **marked),
+                {"name": "mine"},
+            ],
+        }
+        self._write_presets(self.presets)
+        self.ui = MagicMock()
+
+    def _remove(self, names, **kwargs):
+        create_cmake_presets(
+            source_dir=self.tmpdir, preset_name="current",
+            build_type="Release", remove_presets=names, ui=self.ui, **kwargs)
+
+    def _removed(self):
+        return [str(c.args[0]) for c in self.ui.ok.call_args_list
+                if str(c.args[0]).startswith("Removed preset")]
+
+    def _names_on_disk(self):
+        return [p["name"] for p in self._read_presets()["configurePresets"]]
+
+    def _warnings(self):
+        return " ".join(str(c.args[0]) for c in self.ui.warn.call_args_list)
+
+    def test_removes_a_bootstrap_preset(self):
+        self._remove(["old"])
+        self.assertEqual(self._removed(), ["Removed preset 'old'"])
+        self.assertEqual(self._names_on_disk(), ["current", "mine"])
+
+    def test_keeps_a_hand_written_preset(self):
+        self._remove(["mine"])
+        self.assertEqual(self._removed(), [])
+        self.assertEqual(self._names_on_disk(), ["old", "current", "mine"])
+        self.assertIn("bootstrap did not create it", self._warnings())
+
+    def test_keeps_the_preset_the_run_sets_up(self):
+        self._remove(["current"])
+        self.assertEqual(self._removed(), [])
+        self.assertIn("current", self._names_on_disk())
+        self.assertIn("this run sets up", self._warnings())
+
+    def test_reports_an_unknown_preset(self):
+        self._remove(["nope"])
+        self.assertEqual(self._removed(), [])
+        self.assertIn("no such preset", self._warnings())
+
+    def test_removes_a_repeated_name_once(self):
+        self._remove(["old", "old"])
+        self.assertEqual(self._removed(), ["Removed preset 'old'"])
+
+    def test_dry_run_prints_one_presets_file_that_keeps_this_runs_preset(self):
+        with patch("sys.stdout", new_callable=StringIO) as out:
+            self._remove(["old"], dry_run=True)
+        lines = out.getvalue().splitlines()
+        starts = [i for i, line in enumerate(lines)
+                  if line.startswith("cat <<'BOOTSTRAP_EOF' >")]
+        self.assertEqual(len(starts), 1)
+        end = lines.index("BOOTSTRAP_EOF", starts[0])
+        printed = json.loads("\n".join(lines[starts[0] + 1:end]))
+        self.assertEqual(
+            [p["name"] for p in printed["configurePresets"]],
+            ["current", "mine"])
+        self.assertEqual(self._names_on_disk(), ["old", "current", "mine"])
+        self.ui.ok.assert_any_call("Would remove preset 'old'")
+        self.assertEqual(self._removed(), [])
+
+    def test_without_a_presets_file_removes_nothing(self):
+        os.remove(self.path)
+        self._remove(["old"])
+        self.assertEqual(self._removed(), [])
+        self.assertIn("no such preset", self._warnings())
+        self.assertEqual(self._names_on_disk(), ["current"])
+
+    def test_keeps_a_preset_another_preset_uses(self):
+        uses_of_old = [
+            ("configurePresets", {"name": "child", "inherits": "old"}),
+            ("configurePresets", {"name": "child", "inherits": ["base", "old"]}),
+            ("buildPresets", {"name": "child", "configurePreset": "old"}),
+            ("testPresets", {"name": "child", "configurePreset": "old"}),
+            ("packagePresets", {"name": "child", "configurePreset": "old"}),
+            ("workflowPresets", {"name": "child", "steps": [
+                {"type": "configure", "name": "old"}]}),
+        ]
+        for kind, user_preset in uses_of_old:
+            with self.subTest(kind=kind, user_preset=user_preset):
+                self.ui.reset_mock()
+                presets = copy.deepcopy(self.presets)
+                presets.setdefault(kind, []).append(user_preset)
+                self._write_presets(presets)
+                self._remove(["old"])
+                self.assertEqual(self._removed(), [])
+                self.assertIn("old", self._names_on_disk())
+                self.assertIn("it is used by 'child'", self._warnings())
 
 
 class TestInjectClangToolchainFlags(unittest.TestCase):
