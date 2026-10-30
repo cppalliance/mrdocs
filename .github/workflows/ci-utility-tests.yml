@@ -79,6 +79,9 @@ jobs:
       - name: Check bootstrap options partial is up to date
         run: python3 ./utils/docs/generate_bootstrap_options.py --check
 
+      - name: Check the commands registry and the Doxygen page against the parser
+        run: python3 ./utils/docs/check_commands_registry.py
+
       # When the Coverage matrix entry was skipped because the develop cache is
       # warm, fetch develop's LCOV report and re-upload it tagged with the PR's
       # commit SHA. Codecov sees zero patch lines and unchanged project totals,

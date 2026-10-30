@@ -9,6 +9,7 @@
 ** xref:commands/metadata.adoc[Metadata Commands]
 ** xref:commands/inlines.adoc[Inline Commands]
 ** xref:commands/reference.adoc[Reference]
+** xref:commands/doxygen.adoc[Doxygen Compatibility]
 * Configuration
 ** xref:configuration/index.adoc[Overview]
 ** xref:configuration/inputs.adoc[Inputs]

@@ -98,7 +98,7 @@ MrDocs fills several kinds of metadata from the signature when the doc comment l
 
 === Briefs
 
-By default, the first sentence of a doc comment becomes the brief and the rest becomes the detailed description. xref:configuration/reference.adoc#auto-brief_option[`auto-brief`] is on by default; turn it off if you want every brief written explicitly with xref:commands/reference.adoc#cmd-summary[`@brief`].
+By default, the first paragraph of a doc comment becomes the brief and the rest becomes the detailed description. xref:configuration/reference.adoc#auto-brief_option[`auto-brief`] is on by default; turn it off if you want every brief written explicitly with xref:commands/reference.adoc#cmd-summary[`@brief`].
 
 .Example
 [source,cpp]

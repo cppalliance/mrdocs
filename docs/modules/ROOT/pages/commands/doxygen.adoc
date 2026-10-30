@@ -1,0 +1,515 @@
+= Doxygen Compatibility
+
+// Maintainer note. The command tables on this page are checked against the
+// parser by utils/docs/check_commands_registry.py. Each table row is four
+// cells, one per line: the command spellings, the status, the effect or
+// replacement, and a link, which may be empty. The header row is written on
+// one line, and no cell wraps onto a second line. In the first cell every
+// spelling sits in its own backtick span, and only the opening `@word` of a
+// span is looked up, so `@code ... @endcode` names `code`. The status is
+// exactly one of Supported, Different idiom, Not supported, or MrDocs only.
+// A Supported or MrDocs only row must name commands the parser dispatches,
+// and every dispatched command must have such a row. A dispatched command
+// named in any other row is an error. The commands in `EXEMPT_COMMANDS` in
+// the script are exempt from both rules, and the page lists them as Not
+// supported. Spellings without a word, such as `@f$` or `@{`, are not
+// looked up.
+
+MrDocs reads the doc comments of a C++ project that already uses Doxygen, but it is not a Doxygen clone. This page answers the question a migrating project asks first: which Doxygen commands does MrDocs understand, and what happens to the ones it does not. The xref:commands/reference.adoc[Commands Reference] lists what MrDocs understands. This page lists what Doxygen has.
+
+== Comment styles
+
+MrDocs accepts the same comment styles as Doxygen:
+
+* `pass:[/** ... */]`, the Javadoc style.
+* `pass:[/*! ... */]`, the Qt style.
+* `pass:[///]`, a run of line comments.
+* `pass:[//!]`, a run of line comments in the Qt style.
+* `pass:[///<]`, `pass:[//!<]`, `pass:[/**<]`, and `pass:[/*!<]`, which document the declaration to their left, such as a member variable or an enumerator.
+
+A command can start with a backslash or with an `@`. The two are the same, and the tables below use the `@` spelling. Plain `//` and `pass:[/* ... */]` comments are not doc comments and are ignored.
+
+The brief is the whole first paragraph of the comment, up to the first blank line or block command. With `JAVADOC_AUTOBRIEF` or `QT_AUTOBRIEF` on, Doxygen takes the first sentence; otherwise it needs `@brief` or a one-line `///` comment. Write a short first paragraph, or set the brief explicitly with `@brief`. With xref:configuration/reference.adoc#auto-brief_option[`auto-brief`] set to `false`, MrDocs sets no brief unless the comment uses `@brief`, `@short`, `@copybrief` or `@copydoc`.
+
+== Commands
+
+Each table row names one or more commands and gives their status:
+
+* *Supported*: MrDocs understands the command. The Effect column says what it produces, and the More column links the matching entry of the Commands Reference.
+* *Different idiom*: MrDocs does the same job another way. The Effect column says how.
+* *Not supported*: MrDocs does not understand the command. The Effect column says what happens to the text, because most of these commands do not fail loudly. The More column links the issue that tracks the gap, when there is one.
+* *MrDocs only*: the command has no Doxygen counterpart. Only the last table uses this status.
+
+A command that closes another, such as `@endcode`, is listed on the row of the command that opens it.
+
+MrDocs does not warn about a command it ignores. The issue https://github.com/cppalliance/mrdocs/issues/1369[#1369^] asks for a warning.
+
+=== Documentation commands
+
+These commands shape the description of a symbol.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@brief`, `@short`
+|Supported
+|Sets the brief. When one of them is present, the first paragraph is no longer the brief.
+|xref:commands/reference.adoc#cmd-summary[Summary]
+
+|`@details`
+|Supported
+|Adds a paragraph to the description. With no paragraph before it, that paragraph becomes the brief.
+|xref:commands/reference.adoc#cmd-paragraph[Paragraph]
+
+|`@par`
+|Supported
+|The text on the line becomes a heading, and the lines beneath it become a paragraph. Unlike Doxygen, an untitled `@par` turns the first line of its body into the heading. A body that starts with a command, such as `@c`, is dropped.
+|xref:commands/reference.adoc#cmd-heading[Heading]
+
+|`@li`, `@arg`
+|Supported
+|Adds a list item.
+|xref:commands/reference.adoc#cmd-list[List]
+
+|`@code ... @endcode`
+|Supported
+|Code block. A language given as in `@code{.cpp}` is kept.
+|xref:commands/reference.adoc#cmd-code-block[Code Block]
+
+|`@verbatim ... @endverbatim`
+|Supported
+|Code block with no language.
+|xref:commands/reference.adoc#cmd-code-block[Code Block]
+
+|`@param`, `@tparam`
+|Supported
+|Documents a parameter. A direction in brackets, such as `[in]`, is kept.
+|xref:commands/reference.adoc#cmd-parameters[Parameters], xref:commands/reference.adoc#cmd-template-parameters[Template Parameters]
+
+|`@return`, `@returns`, `@result`
+|Supported
+|Documents the return value.
+|xref:commands/reference.adoc#cmd-returns[Returns]
+
+|`@throw`, `@throws`, `@exception`
+|Supported
+|Documents an exception type and when it is thrown.
+|xref:commands/reference.adoc#cmd-exceptions[Exceptions]
+
+|`@pre`
+|Supported
+|Documents a precondition.
+|xref:commands/reference.adoc#cmd-preconditions[Preconditions]
+
+|`@post`
+|Supported
+|Documents a postcondition.
+|xref:commands/reference.adoc#cmd-postconditions[Postconditions]
+
+|`@see`, `@sa`
+|Supported
+|Adds an entry to the See also list. A bare name in its argument is plain text; put an `@ref` before it to make a link.
+|xref:commands/reference.adoc#cmd-see-also[See-also]
+
+|`@note`, `@warning`, `@important`
+|Supported
+|Admonition.
+|xref:commands/reference.adoc#cmd-admonitions[Admonitions]
+
+|`@deprecated`
+|Not supported
+|The command and the rest of its paragraph are dropped, so the deprecation notice does not appear. No warning is issued.
+|https://github.com/cppalliance/mrdocs/issues/1368[#1368^]
+
+|`@retval`
+|Not supported
+|The command and the rest of its paragraph are dropped, without a warning. Describe the values in `@return` instead.
+|https://github.com/cppalliance/mrdocs/issues/1368[#1368^]
+
+|`@xrefitem`
+|Not supported
+|The command and the rest of its paragraph are dropped, without a warning.
+|https://github.com/cppalliance/mrdocs/issues/1368[#1368^]
+
+|`@attention`, `@author`, `@authors`, `@bug`, `@copyright`, `@date`, `@invariant`, `@remark`, `@remarks`, `@since`, `@test`, `@todo`, `@version`
+|Not supported
+|The command and the rest of its paragraph are dropped, without a warning.
+|https://github.com/cppalliance/mrdocs/issues/1368[#1368^]
+
+|`@n`
+|Not supported
+|The command is accepted and ignored. It produces no line break.
+|
+
+|`@noop`, `@addindex`
+|Not supported
+|The command and the rest of its line are dropped.
+|
+
+|`@raisewarning`, `@qualifier`, `@showdate`, `@doxyconfig`, `@requirement`, `@satisfies`, `@verifies`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|`@parblock ... @endparblock`
+|Not supported
+|Shown as a code block, so the text inside is not formatted.
+|
+
+|===
+
+=== Structural commands
+
+A Doxygen comment can sit anywhere and name the entity it documents. MrDocs reads the C++ source, so the comment goes on the declaration and the entity is already known.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@class`, `@struct`, `@union`, `@interface`, `@protocol`, `@category`, `@enum`, `@namespace`, `@concept`, `@idlexcept`
+|Different idiom
+|Put the comment on the declaration. If the command is left in, it and the rest of its line are dropped.
+|xref:commands/index.adoc[Documenting the Code]
+
+|`@fn`, `@var`, `@typedef`, `@def`, `@property`
+|Different idiom
+|Put the comment on the declaration. If the command is left in, it and the rest of its line are dropped.
+|xref:commands/index.adoc[Documenting the Code]
+
+|`@overload`
+|Different idiom
+|MrDocs groups the overloads of a function by itself. The command and the rest of its line are dropped.
+|xref:configuration/reference.adoc#overloads_option[`overloads`]
+
+|`@module`, `@package`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|`@headerfile`
+|Not supported
+|The command and the rest of its paragraph are dropped, without a warning.
+|
+
+|`@example`, `@dir`
+|Not supported
+|The command and the rest of its line are dropped.
+|
+
+|`@extends`, `@implements`
+|Not supported
+|The command word is dropped and its argument stays as plain text.
+|
+
+|===
+
+=== Grouping commands
+
+MrDocs has no groups or topics yet. Symbols appear under their namespace or record.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@defgroup`, `@ingroup`, `@addtogroup`, `@weakgroup`
+|Not supported
+|The command and the rest of its line are dropped. The symbol is not grouped.
+|https://github.com/cppalliance/mrdocs/issues/1344[#1344^]
+
+|`@name`
+|Not supported
+|The command and the rest of its line are dropped. The members are not grouped.
+|https://github.com/cppalliance/mrdocs/issues/229[#229^]
+
+|`+@{+`, `+@}+`
+|Not supported
+|Shown as plain text, including the `@` and the brace.
+|https://github.com/cppalliance/mrdocs/issues/229[#229^]
+
+|`@nosubgrouping`, `@public`, `@protected`, `@private`, `@publicsection`, `@protectedsection`, `@privatesection`, `@static`, `@pure`, `@showinitializer`, `@hideinitializer`
+|Not supported
+|The command word is dropped and its argument stays as plain text. Access and storage come from the C++ declaration.
+|
+
+|===
+
+=== Conditional commands
+
+These commands hide or show text. MrDocs does not evaluate them, so the text they guard is published.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@cond ... @endcond`
+|Not supported
+|The lines with the commands are dropped, and the text between them is published as ordinary text.
+|https://github.com/cppalliance/mrdocs/issues/1343[#1343^]
+
+|`@if ... @elseif ... @else ... @endif`, `@ifnot`
+|Not supported
+|The lines with the commands are dropped, and the text of every branch is published.
+|
+
+|`@internal ... @endinternal`
+|Not supported
+|The text between them is published as a code block, so internal documentation is not hidden.
+|
+
+|===
+
+=== File-level commands
+
+These commands document a file, a page, or the project as a whole.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@file`
+|Not supported
+|The command and the rest of its line are dropped. The comment documents the next declaration when nothing such as an `#include` separates them, and is lost otherwise.
+|https://github.com/cppalliance/mrdocs/issues/1248[#1248^]
+
+|`@mainpage`, `@page`, `@subpage`
+|Not supported
+|The command and the rest of its line are dropped.
+|https://github.com/cppalliance/mrdocs/issues/1344[#1344^]
+
+|`@section`, `@subsection`, `@subsubsection`, `@paragraph`, `@tableofcontents`
+|Not supported
+|The command and the rest of its line are dropped.
+|
+
+|`@subparagraph`, `@subsubparagraph`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|===
+
+=== Include commands
+
+These commands insert the contents of another file.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@include`, `@snippet`, `@verbinclude`, `@htmlinclude`, `@latexinclude`, `@rtfinclude`, `@maninclude`, `@docbookinclude`, `@xmlinclude`, `@dontinclude`, `@skip`, `@skipline`, `@until`, `@line`
+|Not supported
+|The command and the rest of its line are dropped. The file is not read. This includes the `{lineno}` and `{doc}` forms.
+|
+
+|`@includelineno`, `@includedoc`, `@snippetlineno`, `@snippetdoc`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|`@lineinfo`, `@fileinfo`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|===
+
+=== Markup commands
+
+These commands format text or embed other content.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@a`, `@e`, `@em`
+|Supported
+|Emphasizes the next word.
+|xref:commands/reference.adoc#cmd-emphasis[Emphasis]
+
+|`@b`
+|Supported
+|Makes the next word strong.
+|xref:commands/reference.adoc#cmd-strong[Strong]
+
+|`@c`, `@p`
+|Supported
+|Sets the next word as code.
+|xref:commands/reference.adoc#cmd-code-span[Code Span]
+
+|`@link ... @endlink`
+|Different idiom
+|Use `@ref <name>`, without custom link text. Left in, `@link` turns the rest of the comment into a code block, because Clang only closes it at `@/link`.
+|xref:commands/reference.adoc#cmd-cross-reference[Cross-reference]
+
+|`@image`
+|Different idiom
+|Use the Markdown form `![alt](src)`. The command and the rest of its line are dropped.
+|xref:commands/reference.adoc#cmd-image[Image]
+
+|`@dot ... @enddot`, `@msc ... @endmsc`, `@startuml ... @enduml`
+|Supported
+|Code block tagged `dot`, `msc`, or `plantuml`. The diagram is not rendered.
+|xref:commands/reference.adoc#cmd-code-block[Code Block]
+
+|`@dotfile`, `@mscfile`, `@diafile`
+|Not supported
+|The command and the rest of its line are dropped.
+|
+
+|`@plantumlfile`, `@mermaidfile`, `@vhdlflow`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|`@mermaid ... @endmermaid`
+|Not supported
+|Shown as plain text, including the command words.
+|
+
+|`@secreflist ... @endsecreflist`
+|Not supported
+|Shown as a code block.
+|
+
+|`@anchor`, `@emoji`
+|Not supported
+|The command word is dropped and its argument stays as plain text.
+|
+
+|`+@f$ ... @f$+`
+|Supported
+|Inline formula.
+|xref:commands/reference.adoc#cmd-math[Math]
+
+|`+@f[ ... @f]+`
+|Supported
+|Display formula.
+|xref:commands/reference.adoc#cmd-math-block[Math Block]
+
+|`+@f{ ... @f}+`, `+@f( ... @f)+`
+|Not supported
+|Shown as a code block.
+|
+
+|===
+
+=== Cross-reference commands
+
+These commands link to other symbols or copy their documentation.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@ref`
+|Supported
+|Links to a symbol. The quoted text after the name is not used as link text. It stays in the output as literal text.
+|xref:commands/reference.adoc#cmd-cross-reference[Cross-reference]
+
+|`@relates`, `@related`, `@relatesalso`, `@relatedalso`, `@memberof`
+|Supported
+|Lists the function as a related symbol of the named record.
+|xref:commands/reference.adoc#cmd-relates[Relates]
+
+|`@copydoc`, `@copybrief`, `@copydetails`
+|Supported
+|Copies the documentation, the brief, or the details of another symbol.
+|xref:commands/reference.adoc#cmd-copy[Copy]
+
+|`@cite`, `@refitem`
+|Not supported
+|The command word is dropped and its argument stays as plain text.
+|
+
+|===
+
+=== Output-format commands
+
+These commands pass text to one output format. MrDocs renders every format from one model, so there is no such pass-through.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@htmlonly ... @endhtmlonly`, `@latexonly ... @endlatexonly`, `@manonly ... @endmanonly`, `@rtfonly ... @endrtfonly`, `@xmlonly ... @endxmlonly`, `@docbookonly ... @enddocbookonly`
+|Not supported
+|Shown as a code block tagged `html`, `latex`, `man`, `rtf`, `xml`, or `docbook`, in every output format. An option such as `[block]` becomes part of the code.
+|
+
+|===
+
+=== Graph and display switches
+
+These commands switch graphs and source listings on or off for a symbol. MrDocs draws no graphs.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@callgraph`, `@callergraph`, `@hidecallgraph`, `@hidecallergraph`, `@showrefby`, `@hiderefby`, `@showrefs`, `@hiderefs`
+|Not supported
+|The command word is dropped and its argument stays as plain text.
+|
+
+|`@collaborationgraph`, `@hidecollaborationgraph`, `@includegraph`, `@hideincludegraph`, `@includedbygraph`, `@hideincludedbygraph`, `@directorygraph`, `@hidedirectorygraph`, `@groupgraph`, `@hidegroupgraph`, `@inheritancegraph`, `@hideinheritancegraph`, `@showenumvalues`, `@hideenumvalues`, `@showinlinesource`, `@hideinlinesource`
+|Not supported
+|Shown as plain text, including the command word.
+|
+
+|===
+
+=== Commands only MrDocs has
+
+These commands have no Doxygen counterpart.
+
+[cols="3,2,5,2",options="header"]
+|===
+|Command |Status |Effect or replacement |More
+
+|`@tip`, `@caution`
+|MrDocs only
+|Admonitions, like `@note` and `@warning`.
+|xref:commands/reference.adoc#cmd-admonitions[Admonitions]
+
+|`@seebelow`
+|MrDocs only
+|Replaces the synopsis body of a declaration with `+/* see-below */+`.
+|xref:commands/reference.adoc#cmd-see-below[See Below]
+
+|`@implementationdefined`
+|MrDocs only
+|Hides a type whose definition is not part of the public interface.
+|xref:commands/reference.adoc#cmd-implementation-defined[Implementation Defined]
+
+|`@functionobject`, `@functor`
+|MrDocs only
+|Marks a variable as an algorithm function object.
+|xref:commands/reference.adoc#cmd-function-object[Function Object]
+
+|===
+
+=== Escape sequences
+
+The escapes `+\@+`, `+\&+`, `+\#+`, `+\%+`, `+\"+`, `+\.+`, `+\::+`, `+\|+`, `+\--+`, `+\---+`, `+\=+`, `+\?+`, and `+\!+` are supported: each produces the text that follows the backslash. `+\$+`, `+\<+`, and `+\>+` are not: Clang removes the backslash first, so `+\$5 or \$6+` becomes inline math and `+\<em\>X\</em\>+` becomes emphasis. `+\\+` is not supported either: both characters are dropped. `+\~+` is not supported either: the tilde is shown, and the language that follows it is not used to filter the text.
+
+== Idioms that replace Doxygen markup
+
+Doxygen often needs markup in the comments or in the source to hide, shorten, or split documentation. MrDocs usually does the same job from the configuration.
+
+Hiding a symbol::
+Doxygen uses `@internal`, `@cond`, or `EXCLUDE_SYMBOLS`. In MrDocs, the xref:configuration/reference.adoc#exclude-symbols_option[`exclude-symbols`] option drops every symbol that matches one of its patterns, and xref:configuration/filters.adoc[Filters] describes the other filters. Because the symbol leaves the corpus, a reference to it renders as its literal name.
+
+Types callers should not name::
+Doxygen projects often use a documentation-only macro. In MrDocs, the xref:configuration/reference.adoc#implementation-defined_option[`implementation-defined`] option, or the xref:commands/reference.adoc#cmd-implementation-defined[`@implementationdefined`] command on the declaration, drops the page of the symbol and renders every reference to it as `+/* implementation-defined */+`.
+
+Exposition-only synopses::
+The xref:configuration/reference.adoc#see-below_option[`see-below`] option, or the xref:commands/reference.adoc#cmd-see-below[`@seebelow`] command, keeps the page of the symbol but collapses its synopsis to `+/* see-below */+`.
+
+Documentation for different audiences::
+Doxygen uses `ENABLED_SECTIONS` with `@if`, or a second Doxyfile. In MrDocs, write one configuration file per audience and run MrDocs once for each, with xref:configuration/reference.adoc#config_option[`--config`]. Each file has its own filters, such as `include-symbols`, `exclude-symbols`, and xref:configuration/reference.adoc#extract-private_option[`extract-private`], and its own output directory. The xref:migration-notes.adoc#idioms-without-workarounds[Migration Notes] show the idioms side by side.
+
+== Other differences
+
+* MrDocs links a name to its symbol only where a command asks for it. Doxygen links names it recognizes in plain text. See https://github.com/cppalliance/mrdocs/issues/1208[#1208^].
+* MrDocs reads part of Markdown and HTML, not all of it. The xref:commands/inlines.adoc[Inline Commands] page lists what works. See https://github.com/cppalliance/mrdocs/issues/1291[#1291^].

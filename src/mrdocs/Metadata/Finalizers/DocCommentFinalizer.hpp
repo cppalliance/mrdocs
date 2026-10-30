@@ -122,7 +122,7 @@ private:
 
         This might mean copying the brief from another
         symbol (when there's a copybrief command) or
-        populating it automatically (first sentence).
+        populating it automatically (first paragraph).
      */
     void
     finalizeBrief(Symbol& I);

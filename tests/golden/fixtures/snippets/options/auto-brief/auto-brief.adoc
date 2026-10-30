@@ -20,7 +20,7 @@ truncate(
 
 === Description
 
-The first sentence of this comment becomes the brief&semi; the rest is the description&period;
+The first paragraph of this comment becomes the brief&semi; the rest is the description&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -44,7 +44,7 @@
           {
             "name": "title",
             "type": "Text",
-            "description": "The heading text, on the same line as `@par`. If omitted, no heading is emitted."
+            "description": "The heading text, on the same line as `@par`. If omitted, the first line of the section body becomes the heading."
           },
           {
             "name": "content",
@@ -96,14 +96,17 @@
         "kind": "Block",
         "syntaxes": [
           "@code[{.lang}] ... @endcode",
-          "@verbatim ... @endverbatim"
+          "@verbatim ... @endverbatim",
+          "@dot ... @enddot",
+          "@msc ... @endmsc",
+          "@startuml ... @enduml"
         ],
         "partial": "commands/code-block.adoc",
         "examples": [
           "commands/code-block"
         ],
         "see_also": [],
-        "description": "Inserts a block of preformatted code into the documentation.\nEverything between the opening and closing tags is preserved verbatim, including whitespace and indentation.\n\n`@code` and `@verbatim` produce the same output.\nUse `@code` for source code and `@verbatim` for other preformatted text, though MrDocs treats them identically.",
+        "description": "Inserts a block of preformatted code into the documentation.\nEverything between the opening and closing tags is preserved verbatim, including whitespace and indentation.\n\n`@code` and `@verbatim` produce the same output.\nUse `@code` for source code and `@verbatim` for other preformatted text, though MrDocs treats them identically.\n\n`@dot`, `@msc`, and `@startuml` also produce a code block, tagged with the language `dot`, `msc`, and `plantuml` respectively.",
         "parameters": [
           {
             "name": "lang",
@@ -113,7 +116,7 @@
           {
             "name": "code",
             "type": "Code",
-            "description": "The verbatim source between the opening command and `@endcode`/`@endverbatim`."
+            "description": "The verbatim source between the opening command and its closing command."
           }
         ]
       },
@@ -216,7 +219,9 @@
           "[^label]: text"
         ],
         "partial": "commands/footnote-definition.adoc",
-        "examples": [],
+        "examples": [
+          "commands/footnote"
+        ],
         "see_also": [
           "Footnote Reference"
         ],
@@ -243,7 +248,9 @@
           "\\f[ expression \\f]"
         ],
         "partial": "commands/math-block.adoc",
-        "examples": [],
+        "examples": [
+          "commands/math"
+        ],
         "see_also": [
           "Math"
         ],
@@ -273,7 +280,7 @@
         "see_also": [
           "Paragraph"
         ],
-        "description": "The `@brief` command marks its content as the brief description (summary) of the documented symbol.\nThe first sentence of a doc comment is automatically treated as the brief, so you only need `@brief` when you want to override that behavior or when the automatic detection does not capture what you intend.\n\n`@short` is an alias for `@brief`.",
+        "description": "The `@brief` command marks its content as the brief description (summary) of the documented symbol.\nThe first paragraph of a doc comment is automatically treated as the brief, so you only need `@brief` when you want to override that behavior or when the automatic detection does not capture what you intend.\n\n`@short` is an alias for `@brief`.",
         "parameters": [
           {
             "name": "text",
@@ -526,7 +533,7 @@
           "commands/see-below"
         ],
         "see_also": [],
-        "description": "Marks the symbol so its synopsis renders as `/* see below */` instead of the full declaration, for interfaces whose exact form is unspecified."
+        "description": "Marks the symbol so its synopsis renders as `/* see-below */` instead of the full declaration, for interfaces whose exact form is unspecified."
       },
       {
         "flag": "ImplementationDefined",
@@ -582,7 +589,6 @@
           "**text**",
           "__text__",
           "@b <word>",
-          "@strong <word>",
           "<strong>text</strong>"
         ],
         "partial": "commands/strong.adoc",
@@ -592,7 +598,7 @@
         "see_also": [
           "Emphasis"
         ],
-        "description": "Renders its content in bold (strong) style.\nUse `**` or `__` around the bold text.\nThe Doxygen commands `@b` and `@strong` bold the single word that follows them.",
+        "description": "Renders its content in bold (strong) style.\nUse `**` or `__` around the bold text.\nThe Doxygen command `@b` bolds the single word that follows it.",
         "parameters": [
           {
             "name": "word",
@@ -816,8 +822,7 @@
         "heading": "Cross-reference",
         "kind": "Inline",
         "syntaxes": [
-          "@ref <name> [\"text\"]",
-          "@link <name> ... @endlink"
+          "@ref <name>"
         ],
         "partial": "commands/cross-reference.adoc",
         "examples": [
@@ -827,17 +832,12 @@
           "Link",
           "See-also"
         ],
-        "description": "Creates a cross-reference to another documented symbol.\nThe `@ref` command takes a symbol name (optionally namespace-qualified) and produces a link to that symbol's documentation page.\nQualified names use `::` separators (e.g., `@ref A::f1`, `@ref ::A::f1`).\nOperator names are supported (e.g., `@ref F::operator+`).",
+        "description": "Creates a cross-reference to another documented symbol.\nThe `@ref` command takes a symbol name (optionally namespace-qualified) and produces a link to that symbol's documentation page.\nQualified names use `::` separators (e.g., `@ref A::f1`, `@ref ::A::f1`).\nOperator names are supported (e.g., `@ref F::operator+`).\n\nDoxygen's `@link <name> text @endlink` is not supported: Clang closes `@link` only at `@/link`, so `@endlink` never ends it and the rest of the comment becomes a code block. Write `@ref <name>` instead.",
         "parameters": [
           {
             "name": "name",
             "type": "Symbol",
             "description": "Qualified name of the symbol to link to."
-          },
-          {
-            "name": "text",
-            "type": "Text",
-            "description": "Optional display text for the link."
           }
         ]
       },
