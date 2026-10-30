@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2TegDc2mZHZfGrRYzGpN9YUKhVc6 KHaAvBNNS3m24CXuuadZ5n9xUHf 2QnvaQzPP3uf8dNdxhueozgHtfYt</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>detail</name>
+  <anchor>detail</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>1</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>4JBHY662qc5jsnkUaKDNQUgeDv1L</functions>
+  </members>
+</namespace>
+<function>
+  <name>helper</name>
+  <anchor>helper</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>4</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>4JBHY662qc5jsnkUaKDNQUgeDv1L</id>
+  <extraction>regular</extraction>
+  <parent>2TegDc2mZHZfGrRYzGpN9YUKhVc6</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of helper.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<namespace>
+  <name>outer</name>
+  <anchor>outer</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>16</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>KHaAvBNNS3m24CXuuadZ5n9xUHf</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of outer.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <usingDirectives>
+    <identifier>
+      <kind>identifier</kind>
+      <id>2QnvaQzPP3uf8dNdxhueozgHtfYt</id>
+      <identifier>shown</identifier>
+    </identifier>
+  </usingDirectives>
+  <members>
+    <functions>35yj87kLgF3UqKXzCXwZJk5ZSX1X</functions>
+  </members>
+</namespace>
+<function>
+  <name>member</name>
+  <anchor>member</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>25</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>35yj87kLgF3UqKXzCXwZJk5ZSX1X</id>
+  <extraction>regular</extraction>
+  <parent>KHaAvBNNS3m24CXuuadZ5n9xUHf</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of member.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+<namespace>
+  <name>shown</name>
+  <anchor>shown</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>8</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2QnvaQzPP3uf8dNdxhueozgHtfYt</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>vzEGwHA8qCYUvXZS5PXjEgLr8wG</functions>
+  </members>
+</namespace>
+<function>
+  <name>other</name>
+  <anchor>other</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>hidden-using-directive.cpp</shortPath>
+        <sourcePath>hidden-using-directive.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>vzEGwHA8qCYUvXZS5PXjEgLr8wG</id>
+  <extraction>regular</extraction>
+  <parent>2QnvaQzPP3uf8dNdxhueozgHtfYt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of other.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

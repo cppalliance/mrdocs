@@ -1,0 +1,24 @@
+= Reference
+:mrdocs:
+
+[#parse]
+== parse
+
+Parse a document&period;
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;section&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+parse(char const* text);
+----
+
+=== Description
+
+Return the number of values read&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

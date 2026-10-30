@@ -541,6 +541,20 @@
         ],
         "see_also": [],
         "description": "Marks the symbol as implementation-defined, so its details are hidden from the generated documentation."
+      },
+      {
+        "heading": "Conditional Section",
+        "kind": "Metadata block",
+        "syntaxes": [
+          "@cond [label] ... @endcond"
+        ],
+        "partial": "commands/conditional-section.adoc",
+        "examples": [
+          "commands/conditional-section"
+        ],
+        "see_also": [],
+        "description": "Hides a part of the documentation unless its label is enabled, as in Doxygen. A section starts at `@cond` and ends at the matching `@endcond`; the `\\cond` and `\\endcond` spellings work too. The label is the first word after `@cond`, and the section is shown when the xref:configuration/reference.adoc#enabled-sections_option[`enabled-sections`] option lists it. Labels are case-sensitive. A section with no label is always hidden. Text written after the label on the `@cond` line, or after `@endcond` on its line, is not rendered. Markers are only recognized in doc comments. A command inside a code block, or inside a Markdown code span (between matching backtick runs on one line), is not a marker: it hides nothing and ends nothing.\n\nSections nest, and a section is shown only when its label and the labels of the sections around it are all enabled. A section can span several doc comments and the declarations between them, so a pair of comments around a namespace hides the whole namespace. Doxygen's label expressions, such as `+(A && !B)+` or `+!A+`, are not supported: the label is the first word, which no entry of `enabled-sections` matches, so such a section is always hidden.\n\nA declaration is hidden when its first character is inside a hidden section. It gets no page, its members go with it, and its name is still printed where a visible declaration refers to it, as with the xref:configuration/reference.adoc#exclude-symbols_option[`exclude-symbols`] option. A macro defined in a hidden section is left out too. `@implementationdefined` and `@seebelow` on a hidden declaration still apply, and so do the ones written inside a hidden section of a doc comment. A symbol stays visible if any of its declarations is outside every hidden section, such as a public forward declaration, or a namespace reopened outside the section with only the members written there. An out-of-line definition (`S::f`, or `detail::f` defined at another scope) follows the declaration it defines, so a member or function hidden where it is declared stays hidden. A definition written unqualified inside its namespace, for instance in a source file that is an input, is a declaration of its own and keeps the symbol visible. A doc comment with nothing left to show once its hidden sections are removed counts as undocumented.\n\nA `@cond` with no matching `@endcond` hides everything up to the end of its file, so a forgotten marker can't leak what it was meant to hide, and MrDocs warns with the file and line of the `@cond`. A `@endcond` with no `@cond` to close also warns with its file and line, and is otherwise ignored. Each marker warns once per run, however many translation units include its file, and only for the project's own files: a marker in a system header is never reported, and one in a file outside the inputs is reported only at the debug level. The warnings are errors under `warn-as-error`, and are lowered to the debug level by `warnings: false`.",
+        "note": "The recommended way to keep symbols out of the documentation is configuration: the `exclude-symbols`, `implementation-defined` and `see-below` options, or separate runs for separate audiences. Honoring `@cond` is meant to keep a project migrating from Doxygen from publishing what its sections hid."
       }
     ]
   },

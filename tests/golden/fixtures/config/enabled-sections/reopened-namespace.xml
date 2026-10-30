@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <namespaces>2TegDc2mZHZfGrRYzGpN9YUKhVc6</namespaces>
+  </members>
+</namespace>
+<namespace>
+  <name>detail</name>
+  <anchor>detail</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>reopened-namespace.cpp</shortPath>
+        <sourcePath>reopened-namespace.cpp</sourcePath>
+        <lineNumber>10</lineNumber>
+        <columnNumber>1</columnNumber>
+      </location>
+    </loc>
+  </loc>
+  <kind>namespace</kind>
+  <id>2TegDc2mZHZfGrRYzGpN9YUKhVc6</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <members>
+    <functions>44Qu5AWrzqWyARC7uuABuM3aXCzT</functions>
+  </members>
+</namespace>
+<function>
+  <name>b</name>
+  <anchor>b</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>reopened-namespace.cpp</shortPath>
+        <sourcePath>reopened-namespace.cpp</sourcePath>
+        <lineNumber>13</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>44Qu5AWrzqWyARC7uuABuM3aXCzT</id>
+  <extraction>regular</extraction>
+  <parent>2TegDc2mZHZfGrRYzGpN9YUKhVc6</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Visible function.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

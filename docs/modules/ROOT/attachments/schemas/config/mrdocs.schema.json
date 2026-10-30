@@ -123,6 +123,15 @@
       "title": "Output an embeddable document",
       "type": "boolean"
     },
+    "enabled-sections": {
+      "default": [],
+      "description": "Labels of the conditional sections to include in the documentation, the equivalent of Doxygen's `ENABLED_SECTIONS`. A section runs from a `cond <label>` command to the matching `endcond` command, and its content, whether text in a doc comment or a declaration, is hidden unless its label is listed here. The label is the first word after `cond`, and labels are case-sensitive. A `cond` section with no label is always hidden.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Conditional sections to include",
+      "type": "array"
+    },
     "error-on-empty-corpus": {
       "default": true,
       "description": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",

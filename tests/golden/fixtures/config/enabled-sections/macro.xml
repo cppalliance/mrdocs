@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <macros>c2CB2nDazdyw7mmG4y6d613Jk7Z</macros>
+  </members>
+</namespace>
+<macro>
+  <name>VISIBLE_MACRO</name>
+  <anchor>VISIBLE_MACRO</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>macro.cpp</shortPath>
+      <sourcePath>macro.cpp</sourcePath>
+      <lineNumber>7</lineNumber>
+      <columnNumber>9</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>macro</kind>
+  <id>c2CB2nDazdyw7mmG4y6d613Jk7Z</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Visible macro.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+</macro>
+</mrdocs>

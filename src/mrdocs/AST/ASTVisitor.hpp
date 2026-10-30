@@ -17,6 +17,7 @@
 
 #include <mrdocs/Support/ExecutionContext.hpp>
 #include "ClangHelpers.hpp"
+#include "ConditionalSections.hpp"
 #include "MacroCollector.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata/Name.hpp>
@@ -82,6 +83,9 @@ class ASTVisitor
     // Macros captured by `MacroCollector` during preprocessing.
     // Owned by `ASTAction`.
     std::vector<CollectedMacro>& macroDefs_;
+
+    // The conditional sections of the files in this translation unit.
+    ConditionalSections conditionalSections_;
 
     // An unordered set of all extracted Info declarations
     detail::SymbolSet info_;
@@ -372,6 +376,35 @@ private:
      */
     void
     populateMacros();
+
+    /*  Warn about the conditional-section markers that do not pair up.
+
+        Runs after traversal, over the files whose markers were looked
+        at. A file that is a system header is skipped, and a file that
+        is not an input, or any file when warnings are off, is only
+        reported at the debug level. Each marker is reported once per
+        run, however many translation units include its file.
+     */
+    void
+    reportMalformedMarkers();
+
+    // Report the malformed markers of the file that starts at `start`.
+    void
+    warnAboutFile(
+        clang::SourceLocation start,
+        std::vector<ConditionalSections::Marker> const& markers);
+
+    // The level at which the markers of the file at `path` are reported.
+    report::Level
+    markerReportLevel(std::string_view path) const;
+
+    // Report one malformed marker of the file at `path`, unless it was
+    // reported before.
+    void
+    printMarkerWarning(
+        std::string const& path,
+        ConditionalSections::Marker const& marker,
+        report::Level level) const;
 
     /*  Populate a `MacroSymbol` from its `clang::MacroInfo`.
 
@@ -1202,6 +1235,28 @@ private:
     */
     std::optional<ExtractionMode>
     checkDocCommentExtractionFlag(clang::Decl const* D);
+
+    /** Determine whether @p D begins inside a disabled `cond` section.
+    */
+    bool
+    sectionHides(clang::Decl const* D);
+
+    /** Determine whether @p D has a doc comment with something left to
+        render once the disabled `cond` sections are left out.
+    */
+    bool
+    hasVisibleDocumentation(clang::Decl const* D);
+
+    /** Return the extraction mode that @p D's own source asks for.
+
+        The doc commands of @ref checkDocCommentExtractionFlag come
+        first. A declaration that begins inside a disabled `cond`
+        section is a `Dependency` otherwise, and so is an out-of-line
+        definition of one, which is placed where the declaration it
+        defines is. Returns `std::nullopt` if neither applies.
+    */
+    std::optional<ExtractionMode>
+    checkSourceExtractionMode(clang::Decl const* D);
 
     /* The strategy for checking filters in `checkSymbolFilters`
      */

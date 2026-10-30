@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <variables>tDtj9sLbLTYGsTVfa8QbF7sJ1uV</variables>
+  </members>
+</namespace>
+<variable>
+  <name>open</name>
+  <anchor>open</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>unbalanced.cpp</shortPath>
+      <sourcePath>unbalanced.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>tDtj9sLbLTYGsTVfa8QbF7sJ1uV</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Brief of open.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </type>
+  <initializer>0</initializer>
+</variable>
+</mrdocs>

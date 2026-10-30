@@ -1,0 +1,3 @@
+extract-all: false
+enabled-sections:
+  - INTERNAL

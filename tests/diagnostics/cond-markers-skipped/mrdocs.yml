@@ -1,0 +1,7 @@
+source-root: .
+input:
+  - src
+system-includes:
+  - system
+warn-if-undocumented: false
+warn-no-paramdoc: false

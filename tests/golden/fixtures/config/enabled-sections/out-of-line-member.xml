@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>3JFAU9jshT1foKv9gi6GC2GvijYM</records>
+  </members>
+</namespace>
+<record>
+  <name>S</name>
+  <anchor>S</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>out-of-line-member.cpp</shortPath>
+      <sourcePath>out-of-line-member.cpp</sourcePath>
+      <lineNumber>2</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3JFAU9jshT1foKv9gi6GC2GvijYM</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Visible record.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>QiVE9tFAkuHJsWNoK74qocQQUw9</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>visible</name>
+  <anchor>visible</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>out-of-line-member.cpp</shortPath>
+      <sourcePath>out-of-line-member.cpp</sourcePath>
+      <lineNumber>14</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+    <loc>
+      <location>
+        <shortPath>out-of-line-member.cpp</shortPath>
+        <sourcePath>out-of-line-member.cpp</sourcePath>
+        <lineNumber>5</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>QiVE9tFAkuHJsWNoK74qocQQUw9</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3JFAU9jshT1foKv9gi6GC2GvijYM</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Visible member.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>void</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>void</fundamentalType>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+  <isRecordMethod/>
+</function>
+</mrdocs>

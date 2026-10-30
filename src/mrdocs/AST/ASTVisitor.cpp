@@ -18,6 +18,7 @@
 #include <mrdocs/Support/Radix.hpp>
 #include "ASTVisitor.hpp"
 #include "ClangHelpers.hpp"
+#include "ConditionalSections.hpp"
 #include "ExtractDocComment.hpp"
 #include "NameBuilder.hpp"
 #include "TypeBuilder.hpp"
@@ -48,8 +49,12 @@
 #include <format>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <ranges>
+#include <set>
+#include <string_view>
+#include <tuple>
 #include <unordered_set>
 
 namespace mrdocs {
@@ -69,6 +74,7 @@ ASTVisitor(
     , source_(context.getSourceManager())
     , sema_(sema)
     , macroDefs_(macroDefs)
+    , conditionalSections_(context, sema.getPreprocessor(), config)
 {
     // Install handlers for our custom commands
     initCustomCommentCommands(context_);
@@ -93,6 +99,7 @@ build()
     traverse(TU);
     MRDOCS_ASSERT(find(SymbolID::global));
     populateMacros();
+    reportMalformedMarkers();
 }
 
 namespace {
@@ -138,7 +145,102 @@ underlyingConversion(clang::NamedDecl const* D)
     return dyn_cast<clang::CXXConversionDecl>(target);
 }
 
+// The warning for each kind of malformed marker, indexed by `MarkerKind`. The
+// placeholder is the character the marker was written with.
+constexpr std::array<std::string_view, 2> malformedMessages = {
+    "`{0}cond` has no matching `{0}endcond`; its section runs to the end of "
+        "the file",
+    "`{0}endcond` has no matching `{0}cond`; it is ignored"
+};
+
+// Record that a marker was reported. Every translation unit that includes
+// a file scans it again, so this tells whether the marker is new. The
+// existing `Diagnostics` do not serve: they have no debug level, which is
+// where a marker outside the inputs is reported, and the `diags_` of a
+// visitor is a copy whose content never reaches the execution context.
+bool
+isFirstReport(
+    std::string const& file,
+    unsigned line,
+    ConditionalSections::MarkerKind kind)
+{
+    static std::mutex mutex;
+    static std::set<std::tuple<
+        std::string, unsigned, ConditionalSections::MarkerKind>> reported;
+    std::lock_guard<std::mutex> const lock(mutex);
+    return reported.emplace(file, line, kind).second;
+}
+
 } // unnamed namespace
+
+void
+ASTVisitor::
+reportMalformedMarkers()
+{
+    for (auto const& [fid, regions] : conditionalSections_.computedFiles())
+    {
+        clang::SourceLocation const start = source_.getLocForStartOfFile(fid);
+        if (!regions.malformed.empty() && !source_.isInSystemHeader(start))
+        {
+            warnAboutFile(start, regions.malformed);
+        }
+    }
+}
+
+void
+ASTVisitor::
+warnAboutFile(
+    clang::SourceLocation start,
+    std::vector<ConditionalSections::Marker> const& markers)
+{
+    FileInfo const* file = findFileInfo(start);
+    if (file)
+    {
+        // `full_path` keeps the spelling of the translation unit that
+        // reached the file, which can differ from one to the next.
+        std::string const path =
+            files::makePosixStyle(files::normalizePath(file->full_path));
+        report::Level const level = markerReportLevel(path);
+        for (ConditionalSections::Marker const& marker : markers)
+        {
+            printMarkerWarning(path, marker, level);
+        }
+    }
+}
+
+report::Level
+ASTVisitor::
+markerReportLevel(std::string_view path) const
+{
+    // A file that is not an input is not the user's to fix.
+    report::Level level = report::Level::debug;
+    if (config_.warnings && checkFileFilters(path))
+    {
+        level = config_.warnAsError
+            ? report::Level::error
+            : report::Level::warn;
+    }
+    return level;
+}
+
+void
+ASTVisitor::
+printMarkerWarning(
+    std::string const& path,
+    ConditionalSections::Marker const& marker,
+    report::Level level) const
+{
+    unsigned const line = source_.getPresumedLoc(marker.loc, false).getLine();
+    if (isFirstReport(path, line, marker.kind))
+    {
+        char const introducer =
+            *source_.getCharacterData(marker.loc) == '@' ? '@' : '\\';
+        std::string const text = std::vformat(
+            malformedMessages[static_cast<std::size_t>(marker.kind)],
+            std::make_format_args(introducer));
+        report::print(level, std::format("{}:{}: {}", path, line, text));
+    }
+}
 
 void
 ASTVisitor::
@@ -184,6 +286,9 @@ populateMacros()
         ExtractionMode const mode = macroNameMode(name);
         MRDOCS_CHECK_OR_CONTINUE(mode != ExtractionMode::Dependency);
         MRDOCS_CHECK_OR_CONTINUE(checkFileFilters(file->full_path));
+
+        // A macro defined inside a disabled `cond` section is hidden too.
+        MRDOCS_CHECK_OR_CONTINUE(!conditionalSections_.isDisabled(defLoc));
 
         auto sym = std::make_unique<MacroSymbol>(id);
         sym->Name = name;
@@ -249,7 +354,8 @@ populate(MacroSymbol& I, clang::MacroInfo const* MI)
             context_.getTranslationUnitDecl());
         if (FC)
         {
-            populateDocComment(I.doc, FC, context_, config_, diags_);
+            populateDocComment(
+                I.doc, FC, context_, config_, conditionalSections_, diags_);
         }
     }
 }
@@ -402,6 +508,9 @@ ASTVisitor::
 traverse(clang::UsingDirectiveDecl const* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
+
+    // A using-directive written in a disabled section is left out.
+    MRDOCS_CHECK_OR(!sectionHides(D), nullptr);
 
     // Find the parent namespace
     ScopeExitRestore s1(mode_, TraversalMode::Dependency);
@@ -656,7 +765,7 @@ populate(SourceInfo& I, DeclTy const* D)
             I,
             Loc,
             isDefinition(D),
-            isDocumented(D));
+            hasVisibleDocumentation(D));
     }
 }
 
@@ -680,6 +789,7 @@ populate(
         FC,
         D->getASTContext(),
         config_,
+        conditionalSections_,
         diags_,
         mode != ExtractionMode::Dependency);
     return true;
@@ -882,6 +992,8 @@ populate(
     {
         for (clang::FriendDecl const* FD : D->friends())
         {
+            // A friend declared in a disabled section is left out.
+            MRDOCS_CHECK_OR_CONTINUE(!sectionHides(FD));
             // Skip meaningless builtin friend types
             if (clang::TypeSourceInfo const* TSI = FD->getFriendType())
             {
@@ -1393,7 +1505,7 @@ populate(
     // The newly traversed info might need to inherit the
     // documentation from the FriendDecl when the friend
     // is the only declaration.
-    MRDOCS_CHECK_OR(isDocumented(D));
+    MRDOCS_CHECK_OR(hasVisibleDocumentation(D));
     Symbol* TI = find(I.id);
     MRDOCS_CHECK_OR(TI);
     MRDOCS_CHECK_OR(!TI->doc);
@@ -3594,6 +3706,36 @@ checkDocCommentExtractionFlag(clang::Decl const* D)
     return std::nullopt;
 }
 
+bool
+ASTVisitor::
+sectionHides(clang::Decl const* D)
+{
+    return conditionalSections_.isDisabled(D->getBeginLoc());
+}
+
+bool
+ASTVisitor::
+hasVisibleDocumentation(clang::Decl const* D)
+{
+    clang::RawComment const* RC = getDocumentation(D);
+    return RC && !conditionalSections_.hidesAll(*RC);
+}
+
+std::optional<ExtractionMode>
+ASTVisitor::
+checkSourceExtractionMode(clang::Decl const* D)
+{
+    // An out-of-line definition takes the place of the declaration it
+    // defines, which is where its documentation belongs.
+    clang::Decl const* placed = D->isOutOfLine() ? D->getCanonicalDecl() : D;
+    std::optional<ExtractionMode> mode = checkDocCommentExtractionFlag(D);
+    if (!mode && sectionHides(placed))
+    {
+        mode = ExtractionMode::Dependency;
+    }
+    return mode;
+}
+
 ASTVisitor::ExtractionInfo
 ASTVisitor::
 checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
@@ -3629,12 +3771,21 @@ checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
     // same rules used for the globs (members of a see-below record
     // become dependencies, etc.).
     //
+    // A declaration that begins inside a disabled `cond` section is hidden
+    // like an excluded symbol, and so is an out-of-line definition of one.
+    // It ranks after the doc commands, so `@implementationdefined` and
+    // `@seebelow` still apply to it, and before every configured filter.
+    // Its members are inside the section too, and the out-of-line
+    // definitions of its members are hidden by the extraction mode of the
+    // record.
+    //
     // Cheap to call: the comment parse is cached on the ASTContext, and
     // checkSymbolFilters caches its own result via `updateCache`, so each
     // Decl is inspected once.
-    if (auto const docFlag = checkDocCommentExtractionFlag(D))
+    if (std::optional<ExtractionMode> const sourceMode =
+            checkSourceExtractionMode(D))
     {
-        return updateCache({*docFlag, ExtractionMatchType::Strict});
+        return updateCache({*sourceMode, ExtractionMatchType::Strict});
     }
 
     // Function to check if parent is of a certain extraction mode
@@ -4237,7 +4388,7 @@ checkUndocumented(
     // If `extract-all` is disabled, we don't need to
     // warn for undocumented symbols because that's
     // the expected behavior. We use this to fail early.
-    bool const hasDoc = isDocumented(D);
+    bool const hasDoc = hasVisibleDocumentation(D);
     if (!config_.extractAll &&
         !hasDoc)
     {

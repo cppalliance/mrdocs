@@ -192,6 +192,13 @@
         "default": []
       },
       {
+        "name": "enabled-sections",
+        "brief": "Conditional sections to include",
+        "details": "Labels of the conditional sections to include in the documentation, the equivalent of Doxygen's `ENABLED_SECTIONS`. A section runs from a `cond <label>` command to the matching `endcond` command, and its content, whether text in a doc comment or a declaration, is hidden unless its label is listed here. The label is the first word after `cond`, and labels are case-sensitive. A `cond` section with no label is always hidden.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
         "name": "implementation-defined",
         "brief": "Symbols rendered as \"implementation-defined\"",
         "details": "Symbols matching these filters, and symbols in scopes that match, are tagged \"implementation-defined\". Use it for symbols that belong to the project's private API. An \"implementation-defined\" symbol has no page of its own, and any reference to it renders as \"implementation-defined\". See `include-symbols` for the pattern syntax.",

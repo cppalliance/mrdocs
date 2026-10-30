@@ -795,10 +795,6 @@ bool
 isImplicitDefaultInit(clang::Expr const* E);
 
 MRDOCS_DECL
-bool
-isDocumented(clang::Decl const *D);
-
-MRDOCS_DECL
 clang::RawComment const*
 getDocumentation(clang::Decl const *D);
 

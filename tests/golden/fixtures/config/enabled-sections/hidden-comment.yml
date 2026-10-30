@@ -1,0 +1,2 @@
+extract-all: true
+warn-if-undocumented: true

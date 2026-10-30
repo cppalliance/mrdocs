@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
+<namespace>
+  <anchor>index</anchor>
+  <kind>namespace</kind>
+  <id>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</id>
+  <extraction>regular</extraction>
+  <members>
+    <records>2yEwiR8R3UgQr5QRSNLBzxhPvPdN</records>
+    <functions>2dMgtrNZN9xGT8ghvegdRm7JBrCN</functions>
+  </members>
+</namespace>
+<function>
+  <name>make</name>
+  <anchor>make</anchor>
+  <loc>
+    <loc>
+      <location>
+        <shortPath>public-signature.cpp</shortPath>
+        <sourcePath>public-signature.cpp</sourcePath>
+        <lineNumber>11</lineNumber>
+        <columnNumber>1</columnNumber>
+        <documented/>
+      </location>
+    </loc>
+  </loc>
+  <kind>function</kind>
+  <id>2dMgtrNZN9xGT8ghvegdRm7JBrCN</id>
+  <extraction>regular</extraction>
+  <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Visible function that returns a hidden type.</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>2yEwiR8R3UgQr5QRSNLBzxhPvPdN</id>
+          <identifier>Impl</identifier>
+        </identifier>
+      </name>
+    </named>
+  </returnType>
+  <funcClass>normal</funcClass>
+</function>
+</mrdocs>

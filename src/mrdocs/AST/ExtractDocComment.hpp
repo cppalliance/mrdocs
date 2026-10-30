@@ -28,6 +28,8 @@ class FullComment;
 
 namespace mrdocs {
 
+class ConditionalSections;
+
 /** Initialize clang to recognize our custom comments.
 
     Safe to be called more than once, but
@@ -48,6 +50,8 @@ initCustomCommentCommands(
     @param FC The full comment to parse
     @param ctx The ASTContext owning the comment
     @param config The MrDocs configuration object
+    @param sections The conditional sections that decide which nodes
+    are skipped.
     @param diags The diagnostics object
     @param warnings Whether findings in this comment are reported as
     warnings. Pass false for symbols outside the configured inputs, whose
@@ -59,6 +63,7 @@ populateDocComment(
     clang::comments::FullComment const* FC,
     clang::ASTContext const& ctx,
     Config const& config,
+    ConditionalSections& sections,
     Diagnostics& diags,
     bool warnings = true);
 
