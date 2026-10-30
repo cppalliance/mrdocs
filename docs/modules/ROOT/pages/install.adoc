@@ -78,7 +78,11 @@ If the shell reports "command not found" (or "is not recognized as an internal o
 Windows::
 +
 --
-Append the install prefix's `bin\` to your user `PATH` from PowerShell:
+The .msi package adds its `bin\` to the system `PATH` unless you clear the *Add MrDocs to the PATH for all users* checkbox while installing. For an unattended install, pass `REMOVE=AddToPath` to `msiexec` to leave the `PATH` unchanged. To add it later, run the same .msi again (or choose *Modify* for MrDocs in Settings > Apps), choose *Change*, and check the box.
+
+A newer .msi doesn't replace a MrDocs installed from a .msi without this checkbox, so uninstall that one first.
+
+For any other install, append the install prefix's `bin\` to your user `PATH` from PowerShell:
 
 [source,powershell]
 ----
