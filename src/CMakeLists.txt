@@ -42,6 +42,44 @@ file(
 )
 
 #-------------------------------------------------
+# Public header requirements
+#-------------------------------------------------
+# What every target that compiles the public headers needs. mrdocs-core
+# links this PUBLIC, and the tool, which links mrdocs-core privately so that
+# a plugin does not link the core itself, links it INTERFACE, so that it
+# reaches a plugin too. /Zc:__cplusplus is for Platform.hpp and
+# /Zc:preprocessor for the variadic macros (Describe.hpp, `MRDOCS_TRY`).
+# /EHs is the exception model every MrDocs target uses. C4251 and C4275 are
+# about the standard library members and bases of the types `MRDOCS_DECL`
+# exports; LLVM's own copies of these suppressions are stripped from the
+# global flags in setup-llvm.cmake. If someone links LLVM built as
+# RelWithDebInfo with MrDocs built as Debug, which you typically should not
+# be doing, this also selects the release runtime and the iterator debug
+# level LLVM was built with, so that the core, the tool and any plugin agree
+# with it.
+add_library(mrdocs-public-headers INTERFACE)
+target_include_directories(mrdocs-public-headers INTERFACE
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/polyfill/include>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/dom/include>"
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/libs/handlebars/include>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_compile_options(mrdocs-public-headers INTERFACE
+    "$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus;/Zc:preprocessor;/EHs;/wd4251;/wd4275>")
+if (MSVC)
+    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
+    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
+        target_compile_options(mrdocs-public-headers INTERFACE
+            $<$<CONFIG:Debug>:/MD>
+            $<$<CONFIG:Debug>:/D_ITERATOR_DEBUG_LEVEL=0>)
+    endif ()
+endif ()
+if (MRDOCS_INSTALL)
+    install(TARGETS mrdocs-public-headers EXPORT mrdocs-targets)
+endif ()
+
+#-------------------------------------------------
 # Create target
 #-------------------------------------------------
 add_library(mrdocs-core ${LIB_SOURCES})
@@ -49,10 +87,6 @@ add_library(mrdocs::mrdocs-core ALIAS mrdocs-core)
 add_dependencies(mrdocs-core mrdocs-codegen)
 target_compile_features(mrdocs-core PUBLIC cxx_std_23)
 target_include_directories(mrdocs-core
-    PUBLIC
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
-    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/src"
 )
@@ -66,11 +100,16 @@ target_compile_definitions(
     PRIVATE
     -DMRDOCS_TOOL
 )
+
+# A MrDocs that cannot load plugins says so when it finds one, instead of
+# handing it to the dynamic loader; see `MRDOCS_BUILD_PLUGIN_MODULES`.
+if (NOT MRDOCS_BUILD_PLUGIN_MODULES)
+    target_compile_definitions(mrdocs-core PRIVATE MRDOCS_WITHOUT_PLUGINS)
+endif ()
+
 target_compile_options(
     mrdocs-core
     PUBLIC
-    $<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>  # Platform.hpp
-    $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor> # Describe.hpp uses __VA_OPT__
     $<$<BOOL:${MRDOCS_CLANG}>:-Wno-unused-private-field>
     $<$<BOOL:${MRDOCS_CLANG}>:-Wno-unused-value>
     PRIVATE
@@ -92,7 +131,7 @@ set(MRDOCS_BUILTIN_DIR_ARGS
 # Dependency linking
 #-------------------------------------------------
 # Public dependencies: linked by name and propagated to consumers
-target_link_libraries(mrdocs-core PUBLIC mrdocs::polyfill mrdocs::dom mrdocs::handlebars)
+target_link_libraries(mrdocs-core PUBLIC mrdocs-public-headers mrdocs::polyfill mrdocs::dom mrdocs::handlebars)
 
 # Private dependencies
 set(MRDOCS_PRIVATE_DEPENDENCIES mrdocs-llvm jerryscript::jerry-core jerryscript::jerry-port Lua::lua)
@@ -104,17 +143,6 @@ else ()
     target_link_libraries(mrdocs-core PRIVATE ${MRDOCS_PRIVATE_DEPENDENCIES})
     install(TARGETS mrdocs-llvm EXPORT mrdocs-targets)
 endif ()
-
-# You typically should not be doing it, but if someone attempts to link LLVM in MSVC/Release
-# with MrDocs in MSVC/Debug, adjust flags to avoid a mismatch and propagate them to consumers.
-if(MSVC)
-    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
-    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        # Handle Debug/RelWithDebInfo mismatch between mrdocs and LLVM
-        target_compile_definitions(mrdocs-core PUBLIC $<$<CONFIG:Debug>:-D_ITERATOR_DEBUG_LEVEL=0>)
-        target_compile_options(mrdocs-core PUBLIC $<$<CONFIG:Debug>:/MD>)
-    endif()
-endif()
 
 #-------------------------------------------------
 # Install (the library and everything derived from its LLVM dependency)

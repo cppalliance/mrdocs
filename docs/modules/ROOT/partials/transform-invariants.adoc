@@ -1,0 +1,7 @@
+A transform runs after finalization, and only the generators run after it, so what it changes has to leave the corpus in the shape finalization left it in:
+
+* A symbol keeps its id and its kind. The corpus finds symbols by id, and the kind is what tells a generator which type of symbol it holds.
+* Every symbol ID written into the corpus, in a list of members, as a parent, or in a reference from a doc comment, names a symbol the corpus has. A transform cannot create a symbol or destroy one, so a list can lose members or change their order, and can gain only symbols the corpus already has.
+* What finalization derived is not derived again: the member lists it sorted, the overload sets it grouped, the briefs it copied from other declarations, and the references in doc comments it resolved. A reference a transform writes as text stays text, so a transform that links to a symbol writes its id.
+
+Within those limits a transform changes what it likes: doc comments, attributes, and which members a list holds and in what order.
