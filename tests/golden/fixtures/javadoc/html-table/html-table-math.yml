@@ -1,0 +1,2 @@
+generator: [adoc, xml]
+multipage: false

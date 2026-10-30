@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#norm[`norm`] 
+| Compute the norm of a vector&period;
+|===
+
+
+[#norm]
+== norm
+
+Compute the norm of a vector&period;
+
+=== Synopsis
+
+Declared in `&lt;html&hyphen;table&hyphen;math&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+double
+norm(
+    double x,
+    double y,
+    int p);
+----
+
+=== Description
+
+[%header]
+|===
+| Norm | Formula 
+| Euclidean | stem:[\sqrt{x^2 + y^2}] 
+| Maximum | stem:[\max(\|x\|, \|y\|)] 
+|===
+stem:[p] selects the norm&period;
+
+The result is stem:[\|v\|_p]&period;
+
+stem:[p = 2] is the default&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
