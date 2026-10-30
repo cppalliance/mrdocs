@@ -159,6 +159,15 @@ class ASTVisitor
     */
     llvm::DenseMap<clang::FileID, FileInfo> files_;
 
+    /*  The normalized spelling of each prefix file paths are shortened
+        against.
+
+        The prefixes are the same for the whole translation unit, while
+        `buildFileInfo` matches them once per file, so each is normalized
+        only once.
+    */
+    std::unordered_map<std::string, std::string> normalPrefixes_;
+
     /*  Determine how a clang::Decl matched the filters
      */
     enum class ExtractionMatchType {
@@ -1326,6 +1335,11 @@ private:
      */
     FileInfo
     buildFileInfo(std::string_view path);
+
+    /*  Get `prefix` normalized as a file path is, computed on first use.
+    */
+    std::string const&
+    normalPrefix(std::string_view prefix);
 
     /* Result of an upsert operation
 
