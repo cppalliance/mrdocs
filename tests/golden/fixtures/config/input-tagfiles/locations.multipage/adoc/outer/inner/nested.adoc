@@ -1,0 +1,24 @@
+[#outer-inner-nested]
+= xref:outer.adoc[outer]::xref:outer/inner.adoc[inner]::nested
+:relfileprefix: ../../
+:mrdocs:
+
+A page two directories down&period;
+
+== Synopsis
+
+Declared in `&lt;locations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct nested;
+----
+
+== Description
+
+It refers to link:../../../other/html/other/socket.html[`other&colon;&colon;socket`], link:/libs/geom/classgeom_1_1circle.html[`geom&colon;&colon;circle`] and link:https://ns.example/docs/ns/response_factory.html[`ns&colon;&colon;response&lowbar;factory`]&period;
+
+It also uses link:../../../%7Bodd%7D%20docs/odd/thing.html#odd::thing::get[`odd&colon;&colon;thing&colon;&colon;get`] and link:../../../%7Bodd%7D%20docs/odd/q%22uote%3Cb%3E.html[`odd&colon;&colon;thing&colon;&colon;quote`], whose locations need escaping&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

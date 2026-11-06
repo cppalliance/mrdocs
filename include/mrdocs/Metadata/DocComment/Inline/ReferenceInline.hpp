@@ -39,6 +39,19 @@ struct ReferenceInline
     /** Symbol being referenced.
     */
     SymbolID id = SymbolID::invalid;
+    /** Where the symbol is documented, when that's in another documentation set.
+
+        Set when the reference names no symbol in this corpus and a
+        tagfile says where it is documented, which leaves @ref id
+        invalid. Empty for a symbol of this corpus.
+
+        It is the location configured for the tagfile, as in Doxygen,
+        joined with the page: a URL, a path starting with `/`, or a path
+        relative to the output directory, which a page further down has
+        to climb out of. The bundled templates do that with the
+        `external_href` helper.
+    */
+    std::string href;
 
     /** Construct a reference with optional display text.
     */
@@ -51,7 +64,7 @@ struct ReferenceInline
 MRDOCS_DESCRIBE_STRUCT(
     ReferenceInline,
     (InlineCommonBase<InlineKind::Reference>),
-    (literal, id)
+    (literal, id, href)
 )
 
 } // mrdocs::doc

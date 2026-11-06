@@ -1,0 +1,13 @@
+multipage: true
+generator: [html, adoc]
+# The three forms a location takes in Doxygen's TAGFILES: a path
+# relative to the output directory, which pages further down have to
+# climb out of, a path from the server root, and a URL.
+input-tagfiles:
+  other.tag.xml: ../other/html
+  geomlib.tag: /libs/geom/
+  ns.tag.xml: https://ns.example/docs/
+  # Hand-written, with an anchor holding colons and a page name holding
+  # characters that would end a link, under a location with a space and
+  # braces, which AsciiDoc would read as an attribute reference.
+  odd.tag.xml: ../{odd} docs

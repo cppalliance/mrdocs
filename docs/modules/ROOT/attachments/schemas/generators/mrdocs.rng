@@ -84,7 +84,7 @@
   <define name="S_2bdz8onDMx7PBYnExqtLgMxUqrPY"><zeroOrMore><choice><element name="kind"><text/></element></choice></zeroOrMore></define>
   <define name="S_pbDQ6katbvPedvuztLHCiRNi4G8"><zeroOrMore><choice><element name="kind"><text/></element><element name="children"><zeroOrMore><ref name="AnyInline"/></zeroOrMore></element><element name="href"><text/></element></choice></zeroOrMore></define>
   <define name="S_3PrdQDrzihPKEMMq8ZtDjd69UoMf"><zeroOrMore><choice><element name="kind"><text/></element><element name="literal"><text/></element></choice></zeroOrMore></define>
-  <define name="S_2yM1iLKZLVpSpfu7Dq5sFaDfnwLa"><zeroOrMore><choice><element name="kind"><text/></element><element name="id"><text/></element><element name="literal"><text/></element></choice></zeroOrMore></define>
+  <define name="S_2yM1iLKZLVpSpfu7Dq5sFaDfnwLa"><zeroOrMore><choice><element name="kind"><text/></element><element name="href"><text/></element><element name="id"><text/></element><element name="literal"><text/></element></choice></zeroOrMore></define>
   <define name="S_22nFJc2hmNmmR5h1kq6NkgViKdEM"><zeroOrMore><choice><element name="kind"><text/></element></choice></zeroOrMore></define>
   <define name="S_CJPbC4NwrPJeuv6wSnDmgGcZcQc"><zeroOrMore><choice><element name="kind"><text/></element><element name="children"><zeroOrMore><ref name="AnyInline"/></zeroOrMore></element></choice></zeroOrMore></define>
   <define name="S_28xEnXQadr6mJnmktXwag2oH9muy"><zeroOrMore><choice><element name="kind"><text/></element><element name="children"><zeroOrMore><ref name="AnyInline"/></zeroOrMore></element></choice></zeroOrMore></define>
