@@ -55,14 +55,17 @@ public:
      * @param workingDir The working directory against which relative paths will be resolved.
      * @param inner The source compilation database to copy.
      * @param config The shared configuration object.
-     * @param implicitIncludeDirectories A map from compiler executable paths to their respective
-     *        implicit include directories, as determined by the system's compiler.
+     * @param implicitIncludeDirectories A map from compiler executable paths and sysroots (see
+     *        `implicitIncludeKey`) to their respective implicit include directories, as
+     *        determined by the system's compiler.
+     * @param reporter The reporter that prints the entries that are skipped.
     */
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
         Config const& config,
-        std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
+        std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+        report::Reporter& reporter);
 
     /** Take ownership of a scratch directory backing this database.
 

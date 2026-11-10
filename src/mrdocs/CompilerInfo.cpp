@@ -13,14 +13,24 @@
 #include "CompilerInfo.hpp"
 #include "Support/ExecuteAndWaitWithLogging.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Path.hpp>
+#include <clang/Options/Options.h>
+#include <llvm/Option/ArgList.h>
+#include <llvm/Option/OptTable.h>
+#include <llvm/Support/Path.h>
+#include <llvm/Support/Process.h>
 #include <llvm/Support/Program.h>
 #include <format>
+#include <ranges>
 
 
 namespace mrdocs {
 
 Optional<std::string>
-getCompilerVerboseOutput(llvm::StringRef compilerPath)
+getCompilerVerboseOutput(
+    llvm::StringRef compilerPath,
+    report::Reporter& reporter,
+    std::vector<std::string> const& sysrootArgs)
 {
     if ( ! llvm::sys::fs::exists(compilerPath))
     {
@@ -34,9 +44,11 @@ getCompilerVerboseOutput(llvm::StringRef compilerPath)
     }
 
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
-    std::vector<llvm::StringRef> const args = {compilerPath, "-v", "-E", "-x", "c++", "-"};
+    std::vector<llvm::StringRef> args = {compilerPath};
+    args.insert(args.end(), sysrootArgs.begin(), sysrootArgs.end());
+    args.insert(args.end(), {"-v", "-E", "-x", "c++", "-"});
     llvm::ArrayRef<llvm::StringRef> emptyEnv;
-    int const result = ExecuteAndWaitWithLogging(compilerPath, args, emptyEnv, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, compilerPath, args, emptyEnv, redirects);
     if (result != 0)
     {
         llvm::sys::fs::remove(outputPath);
@@ -88,7 +100,10 @@ namespace {
 // nothing when the compiler cannot be run. The compiler prints the argument
 // back verbatim when it has no such file.
 Optional<std::string>
-printFileName(llvm::StringRef compilerPath, llvm::StringRef name)
+printFileName(
+    llvm::StringRef compilerPath,
+    llvm::StringRef name,
+    report::Reporter& reporter)
 {
     llvm::SmallString<128> outputPath;
     if (llvm::sys::fs::createTemporaryFile("compiler-file-name", "txt", outputPath))
@@ -100,7 +115,7 @@ printFileName(llvm::StringRef compilerPath, llvm::StringRef name)
         {llvm::StringRef(), outputPath.str(), llvm::StringRef()};
     std::vector<llvm::StringRef> const args = {compilerPath, arg};
     llvm::ArrayRef<llvm::StringRef> emptyEnv;
-    int const result = ExecuteAndWaitWithLogging(compilerPath, args, emptyEnv, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, compilerPath, args, emptyEnv, redirects);
     if (result != 0)
     {
         llvm::sys::fs::remove(outputPath);
@@ -135,7 +150,8 @@ void
 removeGccBuiltinIncludeDirs(
     llvm::StringRef compilerPath,
     std::string const& verboseOutput,
-    std::vector<std::string>& includePaths)
+    std::vector<std::string>& includePaths,
+    report::Reporter& reporter)
 {
     if (verboseOutput.find("gcc version") == std::string::npos)
     {
@@ -153,7 +169,7 @@ removeGccBuiltinIncludeDirs(
     };
     for (llvm::StringRef const name: {"include", "include-fixed"})
     {
-        auto answer = printFileName(compilerPath, name);
+        auto answer = printFileName(compilerPath, name, reporter);
         // The compiler echoes the bare name back when it has no such
         // directory; only an absolute answer identifies a real one.
         if (!answer || *answer == name)
@@ -225,30 +241,135 @@ namespace {
 // Try to get include paths from a compiler found by name in PATH.
 // Returns the include paths if successful, empty vector otherwise.
 std::vector<std::string>
-tryCompilerByName(llvm::StringRef name)
+tryCompilerByName(llvm::StringRef name, report::Reporter& reporter)
 {
     auto found = llvm::sys::findProgramByName(name);
     if (!found)
     {
         return {};
     }
-    auto output = getCompilerVerboseOutput(*found);
+    auto output = getCompilerVerboseOutput(*found, reporter);
     if (!output)
     {
         return {};
     }
     auto includePaths = parseIncludePaths(*output);
-    removeGccBuiltinIncludeDirs(*found, *output, includePaths);
+    removeGccBuiltinIncludeDirs(*found, *output, includePaths, reporter);
     return includePaths;
 }
 
 } // anonymous namespace
 
+// `-isysroot` wins over `--sysroot` for headers, as in the driver. A compiler
+// run outside its wrapper (the Xcode toolchain's clang rather than
+// /usr/bin/c++) lists no SDK directories unless it is told the sysroot the
+// compile command uses.
+std::vector<std::string>
+findSysrootArgs(
+    std::vector<std::string> const& commandLine,
+    llvm::StringRef const directory,
+    llvm::StringRef const workingDir)
+{
+    if (commandLine.size() < 2)
+    {
+        return {};
+    }
+    auto const argv = std::views::transform(commandLine, &std::string::c_str);
+    std::vector<char const*> const argPtrs(argv.begin() + 1, argv.end());
+    unsigned missingIndex = 0;
+    unsigned missingCount = 0;
+    llvm::opt::InputArgList const args = clang::getDriverOptTable().ParseArgs(
+        argPtrs,
+        missingIndex,
+        missingCount,
+        llvm::opt::Visibility(clang::options::ClangOption));
+    llvm::opt::Arg const* arg = args.getLastArg(clang::options::OPT_isysroot);
+    if (!arg)
+    {
+        arg = args.getLastArg(clang::options::OPT__sysroot_EQ);
+    }
+    if (!arg)
+    {
+        return {};
+    }
+    std::string const dir = files::makeAbsolute(
+        arg->getValue(), files::makeAbsolute(directory, workingDir));
+    if (arg->getOption().matches(clang::options::OPT_isysroot))
+    {
+        return {"-isysroot", dir};
+    }
+    return {std::format("--sysroot={}", dir)};
+}
+
+Optional<std::string>
+resolveCompilerPath(
+    llvm::StringRef const compiler,
+    llvm::StringRef const directory,
+    llvm::StringRef const workingDir)
+{
+    if (compiler.empty())
+    {
+        return std::nullopt;
+    }
+    if (compiler.find_first_of("/\\") == llvm::StringRef::npos)
+    {
+        // A bare name is run through the PATH, as the driver would.
+        if (auto found = llvm::sys::findProgramByName(compiler))
+        {
+            return std::move(*found);
+        }
+        return std::nullopt;
+    }
+    std::string const path = files::makeAbsolute(
+        compiler, files::makeAbsolute(directory, workingDir));
+    if (llvm::sys::fs::exists(path))
+    {
+        return path;
+    }
+    return std::nullopt;
+}
+
+std::string
+implicitIncludeKey(
+    llvm::StringRef const compilerPath,
+    std::vector<std::string> const& sysrootArgs)
+{
+    std::string key(compilerPath);
+    for (auto const& arg : sysrootArgs)
+    {
+        key += '\n';
+        key += arg;
+    }
+    return key;
+}
+
+std::vector<std::string>
+fallbackCompilerCandidates(
+    llvm::StringRef const cxx,
+    llvm::StringRef const cc)
+{
+    std::vector<std::string> res;
+    for (llvm::StringRef const env: {cxx, cc})
+    {
+        if (!env.empty())
+        {
+            res.emplace_back(env);
+        }
+    }
+    for (std::string_view const name: {"g++", "clang++", "c++", "gcc", "clang"})
+    {
+        res.emplace_back(name);
+    }
+    return res;
+}
+
 std::unordered_map<std::string, std::vector<std::string>>
 getCompilersDefaultIncludeDir(
     clang::tooling::CompilationDatabase const& compDb,
+    llvm::StringRef const workingDir,
     bool const useSystemStdlib,
-    bool const useSystemLibc)
+    bool const useSystemLibc,
+    report::Reporter& reporter)
 {
     if (!useSystemStdlib && !useSystemLibc)
     {
@@ -262,34 +383,43 @@ getCompilersDefaultIncludeDir(
         if (!cmd.CommandLine.empty())
         {
             auto const& compilerPath = cmd.CommandLine[0];
-            if (res.contains(compilerPath))
+            auto const sysrootArgs =
+                findSysrootArgs(cmd.CommandLine, cmd.Directory, workingDir);
+            auto const key = implicitIncludeKey(compilerPath, sysrootArgs);
+            if (res.contains(key))
             {
                 continue;
             }
 
-            // Try the compiler specified in the compilation database
-            auto compilerOutput = getCompilerVerboseOutput(compilerPath);
+            // Try the compiler specified in the compilation database. The
+            // key keeps the name as written in the command, which is what
+            // the lookup of the command's include dirs uses.
+            auto const resolvedPath =
+                resolveCompilerPath(compilerPath, cmd.Directory, workingDir);
+            auto compilerOutput = resolvedPath
+                ? getCompilerVerboseOutput(*resolvedPath, reporter, sysrootArgs)
+                : std::nullopt;
             if (compilerOutput)
             {
                 auto includePaths = parseIncludePaths(*compilerOutput);
                 removeGccBuiltinIncludeDirs(
-                    compilerPath, *compilerOutput, includePaths);
+                    *resolvedPath, *compilerOutput, includePaths, reporter);
                 filterProbedIncludeDirs(
                     useSystemStdlib, useSystemLibc, includePaths);
-                res.emplace(compilerPath, std::move(includePaths));
+                res.emplace(key, std::move(includePaths));
                 continue;
             }
 
             // The compiler from the database wasn't found.
-            // Try common fallback compilers to discover system
-            // include paths.
-            static constexpr std::string_view fallbackCompilers[] = {
-                "g++", "clang++", "c++", "gcc", "clang"
-            };
+            // Probe the compiler the user chose (CXX, then CC) and then
+            // common ones to discover system include paths.
+            auto const fallbackCompilers = fallbackCompilerCandidates(
+                llvm::sys::Process::GetEnv("CXX").value_or(""),
+                llvm::sys::Process::GetEnv("CC").value_or(""));
             std::vector<std::string> includePaths;
             for (auto const& fallback : fallbackCompilers)
             {
-                includePaths = tryCompilerByName(fallback);
+                includePaths = tryCompilerByName(fallback, reporter);
                 if (!includePaths.empty())
                 {
                     break;
@@ -297,7 +427,7 @@ getCompilersDefaultIncludeDir(
             }
             filterProbedIncludeDirs(
                 useSystemStdlib, useSystemLibc, includePaths);
-            res.emplace(compilerPath, std::move(includePaths));
+            res.emplace(key, std::move(includePaths));
         }
     }
 
