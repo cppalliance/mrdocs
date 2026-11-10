@@ -12,7 +12,6 @@
 
 #include "Generator.hpp"
 #include "Filesystem/Temp.hpp"
-#include "GeneratorRegistryImpl.hpp"
 #include <mrdocs/Dom/Value.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
@@ -28,6 +27,14 @@ namespace mrdocs {
 Generator::
 ~Generator() noexcept = default;
 
+dom::Object
+getGeneratorParams(Generator const& generator, Config const& config)
+{
+    auto const& genOpts = config.generatorOptions;
+    auto const it = genOpts.find(std::string(generator.id()));
+    return it != genOpts.end() ? it->second : dom::Object();
+}
+
 std::string
 getGeneratorOutputPath(Generator const& generator, Config const& config)
 {
@@ -36,10 +43,8 @@ getGeneratorOutputPath(Generator const& generator, Config const& config)
     // generator, or a subdirectory named after the generator id when several
     // run, so each writes into its own directory. All paths are resolved
     // relative to the configuration file.
-    auto const& genOpts = config.generatorOptions;
-    auto const it = genOpts.find(std::string(generator.id()));
     dom::Value const explicitOutput =
-        it != genOpts.end() ? it->second.get("output") : dom::Value();
+        getGeneratorParams(generator, config).get("output");
     if (explicitOutput.isString())
     {
         return files::normalizePath(files::makeAbsolute(
@@ -109,18 +114,6 @@ getSinglePageFullPath(
     path::append(fileName, "reference");
     path::replace_extension(fileName, ext);
     return fileName.str().str();
-}
-
-Expected<void>
-installGenerator(std::unique_ptr<Generator> G)
-{
-    return getGeneratorRegistryImpl().insert(std::move(G));
-}
-
-Generator const*
-findGenerator(std::string_view id) noexcept
-{
-    return getGeneratorRegistryImpl().find(id);
 }
 
 } // mrdocs

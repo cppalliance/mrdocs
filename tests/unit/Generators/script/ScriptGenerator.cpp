@@ -9,21 +9,20 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Extensions/JsBinding.hpp>
-#include <mrdocs/Extensions/LoadedExtensions.hpp>
-#include <mrdocs/Extensions/LuaBinding.hpp>
-#include <mrdocs/Generators/script/OutputSink.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Config/ReferenceDirectories.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Extensions/JsBinding.hpp>
+#include <mrdocs/Extensions/LoadedExtensions.hpp>
+#include <mrdocs/Extensions/LuaBinding.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Generators/script/OutputSink.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Filesystem/Temp.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <test_suite/test_suite.hpp>
-#include <fstream>
-#include <ios>
 #include <memory>
 #include <optional>
 #include <string>
@@ -33,13 +32,31 @@ namespace mrdocs::script {
 
 namespace {
 
-// Write `content` verbatim to `path`. Pre-existing files are truncated.
+// A generator that writes the `ctx.outputPath` it receives.
+constexpr std::string_view outputPathLua = R"lua(mrdocs.register_generator("keys", function(ctx)
+    ctx.output.write("where.txt", ctx.outputPath)
+end)
+)lua";
+
+// A module that loads three siblings, as `<name>.lua`, `<name>/init.lua` and
+// a dotted name, and registers a generator named after what they return.
+constexpr std::string_view requireInitLua = R"lua(local r = require('rules')
+local p = require('pkg')
+local ab = require('a.b')
+mrdocs.register_generator(r.id .. p.id .. ab.id, function(ctx) end)
+)lua";
+
+// Write `content` to `dir`/`relative` (a UTF-8 path, '/' separators), making
+// the directories the file needs.
 void
-writeFile(std::string_view path, std::string_view content)
+writeUtf8File(
+    std::string const& dir,
+    std::string_view relative,
+    std::string_view content)
 {
-    std::ofstream os(std::string{path}, std::ios::binary | std::ios::trunc);
-    os.write(content.data(),
-             static_cast<std::streamsize>(content.size()));
+    std::string const full = files::appendPath(dir, relative);
+    BOOST_TEST(files::createDirectory(files::getParentDir(full)).has_value());
+    BOOST_TEST(files::writeFileText(full, content).has_value());
 }
 
 } // (anon)
@@ -54,6 +71,10 @@ writeFile(std::string_view path, std::string_view content)
 // directory.
 struct ScriptGeneratorTest
 {
+    // The reporter the configurations, corpora and extensions of the test
+    // report to, declared first so that it outlives them.
+    report::Reporter reporter_;
+
     // Built once by setup() and shared by the generator tests. The source
     // tree is kept alive only for the build; the corpus does not reference
     // it afterwards.
@@ -67,26 +88,28 @@ struct ScriptGeneratorTest
         BOOST_TEST(src);
         std::string const srcDir(src.path());
         std::string const srcFile = files::appendPath(srcDir, "input.cpp");
-        writeFile(srcFile, "struct Widget {};\n");
+        BOOST_TEST(files::writeFileText(
+            srcFile, "struct Widget {};\n")
+                .has_value());
 
-        // A real config file with absolute paths, so no config-relative
-        // placeholders need resolving. `addons` points back at this directory
-        // only to satisfy the option's existence check; extraction never
-        // reads it.
-        std::string const configPath = files::appendPath(srcDir, "mrdocs.yml");
-        writeFile(configPath,
-            "source-root: " + srcDir + "\n"
-            "addons: " + srcDir + "\n"
-            "input:\n  - " + srcDir + "\n");
+        // The configuration comes from a string that stands for a
+        // `mrdocs.yml` in the source directory, which is not written, with
+        // absolute paths so no config-relative placeholders need resolving.
+        // `addons` points back at this directory only to satisfy the
+        // option's existence check; extraction never reads it.
+        std::string const configYaml =
+            "source-root: " + srcDir + "\naddons: " + srcDir +
+            "\ninput:\n  - " + srcDir + "\n";
 
         ReferenceDirectories dirs;
         dirs.cwd = srcDir;
         dirs.mrdocsRoot = srcDir;
 
         Config config;
-        BOOST_TEST(Config::load_file(config, configPath, dirs).has_value());
+        BOOST_TEST(Config::loadString(config, configYaml,
+            files::appendPath(srcDir, "mrdocs.yml"), dirs, reporter_).has_value());
 
-        Expected<Corpus> corpus = Corpus::build(config);
+        Expected<Corpus> corpus = Corpus::build(config, reporter_);
         BOOST_TEST(corpus.has_value());
         if (corpus)
         {
@@ -112,11 +135,9 @@ struct ScriptGeneratorTest
         bool const isLua = lang == "lua";
         std::string const scriptPath =
             files::appendPath(workDir, isLua ? "gen.lua" : "gen.js");
-        writeFile(scriptPath, src);
+        BOOST_TEST(files::writeFileText(scriptPath, src).has_value());
 
-        Expected<LoadedExtensions> loaded = isLua
-            ? loadLuaExtensions(scriptPath, *config_)
-            : loadJsExtensions(scriptPath, *config_);
+        Expected<LoadedExtensions> loaded = isLua ? loadLuaExtensions(scriptPath, reporter_) : loadJsExtensions(scriptPath, reporter_);
         if (!loaded)
         {
             return Unexpected(loaded.error());
@@ -141,7 +162,7 @@ struct ScriptGeneratorTest
         {
             config.generatorOptions[std::string(id)] = params;
         }
-        return gen->build(*corpus_, config);
+        return gen->build(*corpus_, config, reporter_);
     }
 
     //
@@ -365,6 +386,67 @@ end)
         BOOST_TEST(!ran.has_value());
     }
 
+    // The `ctx.outputPath` of a script generator, and the directory its
+    // `ctx.output` writes to, are the location getGeneratorOutputPath
+    // resolves: the `output` of its own options when it has one, and a
+    // directory named after its id when several generators run.
+    void
+    testOutputPath()
+    {
+        for (bool const perGenerator : {true, false})
+        {
+            ScopedTempDirectory td("mrdocs-scriptgen");
+            BOOST_TEST(td);
+            std::string const scriptPath =
+                files::appendPath(td.path(), "path.lua");
+            BOOST_TEST(files::writeFileText(scriptPath, outputPathLua)
+                    .has_value());
+            Expected<LoadedExtensions> loaded =
+                loadLuaExtensions(scriptPath, reporter_);
+            BOOST_TEST(loaded.has_value());
+            if (!loaded)
+            {
+                return;
+            }
+            Generator const* generator = nullptr;
+            for (std::unique_ptr<Generator> const& g : loaded->generators)
+            {
+                if (g->id() == "keys")
+                {
+                    generator = g.get();
+                }
+            }
+            BOOST_TEST(generator != nullptr);
+            if (!generator)
+            {
+                return;
+            }
+            std::string const out = files::appendPath(td.path(), "out");
+            std::string const custom = files::appendPath(out, "custom");
+            Config config = *config_;
+            config.output = out;
+            if (perGenerator)
+            {
+                dom::Object options;
+                options.set("output", custom);
+                config.generatorOptions["keys"] = options;
+            }
+            else
+            {
+                config.generator.values = {"html", "keys"};
+            }
+            BOOST_TEST(generator->build(*corpus_, config, reporter_).has_value());
+            std::string const expected =
+                getGeneratorOutputPath(*generator, config);
+            std::string const want = perGenerator ? files::normalizePath(custom) : files::appendPath(files::normalizePath(out), "keys");
+            BOOST_TEST(expected == want);
+            auto const where = files::getFileText(
+                files::appendPath(expected, "where.txt"));
+            BOOST_TEST(where.has_value());
+            BOOST_TEST(where.value_or("") == expected);
+        }
+    }
+
     //
     // mrdocs.register_generator: the script bindings
     //
@@ -377,9 +459,11 @@ end)
         // A Lua extension that registers a generator leaves it loadable and
         // findable by its id.
         std::string const script = files::appendPath(td.path(), "gen.lua");
-        writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) end)\n");
-        Config const config;
-        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, config);
+        BOOST_TEST(files::writeFileText(
+            script,
+            "mrdocs.register_generator(\"my-gen\", function(ctx) end)\n")
+                .has_value());
+        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, reporter_);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
@@ -392,15 +476,51 @@ end)
     }
 
     void
+    testLuaRequireUnderNonAsciiRoot()
+    {
+        ScopedTempDirectory td("mrdocs-reggen");
+        BOOST_TEST(td);
+        // The extension directory has characters outside the ANSI code
+        // page. `require` finds <name>.lua, <name>/init.lua and a dotted
+        // name as a nested path, and a module the directory lacks is an
+        // error that names what was tried.
+        std::string const dir =
+            files::appendPath(td.path(), "ext-\xC3\xA9\xE6\x97\xA5\xE6\x9C\xAC");
+        writeUtf8File(dir, "conv/rules.lua", "return { id = 'one' }\n");
+        writeUtf8File(dir, "conv/pkg/init.lua", "return { id = 'two' }\n");
+        writeUtf8File(dir, "conv/a/b.lua", "return { id = 'three' }\n");
+        writeUtf8File(dir, "conv/init.lua", requireInitLua);
+        std::string const conv = files::appendPath(dir, "conv");
+        Expected<LoadedExtensions> loaded = loadLuaExtensions(
+            files::appendPath(conv, "init.lua"), reporter_, conv);
+        BOOST_TEST(loaded.has_value());
+        if (loaded)
+        {
+            BOOST_TEST(loaded->generators.size() == 1u);
+            if (!loaded->generators.empty())
+            {
+                BOOST_TEST(loaded->generators.front()->id() == "onetwothree");
+            }
+        }
+
+        writeUtf8File(dir, "conv/missing.lua", "require('nowhere')\n");
+        Expected<LoadedExtensions> missing = loadLuaExtensions(
+            files::appendPath(conv, "missing.lua"), reporter_, conv);
+        BOOST_TEST(!missing.has_value());
+    }
+
+    void
     testRegisterGeneratorJs()
     {
         ScopedTempDirectory td("mrdocs-reggen");
         BOOST_TEST(td);
         // The JavaScript counterpart.
         std::string const script = files::appendPath(td.path(), "gen.js");
-        writeFile(script, "mrdocs.register_generator(\"my-gen\", function(ctx) {});\n");
-        Config const config;
-        Expected<LoadedExtensions> loaded = loadJsExtensions(script, config);
+        BOOST_TEST(files::writeFileText(
+            script,
+            "mrdocs.register_generator(\"my-gen\", function(ctx) {});\n")
+                .has_value());
+        Expected<LoadedExtensions> loaded = loadJsExtensions(script, reporter_);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
@@ -420,9 +540,10 @@ end)
         // A script that registers nothing loads without error and yields no
         // generators or transforms.
         std::string const script = files::appendPath(td.path(), "gen.lua");
-        writeFile(script, "local unused = 1\n");
-        Config const config;
-        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, config);
+        BOOST_TEST(files::writeFileText(
+            script, "local unused = 1\n")
+                .has_value());
+        Expected<LoadedExtensions> loaded = loadLuaExtensions(script, reporter_);
         BOOST_TEST(loaded.has_value());
         if (loaded)
         {
@@ -448,8 +569,10 @@ end)
         testGeneratorIteratesCorpus();
         testWriteEscapeIsError();
         testGeneratorErrorIsReported();
+        testOutputPath();
 
         testRegisterGeneratorLua();
+        testLuaRequireUnderNonAsciiRoot();
         testRegisterGeneratorJs();
         testRegisterNothingIsEmpty();
     }

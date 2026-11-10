@@ -10,7 +10,7 @@
     },
     "addons-supplemental": {
       "default": [],
-      "description": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Plugins are the exception: the libraries in every plugins/ directory are all loaded. Use this to add or override a few templates/helpers without copying the entire addons tree.",
+      "description": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Use this to add or override a few templates/helpers without copying the entire addons tree.",
       "items": {
         "type": "string"
       },
@@ -125,7 +125,7 @@
     },
     "error-on-empty-corpus": {
       "default": true,
-      "description": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",
+      "description": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option. With `warn-as-error` set and this option `false`, the empty-corpus warning is still an error, because every warning is an error under `warn-as-error`.",
       "enum": [
         true,
         false
@@ -324,7 +324,7 @@
       "default": [
         "html"
       ],
-      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/; a script-driven generator is declared by an extension with `mrdocs.register_generator` and produces the output itself; and a plugin, a shared library under <addon>/plugins/, can install generators written in C++. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
+      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/; a script-driven generator is declared by a pipeline extension with `mrdocs.register_generator` and produces the output itself; and a plugin, a native C++ shared library under <addon>/extensions/, can install generators written in C++. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
       "title": "Generator(s) used to create the documentation"
     },
     "generator-options": {
@@ -737,7 +737,7 @@
         "type": "object"
       },
       "default": {},
-      "description": "An object whose keys are corpus-transform ids (the id a script passes to `mrdocs.register_transform`) and whose values are parameter objects for that transform. The transform registered under a given id receives its object as `ctx.params`.",
+      "description": "An object whose keys are corpus-transform ids (the id a script passes to `mrdocs.register_transform`, or the one a plugin's C++ transform returns from `Transform::id`) and whose values are parameter objects for that transform. Scripts and plugins share one pipeline, so a transform receives its object the same way whichever it is written in: as `ctx.params` in a script or in a plugin's callable, and from `getTransformParams` in a plugin's transform class. It receives an empty object when the configuration has none.",
       "title": "Per-transform parameters keyed by transform id",
       "type": "object"
     },
@@ -773,7 +773,7 @@
     },
     "warn-as-error": {
       "default": false,
-      "description": "When set to `true`, MrDocs treats warnings as errors and stops the generation of the documentation.",
+      "description": "When set to `true`, every warning is an error: the ones from MrDocs itself, from a script and from a plugin. MrDocs still prints each warning where it happens, and the run fails at the end.",
       "enum": [
         true,
         false

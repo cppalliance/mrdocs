@@ -16,6 +16,10 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 namespace mrdocs::hbs {
 
@@ -33,9 +37,23 @@ public:
     */
     std::string fileExtension;
 
+    /** The formats this generator's partials and helpers come from.
+
+        The format ids the generator inherits from, most general first,
+        and the generator's own id last. A generator that stands alone has
+        just its own id.
+    */
+    std::vector<std::string> formatChain;
+
     /** The configuration driving this render pass (owned by the caller).
      */
     Config const& config_;
+
+    /** The generator's own options: its `generator-options.<id>` block.
+
+        Templates read it as `generatorConfig`.
+    */
+    dom::Object params;
 
     /** Stylesheets to load for the page.
 
@@ -64,16 +82,23 @@ public:
         Initializes the HandlebarsCorpus with the given corpus and options.
 
         @param corpus The base corpus.
+        @param config The configuration driving the render pass.
+        @param params The generator's own options.
         @param fileExtension The file extension for the generated files.
-        @param toStringFn The function to convert a DocComment node to a string.
+        @param formatChain The format ids the generator inherits from, most
+        general first, and its own id last.
     */
     HandlebarsCorpus(
         Corpus const& corpus,
         Config const& config,
-        std::string_view fileExtension)
+        dom::Object params,
+        std::string_view fileExtension,
+        std::vector<std::string> formatChain)
         : DomCorpus(corpus)
         , fileExtension(fileExtension)
+        , formatChain(std::move(formatChain))
         , config_(config)
+        , params(std::move(params))
     {
     }
 

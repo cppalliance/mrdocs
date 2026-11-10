@@ -12,8 +12,9 @@
 #include "DataDrivenGenerators.hpp"
 #include "AddonPaths.hpp"
 #include "HandlebarsGenerator.hpp"
-#include <mrdocs/Generators/GeneratorManifest.hpp>
+#include <mrdocs/Extensions/GeneratorRegistry.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Generators/GeneratorManifest.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/Casting.h>
@@ -21,8 +22,10 @@
 #include <llvm/Support/YAMLParser.h>
 #include <filesystem>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -53,26 +56,62 @@ loadGeneratorMetadata(std::string_view yamlPath)
 }
 
 Expected<void>
-discoverDataDrivenGenerators(Config const& settings)
+discoverDataDrivenGenerators(
+    Config const& settings,
+    GeneratorRegistry& registry)
 {
     MRDOCS_TRY(
         std::vector<DiscoveredManifest> found,
         discoverGeneratorManifests(addon_paths::addonRoots(settings)));
+
+    // A directory whose name is already the id of a generator is skipped,
+    // whether the registry holds it already (a built-in generator, or
+    // one an extension installed) or an earlier root contributed it: the
+    // first one wins, so a duplicate id is a silent skip, not an error.
+    std::vector<std::pair<std::string, DiscoveredManifest const*>> pending;
+    std::unordered_map<std::string, DiscoveredManifest const*> pendingById;
     for (DiscoveredManifest const& d : found)
     {
-        // The generator registry is process-global and is not cleared
-        // between runs in the same process. `installGenerator` fails when
-        // the id is already taken, whether by a built-in or by an
-        // earlier addon root's generator of the same name. That is the
-        // first-writer-wins layering we want, so a duplicate id is a
-        // silent skip rather than an error (a `null` generator is the only
-        // other failure it reports, and we never pass one).
         std::string const name(files::getFileName(d.dir));
-        (void)installGenerator(
-            std::make_unique<HandlebarsGenerator>(
+        if (registry.find(name) || pendingById.contains(name))
+        {
+            continue;
+        }
+        pending.emplace_back(name, &d);
+        pendingById.emplace(name, &d);
+    }
+
+    // What a generator extends: the manifest of a directory about to be
+    // added, or the generator the registry holds. The registry is
+    // consulted here, before the generators are added, because a
+    // generator is immutable once it is in the registry and a manifest can
+    // extend one that comes later in the list.
+    auto const extendsOf =
+        [&](std::string_view id) -> std::optional<std::string>
+    {
+        if (auto const it = pendingById.find(std::string(id));
+            it != pendingById.end())
+        {
+            return it->second->manifest.extends;
+        }
+        auto const* const hbsGenerator =
+            dynamic_cast<HandlebarsGenerator const*>(
+                registry.find(id));
+        if (!hbsGenerator)
+        {
+            return std::nullopt;
+        }
+        return std::string(hbsGenerator->extends());
+    };
+
+    for (auto const& [name, d] : pending)
+    {
+        MRDOCS_TRY(registry.install(
+            std::make_shared<HandlebarsGenerator>(
                 name, name, name,
-                toEscapeMap(d.manifest.escape),
-                d.manifest.extends));
+                toEscapeMap(d->manifest.escape),
+                d->manifest.extends,
+                addon_paths::extensionChain(name, extendsOf))));
     }
     return {};
 }

@@ -1,63 +1,82 @@
 = Corpus Transforms
 
-A Mr.Docs *extension* is a Lua or JavaScript script that runs as part of a build and shapes the documentation in a way templates alone cannot. There are two kinds, and a single script may declare either or both:
+A *corpus transform* is a pipeline extension that rewrites metadata across many symbols at once to incorporate project conventions into the corpus. You can use it to do things like:
 
-* A *corpus transform*, covered on this page, rewrites metadata across many symbols at once: backfill briefs from a naming convention, tag symbols by group, mark generated code as "see below" in the output. Transforms run between extraction and rendering, so every generator sees the change.
-* A xref:extensions/script-generators.adoc[*script generator*] owns the whole emit: instead of rendering one page per symbol, it traverses the corpus and writes whatever files it wants.
+* Backfill documentation fields from naming conventions,
+* Create and identify relations between fields,
+* Tag symbols by group, and
+* Mark generated code as "implementation defined" according to project conventions.
 
-A script declares a transform with `mrdocs.register_transform(id, fn)` and a generator with `mrdocs.register_generator(id, fn)`. Either way the registered function receives a single context object, `ctx`.
+Transforms run once, after the corpus is built and finalized and before any generator runs, so every output format sees the change. After a transform runs, the corpus forgets the lookups by name it remembered, so the generators see a symbol that a transform renames under its new name.
 
-A xref:extensions/plugins.adoc[plugin] can install corpus transforms written in {cpp} as well. Those run before the transforms the scripts register, and keep to the same rules.
-
-== Languages and locations
-
-Extensions are scripts dropped under `extensions/` inside a Mr.Docs xref:configuration/output.adoc#addons[addon directory], the same roots that hold the xref:extensions/handlebars-extensions.adoc[Handlebars templates], with the `.js` or `.lua` extension. Mr.Docs aggregates scripts across every addon root and runs them in alphabetical order by full path, with the two languages interleaved.
-
-[TIP]
+[NOTE]
 ====
-Both scripting languages reach the same `mrdocs` API. The choice is a trade-off:
-
-* *JavaScript* is more familiar to most developers. The runtime Mr.Docs embeds is a small ES engine, so scripts have the language proper (closures, destructuring, regex, classes) but not a Node-style standard library. There is no `fs`, no `path`, no `process`. Scripts that only manipulate the corpus do not miss any of that.
-* *Lua* is the language designed to be embedded. Mr.Docs links it whole, so scripts have access to the entire Lua standard library (`string`, `table`, `math`, `io`, `os`) and can do filesystem work or text munging without leaving the script. The cost is that fewer people read Lua at a glance than read JavaScript. If you're already familiar with Lua, it is the more powerful choice.
-
-Lua is also faster, 2 to 20 times on the same work, and has no memory limit of its own, while each JavaScript engine has a fixed 4 GB heap. The xref:extensions/script-engines.adoc[Script Engines] page has the measurements and the details.
+As specified in xref:page$extensions/defining-extensions.adoc[], you can write an extension in Lua, JavaScript, or {cpp}. A transform must be independent and not rely on the order in which extensions are executed.
 ====
 
-[#corpus-transforms]
-== Writing a transform
+Every transform works on the same corpus. The transforms run one after another, and each sees what the earlier ones wrote. Each receives its own xref:configuration/reference.adoc#transform-options_option[`transform-options`]`.<id>` block. The transforms of scripts and of plugins run in one pipeline. There is nothing to select: once a plugin is xref:extensions/defining-extensions.adoc#installing-a-plugin[installed], its transform runs in every build.
 
-A transform is a function registered with `mrdocs.register_transform(id, fn)`; the `id` keys its `transform-options.<id>` parameters, delivered as `ctx.params`. Mr.Docs invokes each registered function once, in registration order, with the `ctx` object. A flat view of the corpus reaches the script through `ctx.corpus`.
+[#registering-a-transform]
+== Registering a transform
+
+A transform defined is a function registered under an `id`. A script registers it with `mrdocs.cpp:PluginContext::registerTransform[register_transform](id, fn)` and a plugin registers it with cpp:PluginContext::registerTransform[registerTransform], as xref:extensions/defining-extensions.adoc#registering-an-extension[Defining Extensions] describes:
 
 [tabs]
 ======
 JavaScript::
 +
-.`addons/extensions/noop.js`
+.`addons/extensions/hello_world_transform.js`
 [source,javascript]
 ----
-include::example$snippets/extensions/entry-point/addons/extensions/noop.js[]
+include::example$examples/extensions/hello-world-transform/js/extensions/hello_world_transform.js[]
 ----
 
 Lua::
 +
-.`addons/extensions/noop.lua`
+.`addons/extensions/hello_world_transform.lua`
 [source,lua]
 ----
-include::example$snippets/extensions/entry-point/addons/extensions/noop.lua[]
+include::example$examples/extensions/hello-world-transform/lua/extensions/hello_world_transform.lua[]
+----
+
+{cpp}::
++
+.`hello-world-transform/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/hello-world-transform/plugin/plugin.cpp[tag=plugin,indent=0]
 ----
 ======
 
-=== The context object
+A transform that keeps state across calls is a subclass of cpp:Transform[] instead, with cpp:Transform::id[] and cpp:Transform::apply[]. A plugin passes an object of the class to the other overload of cpp:PluginContext::registerTransform[registerTransform], the way xref:extensions/programmatic-generators.adoc[Programmatic Generators] describes the cpp:Generator[] subclass.
 
-Every registered function receives one argument, `ctx`:
+The `id` keys the xref:configuration/reference.adoc#transform-options_option[`transform-options`]`.<id>` block of the configuration file. The block arrives as `ctx.params` in a script. In {cpp} a callable reads it as the `params` field of its cpp:TransformExtensionContext[], and a subclass of cpp:Transform[] calls cpp:getTransformParams[] from cpp:Transform::apply[].
 
-* `ctx.corpus` is the corpus: an object whose `symbols` field is a flat array of every extracted symbol, plus `get(id)` and `lookup(name)` functions that resolve a single symbol (see <<_iterating_symbols,Iterating symbols>>).
-* `ctx.config` is the resolved configuration: the same object the templates receive, holding every value from the config file and the command line. See xref:configuration/reference.adoc[the configuration reference] for the available keys.
-* `ctx.params` is the extension's own parameter block, keyed by the `id` it registered under: `transform-options.<id>` for a transform, `generator-options.<id>` for a generator. It is an empty object when the configuration sets none.
+The function body is where the work goes, and the sections below fill it in. The {cpp} tabs of the later sections show the callable a plugin passes to cpp:PluginContext::registerTransform[registerTransform] and the helpers it uses.
 
-A generator's `ctx` carries one more field, `ctx.output`, covered on the xref:extensions/script-generators.adoc[Script Generators] page.
+=== Options
 
-A script can register any number of transforms and generators, or none at all. If it registers nothing, Mr.Docs warns that the script had no effect and moves on.
+The block is an empty object when the configuration has none. With this configuration, the transform with the id `brief-filler` gets `{ "text": "TODO" }`, and the one registered as `brief-checker` gets `{ "suffix": "checked" }`:
+
+[source,yaml]
+----
+include::example$snippets/extensions/transform-options/transform-options.yml[]
+----
+
+=== The context
+
+Every transform registered as a function receives a cpp:TransformExtensionContext[], which holds the corpus, the configuration, the transform's own options block and the reporter. A plugin receives the object itself. A script receives a proxy of it as `ctx`, whose keys are the fields of the object (`ctx.corpus`, `ctx.config`, `ctx.params`, `ctx.report`), as xref:extensions/defining-extensions.adoc#input-parameters[Defining Extensions] says.
+
+The rest of this page uses the corpus: in a script a flat view that the sections below walk and change, and in {cpp} the cpp:Corpus[] itself, a range of cpp:Symbol[] objects.
+
+=== Errors
+
+An error from a transform stops the run before any generator sees the corpus. The diagnostic names the transform by its id. Here a script transform registered as `brief-filler` reads `transform-options.brief-filler.text` and raises because the block has no `text`:
+
+[source,text]
+----
+the transform "brief-filler" failed: [script]:2: transform-options.brief-filler.text is missing
+----
 
 == Accessing the corpus
 
@@ -74,16 +93,7 @@ JavaScript::
 .`addons/extensions/count_by_kind.js`
 [source,javascript]
 ----
-mrdocs.register_transform("count-by-kind", function(ctx) {
-    var counts = {};
-    for (var i = 0; i < ctx.corpus.symbols.length; ++i) {
-        var k = ctx.corpus.symbols[i].kind;
-        counts[k] = (counts[k] || 0) + 1;
-    }
-    for (var k in counts) {
-        console.log(k + ": " + counts[k]);
-    }
-});
+include::example$examples/extensions/count-by-kind/js/extensions/count_by_kind.js[]
 ----
 
 Lua::
@@ -91,20 +101,28 @@ Lua::
 .`addons/extensions/count_by_kind.lua`
 [source,lua]
 ----
-mrdocs.register_transform("count-by-kind", function(ctx)
-    local counts = {}
-    for _, sym in ipairs(ctx.corpus.symbols) do
-        counts[sym.kind] = (counts[sym.kind] or 0) + 1
-    end
-    for k, v in pairs(counts) do
-        print(k .. ": " .. v)
-    end
-end)
+include::example$examples/extensions/count-by-kind/lua/extensions/count_by_kind.lua[]
+----
+
+{cpp}::
++
+.`count-by-kind/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/count-by-kind/plugin/plugin.cpp[tag=transform,indent=0]
 ----
 ======
 
-Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol. The fields of each object are at xref:generators/reference.adoc[the DOM reference]. The array itself (internally represented by a set) is fixed in size: read it, iterate it, filter it, but copy the entries you keep into your own array or table before trimming or reordering them.
+Run on the shapes of xref:#looking-up-a-symbol[the next section], the {cpp} version reports:
 
+[source,text]
+----
+include::example$examples/extensions/count-by-kind/expected.txt[]
+----
+
+Each entry in `ctx.corpus.symbols` is a proxy for a live Mr.Docs symbol, and the fields of each object are at xref:generators/reference.adoc[the DOM reference]. In {cpp}, iterating the corpus yields the cpp:Symbol[] objects themselves, and `symbol.Kind` and `symbol.Name` are plain members. The array itself (internally represented by a set) is fixed in size: read it, iterate it, filter it, but copy the entries you keep into your own array or table before trimming or reordering them.
+
+[#looking-up-a-symbol]
 === Looking up a symbol
 
 When a script knows a symbol's id and needs to act on that one symbol:
@@ -115,7 +133,7 @@ When a script knows a symbol's id and needs to act on that one symbol:
 .`subclass-tree.cpp`
 [source,cpp]
 ----
-include::example$snippets/extensions/subclass-tree/subclass-tree.cpp[]
+include::example$examples/extensions/subclass-tree/input/subclass-tree.cpp[]
 ----
 
 [tabs]
@@ -125,7 +143,7 @@ JavaScript::
 .`addons/extensions/subclass_tree.js`
 [source,javascript]
 ----
-include::example$snippets/extensions/subclass-tree/addons/extensions/subclass_tree.js[]
+include::example$examples/extensions/subclass-tree/js/extensions/subclass_tree.js[]
 ----
 
 Lua::
@@ -133,25 +151,36 @@ Lua::
 .`addons/extensions/subclass_tree.lua`
 [source,lua]
 ----
-include::example$snippets/extensions/subclass-tree/addons/extensions/subclass_tree.lua[]
+include::example$examples/extensions/subclass-tree/lua/extensions/subclass_tree.lua[]
+----
+
+{cpp}::
++
+.`subclass-tree/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/subclass-tree/plugin/plugin.cpp[tag=transform,indent=0]
+----
++
+.`subclass-tree/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/subclass-tree/plugin/plugin.cpp[tag=list-subclasses]
 ----
 ======
 
-Running either script against the fixture above prints:
+Running any of them against the fixture above prints:
 
 [source,text]
 ----
-Shape
-  Circle
-  Polygon
-    Quadrilateral
-      Square
-    Triangle
+include::example$examples/extensions/subclass-tree/expected.txt[]
 ----
 
 === Emitting warnings
 
-A read-only transform can do more than compute totals: it can report problems it finds back to Mr.Docs. `mrdocs.report.warn(...)` and `mrdocs.report.error(...)` route through the same diagnostic system as the rest of the tool, so their messages are formatted, counted in the run's totals, and escalated by xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] just like a built-in warning. They take the same free-form arguments as `console.log`.
+A read-only transform can do more than compute totals: it can report the problems it finds through `ctx.report`, the reporter of the run.
+
+A script calls `ctx.report.warn(...)`, `ctx.report.error(...)` or `ctx.report.info(...)` with the same free-form arguments as `console.log`. A plugin calls `ctx.report->warn(...)` and the others with a format string and its arguments, as `std::format` takes them. Either way, Mr.Docs counts each message in the totals of the run like one of its own, and under xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] a warning counts as an error.
 
 A natural use is checking documentation against your project's conventions. The example below checks for a "low-quality brief" that reads like a stray comment or is too short. A complete, runnable example lives at `examples/extensions/project-conventions/`.
 
@@ -168,7 +197,7 @@ JavaScript::
 .`addons/extensions/project_conventions.js`
 [source,javascript]
 ----
-include::example$examples/extensions/project-conventions/addons/extensions/project_conventions.js[]
+include::example$examples/extensions/project-conventions/js/extensions/project_conventions.js[]
 ----
 
 Lua::
@@ -176,11 +205,31 @@ Lua::
 .`addons/extensions/project_conventions.lua`
 [source,lua]
 ----
-include::example$examples/extensions/project-conventions/addons/extensions/project_conventions.lua[]
+include::example$examples/extensions/project-conventions/lua/extensions/project_conventions.lua[]
+----
+
+{cpp}::
++
+.`project-conventions/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/project-conventions/plugin/plugin.cpp[tag=transform,indent=0]
+----
++
+.`project-conventions/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/project-conventions/plugin/plugin.cpp[tag=check-brief]
+----
++
+.`project-conventions/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/project-conventions/plugin/plugin.cpp[tag=is-low-quality]
 ----
 ======
 
-Running either script against the fixture above warns:
+Running any of them against the fixture above warns:
 
 [source,text]
 ----
@@ -190,16 +239,14 @@ include::example$examples/extensions/project-conventions/warnings.txt[]
 [[modifying-the-corpus]]
 == Modifying the corpus
 
-Scripts modify the corpus by assigning to fields on a symbol proxy. Each assignment lands directly in the underlying Mr.Docs symbol. The runtime validates each assignment and raises an exception on an invalid value. An uncaught error in an extension aborts the build and includes the script's path and the error message.
+Assigning to a field of a symbol writes to the corpus, which a transform gets mutable and a generator gets as `const`. A {cpp} transform writes through the mutable reference it asks the corpus for by id.
 
-include::partial$transform-invariants.adoc[]
-
-Most extensions read some attribute of a symbol and write back a string, an enumerator, or a small structured value. For instance, a codebase that follows "any function whose name starts with `is_<name>` is a predicate returning `true` if its `<name>` holds" encodes information that the brief could repeat verbatim:
+Most extensions read some attribute of a symbol and write back a string, an enumerator, or a small structured value. For instance, a codebase where a function named `is_<name>` is a predicate returning `true` if its `<name>` holds can repeat that in the brief:
 
 .`brief-from-name.cpp`
 [source,cpp]
 ----
-include::example$snippets/extensions/brief-from-name/brief-from-name.cpp[]
+include::example$examples/extensions/brief-from-name/input/brief-from-name.cpp[]
 ----
 
 [tabs]
@@ -209,7 +256,7 @@ JavaScript::
 .`addons/extensions/brief_from_name.js`
 [source,javascript]
 ----
-include::example$snippets/extensions/brief-from-name/addons/extensions/brief_from_name.js[]
+include::example$examples/extensions/brief-from-name/js/extensions/brief_from_name.js[]
 ----
 
 Lua::
@@ -217,7 +264,33 @@ Lua::
 .`addons/extensions/brief_from_name.lua`
 [source,lua]
 ----
-include::example$snippets/extensions/brief-from-name/addons/extensions/brief_from_name.lua[]
+include::example$examples/extensions/brief-from-name/lua/extensions/brief_from_name.lua[]
+----
+
+{cpp}::
++
+.`brief-from-name/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/brief-from-name/plugin/plugin.cpp[tag=transform,indent=0]
+----
++
+.`brief-from-name/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/brief-from-name/plugin/plugin.cpp[tag=describe]
+----
++
+.`brief-from-name/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/brief-from-name/plugin/plugin.cpp[tag=fill-brief]
+----
++
+.`brief-from-name/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/brief-from-name/plugin/plugin.cpp[tag=fill-param]
 ----
 ======
 
@@ -225,19 +298,31 @@ Every `is_foo_bar` function then ships with "Returns true if foo bar." Authors o
 
 [.adoc-preview]
 ========
-include::example$snippets/extensions/brief-from-name/brief-from-name.adoc[tags=!footer]
+include::example$examples/extensions/brief-from-name/expected.adoc[tags=!footer]
 ========
+
+The runtime validates each assignment and raises an exception on an invalid value. An uncaught error in an extension aborts the build and includes the script's path and the error message.
+
+=== Corpus shape invariants
+
+What a transform changes has to leave the corpus in the shape finalization left it in:
+
+* A symbol keeps its id and its kind.
+* Every symbol id written into the corpus names a symbol the corpus has, so a transform cannot create or destroy a symbol.
+* A transform does not redo what finalization derived: sorted member lists, overload sets, copied briefs and resolved references.
+
+Within those limits a transform changes what it likes: doc comments, attributes, and which members a list holds and in what order.
 
 == Cross-linking Symbols
 
 When the value being written needs to reference another symbol, the second symbol's `id` is what makes the link clickable in the rendered output rather than a plain string.
 
-For instance, consider a project where the `parse_X` and `format_X` free functions are symmetric. A reader landing on one almost always wants to see the other. The extension builds a `name → id` index in one pass, then walks it again to look up each partner:
+For instance, consider a project where the `parse_X` and `format_X` free functions are symmetric. A reader landing on one almost always wants to see the other. The extension walks the functions once and looks up the partner of each by name:
 
 .`parse-format-relates.cpp`
 [source,cpp]
 ----
-include::example$snippets/extensions/parse-format-relates/parse-format-relates.cpp[]
+include::example$examples/extensions/parse-format-relates/input/parse-format-relates.cpp[]
 ----
 
 [tabs]
@@ -247,7 +332,7 @@ JavaScript::
 .`addons/extensions/parse_format_relates.js`
 [source,javascript]
 ----
-include::example$snippets/extensions/parse-format-relates/addons/extensions/parse_format_relates.js[]
+include::example$examples/extensions/parse-format-relates/js/extensions/parse_format_relates.js[]
 ----
 
 Lua::
@@ -255,16 +340,42 @@ Lua::
 .`addons/extensions/parse_format_relates.lua`
 [source,lua]
 ----
-include::example$snippets/extensions/parse-format-relates/addons/extensions/parse_format_relates.lua[]
+include::example$examples/extensions/parse-format-relates/lua/extensions/parse_format_relates.lua[]
+----
+
+{cpp}::
++
+.`parse-format-relates/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/parse-format-relates/plugin/plugin.cpp[tag=transform,indent=0]
+----
++
+.`parse-format-relates/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/parse-format-relates/plugin/plugin.cpp[tag=relate]
+----
++
+.`parse-format-relates/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/parse-format-relates/plugin/plugin.cpp[tag=partner-name]
+----
++
+.`parse-format-relates/plugin/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/parse-format-relates/plugin/plugin.cpp[tag=add-see]
 ----
 ======
 
 [.adoc-preview]
 ========
-include::example$snippets/extensions/parse-format-relates/parse-format-relates.adoc[tags=!footer]
+include::example$examples/extensions/parse-format-relates/expected.adoc[tags=!footer]
 ========
 
-The two-pass shape (index, then look up) is the idiom whenever a write needs to refer to a symbol the script hasn't yet seen during the walk.
+Looking the other symbol up by name is the idiom whenever a write needs to refer to a symbol other than the one the walk is on.
 
 [NOTE]
 ====
@@ -276,7 +387,7 @@ Notice in this example that `s.doc.sees` receives a list of polymorphic types th
 
 After being presented with the xref:index.adoc#why-generate-from-source[arguments for generated reference documentation], a common objection is that the prose should be mostly written by technical writers, not developers. The rationale is not to clutter the headers, and that technical writers can focus on use cases the users are interested in and dedicate themselves to long tutorials.
 
-A transform extension can bridge the two by also reading documentation from external sources. While developers write documentation in code that is verifiably correct and guaranteed never to drift, a writer keeps the extra documentation alongside the project. The ghostwrite transform extension fills in each symbol's description from the corresponding file. A complete, runnable example lives at `examples/extensions/ghostwriter/`.
+A transform can bridge the two by also reading documentation from external sources. While developers write documentation in code that is verifiably correct and guaranteed never to drift, a writer keeps the extra documentation alongside the project. The ghostwrite transform fills in each symbol's description from the corresponding file. A complete, runnable example lives at `examples/extensions/ghostwriter/`.
 
 [tabs]
 ======
@@ -296,23 +407,19 @@ Input::
 include::example$examples/extensions/ghostwriter/simple.cpp[]
 ----
 
-Vec2 docs::
+External docs::
 +
 .`external-docs/app/Vec2.md`
 [source,markdown]
 ----
 include::example$examples/extensions/ghostwriter/external-docs/app/Vec2.md[]
 ----
-
-Circle docs::
 +
 .`external-docs/app/Circle.md`
 [source,markdown]
 ----
 include::example$examples/extensions/ghostwriter/external-docs/app/Circle.md[]
 ----
-
-distance docs::
 +
 .`external-docs/app/distance.md`
 [source,markdown]
@@ -329,12 +436,11 @@ include::example$examples/extensions/ghostwriter/mrdocs.yml[]
 ----
 ======
 
-The example is a Lua transform that reads the corresponding Markdown files by the technical writer. The code includes a brief for each symbol and its metadata, while the writer provides a longer description. The `mrdocs.yml` configuration file loads the transform and points it at the source directory through  `transform-options.ghostwriter.source`.
+The example is a Lua transform that reads the corresponding Markdown files by the technical writer. The code includes a brief for each symbol and its metadata, while the writer provides a longer description. The `mrdocs.yml` configuration file loads the transform and points it at the source directory through xref:configuration/reference.adoc#transform-options_option[`transform-options`]`.ghostwriter.source`.
 
-The transform reads the file whose path matches each symbol's scope and sets its description from the file's paragraphs. It only touches the description; every other field the developer wrote stays. The `distance` function shows the split: its brief, its `@param` entries, and its `@return` all come from the header, while the writer's file supplies just the longer description. The rendered page carries both sources at once:
+The transform reads the file whose path matches each symbol's scope and sets its description from the file's paragraphs. It only touches the description, and every other field the developer wrote stays. The `distance` function shows the split: its brief, its `@param` entries, and its `@return` all come from the header, while the writer's file supplies just the longer description. The rendered page carries both sources at once:
 
 [.adoc-preview]
 ========
 include::example$examples/extensions/ghostwriter/reference.adoc[]
 ========
-

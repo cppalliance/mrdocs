@@ -1,6 +1,6 @@
 addons-supplemental:
   - addons
-generator: json
+generator: symbols-json
 multipage: false
 show-namespaces: false
 warn-if-undocumented: false
@@ -8,5 +8,5 @@ source-root: .
 input:
   - .
 generator-options:
-  json:
+  symbols-json:
     indent: 2

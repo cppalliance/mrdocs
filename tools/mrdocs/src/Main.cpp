@@ -14,20 +14,20 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Plugin.hpp>
+#include <mrdocs/Session.hpp>
 #include <mrdocs/Support/Chrono.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Process.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <mrdocs/Version.hpp>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/PrettyStackTrace.h>
-#include <llvm/Support/Signals.h>
-#include <llvm/Support/raw_ostream.h>
-#include <llvm/TargetParser/Host.h>
 #include <chrono>
 #include <cstdlib>
+#include <filesystem>
+#include <iostream>
+#include <optional>
+#include <ostream>
 #include <ranges>
 #include <span>
 #include <string>
@@ -46,7 +46,7 @@ namespace mrdocs {
 
 // The tool adds no options of its own: every option is a config option, so the
 // command line is parsed straight from argv against the reflected config schema
-// and the values are applied by Config::load_file. There is no generated
+// and the values are applied by Config::loadFile. There is no generated
 // options table and no llvm::cl registration.
 static char const* const usageText = "Generate C++ reference documentation";
 
@@ -64,7 +64,7 @@ struct CommandLine
 
 // Pad `text` to `width` columns (a left-justified name column for --help).
 static void
-printPadded(llvm::raw_ostream& os, std::string_view text, std::size_t width)
+printPadded(std::ostream& os, std::string_view text, std::size_t width)
 {
     os << text;
     if (text.size() < width)
@@ -77,7 +77,7 @@ printPadded(llvm::raw_ostream& os, std::string_view text, std::size_t width)
 // command-line metadata. This is why the tool needs no generated options
 // table: the schema already carries every option's name, category, and brief.
 static void
-printHelp(llvm::raw_ostream& os)
+printHelp(std::ostream& os)
 {
     os << "USAGE: mrdocs [options] [<config-file>] [<compile-commands>]\n\n";
     os << usageText << "\n\n";
@@ -114,7 +114,7 @@ printHelp(llvm::raw_ostream& os)
 }
 
 static void
-printVersion(llvm::raw_ostream& os, std::string const& execPath)
+printVersion(std::ostream& os, std::string const& execPath)
 {
     os << project_name << "\n";
     os << "Release: "
@@ -123,15 +123,19 @@ printVersion(llvm::raw_ostream& os, std::string const& execPath)
                : project_release_with_build)
        << "\n";
     os << "Version: " << project_version_with_build << "\n";
-    os << "Built with LLVM " << LLVM_VERSION_STRING << "\n";
+    os << "Built with LLVM " << llvmVersion() << "\n";
+    os << "Plugin build id: "
+       << (project_build_id.empty() ? std::string_view("unknown")
+                                    : project_build_id)
+       << "\n";
     os << "Build SHA: " << project_version_build << "\n";
-    os << "Target: " << llvm::sys::getDefaultTargetTriple() << "\n";
+    os << "Target: " << defaultTargetTriple() << "\n";
     os << "InstalledDir: " << files::getParentDir(execPath) << "\n";
 }
 
 // Scan argv into a CommandLine. The schema's command-line metadata tells us
 // which options take a value, so `--opt value` is not mistaken for a positional
-// input. Option values themselves are applied later by Config::load_file from
+// input. Option values themselves are applied later by Config::loadFile from
 // the same argv; here we only need the framework flags, the config path, and
 // the positionals.
 static CommandLine
@@ -199,7 +203,7 @@ parseCommandLine(int argc, char const** argv)
             continue;
         }
         // Consume the value token of `--opt value` so it is not read as a
-        // positional input; the value is applied later by Config::load_file.
+        // positional input; the value is applied later by Config::loadFile.
         if (info->takesValue && !hasValue && i + 1 < argc)
         {
             ++i;
@@ -214,42 +218,12 @@ parseCommandLine(int argc, char const** argv)
 //
 //------------------------------------------------
 
-static
-Expected<void>
+static Expected<void>
 DoGenerateAction(
-    std::string const& configPath,
-    ReferenceDirectories const& dirs,
-    char const** argv)
+    Config const& config,
+    Session& session,
+    std::optional<Corpus>& corpusStorage)
 {
-    // --------------------------------------------------------------
-    //
-    // Load configuration
-    //
-    // --------------------------------------------------------------
-    Config config;
-    MRDOCS_TRY(Config::load_file(config, configPath, dirs, argv));
-
-    // --------------------------------------------------------------
-    //
-    // Load plugins
-    //
-    // --------------------------------------------------------------
-    // Plugins come first: one that cannot install what it provides
-    // fails the run, while an addon generator directory whose id is
-    // already taken is skipped. The registry holds the transforms they
-    // installed, which apply once the corpus is built.
-    MRDOCS_TRY(PluginRegistry plugins, loadPlugins(config));
-
-    // --------------------------------------------------------------
-    //
-    // Discover addon-defined generators
-    //
-    // --------------------------------------------------------------
-    // Register the data-driven Handlebars generators contributed by
-    // addons so they resolve alongside the built-ins when a generator is
-    // selected below.
-    MRDOCS_TRY(hbs::discoverDataDrivenGenerators(config));
-
     MRDOCS_CHECK(config.output, "The output path argument is missing");
     MRDOCS_CHECK(
         !config.generator.values.empty(), "No generator was specified");
@@ -263,7 +237,10 @@ DoGenerateAction(
     // configuration (a compile_commands.json path, a CMakeLists.txt plus
     // cmake options, or one synthesized from source-root and input). A
     // corpus is just extracted symbols; extensions are a separate step.
-    MRDOCS_TRY(Corpus corpus, Corpus::build(config));
+    // The corpus reports through the session's reporter.
+    report::Reporter& log = session.log();
+    MRDOCS_TRY(Corpus built, Corpus::build(config, log));
+    Corpus& corpus = corpusStorage.emplace(std::move(built));
     // The global namespace is always extracted, so a size of 1 means no
     // declaration other than the global namespace was found. Treat that
     // the same as a truly empty corpus here.
@@ -271,34 +248,26 @@ DoGenerateAction(
     {
         if (config.errorOnEmptyCorpus)
         {
-            report::error("Corpus is empty, not generating docs");
+            log.error("Corpus is empty, not generating docs");
             return Unexpected(Error("Corpus is empty, not generating docs"));
         }
-        report::warn("Corpus is empty, not generating docs");
+        log.warn("Corpus is empty, not generating docs");
         return {};
     }
 
     // --------------------------------------------------------------
     //
-    // Apply plugin transforms
+    // Apply transforms
     //
     // --------------------------------------------------------------
-    // Plugin transforms run first, which is what this call site ahead of
-    // the extension one decides: what MrDocs was set up with applies
-    // before what a user script asks for.
-    MRDOCS_TRY(plugins.applyTransforms(corpus, config));
-
-    // --------------------------------------------------------------
-    //
-    // Run user extension scripts
-    //
-    // --------------------------------------------------------------
-    // Extensions are optional and live outside the corpus. Load them,
-    // then apply their transforms after finalization and before any
-    // generator runs, so mutations are visible to every output format.
-    // The registry also owns the script-defined generators, used below.
-    MRDOCS_TRY(ExtensionRegistry extensions, ExtensionRegistry::load(config));
-    MRDOCS_TRY(extensions.applyTransforms(corpus, config));
+    // Extensions are optional and live outside the corpus. Run the whole
+    // pipeline after finalization and before any generator runs, so
+    // mutations are visible to every output format. Transforms run in the
+    // order their extensions loaded, which is the order of the extension
+    // names. The corpus forgets its remembered name lookups as the pipeline
+    // runs. The session also owns the script-defined generators, used
+    // below.
+    MRDOCS_TRY(session.applyTransforms(corpus));
 
     // --------------------------------------------------------------
     //
@@ -306,27 +275,31 @@ DoGenerateAction(
     //
     // --------------------------------------------------------------
     // The tool owns this order. Every generator is a Generator, whether
-    // built-in, data-driven, or script-defined, so each is looked up and
-    // built the same way. A script-defined generator takes precedence over
-    // a built-in or data-driven one of the same id.
-    report::info("Generating docs");
+    // built-in, data-driven, or script-defined, so each is looked up in
+    // the registry and built the same way.
+    log.info("Generating docs");
     for (std::string const& genId : config.generator.values)
     {
         using clock_type = std::chrono::steady_clock;
         auto const start_time = clock_type::now();
-        Generator const* generator = extensions.findGenerator(genId);
-        if (generator == nullptr)
-        {
-            generator = findGenerator(genId);
-        }
+        Generator const* generator = session.generators().find(genId);
         MRDOCS_CHECK(
             generator,
             formatError("the Generator \"{}\" was not found", genId));
-        MRDOCS_TRY(generator->build(corpus, config));
-        report::info(
+        // The id is named here, once, whichever kind of generator failed,
+        // the way the transform pipeline names a failed transform. The
+        // session runs it, so its context carries the session's reporter.
+        if (Expected<void> const generated = session.build(*generator, corpus);
+            !generated)
+        {
+            return Unexpected(formatError(
+                "the generator \"{}\" failed: {}",
+                genId, generated.error().reason()));
+        }
+        log.info(
             "Generated {} documentation in {}",
             genId,
-            format_duration(clock_type::now() - start_time));
+            formatDuration(clock_type::now() - start_time));
     }
 
     return {};
@@ -344,12 +317,14 @@ getReferenceDirectories(std::string const& execPath)
 {
     ReferenceDirectories dirs;
     dirs.mrdocsRoot = files::getParentDir(execPath, 2);
-    llvm::SmallVector<char, 256> cwd;
-    if (auto ec = llvm::sys::fs::current_path(cwd); ec)
+    std::error_code ec;
+    std::filesystem::path const cwd = std::filesystem::current_path(ec);
+    if (ec)
     {
         return Unexpected(formatError("Unable to determine current working directory: {}", ec.message()));
     }
-    dirs.cwd = std::string(cwd.data(), cwd.size());
+    std::u8string const cwdText = cwd.u8string();
+    dirs.cwd = std::string(cwdText.begin(), cwdText.end());
     return dirs;
 }
 
@@ -390,9 +365,9 @@ int
 mrdocs_main(int argc, char const** argv)
 {
     // Enable stack traces
-    llvm::EnablePrettyStackTrace();
-    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    llvm::setBugReportMsg("PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
+    installCrashHandlers(
+        argv[0],
+        "PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
 
     // Set up addons directory
 #ifdef __GNUC__
@@ -404,38 +379,38 @@ mrdocs_main(int argc, char const** argv)
 #ifdef __GNUC__
 #    pragma GCC diagnostic pop
 #endif
-    std::string execPath = llvm::sys::fs::
-        getMainExecutable(argv[0], addressOfMain);
+    std::string execPath = executablePath(argv[0], addressOfMain);
 
     // Parse the command line straight from argv against the config schema.
     CommandLine const cl = parseCommandLine(argc, argv);
     if (cl.showHelp)
     {
-        printHelp(llvm::outs());
+        printHelp(std::cout);
         return EXIT_SUCCESS;
     }
     if (cl.showVersion)
     {
-        printVersion(llvm::outs(), execPath);
+        printVersion(std::cout, execPath);
         return EXIT_SUCCESS;
     }
+    // Before the configuration loads there is no session, so the startup
+    // messages go to a reporter of their own. It prints errors only, so
+    // option parsing stays quiet, until loading the configuration sets the
+    // configured level.
+    report::Reporter startup(report::Level::error);
     if (!cl.unknownOptions.empty())
     {
         for (std::string const& opt : cl.unknownOptions)
         {
-            report::error("Unknown option: {} (use --help to list options)", opt);
+            startup.error("Unknown option: {} (use --help to list options)", opt);
         }
         return EXIT_FAILURE;
     }
 
-    // Before `DoGenerateAction`, we use an error reporting level.
-    // DoGenerateAction will set the level to whatever is specified in
-    // the command line or the configuration file
-    report::setMinimumLevel(report::Level::error);
     auto res = getReferenceDirectories(execPath);
     if (!res)
     {
-        report::fatal("Failed to determine reference directories: {}", res.error().message());
+        startup.fatal("Failed to determine reference directories: {}", res.error().message());
         return EXIT_FAILURE;
     }
     auto dirs = *std::move(res);
@@ -443,20 +418,50 @@ mrdocs_main(int argc, char const** argv)
     auto expConfigPath = getConfigPath(dirs, cl);
     if (!expConfigPath)
     {
-        report::fatal("Failed to determine config path: {}", expConfigPath.error().message());
+        startup.fatal("Failed to determine config path: {}", expConfigPath.error().message());
         return EXIT_FAILURE;
     }
     auto configPath = *std::move(expConfigPath);
 
-    // Generate
-    if (auto exp = DoGenerateAction(configPath, dirs, argv); !exp)
+    Config config;
+    if (auto exp = Config::loadFile(config, configPath, dirs, argv, startup);
+        !exp)
     {
-        report::error("Generating reference failed: {}", exp.error());
-    }
-    if (report::results.errorCount > 0 ||
-        report::results.fatalCount > 0)
-    {
+        startup.error("Generating reference failed: {}", exp.error());
         return EXIT_FAILURE;
+    }
+
+    // Load extensions and addon-defined generators. The session owns the
+    // generators of the run, the transform pipeline, the script engines and
+    // the reporter. The transforms of every extension land in one pipeline,
+    // in load order, and the generators of every origin in one place.
+    // Loading runs the scripts and native plugins together, in the order of
+    // their names, and then registers the data-driven Handlebars generators
+    // of the addons, so they resolve alongside the built-ins when a
+    // generator is selected.
+    // The corpus is declared before the session, so it is destroyed after
+    // it: a script may keep the corpus it was handed.
+    std::optional<Corpus> corpusStorage;
+    Expected<Session> loaded = Session::create(std::move(config));
+    if (!loaded)
+    {
+        startup.error("Generating reference failed: {}", loaded.error());
+        return EXIT_FAILURE;
+    }
+    Session session = *std::move(loaded);
+    if (auto exp = DoGenerateAction(
+            session.config(), session, corpusStorage);
+        !exp)
+    {
+        session.log().error("Generating reference failed: {}", exp.error());
+    }
+    for (report::Results const& results :
+        {startup.results(), session.log().results()})
+    {
+        if (results.errorCount > 0 || results.fatalCount > 0)
+        {
+            return EXIT_FAILURE;
+        }
     }
     return EXIT_SUCCESS;
 }
@@ -467,10 +472,10 @@ void
 reportUnhandledException(
     std::exception const& ex)
 {
-    namespace sys = llvm::sys;
-
-    report::fatal("Unhandled exception: {}\n", ex.what());
-    sys::PrintStackTrace(llvm::errs());
+    // The session that ran is gone by the time an exception gets here.
+    report::Reporter reporter;
+    reporter.fatal("Unhandled exception: {}\n", ex.what());
+    printStackTrace(std::cerr);
 }
 #endif
 

@@ -1,4 +1,4 @@
-mrdocs.register_generator("json", function(ctx) {
+mrdocs.register_generator("symbols-json", function(ctx) {
   const indent = ctx.params.indent || 0;
   ctx.output.write(
     "reference.json",

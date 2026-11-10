@@ -17,12 +17,15 @@
 // shared forward declarations that break the proxy/entry-point cycle),
 // DescribedToDomObject.hpp and DescribedToDomArray.hpp (the proxies), and
 // detail/ (their private helpers and the write machinery). This file
-// provides the entry point, describedToDom, and the dom::ValueFrom
+// provides the entry point, describedToDom, and the dom::valueFrom
 // bridge; it includes the proxies, which supply the rest.
 
-#include <mrdocs/Support/DescribedToDom/DescribedToDomObject.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/DescribedToDom/DescribedToDomArray.hpp>
+#include <mrdocs/Support/DescribedToDom/DescribedToDomObject.hpp>
 #include <map>
+#include <type_traits>
 
 namespace mrdocs {
 
@@ -38,6 +41,10 @@ namespace mrdocs {
     @li `Polymorphic<Base>` visits to the concrete derived class and
         returns a `DescribedObjectProxy` over it.
     @li Any other described type returns a `DescribedObjectProxy<T>`.
+    @li A pointer to a `Corpus` becomes the navigable corpus object that
+        @ref buildCorpusDom builds, and a pointer to a described value
+        becomes the projection of the value it points to. A null pointer
+        becomes `undefined`, and so does a pointer to anything else.
     @li Anything not recognized returns `undefined`.
 
     The array and object results are proxies that read and write `value`
@@ -76,6 +83,21 @@ describedToDom(T& value)
             return {dom::Kind::Undefined};
         }
         return dom::Value(toBase58Str(value));
+    }
+    else if constexpr (std::is_pointer_v<U> && (std::is_same_v<std::remove_cv_t<std::remove_pointer_t<U>>, Corpus> || describe::has_describe_members<std::remove_cv_t<std::remove_pointer_t<U>>>::value))
+    {
+        if (!value)
+        {
+            return {dom::Kind::Undefined};
+        }
+        if constexpr (std::is_same_v<std::remove_cv_t<std::remove_pointer_t<U>>, Corpus>)
+        {
+            return buildCorpusDom(*value);
+        }
+        else
+        {
+            return describedToDom(*value);
+        }
     }
     else if constexpr (std::is_integral_v<U>)
     {
@@ -155,7 +177,7 @@ describedToDom(T& value)
         // A non-described value type that knows how to convert itself
         // to a dom scalar (e.g. NoexceptInfo -> its "noexcept(...)"
         // string).
-        return dom::ValueFrom(value);
+        return dom::valueFrom(value);
     }
     else
     {
@@ -163,9 +185,9 @@ describedToDom(T& value)
     }
 }
 
-/** Convert any described value to a `dom::Value` via the `ValueFrom` idiom.
+/** Convert any described value to a `dom::Value` via the `valueFrom` idiom.
 
-    Lets `dom::ValueFrom(obj)` produce the reflection view for any
+    Lets `dom::valueFrom(obj)` produce the reflection view for any
     described type, so callers use the standard dom conversion point
     instead of naming `DescribedObjectProxy`/`describedToDom`
     directly. It simply forwards to @ref describedToDom.
