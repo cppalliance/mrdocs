@@ -10,16 +10,17 @@
 //
 
 #include "LuaBinding.hpp"
-#include <mrdocs/Config.hpp>
-#include <mrdocs/Generators/script/ScriptGenerator.hpp>
+#include "ExtensionPaths.hpp"
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/Lua.hpp>
+#include <mrdocs/Generators/script/ScriptGenerator.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
-
+#include <mrdocs/Support/Reporter.hpp>
 #include <cstddef>
+#include <filesystem>
 #include <memory>
 #include <string>
+#include <system_error>
 #include <utility>
 
 extern "C" {
@@ -101,57 +102,11 @@ luaRegisterGenerator(lua_State* L)
     return result;
 }
 
-// Join every call argument into one message (each converted with the same
-// rules as `tostring`), so `mrdocs.warn`/`mrdocs.error` accept free-form
-// argument lists.
-std::string
-luaJoinArgs(lua_State* L)
-{
-    std::string msg;
-    int const n = lua_gettop(L);
-    for (int i = 1; i <= n; ++i)
-    {
-        if (i > 1)
-        {
-            msg += ' ';
-        }
-        std::size_t len = 0;
-        char const* data = luaL_tolstring(L, i, &len);
-        msg.append(data, len);
-        lua_pop(L, 1);
-    }
-    return msg;
-}
-
-// `mrdocs.report.warn(...)` / `mrdocs.report.error(...)`: report a diagnostic
-// through the host's report system so it is formatted, counted, and subject to
-// warn-as-error, rather than merely printed to the console. `warn` carries the
-// run's `warn-as-error` flag as its single upvalue, so it emits at error level
-// when the setting is on, matching how the rest of Mr.Docs escalates its own
-// warnings.
-int
-luaWarn(lua_State* L)
-{
-    bool const warnAsError = lua_toboolean(L, lua_upvalueindex(1)) != 0;
-    report::log(
-        warnAsError ? report::Level::error : report::Level::warn,
-        "{}", luaJoinArgs(L));
-    return 0;
-}
-
-int
-luaError(lua_State* L)
-{
-    report::error("{}", luaJoinArgs(L));
-    return 0;
-}
-
 // Install the `mrdocs` global carrying the `register_transform` and
 // `register_generator` entry points before the chunk runs. The shared
 // registrations pointer is carried as each closure's single upvalue.
 void
-registerLuaExtensionApi(
-    lua::Context& ctx, LuaRegistrations& regs, bool warnAsError)
+registerLuaExtensionApi(lua::Context& ctx, LuaRegistrations& regs)
 {
     regs.ctx = &ctx;
     lua_State* L = static_cast<lua_State*>(ctx.nativeState());
@@ -162,22 +117,110 @@ registerLuaExtensionApi(
     lua_pushlightuserdata(L, &regs);
     lua_pushcclosure(L, &luaRegisterGenerator, 1);
     lua_setfield(L, -2, "register_generator");
-    // Reporting lives under `mrdocs.report` so the surface can grow without
-    // crowding the top-level `mrdocs` API.
-    lua_newtable(L);
-    lua_pushboolean(L, warnAsError ? 1 : 0);
-    lua_pushcclosure(L, &luaWarn, 1);
-    lua_setfield(L, -2, "warn");
-    lua_pushcclosure(L, &luaError, 0);
-    lua_setfield(L, -2, "error");
-    lua_setfield(L, -2, "report");
     lua_setglobal(L, "mrdocs");
+}
+
+// The searcher `addModuleDirectory` puts at `package.searchers[2]`. Upvalue
+// 1 is the module directory as UTF-8 text and upvalue 2 is the searcher it
+// replaced. `require "rules"` finds <directory>/rules.lua or, failing that,
+// <directory>/rules/init.lua; a dotted name such as "a.b" is looked up as
+// "a/b". The files are read through the UTF-8 path helpers, so a directory
+// whose name has characters the ANSI code page lacks resolves on Windows too,
+// which a `package.path` template handed to `fopen` would not. A name found
+// in neither place goes to the replaced searcher, so `package.path` still
+// resolves what the directory does not hold.
+int
+luaDirectorySearcher(lua_State* L)
+{
+    luaL_checkstring(L, 1);
+    int status = LUA_OK;
+    bool found = false;
+    // Every object with a destructor lives in this block, which ends before
+    // anything that raises a Lua error, because Lua's error jump does not run
+    // destructors.
+    {
+        std::string name = lua_tostring(L, 1);
+        for (char& c : name)
+        {
+            if (c == '.')
+            {
+                c = '/';
+            }
+        }
+        std::string const directory = lua_tostring(L, lua_upvalueindex(1));
+        std::string const candidates[2] = {
+            directory + '/' + name + ".lua",
+            directory + '/' + name + "/init.lua"};
+        for (std::string const& candidate : candidates)
+        {
+            std::error_code ec;
+            if (!std::filesystem::is_regular_file(utf8Path(candidate), ec))
+            {
+                continue;
+            }
+            found = true;
+            auto text = files::getFileText(candidate);
+            if (!text)
+            {
+                lua_pushfstring(L, "cannot read %s", candidate.c_str());
+                status = LUA_ERRFILE;
+                break;
+            }
+            std::string const chunkName = "@" + candidate;
+            status = luaL_loadbuffer(
+                L, text->data(), text->size(), chunkName.c_str());
+            if (status == LUA_OK)
+            {
+                lua_pushlstring(L, candidate.data(), candidate.size());
+            }
+            break;
+        }
+    }
+    if (!found)
+    {
+        lua_pushvalue(L, lua_upvalueindex(2));
+        lua_pushvalue(L, 1);
+        lua_call(L, 1, LUA_MULTRET);
+        return lua_gettop(L) - 1;
+    }
+    if (status != LUA_OK)
+    {
+        return lua_error(L);
+    }
+    return 2;
+}
+
+// Make `require` look in `directory` before anywhere else: `require "rules"`
+// finds <directory>/rules.lua or, failing that, <directory>/rules/init.lua.
+// `package.path` is left as it is; the directory is served by a searcher
+// installed at `package.searchers[2]`, the slot of the path searcher.
+void
+addModuleDirectory(lua::Context& ctx, std::string const& directory)
+{
+    lua_State* L = static_cast<lua_State*>(ctx.nativeState());
+    lua_getglobal(L, "package");
+    if (lua_istable(L, -1))
+    {
+        lua_getfield(L, -1, "searchers");
+        if (lua_istable(L, -1))
+        {
+            lua_pushlstring(L, directory.data(), directory.size());
+            lua_rawgeti(L, -2, 2);
+            lua_pushcclosure(L, &luaDirectorySearcher, 2);
+            lua_rawseti(L, -2, 2);
+        }
+        lua_pop(L, 1);
+    }
+    lua_pop(L, 1);
 }
 
 } // (anon)
 
 Expected<LoadedExtensions>
-loadLuaExtensions(std::string const& scriptPath, Config const& config)
+loadLuaExtensions(
+    std::string const& scriptPath,
+    report::Reporter& reporter,
+    std::string const& directory)
 {
     // The engine is a shared handle from the start, so both the transforms
     // and the generators can keep it alive without a separate owner.
@@ -185,7 +228,11 @@ loadLuaExtensions(std::string const& scriptPath, Config const& config)
 
     LuaRegistrations regs;
     regs.vm = vm;
-    registerLuaExtensionApi(*vm, regs, config.warnAsError);
+    registerLuaExtensionApi(*vm, regs);
+    if (!directory.empty())
+    {
+        addModuleDirectory(*vm, directory);
+    }
 
     lua::Scope scope(*vm);
 
@@ -203,7 +250,7 @@ loadLuaExtensions(std::string const& scriptPath, Config const& config)
         // mistake (a misspelled `mrdocs.register_transform` /
         // `mrdocs.register_generator`, or a guard that skipped it), so flag
         // it rather than silently doing nothing.
-        report::warn("extension '{}' registered nothing", scriptPath);
+        reporter.warn("extension '{}' registered nothing", scriptPath);
     }
 
     LoadedExtensions loaded;

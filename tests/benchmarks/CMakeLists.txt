@@ -15,7 +15,7 @@ find_package(Python3 COMPONENTS Interpreter QUIET)
 if (Python3_Interpreter_FOUND)
     # Script engine comparison: JavaScript versus Lua over MrDocs's own
     # corpus. Prints a median table; --asciidoc gives the table the
-    # docs page (extensions/script-engines.adoc) reproduces.
+    # docs page (extensions/defining-extensions.adoc) reproduces.
     add_custom_target(mrdocs-benchmark-script-engines
         COMMAND
             "${Python3_EXECUTABLE}"

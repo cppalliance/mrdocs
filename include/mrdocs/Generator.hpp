@@ -19,6 +19,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <memory>
 #include <string>
@@ -27,15 +28,21 @@
 
 namespace mrdocs {
 
+class GeneratorRegistry;
+
 /** Base class for documentation generators.
+
+    The generators a run can select live in a @ref GeneratorRegistry,
+    which owns them and finds them by id. A plugin installs its generators
+    through @ref PluginContext::registerGenerator, and a program adds its
+    own with @ref GeneratorRegistry::install.
 */
-class MRDOCS_VISIBLE
+class MRDOCS_DECL
     Generator
 {
 public:
     /** Destructor.
     */
-    MRDOCS_DECL
     virtual
     ~Generator() noexcept;
 
@@ -45,14 +52,12 @@ public:
         the generator in command line options and in
         configuration files.
     */
-    MRDOCS_DECL
     virtual
     std::string_view
     id() const noexcept = 0;
 
     /** Return the display name of the generator.
     */
-    MRDOCS_DECL
     virtual
     std::string_view
     displayName() const noexcept = 0;
@@ -69,16 +74,19 @@ public:
         The returned string should not include
         a leading period.
     */
-    MRDOCS_DECL
     virtual
     std::string_view
     fileExtension() const noexcept = 0;
 
     /** Build the documentation for the corpus.
 
+        A generator reports through `reporter`, the reporter of the session
+        that runs it.
+
         The generator reads its configuration from the `config` passed in
-        (a corpus does not own its configuration), resolves its own output
-        location, and writes whatever files it needs.
+        (a corpus does not own its configuration) and its own options with
+        @ref getGeneratorParams, resolves its own output location, and writes
+        whatever files it needs.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
@@ -88,51 +96,53 @@ public:
 
         @param corpus The symbols to emit.
         @param config The configuration that drove the build.
+        @param reporter The reporter of the run.
     */
-    MRDOCS_DECL
-    virtual
-    Expected<void>
-    build(Corpus const& corpus, Config const& config) const = 0;
+    virtual Expected<void>
+    build(
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter) const = 0;
 };
 
-/** Install a custom generator.
+/** Resolve the output location for a generator from the configuration.
 
-    This function registers a generator with the global
-    generator registry, making it available for use.
+    A per-generator `output` (under `generator-options.<id>`) is used as
+    given. Otherwise the top-level `output` is used directly for a single
+    generator, or a subdirectory named after the generator id when several
+    run, so each writes into its own directory. All paths are resolved
+    relative to the configuration file.
 
-    A plugin installs its generators through
-    @ref PluginContext::installGenerator, which calls
-    this function.
+    Generators call this from @ref Generator::build to find where their
+    files go; they remain free to interpret the result as a file or a
+    directory.
 
-    @par Thread Safety
-    This function is thread-safe and may be called
-    concurrently from multiple threads.
+    @return The absolute output path for the generator.
 
-    @return An error if a generator with the same id
-    already exists.
-
-    @param G The generator to install. Ownership is
-    transferred to the registry.
+    @param generator The generator whose output is being resolved.
+    @param config The configuration that drives the result.
 */
 MRDOCS_DECL
-Expected<void>
-installGenerator(std::unique_ptr<Generator> G);
+std::string
+getGeneratorOutputPath(Generator const& generator, Config const& config);
 
-/** Find a generator by its id.
+/** Return the options block of a generator.
 
-    @par Thread Safety
-    This function is thread-safe and may be called
-    concurrently from multiple threads.
+    This is the `generator-options.<id>` block of the configuration for the
+    generator's @ref Generator::id, or an empty object when the configuration
+    has none. It is the one place that reads `Config::generatorOptions` for a
+    generator: a generator class calls it from @ref Generator::build, and the
+    wrappers of callable and script generators fill
+    @ref GeneratorExtensionContext::params with it.
 
-    @return A pointer to the generator, or `nullptr`
-    if no generator with the given id exists.
+    @return The block, which shares its storage with the configuration.
 
-    @param id The symbolic name of the generator.
-    The name must be an exact match, including case.
+    @param generator The generator whose block is looked up.
+    @param config The configuration to read the block from.
 */
 MRDOCS_DECL
-Generator const*
-findGenerator(std::string_view id) noexcept;
+dom::Object
+getGeneratorParams(Generator const& generator, Config const& config);
 
 /** Handlebars-based generators and the pieces that support them.
 
@@ -142,32 +152,38 @@ findGenerator(std::string_view id) noexcept;
 */
 namespace hbs {
 
-/** Discover addon-defined data-driven generators and install them.
+/** Discover addon-defined data-driven generators and add them.
 
     For each configured addon root, the immediate subdirectories of
     `<root>/generator/` that ship an `mrdocs-generator.yml` manifest are
-    installed into the global registry as data-driven Handlebars
-    generators (see the manifest format documentation). A built-in
-    generator of the same id takes precedence, so its addon directory is
-    skipped. Directories that hold only shared assets and declare no
-    manifest are skipped too.
+    added to the registry as data-driven Handlebars generators (see the
+    manifest format documentation). A generator of the same id that the
+    registry already holds takes precedence, so its addon directory is
+    skipped; so is one an earlier addon root contributed. Directories that
+    hold only shared assets and declare no manifest are skipped too.
 
-    Call this once, after the configuration is resolved and before a
-    generator is looked up by id with @ref findGenerator. It is one of the
-    pieces the command-line tool composes to run its generate step; the
-    order of that step lives in the tool.
+    Call this once per configuration, after the extensions are loaded and
+    before a generator is looked up by id with
+    @ref GeneratorRegistry::find. It is one of the pieces
+    @ref Session::create composes: it runs after the extensions are loaded,
+    so a generator an extension installs takes precedence over an addon
+    directory of the same id. A program that wants that order constructs a
+    @ref Session.
 
     @par Thread Safety
-    Installs into the process-global registry, so it may not be called
-    concurrently with @ref installGenerator.
+    The call is synchronized with the other calls that add or look up a
+    generator of `registry`.
 
     @return The error, if any occurred.
 
     @param config The resolved configuration whose addon roots are walked.
+    @param registry The registry the generators are added to.
 */
 MRDOCS_DECL
 Expected<void>
-discoverDataDrivenGenerators(Config const& config);
+discoverDataDrivenGenerators(
+    Config const& config,
+    GeneratorRegistry& registry);
 
 } // hbs
 

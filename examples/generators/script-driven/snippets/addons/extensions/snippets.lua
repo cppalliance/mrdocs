@@ -2,6 +2,7 @@ local read_file, header_of, stem_of, line_of, dedent, extract_snippets
 local to_plain, code_blocks, indent_block, unique_name, symbol_function
 local fingerprint, mark_imported, was_imported
 
+-- tag::extension[]
 -- Fingerprints of the snippets the transform imported, kept so the generator can
 -- skip re-exporting an example that already lives in a compiled file. This is
 -- module-level state shared between the two callbacks: the transform fills it,
@@ -56,10 +57,10 @@ mrdocs.register_transform("snippets", function(ctx)
 end)
 
 -- Export: group every symbol's inline @code examples by header and write one
--- runnable test file per header under `<output>/<header-stem>.cpp`, one function
--- per symbol plus a `main` that calls them all.
+-- runnable test file per header, `<header-stem>.cpp` in the generator's output
+-- directory (`ctx.outputPath`, here `generator-options.snippets.output`), one
+-- function per symbol plus a `main` that calls them all.
 mrdocs.register_generator("snippets", function(ctx)
-  local out_dir = (ctx.params and ctx.params.output) or "exported"
   local groups = {}
   local order = {}
   for _, sym in ipairs(ctx.corpus.symbols) do
@@ -97,9 +98,10 @@ mrdocs.register_generator("snippets", function(ctx)
       calls[#calls + 1] = "    " .. fn .. "();"
     end
     parts[#parts + 1] = "int main()\n{\n" .. table.concat(calls, "\n") .. "\n}\n"
-    ctx.output.write(out_dir .. "/" .. stem_of(header) .. ".cpp", table.concat(parts, "\n"))
+    ctx.output.write(stem_of(header) .. ".cpp", table.concat(parts, "\n"))
   end
 end)
+-- end::extension[]
 
 --- The code-block literals in a symbol's documentation, in order. A `@code`
 --- example, whether written inline or imported, is a `code` block in the

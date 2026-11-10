@@ -10,14 +10,14 @@
   </members>
 </namespace>
 <function>
-  <name>from_supplemental</name>
+  <name>from_primary</name>
   <anchor>target_function</anchor>
   <loc>
     <loc>
       <location>
         <shortPath>ordering.cpp</shortPath>
         <sourcePath>ordering.cpp</sourcePath>
-        <lineNumber>4</lineNumber>
+        <lineNumber>5</lineNumber>
         <columnNumber>1</columnNumber>
         <documented/>
       </location>
@@ -33,7 +33,7 @@
       <children>
         <text>
           <kind>text</kind>
-          <literal>A function whose name is rewritten twice, once by each of two scripts living in two different addon roots. The script in the alphabetically-later root must win.</literal>
+          <literal>A function whose name is rewritten twice, once by each of two scripts living in two different addon roots. Scripts run in the order of their file names, whatever their root, so the script whose name sorts later must win.</literal>
         </text>
       </children>
     </brief>

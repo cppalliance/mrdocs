@@ -1,0 +1,469 @@
+= Defining Extensions
+:page-aliases: extensions/plugins.adoc, extensions/script-engines.adoc
+
+A xref:extensions/index.adoc[pipeline extension] is code that Mr.Docs loads as it starts up. It registers corpus transforms and generators, and the rest of the run sees them as if they had shipped with the tool. You can write an extension in JavaScript, Lua, or {cpp}:
+
+* A script is a `.js` file that the embedded https://jerryscript.net[JerryScript^] engine runs, or a `.lua` file that the embedded https://www.lua.org/[Lua^] engine runs. It sees the corpus through DOM objects.
+
+* A {cpp} plugin is a native shared library that Mr.Docs loads. It sees the real cpp:Symbol[], cpp:Corpus[] and cpp:Config[] types and can call the {cpp} helpers of Mr.Docs.
+
+The tables below compare these languages according to various criteria. The section xref:#choosing[Choosing between JavaScript, Lua and {cpp}] has the measurements behind the conclusions.
+
+.Environment
+[cols="2,^3,^3,^3"]
+|===
+| |JavaScript |Lua |{cpp}
+
+|Familiarity
+|image:icons/yes.svg[Yes,width=16,height=16] Widely known
+|image:icons/no.svg[No,width=16,height=16] Less known
+|image:icons/yes.svg[Yes,width=16,height=16] Widely known
+
+|Build step
+|image:icons/yes.svg[Yes,width=16,height=16] None
+|image:icons/yes.svg[Yes,width=16,height=16] None
+|image:icons/no.svg[No,width=16,height=16] {cpp}23 compiler and CMake
+
+|Survives a Mr.Docs release
+|image:icons/yes.svg[Yes,width=16,height=16] Yes
+|image:icons/yes.svg[Yes,width=16,height=16] Yes
+|image:icons/no.svg[No,width=16,height=16] Rebuild for each build
+
+|Real {cpp} types
+|image:icons/no.svg[No,width=16,height=16] DOM proxies
+|image:icons/no.svg[No,width=16,height=16] DOM userdata
+|image:icons/yes.svg[Yes,width=16,height=16] The real types
+|===
+
+.Limits
+[cols="2,^3,^3,^3"]
+|===
+| |JavaScript |Lua |{cpp}
+
+|Speed
+|image:icons/yes.svg[Yes,width=16,height=16] Good
+|image:icons/yes.svg[Yes,width=16,height=16] Better
+|image:icons/yes.svg[Yes,width=16,height=16] Native
+
+|Memory
+|image:icons/no.svg[No,width=16,height=16] Fixed block, up to 4 GB
+|image:icons/yes.svg[Yes,width=16,height=16] System allocator
+|image:icons/yes.svg[Yes,width=16,height=16] Process memory
+
+|Out of memory
+|image:icons/no.svg[No,width=16,height=16] Halts the run
+|image:icons/yes.svg[Yes,width=16,height=16] Error that `pcall` catches
+|image:icons/yes.svg[Yes,width=16,height=16] As in Mr.Docs
+|===
+
+.Features
+[cols="2,^3,^3,^3"]
+|===
+| |JavaScript |Lua |{cpp}
+
+|Standard library
+|image:icons/no.svg[No,width=16,height=16] ECMAScript built-ins
+|image:icons/yes.svg[Yes,width=16,height=16] The whole Lua library
+|image:icons/yes.svg[Yes,width=16,height=16] The {cpp} library
+
+|Other libraries
+|image:icons/no.svg[No,width=16,height=16] None, a script is one file
+|image:icons/yes.svg[Yes,width=16,height=16] Lua modules
+|image:icons/yes.svg[Yes,width=16,height=16] Any library
+
+|Debugging
+|image:icons/yes.svg[Yes,width=16,height=16] Error names the script, `console.log`
+|image:icons/yes.svg[Yes,width=16,height=16] Error names the script, `print`
+|image:icons/yes.svg[Yes,width=16,height=16] A native debugger
+
+|Engine and version
+|https://jerryscript.net[JerryScript^] 3.0.0, `es.next`
+|https://www.lua.org/[Lua^] 5.4.8
+|Mr.Docs itself
+|===
+
+[#where-an-extension-lives]
+== [[_where_a_script_lives]]Extension locations
+
+Mr.Docs looks for extensions in the `extensions/` directory of every xref:configuration/output.adoc#addons[addon root]:
+
+[cols="1,2,3"]
+|===
+|Language |File in `extensions/` |Entry file of a directory
+
+|JavaScript
+|`<name>.js`
+|`<name>/<name>.js`, `<name>/index.js`
+
+|Lua
+|`<name>.lua`
+|`<name>/<name>.lua`, `<name>/init.lua`
+
+|{cpp}
+|`<name>.dll` on Windows, `<name>.so` on Linux, `<name>.dylib` or `<name>.so` on macOS
+|`<name>/<name>.so`, `<name>/lib<name>.so`, `<name>/<name>.dylib`, `<name>/lib<name>.dylib`, `<name>/<name>.dll`
+|===
+
+For example, a plugin with a dependency of its own sits in a directory, under the name CMake gives a module library:
+
+[source]
+----
+my-addons/extensions/
+└── report/
+    ├── libreport.so
+    └── libsqlite3.so.0
+----
+
+[NOTE]
+====
+`init.lua` wins over `<name>.lua`, and `index.js` over `<name>.js`
+====
+
+As usual, you can use the xref:configuration/reference.adoc#addons-supplemental_option[`addons-supplemental`] option to register more addon directories with extensions. An extension is named by its file name without the suffix and without the `lib` prefix of a native library, or by the name of its directory.
+
+[#load-order]
+.Load order
+[TIP]
+====
+An extension must not rely on the order in which Mr.Docs loads extensions. A transform works on the corpus it receives and must not assume that another transform ran before it or will run after it. Scripts and plugins can always interleave.
+====
+
+[#registering-an-extension]
+== Registering an extension
+
+An extension registers transforms, generators, or both, and Mr.Docs can call each one later in the run, once, with the run context. A script calls a function of the `mrdocs` object, and a plugin calls a member of the context its entry point receives:
+
+|===
+|Language |Registers a transform |Registers a generator
+
+|JavaScript, Lua
+|`mrdocs.cpp:PluginContext::registerTransform[register_transform](id, fn)`
+|`mrdocs.cpp:PluginContext::registerGenerator[register_generator](id, fn)`
+
+|{cpp}
+|`plugin.cpp:PluginContext::registerTransform[registerTransform](id, fn)`
+|`plugin.cpp:PluginContext::registerGenerator[registerGenerator](id, fn)`
+|===
+
+The hello-world transform below reports one line, "Hello from a transform". A script calls `mrdocs.cpp:PluginContext::registerTransform[register_transform](id, fn)`, and a plugin calls `plugin.cpp:PluginContext::registerTransform[registerTransform](id, fn)` from its entry point, the body of cpp:MRDOCS_PLUGIN_MAIN[]:
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/hello_world_transform.js`
+[source,javascript]
+----
+include::example$examples/extensions/hello-world-transform/js/extensions/hello_world_transform.js[]
+----
+
+Lua::
++
+.`addons/extensions/hello_world_transform.lua`
+[source,lua]
+----
+include::example$examples/extensions/hello-world-transform/lua/extensions/hello_world_transform.lua[]
+----
+
+{cpp}::
++
+.`hello-world-transform/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/hello-world-transform/plugin/plugin.cpp[tag=plugin,indent=0]
+----
+======
+
+The hello-world generator writes one file, `hello.txt`, with one line. A script writes it through `ctx.output.write`, and a plugin writes it under `ctx.outputPath`:
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/hello_world_generator.js`
+[source,javascript]
+----
+include::example$examples/extensions/hello-world-generator/js/extensions/hello_world_generator.js[]
+----
+
+Lua::
++
+.`addons/extensions/hello_world_generator.lua`
+[source,lua]
+----
+include::example$examples/extensions/hello-world-generator/lua/extensions/hello_world_generator.lua[]
+----
+
+{cpp}::
++
+.`hello-world-generator/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/hello-world-generator/plugin/plugin.cpp[tag=plugin,indent=0]
+----
+======
+
+Every transform and generator has an `id`. The rules for it are in xref:extensions/corpus-transforms.adoc#registering-a-transform[Registering a transform] and xref:extensions/programmatic-generators.adoc#registering-a-generator[Registering a generator]. An extension can register any number of transforms and generators.
+
+[#input-parameters]
+.Input Parameters
+[NOTE]
+====
+A script gets the context as `ctx`, and a plugin callable gets it as its argument: a cpp:TransformExtensionContext[] for a transform and a cpp:GeneratorExtensionContext[] for a generator. The reference page of each type documents its fields. The xref:extensions/corpus-transforms.adoc[Corpus Transforms] and xref:extensions/programmatic-generators.adoc[Programmatic Generators] pages cover what the reference cannot say: how a script walks `ctx.corpus` and what `ctx.output` writes.
+====
+
+[#building]
+== Building a {cpp} plugin
+
+A {cpp} plugin runs inside the ordinary `mrdocs` tool. You can build one with the following recipe:
+
+. xref:#cmake-target[Build] a CMake module library that links `mrdocs::plugin-api`.
+. Write the xref:#entry-point[entry point] with cpp:MRDOCS_PLUGIN_MAIN[].
+. Register a xref:extensions/programmatic-generators.adoc#registering-a-generator[generator], a xref:extensions/corpus-transforms.adoc#registering-a-transform[transform], or both. Start from the xref:#registering-an-extension[hello-world plugins].
+. xref:#installing-a-plugin[Install] the library under `extensions/` of an addon root.
+. Rebuild it against the Mr.Docs that will load it, as xref:#plugin-compatibility[what has to match] says.
+
+[#cmake-target]
+=== The CMake target
+
+A plugin is a CMake module library that links `mrdocs::plugin-api`, the target the installed package defines for plugins.
+
+A module library is CMake's name for a shared library that no other target will link against. Only a program can load a module at run time.
+
+- On Windows, CMake writes no import library for it.
+- On macOS, it writes a bundle that ends in `.so`.
+- On Linux, it's the same as a shared library.
+
+The package ships `mrdocs_add_plugin`, which does all of the setup:
+
+[source,cmake]
+----
+find_package(mrdocs REQUIRED)
+mrdocs_add_plugin(my_plugin src/plugin.cpp)
+----
+
+The function creates the library, links it, and compiles it with hidden visibility, so that its own symbols stay its own, as the following recipe does. It is analogous to:
+
+[source,cmake]
+----
+find_package(mrdocs REQUIRED)
+add_library(my_plugin MODULE src/plugin.cpp)
+target_link_libraries(my_plugin PRIVATE mrdocs::plugin-api)
+set_target_properties(my_plugin PROPERTIES
+    CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN ON)
+----
+
+[#linking-mrdocs]
+.Linking against the plugin API
+[NOTE]
+========
+`mrdocs::plugin-api` is an interface target, so it has no code of its own. Linking it gives the plugin:
+
+- The include directories of the Mr.Docs headers
+- The {cpp}23 language level they need
+- The compiler options MSVC needs
+- Access to the Mr.Docs functions the plugin calls
+
+[NOTE]
+====
+Where those functions come from depends on how Mr.Docs was built. In a default (static) build the `mrdocs` executable holds the API, so the target links the executable, and the plugin leaves the Mr.Docs functions it calls undefined. The executable provides them when loading the plugin.
+
+In a shared build the target links the `mrdocs::mrdocs-core` library, and the plugin binds to it.
+
+Either way, the plugin gets no copy of the Mr.Docs API. A plugin that linked `mrdocs::mrdocs-core` itself would get a second copy of the core in a static build, with generator and transform registries of its own that the tool never sees.
+====
+
+In a static build, the platform decides how the undefined symbols are checked:
+
+[tabs]
+======
+Linux::
++
+The dynamic loader resolves the undefined symbols against the export table of the `mrdocs` executable when Mr.Docs loads the plugin. A function the headers do not mark is an undefined symbol at that point.
+
+macOS::
++
+CMake links the plugin with the `mrdocs` executable as its bundle loader, so the linker checks every Mr.Docs symbol against the executable's exports. An unmarked function is a link error.
+
+Windows::
++
+CMake links the plugin against the import library that it writes for `mrdocs.exe`. An unmarked function is a link error too.
+======
+
+Without hidden visibility, a call from a plugin to one of its own functions can bind to a function of the same name in the Mr.Docs executable. The entry points stay visible, since cpp:MRDOCS_PLUGIN_MAIN[] marks them with cpp:MRDOCS_PLUGIN_EXPORT[].
+========
+
+[#entry-point]
+=== The entry point
+
+Use the cpp:MRDOCS_PLUGIN_MAIN[] macro once, in one translation unit of the plugin. The body that follows it receives the cpp:PluginContext[] parameter and returns an cpp:Expected<void>[]: `{}` on success, or an cpp:Error[] to refuse the plugin. The error stops the run with a message that names the plugin. This body registers a generator:
+
+.`count-by-kind/generator/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/count-by-kind/generator/plugin.cpp[tag=main]
+----
+
+.What the macro defines
+[NOTE]
+====
+Along with the entry point, the macro defines functions that report how the library was built. Mr.Docs calls them before it calls the plugin to make sure the plugin was compiled with compatible settings.
+
+|===
+|Exported function |What it does
+
+|`mrdocs_plugin_build_id`
+|Reports cpp:MRDOCS_PLUGIN_BUILD_ID[], the Mr.Docs build the plugin was compiled against.
+
+|`mrdocs_plugin_stdlib_tag`
+|Reports cpp:MRDOCS_PLUGIN_STDLIB_TAG[], the standard library.
+
+|`mrdocs_plugin_main`
+|Calls the body that follows the macro.
+|===
+====
+
+[#installing-a-plugin]
+=== Installing a plugin
+
+Put the library under `extensions/` of an addon root, as a file or in a directory of its own, as the xref:#where-an-extension-lives[Extension locations] section describes. A plugin that depends on shared libraries of its own should live in a directory and keep its dependencies there.
+
+On Linux and macOS, `mrdocs_add_plugin` records the run path, so that these dependencies can be found. By hand, that is:
+
+[source,cmake]
+----
+set_target_properties(my_plugin PROPERTIES BUILD_WITH_INSTALL_RPATH ON)
+if (APPLE)
+    set_target_properties(my_plugin PROPERTIES INSTALL_RPATH "@loader_path")
+elseif (UNIX)
+    set_target_properties(my_plugin PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif ()
+----
+
+[#plugin-compatibility]
+=== Plugin compatibility
+
+Build the plugin against the Mr.Docs installation you will run it with, with the standard library that Mr.Docs uses, and rebuild it when you update Mr.Docs. In some cases, this might mean xref:install.adoc#mrdocs-bootstrap-script[building Mr.Docs from source] with the bootstrap script so that plugins and Mr.Docs are compatible on your platform.
+
+[#must-match-table]
+[cols="2,3"]
+|===
+|Must match |Where it comes from
+
+|The exact Mr.Docs build
+|cpp:MRDOCS_PLUGIN_BUILD_ID[], the same text as `mrdocs::project_build_id`, the commit hash of the build
+
+|The standard library and its settings
+|cpp:MRDOCS_PLUGIN_STDLIB_TAG[], defined once in the header
+|===
+
+On each platform, the plugin's toolchain has to fit the one that built Mr.Docs. The installed package records the macOS deployment target and the MSVC runtime it was built with. At configure time, `mrdocs_add_plugin` compares them with the plugin's own settings and stops with a message naming both values when they differ. The loader compares the build id and the standard library tag when the plugin loads. A Mr.Docs built without a build id refuses every plugin, so when you build it from a source archive without `.git`, pass `-DMRDOCS_BUILD_ID=<id>` to CMake.
+
+The compiler stays your choice on Linux. The tag holds the library's ABI settings, not its release. A plugin fails in the loader only when it needs a libstdc{plus}{plus} symbol version newer than the one the release bundles. The Linux release carries the libstdc{plus}{plus} of GCC 15, whose newest version is `GLIBCXX_3.4.34`.
+
+[#choosing]
+== Choosing between JavaScript, Lua and {cpp}
+
+Pick the language by what the extension has to do and how long it has to last. The tables in the introduction compare them, and the subsections give the measurements behind the script columns.
+
+* Pick JavaScript when its authors already write JavaScript, or when the work is a few lookups per run. It has closures, destructuring, regular expressions and classes, and more people read it at a glance than read Lua. You get the language and its built-ins: `JSON`, regular expressions, `Map`, `Set`, `Promise` and the array methods. It handles any corpus that fits in 4 GB, which is enough for most real codebases.
+* Pick Lua, the language designed to be embedded, when the script runs over a large codebase, keeps many symbols alive, or runs on every build. It has no memory limit and runs faster for the same work. It also includes the full Lua standard library, making it a good choice for scripts you reuse across many projects.
+* Pick {cpp} when you can rebuild the extension for each Mr.Docs release and it needs one of these:
+** Work heavy enough to justify compiled code.
+** A generator that links to a library of its own, such as SQLite to write the corpus into a database, or a PDF library to typeset the reference.
+
+Other tools cover different needs. If Handlebars templates are enough, use xref:extensions/data-driven-generators.adoc[data-driven generators]. If a program has to drive extraction itself, use xref:extensions/as-library.adoc[Mr.Docs as a library].
+
+Whichever script language you pick, the functionality and the symbol fields in xref:generators/reference.adoc[the DOM reference] work the same.
+
+=== Performance
+
+The table below compares the same transforms written once in JavaScript and once in Lua, run over the Mr.Docs corpus:
+
+[cols="3,1,1,1"]
+|===
+| Task | Lua | JavaScript | Ratio
+
+| Count symbols
+| 3 ms
+| 7 ms
+| 2×
+
+| Collect names
+| 4 ms
+| 15 ms
+| 4×
+
+| Read a nested property
+| 4 ms
+| 32 ms
+| 8×
+
+| Build text per symbol
+| 4 ms
+| 66 ms
+| 15×
+
+| Keep every symbol in an array
+| 1 ms
+| 19 ms
+| 17×
+
+| Number loop, no symbols involved
+| 17 ms
+| 157 ms
+| 9×
+|===
+
+Each transform timed itself from inside the script, so extraction and rendering are excluded. The figures are the average of 30 runs. The scripts and the runner live in `tests/benchmarks/script-engines/`, and `cmake --build build/<preset> --target mrdocs-benchmark-script-engines` prints the table for your machine.
+
+Lua wins every row:
+
+* The number loop, which touches no symbols, shows the interpreters themselves: Lua's register machine with native integers runs about nine times faster than JerryScript's stack machine with 32-bit tagged values.
+* On the symbol tasks, the gap is smaller where a script only reads, and larger where it builds things.
+* Reading a property costs about a microsecond in JavaScript, because every read goes through a `Proxy` trap that converts the property name and locks the engine. Lua does the same work through a metatable on a small userdata, at a fraction of the cost.
+* Building a string one piece at a time is where JavaScript falls furthest behind: JerryScript copies on every concatenation, while Lua's `table.concat` builds the result once.
+* For a corpus of 100,000 symbols, a JavaScript transform that reads two properties of every symbol takes well under a second. The same Lua transform takes a tenth of that.
+
+=== Symbols as values
+
+In both engines `ctx.corpus.symbols` is lazy. Reading it costs nothing, and each element becomes a script value when the script reaches it. A loop over every symbol of any corpus works, and so does keeping the ones you filtered out. On the Mr.Docs corpus, keeping 102,624 JavaScript symbol proxies alive at once took 129 ms and added 5.4 MB, about 53 bytes each. Lua kept every symbol in under 600 KB.
+
+Each read builds a fresh value, in both engines, so two reads of the same element are not the same object. Compare symbols by `id`, not by identity. Do not rely on `indexOf`, `includes` or a `Set` to find or remove duplicate symbol objects in JavaScript, or on table keys in Lua.
+
+=== Memory
+
+Lua stores native (typically 64-bit) pointers and takes every value from the system allocator, one call at a time. Its values can live anywhere in memory, so there is no block to run out of, and Lua frees a value when its garbage collector finds it is no longer used. A Lua script is therefore limited by the machine's memory, like the rest of Mr.Docs.
+
+If an allocation does fail, Lua raises a "not enough memory" error that a script can catch with `pcall`. If the script does not catch it, the error ends the transform with that message.
+
+JerryScript stores 32-bit offsets into one block instead of native pointers, so each object costs less, and that block is where its values live. The block grows as a script creates objects and can reach just under 4 GB, the most a 32-bit offset can address. A script that keeps 50 MB alive costs about 50 MB.
+
+If a script exhausts the block, the engine stops and Mr.Docs exits with an error that names the size. A script cannot catch it, since there is no JavaScript exception for this case.
+
+=== Standard libraries
+
+[tabs]
+======
+JavaScript::
++
+The engine implements the language and the ECMAScript built-ins, and nothing beyond that.
++
+* It provides `Object`, `Array`, `String`, `Number`, `BigInt`, `Math`, `JSON`, `RegExp`, `Date`, `Map`, `Set`, `WeakMap`, `WeakRef`, `Promise`, `Symbol`, `Proxy`, `Reflect`, `ArrayBuffer` with the typed arrays, generators, and `async` functions.
+* It does not provide `Intl`, `setTimeout`, `queueMicrotask`, `TextEncoder`, `fetch`, `structuredClone`, or anything Node or a browser would add (`fs`, `path`, `process`, `require`).
+* There is no module system: `import` and `export` are syntax errors, so a script is one file. A JavaScript extension in a directory of its own, such as `extensions/rename/index.js`, is that one file too.
+* Mr.Docs adds host objects: `console`, with `log` and `error`, and `mrdocs`, with cpp:PluginContext::registerTransform[register_transform], cpp:PluginContext::registerGenerator[register_generator] and `report`. Everything else a script needs comes through the `ctx` object it is handed.
+
+Lua::
++
+Mr.Docs opens the whole standard library: `string`, `table`, `math`, `io`, `os`, `utf8`, `coroutine`, `debug` and `package`. `require` finds those by name.
++
+* A Lua extension that is a directory of its own, such as `extensions/conventions/init.lua`, can also `require` the modules next to its entry file. Mr.Docs looks in that directory before it tries `package.path`, for `<name>.lua` and then `<name>/init.lua`.
+* That is how `require "rules"` finds `conventions/rules.lua`, even when the path to the directory has non-ASCII characters.
+* A script that is a file directly in `extensions/` has Lua's default `package.path`: system paths and the current directory. Keep it in one file, or move it into a directory of its own.
+
+{cpp}::
++
+A plugin uses the {cpp} standard library of the toolchain that built it, and that library has to match the one of Mr.Docs (see xref:#plugin-compatibility[what has to match]). It can link any other library, which goes in the directory of the plugin, as xref:#installing-a-plugin[Installing a plugin] describes.
+======

@@ -84,22 +84,16 @@ filterValue(dom::Value const& v, bool const includeMeta, bool const emitEmpty)
     return v;
 }
 
-// Read a boolean option from `generator-options.json.<name>`.
+// Read a boolean option from the generator's own options.
 bool
-boolOption(Config const& config, std::string_view const name, bool const fallback)
+boolOption(dom::Object const& params, std::string_view const name, bool const fallback)
 {
-    auto const it = config.generatorOptions.find("json");
-    if (it == config.generatorOptions.end())
-    {
-        return fallback;
-    }
-    dom::Object const& opts = it->second;
     std::string const key(name);
-    if (!opts.exists(key))
+    if (!params.exists(key))
     {
         return fallback;
     }
-    return opts.get(key).isTruthy();
+    return params.get(key).isTruthy();
 }
 
 // Walks the corpus from the global namespace, following each symbol's
@@ -140,7 +134,10 @@ struct SymbolCollector
 
 Expected<void>
 JSONGenerator::
-build(Corpus const& corpus, Config const& config) const
+build(
+    Corpus const& corpus,
+    Config const& config,
+    report::Reporter&) const
 {
     // Walk the corpus one symbol at a time and write a single file: an object
     // with a `symbols` array holding each symbol's DOM (the same projection the
@@ -149,8 +146,9 @@ build(Corpus const& corpus, Config const& config) const
     //   - `include-meta` (default false): keep the reflection `$meta` field.
     //   - `emit-empty`   (default true): keep empty fields and elements; set
     //     false to drop them (see filterValue for the "empty" definition).
-    bool const includeMeta = boolOption(config, "include-meta", false);
-    bool const emitEmpty = boolOption(config, "emit-empty", true);
+    dom::Object const params = getGeneratorParams(*this, config);
+    bool const includeMeta = boolOption(params, "include-meta", false);
+    bool const emitEmpty = boolOption(params, "emit-empty", true);
 
     std::string const out = getGeneratorOutputPath(*this, config);
     MRDOCS_TRY(std::string const fileName,

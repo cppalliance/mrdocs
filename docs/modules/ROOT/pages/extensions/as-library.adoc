@@ -22,12 +22,14 @@ The imported target is `mrdocs::mrdocs-core`. Link it like any other library: it
 include::example$examples/library/breaking-changes/CMakeLists.txt[tag=target,indent=0]
 ----
 
+When Mr.Docs is a shared library, CMake gives a Linux or macOS program the run path to find it. Windows has no run path: it finds a DLL next to the program, so `mrdocs_ensure_runtime_dlls(<target>)` puts `mrdocs-core.dll` there after the build, unless the same file is already there or on PATH. The call does nothing for a static Mr.Docs or on Linux and macOS, so call it after every link line.
+
 == Building a corpus
 
 The xref:reference:index.adoc[Library Reference] for `mrdocs-core` covers the public API for extracting and processing a corpus. A consumer typically drives extraction with:
 
 . Read an `mrdocs.yml` into a fully validated cpp:Config[].
-. Call cpp:Corpus::build[] with the resulting config.
+. Call cpp:Corpus::build[] with the resulting config and the reporter of the run, cpp:Session::log[session.log()] when the program has a cpp:Session[].
 
 The compilation database is resolved from the configuration with the same rules Mr.Docs uses. LLVM and Clang are never exposed to the caller.
 
@@ -55,7 +57,9 @@ include::example$examples/library/breaking-changes/src/Diff.cpp[tag=diff]
 
 == Custom Generators
 
-You can subclass cpp:Generator[] to create new output formats that need to do something script generators cannot express, such as comparing multiple corpora, multi-pass analyzes, emitting binary formats, depending on system libraries. A generator does its work in cpp:Generator::build[], which receives the corpus (and through it the configuration) and is free to do whatever it needs: resolve its own output location and write files, or, as this example does, bring the result straight to the screen.
+You can subclass cpp:Generator[] to create new output formats that need to do something script generators cannot express, such as comparing multiple corpora, multi-pass analyzes, emitting binary formats, depending on system libraries. A generator does its work in cpp:Generator::build[], which receives the corpus, the configuration and the reporter of the run. It reads its options block with cpp:getGeneratorParams[].
+
+The body of cpp:Generator::build[] is free to do whatever it needs. It can resolve its own output location and write files or, as this example does, bring the result straight to the screen.
 
 The example's `BreakingChangesGenerator` holds a reference to the baseline corpus and runs the diff against whatever candidate corpus cpp:Generator::build[] is invoked with:
 
@@ -64,6 +68,20 @@ The example's `BreakingChangesGenerator` holds a reference to the baseline corpu
 ----
 include::example$examples/library/breaking-changes/src/BreakingChangesGenerator.hpp[tag=generator-class]
 ----
+
+A program keeps its generators in a cpp:Session[], which owns everything one run of Mr.Docs needs and which you make with cpp:Session::create[]. Its cpp:Session::log[log()] is the cpp:report::Reporter[] of the run, returned by reference. The example builds both corpora with it, so the reporter prints and counts what they report in one place. A second session would count its own.
+
+The cpp:Session::generators[generators()] of the session is a cpp:GeneratorRegistry[]. It starts with the generators that ship with Mr.Docs (`adoc`, `html`, `xml`, `json` and `noop`) and owns every generator added later. Adding one whose id is already taken fails. Two sessions in one process never see each other's generators. The example adds its generator and looks it up by id:
+
+.`examples/library/breaking-changes/src/main.cpp`
+[source,cpp]
+----
+include::example$examples/library/breaking-changes/src/main.cpp[tag=install-and-run,indent=0]
+----
+
+Order matters when a session transforms a corpus. A script may keep a value that refers to the corpus, so a program that calls cpp:Session::applyTransforms[] declares the corpus before the session, and the session is destroyed first. This example declares the session first, which is safe because it never transforms its corpora.
+
+A program that goes through several configurations passes one cpp:ExtensionRegistry::LibraryRegistry[] to each cpp:Session::create[], so the entry point of a plugin runs once.
 
 The body of cpp:Generator::build[] is short, the heavy lifting is the diff and the formatter:
 
@@ -101,4 +119,3 @@ Running the tool against those two fixtures produces the report through the gene
 ----
 include::example$examples/library/breaking-changes/test/expected.txt[]
 ----
-

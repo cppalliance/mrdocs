@@ -13,7 +13,6 @@
 #define MRDOCS_LIB_GENERATORS_HBS_ADDONPATHS_HPP
 
 #include <mrdocs/Support/AddonRoots.hpp>
-#include "HandlebarsGenerator.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
@@ -217,18 +216,21 @@ findFile(
     Layouts do not inherit (each format owns its `index.<id>.hbs`),
     so callers that load layouts pass only the leaf id, not the chain.
 
-    Walks the global generator registry via `findGenerator()` to follow
-    `HandlebarsGenerator::extends()` references. A reference to a
-    generator that is not installed (or is not a HandlebarsGenerator)
-    silently terminates the walk; a cycle aborts at the first repeat,
-    so a misconfigured manifest cannot loop the lookup.
+    Follows `HandlebarsGenerator::extends()` references through
+    `extendsOf`, the lookup the caller supplies: it takes a generator id
+    and returns what that generator extends, or `std::nullopt` when the id
+    is not a generator that can extend another (it is not installed, or is
+    not a HandlebarsGenerator). The walk ends there; a cycle ends at the
+    first repeat, so a misconfigured manifest cannot loop the lookup.
 
-    @param ext The leaf format id (typically `HandlebarsCorpus::fileExtension`).
+    @param ext The leaf format id (typically the id of the generator).
+    @param extendsOf The lookup from a generator id to the id it extends.
     @return The chain, e.g. `{"adoc", "md"}` for a `md` generator that
             extends `adoc`. A standalone generator returns `{ext}`.
 */
-inline std::vector<std::string>
-extensionChain(std::string_view ext)
+template <class ExtendsOf>
+std::vector<std::string>
+extensionChain(std::string_view ext, ExtendsOf&& extendsOf)
 {
     std::vector<std::string> chain;
     std::unordered_set<std::string> seen;
@@ -237,18 +239,12 @@ extensionChain(std::string_view ext)
     {
         seen.insert(cur);
         chain.push_back(cur);
-        Generator const* gen = findGenerator(cur);
-        if (!gen)
+        std::optional<std::string> const parent = extendsOf(cur);
+        if (!parent)
         {
             break;
         }
-        auto const* hbsGen =
-            dynamic_cast<HandlebarsGenerator const*>(gen);
-        if (!hbsGen)
-        {
-            break;
-        }
-        cur = std::string(hbsGen->extends());
+        cur = *parent;
     }
     // Caller wants most-general first, most-specific last.
     std::reverse(chain.begin(), chain.end());

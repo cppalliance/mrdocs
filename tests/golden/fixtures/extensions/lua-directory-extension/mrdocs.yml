@@ -1,0 +1,6 @@
+addons-supplemental:
+  - addons
+generator: xml
+multipage: false
+warn-if-undocumented: false
+source-root: .
