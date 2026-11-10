@@ -1,0 +1,93 @@
+= The Bootstrap Tool Reference
+
+[NOTE]
+====
+Most users install a release package and can skip this page.
+Read it only when a release does not fit your case:
+
+* Your Linux is older than the releases support, for example Ubuntu 18.04 or CentOS 7.
+* No release covers your platform.
+* You need plugins on a platform whose release package cannot load them.
+* You are setting up a development environment with presets, IDE targets and `just` recipes.
+
+See https://cppalliance.org/newsmedia/news/mrdocs-bootstrap-one-script-to-build-them-all/[the bootstrap walkthrough on the C++ Alliance site,window="_blank"] for the design rationale.
+====
+
+`python bootstrap.py` builds Mr.Docs from source and sets up a development environment for it.
+
+xref:install.adoc#mrdocs-bootstrap-script[Build from Source] shows the basic usage.
+
+[NOTE]
+====
+xref:contribute/workflow.adoc[Development Workflow] presents extra commands developers are expected to run. To change the bootstrap tool itself, see the xref:contribute/utilities/bootstrap.adoc[Bootstrap Contributor Guide].
+====
+
+[#what-you-get]
+== Effects of a run
+
+A run does these things, in this order:
+
+. Inspect and download
+.. Checks the tools and compilers it needs, and tells you which one is missing.
+.. Finds Ninja, and downloads it into `build/third-party/` when it is not on `PATH`.
+.. Builds the third-party dependencies from their JSON recipes. Sources go to `build/third-party/source/` and installs to `build/third-party/install/`.
+. Configure
+.. Writes the presets to `CMakeUserPresets.json`.
+.. Configures Mr.Docs with the preset.
+.. Writes the run configurations, unless you pass `--no-run-configs`:
+** `.run/` for CLion.
+** `.vscode/launch.json` for VS Code, except on Windows.
+** `.vs/launch.vs.json` for Visual Studio, on Windows.
+** A `justfile` at the repository root. `just --list` then shows every recipe.
+.. Install the debugger pretty printer files `.lldbinit` and `.gdbinit`.
+. Builds Mr.Docs (default destination `build/<preset>/`)
+. Runs Mr.Docs tests
+. Installs Mr.Docs into (default destination `install/<preset>/`)
+
+With `--skip-build` the run stops after the configure step. With `--skip-build` and `--no-run-configs` together, it skips configuring Mr.Docs too.
+
+[#default-directories]
+== Default directories
+
+Without `--build-dir` and `--install-dir`, a run uses one directory per preset under the source directory.
+For the `release-macos` preset, the build goes to `build/release-macos` and Mr.Docs installs into `install/release-macos`.
+The preset name combines the build type, the OS, the compiler and the sanitizer, so different combinations install side by side.
+
+[#environment]
+== Environment variables
+
+All the following environment variables are optional and have default values depending on what's inspected about the platform.
+
+[cols="1,3",options="header"]
+|===
+| Variable | Effect
+
+| `NO_COLOR`
+| Turns colors off.
+
+| `BOOTSTRAP_PLAIN`
+| Turns colors and emoji off, like `--plain`.
+
+| `BOOTSTRAP_FORCE_COLOR`, `CLICOLOR_FORCE`
+| Turns colors on, even when the output is not a terminal.
+
+| `BOOTSTRAP_FORCE_EMOJI`
+| Turns emoji on.
+
+| `TERM`, `WT_SESSION`
+| On Windows, either one tells the tool that the terminal understands ANSI escape codes.
+
+| `GITHUB_ACTIONS`
+| Makes the output group its lines the way the GitHub Actions log expects.
+
+| `JAVA_HOME`
+| The tool looks here for Java first, because the XML schema checks need it.
+
+| `<TOOL>_ROOT`, `<TOOL>_DIR`, `<TOOL>_PATH`, `<TOOL>_HOME`, `<TOOL>_INSTALL_DIR`, `<TOOL>_EXECUTABLE`
+| The tool looks here for a tool before it searches `PATH`, in upper, lower and title case (`CMAKE_ROOT`, `git_PATH`, `Ninja_HOME`). It uses a value that names an executable, or a directory with the tool in it or in its `bin/`.
+|===
+
+[#bootstrap-reference]
+== Options Reference
+
+include::partial$bootstrap-options.adoc[leveloffset=0]

@@ -117,9 +117,9 @@ public:
     */
     ~LazyArrayImpl() override = default;
 
-    /// @copydoc ObjectImpl::type_key
+    /// @copydoc ObjectImpl::typeKey
     char const*
-    type_key() const noexcept override
+    typeKey() const noexcept override
     {
         return "LazyArray";
     }
@@ -153,15 +153,15 @@ public:
         std::ranges::advance(it, i);
         if constexpr (std::is_same_v<Context, detail::no_context_tag>)
         {
-            return ValueFrom(*it);
+            return valueFrom(*it);
         }
         else if constexpr (detail::IsCallableContext<R, Context>)
         {
-            return ValueFrom(context_(*it));
+            return valueFrom(context_(*it));
         }
         else
         {
-            return ValueFrom(*it, context_);
+            return valueFrom(*it, context_);
         }
     }
 };
@@ -174,7 +174,7 @@ public:
 template <std::ranges::random_access_range T>
 requires HasStandaloneValueFrom<std::ranges::range_value_t<T>>
 Array
-LazyArray(T const& arr)
+lazyArray(T const& arr)
 {
     return newArray<LazyArrayImpl<T>>(arr);
 }
@@ -188,7 +188,7 @@ LazyArray(T const& arr)
 template <std::ranges::random_access_range T, class Context>
 requires HasValueFrom<std::ranges::range_value_t<T>, Context>
 Array
-LazyArray(T const& arr, Context const& ctx)
+lazyArray(T const& arr, Context const& ctx)
 {
     return newArray<LazyArrayImpl<T, Context>>(arr, ctx);
 }
@@ -204,7 +204,7 @@ requires
     std::invocable<F, std::ranges::range_value_t<T>> &&
     HasStandaloneValueFrom<std::invoke_result_t<F, std::ranges::range_value_t<T>>>
 Array
-TransformArray(T const& arr, F const& f)
+transformArray(T const& arr, F const& f)
 {
     return newArray<LazyArrayImpl<T, F>>(arr, f);
 }

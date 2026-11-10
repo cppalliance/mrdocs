@@ -1,43 +1,14 @@
 # utils/testing/
 
-Scripts that run the MrDocs test suites: `run_all_tests.py` (the full ctest run)
-and `run_ci_with_act.py` (the CI workflows run locally, via act).
+Scripts that run the test suites.
 
-## Test runner (`run_all_tests.py`)
+- `run_all_tests.py` configures the preset that best matches the OS and builds it with `-Werror -Wall` (`/WX /W4` on MSVC), as CI does. A release preset with `LLVM_ROOT` set and no named compiler wins.
+- The same script then runs the golden tests first and the rest of ctest, installs into `install/<preset>`, and builds the docs from that install through `MRDOCS_ROOT`.
+- `run_ci_with_act.py` runs the jobs of `.github/workflows/ci.yml` locally through act with a `pull_request` event. It installs act and keeps its caches under `local/act/`, which git ignores. Secrets default to placeholders, so publishing steps stay skipped.
 
-- Run `python utils/testing/run_all_tests.py` to configure the best `release/*`
-  preset for your OS, build, and execute the full ctest suite (golden tests
-  first, then the rest).
-- The runner forces compiler warnings to be treated as errors with CI-matching
-  flags: `-Werror -Wall` for gcc/clang and `/WX /W4` for MSVC, without
-  clobbering preset defaults.
-- Strict tests (self-doc, format check, warn-as-error) are enabled by default;
-  pass `--no-strict` to disable `MRDOCS_BUILD_STRICT_TESTS`.
-- Add `--update-golden` to refresh golden fixtures before running the suite when
-  output diffs in error messages are intentional.
-- Use `--preset <name>` to override the automatic selection. The script prefers
-  presets starting with `release/` (or `release-`) that match your OS and
-  compiler, falling back to `debug/*` if needed.
-- After tests (and optional docs), the script installs into `install/<preset>`
-  under the repo root to keep the prefix scoped to the workspace.
-- Docs build runs by default; pass `--skip-docs` to omit it. Docs are built
-  after install with `MRDOCS_ROOT` pointed at the freshly installed prefix so
-  the generated reference uses that version.
-- `utils/linting/reformat.py` supports `--check` to validate formatting/include
-  guards without modifying files (used by the strict test suite).
+```
+python utils/testing/run_all_tests.py [--preset NAME] [--no-strict] [--update-golden] [--skip-docs]
+python utils/testing/run_ci_with_act.py [--list-jobs] [--jobs JOB ...] [--image RUNNER=IMAGE] [--dry-run] [--reuse]
+```
 
-## CI tests with act (`run_ci_with_act.py`)
-
-- Run `python utils/testing/run_ci_with_act.py` to install
-  https://github.com/nektos/act (if needed) under `local/act/`, pull lightweight
-  Ubuntu runner images, and execute every job defined in
-  `.github/workflows/ci.yml` using the `pull_request` event payload.
-- Script state (act binary, caches, artifacts, secrets stub) lives in
-  `local/act/`, which is already git-ignored. Secrets default to placeholders so
-  side-effecting publishing steps stay skipped.
-- Pass `--list-jobs` to see the discovered job IDs, `--jobs build llvm-releases`
-  to target a subset, `--image ubuntu-24.04=<image>` to override the minimal
-  runner image, or `--dry-run` to inspect the generated act commands.
-- The script maps the host architecture to `linux/amd64` or `linux/arm64`
-  automatically and pre-pulls runner images before starting jobs. Use `--reuse`
-  to let act keep containers alive between job batches if Docker resources allow.
+`--update-golden` refreshes the golden fixtures first, only for intended output changes. `--reuse` keeps the containers alive between job batches. The [testing page](../../docs/modules/ROOT/pages/contribute/testing.adoc) explains the suites.

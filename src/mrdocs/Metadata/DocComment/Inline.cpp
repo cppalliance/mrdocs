@@ -20,7 +20,7 @@ namespace mrdocs::doc {
 std::strong_ordering
 operator<=>(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs)
 {
-    return CompareDerived(lhs, rhs);
+    return compareDerived(lhs, rhs);
 }
 
 void
@@ -84,9 +84,9 @@ isEmpty(Polymorphic<Inline> const& el)
         }
         else
         {
-            return is_one_of(
+            return isOneOf(
                 N.Kind,
-                { InlineKind::LineBreak, InlineKind::SoftBreak });
+                {InlineKind::LineBreak, InlineKind::SoftBreak});
         }
     });
 }

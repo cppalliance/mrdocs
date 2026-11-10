@@ -16,7 +16,7 @@
 namespace mrdocs {
 
 // VFALCO:
-// C Functions use "Error::Throw" for C++ errors
+// C Functions use "Error::throwError" for C++ errors
 // Or should we push an error object onto the stack?
 
 [[maybe_unused]]

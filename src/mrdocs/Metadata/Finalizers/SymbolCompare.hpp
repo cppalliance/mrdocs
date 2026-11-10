@@ -257,7 +257,7 @@ struct SymbolCompareFn
         // to ensure a stable sort. For instance, in the case of functions,
         // we sort by name, then number of parameters, then parameter types,
         // and so on.
-        return std::is_lt(CompareDerived(lhs, rhs));
+        return std::is_lt(compareDerived(lhs, rhs));
     }
 };
 

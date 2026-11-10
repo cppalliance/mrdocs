@@ -35,7 +35,7 @@
                 // specifiers, then we don't have an error because
                 // we can later infer the type from these.
                 if (!dest &&
-                    !contains_any(specifiers, typeModifiers))
+                    !containsAny(specifiers, typeModifiers))
                 {
                     setError(specStart, "expected declaration specifier");
                     ptr_ = start;
@@ -72,14 +72,14 @@
             // - In general, only one type specifier is allowed
             // - "const" and "volatile" can be combined with any type specifier
             //    except itself
-            if (contains_n(specifiers, "const", 2))
+            if (containsN(specifiers, "const", 2))
             {
                 setError(start, "multiple 'const' specifiers");
                 ptr_ = start;
                 return false;
             }
 
-            if (contains_n(specifiers, "volatile", 2))
+            if (containsN(specifiers, "volatile", 2))
             {
                 setError(start, "multiple 'volatile' specifiers");
                 ptr_ = start;
@@ -87,7 +87,7 @@
             }
 
             // - "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
-            if (contains_n_any(specifiers, {"signed", "unsigned"}, 2))
+            if (containsNAny(specifiers, {"signed", "unsigned"}, 2))
             {
                 setError(start, "multiple 'signed' or 'unsigned' specifiers");
                 ptr_ = start;
@@ -98,7 +98,7 @@
             // - "long" can be combined with "double" and "long"
             // "short" is allowed only once
             // "long" is allowed twice
-            if (contains_n(specifiers, "short", 2))
+            if (containsN(specifiers, "short", 2))
             {
                 setError(start, "too many 'short' specifiers");
                 ptr_ = start;
@@ -113,7 +113,7 @@
                 return false;
             }
 
-            if (contains_n(specifiers, "long", 3))
+            if (containsN(specifiers, "long", 3))
             {
                 setError(start, "too many 'long' specifiers");
                 ptr_ = start;
@@ -122,7 +122,7 @@
         }
 
         // "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
-        if (contains_any(specifiers, {"signed", "unsigned"}))
+        if (containsAny(specifiers, {"signed", "unsigned"}))
         {
             bool explicitlySigned = contains(specifiers, "signed");
             std::string_view signStr = explicitlySigned ? "signed" : "unsigned";
@@ -239,7 +239,7 @@
                 ptr_ = start;
                 return false;
             }
-            if (contains_n(specifiers, "long", 2))
+            if (containsN(specifiers, "long", 2))
             {
                 bool const promoted = makeLong(*namedParam.FundamentalType);
                 if (!promoted)

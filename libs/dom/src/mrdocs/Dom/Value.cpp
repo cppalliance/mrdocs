@@ -240,7 +240,7 @@ Value(
 
 char const*
 Value::
-type_key() const noexcept
+typeKey() const noexcept
 {
     switch(kind_)
     {
@@ -251,9 +251,9 @@ type_key() const noexcept
     case Integer:     return "integer";
     case String:      return "string";
     case SafeString:  return "safeString";
-    case Array:       return arr_.type_key();
-    case Object:      return obj_.type_key();
-    case Function:    return fn_.type_key();
+    case Array:       return arr_.typeKey();
+    case Object:      return obj_.typeKey();
+    case Function:    return fn_.typeKey();
     default:
         std::unreachable();
     }

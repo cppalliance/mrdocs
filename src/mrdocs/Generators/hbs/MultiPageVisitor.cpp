@@ -12,7 +12,7 @@
 #include "MultiPageVisitor.hpp"
 #include "VisitorHelpers.hpp"
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <fstream>
 
 namespace mrdocs::hbs {
@@ -33,7 +33,7 @@ operator()(T const& I)
             std::string_view const dir(files::getParentDir(path));
             if (auto exp = files::createDirectory(dir); !exp)
             {
-                exp.error().Throw();
+                exp.error().throwError();
             }
             std::ofstream os;
             try
@@ -45,13 +45,13 @@ operator()(T const& I)
                 );
                 if (!os.is_open()) {
                     formatError(R"(std::ofstream("{}") failed)", path)
-                        .Throw();
+                        .throwError();
                 }
             }
             catch (std::exception const& ex)
             {
                 formatError(R"(std::ofstream("{}") threw "{}")", path, ex.what())
-                    .Throw();
+                    .throwError();
             }
 
             // ===================================
@@ -59,7 +59,7 @@ operator()(T const& I)
             // ===================================
             if (auto exp = builder(os, I); !exp)
             {
-                exp.error().Throw();
+                exp.error().throwError();
             }
 
             count_.fetch_add(1, std::memory_order_relaxed);

@@ -147,7 +147,7 @@ ArrayImpl::
 
 char const*
 ArrayImpl::
-type_key() const noexcept
+typeKey() const noexcept
 {
     return "Array";
 }
@@ -175,6 +175,9 @@ DefaultArrayImpl(
     : elements_(std::move(elements))
 {
 }
+
+DefaultArrayImpl::
+~DefaultArrayImpl() = default;
 
 auto
 DefaultArrayImpl::
@@ -218,7 +221,7 @@ emplace_back(
 
 char const*
 DefaultArrayImpl::
-type_key() const noexcept
+typeKey() const noexcept
 {
     return "Array";
 }

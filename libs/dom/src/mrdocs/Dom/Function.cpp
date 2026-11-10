@@ -83,7 +83,7 @@ operator=(
 
 char const*
 FunctionImpl::
-type_key() const noexcept
+typeKey() const noexcept
 {
     return "Function";
 }

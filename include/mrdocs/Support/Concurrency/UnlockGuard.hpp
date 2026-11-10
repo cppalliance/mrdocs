@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SUPPORT_CONCURRENCY_UNLOCK_GUARD_HPP
-#define MRDOCS_API_SUPPORT_CONCURRENCY_UNLOCK_GUARD_HPP
+#ifndef MRDOCS_API_SUPPORT_CONCURRENCY_UNLOCKGUARD_HPP
+#define MRDOCS_API_SUPPORT_CONCURRENCY_UNLOCKGUARD_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mutex>
@@ -20,22 +20,21 @@ namespace mrdocs {
 
 /** A scoped guard which unlocks a mutex.
 */
-class unlock_guard
+class MRDOCS_VISIBLE UnlockGuard
 {
     std::mutex& m_;
 
 public:
     /** Destructor.
     */
-    ~unlock_guard()
+    ~UnlockGuard()
     {
         m_.lock();
     }
 
     /** Constructor.
     */
-    explicit
-    unlock_guard(std::mutex& m)
+    explicit UnlockGuard(std::mutex& m)
         : m_(m)
     {
         m_.unlock();
@@ -45,4 +44,4 @@ public:
 } // mrdocs
 
 
-#endif
+#endif // MRDOCS_API_SUPPORT_CONCURRENCY_UNLOCKGUARD_HPP

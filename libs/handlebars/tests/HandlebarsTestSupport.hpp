@@ -28,20 +28,20 @@ using handlebars::isEmpty;
 using handlebars::Handlebars;
 using handlebars::HandlebarsOptions;
 using handlebars::OutputRef;
-using handlebars::HTMLEscape;
+using handlebars::escapeHTML;
 using handlebars::createFrame;
 namespace helpers = handlebars::helpers;
 
 template <std::convertible_to<dom::Value> DomValue>
 requires (!std::convertible_to<DomValue, std::string_view>)
 std::string
-HTMLEscape(
+escapeHTML(
     DomValue const& val)
 {
     dom::Value v = val;
     if (v.isString())
     {
-        return HTMLEscape(v.getString().get());
+        return escapeHTML(v.getString().get());
     }
     if (v.isObject() && v.getObject().exists("toHTML"))
     {

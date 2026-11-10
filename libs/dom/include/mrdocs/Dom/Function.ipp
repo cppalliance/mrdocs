@@ -18,9 +18,9 @@
 namespace mrdocs {
 namespace dom {
 
-inline char const* Function::type_key() const noexcept
+inline char const* Function::typeKey() const noexcept
 {
-    return impl_->type_key();
+    return impl_->typeKey();
 }
 
 inline
@@ -36,7 +36,7 @@ Value
 Function::
 operator()(Args&&... args) const
 {
-    auto exp = try_invoke(std::forward<Args>(args)...);
+    auto exp = tryInvoke(std::forward<Args>(args)...);
     if (exp)
     {
         return *exp;
@@ -47,7 +47,7 @@ operator()(Args&&... args) const
 template<class... Args>
 Expected<Value>
 Function::
-try_invoke(Args&&... args) const
+tryInvoke(Args&&... args) const
 {
     typename Array::storage_type elements;
     elements.reserve(sizeof...(Args));
@@ -62,6 +62,8 @@ try_invoke(Args&&... args) const
 }
 
 //------------------------------------------------
+
+namespace detail {
 
 template<class T>
 struct arg_type;
@@ -147,6 +149,8 @@ struct arg_type<T>
     }
 };
 
+} // detail
+
 template<class F>
 auto
 DefaultFunctionImpl<F>::
@@ -167,7 +171,7 @@ call_impl(
     std::index_sequence<I...>) const
 {
     using R = decltype(
-        f_(arg_type<std::decay_t<
+        f_(detail::arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
                 >::get(args.get(I))...));
     if (args.size() < sizeof...(I))
@@ -180,14 +184,14 @@ call_impl(
             clone.emplace_back(Value(Kind::Undefined));
         if constexpr (std::is_void_v<R>)
         {
-            f_(arg_type<std::decay_t<
+            f_(detail::arg_type<std::decay_t<
                 std::tuple_element_t<I, args_type> >
                     >::get(clone.get(I))...);
             return Value(Kind::Undefined);
         }
         else if constexpr (std::same_as<R, Expected<void>>)
         {
-            auto exp = f_(arg_type<std::decay_t<
+            auto exp = f_(detail::arg_type<std::decay_t<
                 std::tuple_element_t<I, args_type> >
                     >::get(clone.get(I))...);
             if (!exp)
@@ -198,21 +202,21 @@ call_impl(
         }
         else
         {
-            return f_(arg_type<std::decay_t<
+            return f_(detail::arg_type<std::decay_t<
               std::tuple_element_t<I, args_type> >
                    >::get(clone.get(I))...);
         }
     }
     if constexpr (std::is_void_v<R>)
     {
-        f_(arg_type<std::decay_t<
+        f_(detail::arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
                 >::get(args.get(I))...);
         return Value(Kind::Undefined);
     }
     else if constexpr (std::same_as<R, Expected<void>>)
     {
-        auto exp = f_(arg_type<std::decay_t<
+        auto exp = f_(detail::arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
                 >::get(args.get(I))...);
         if (!exp)
@@ -223,7 +227,7 @@ call_impl(
     }
     else
     {
-        return f_(arg_type<std::decay_t<
+        return f_(detail::arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
                 >::get(args.get(I))...);
     }

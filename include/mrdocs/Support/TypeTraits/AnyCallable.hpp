@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SUPPORT_TYPETRAITS_ANY_CALLABLE_HPP
-#define MRDOCS_API_SUPPORT_TYPETRAITS_ANY_CALLABLE_HPP
+#ifndef MRDOCS_API_SUPPORT_TYPETRAITS_ANYCALLABLE_HPP
+#define MRDOCS_API_SUPPORT_TYPETRAITS_ANYCALLABLE_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <memory>
@@ -24,21 +24,21 @@ namespace mrdocs {
 
     Usage:
     @code
-    any_callable<void(void)> f;
+    AnyCallable<void(void)> f;
     @endcode
 */
-template<class>
-class any_callable;
+template <class>
+class AnyCallable;
 
 /** Type-erased callable wrapper for signature `R(Args...)`.
 */
-template<class R, class... Args>
-class any_callable<R(Args...)>
+template <class R, class... Args>
+class AnyCallable<R(Args...)>
 {
     struct base
     {
         virtual ~base() = default;
-        virtual R invoke(Args&&...args) = 0;
+        virtual R invoke(Args&&... args) = 0;
     };
 
     std::unique_ptr<base> p_;
@@ -46,14 +46,14 @@ class any_callable<R(Args...)>
 public:
     /** Deleted default constructor to prevent empty call targets.
     */
-    any_callable() = delete;
+    AnyCallable() = delete;
 
     /** Construct from a callable object matching the signature.
         @param f Callable to store; must satisfy `R(Args...)`.
     */
-    template<class Callable>
+    template <class Callable>
     requires std::is_invocable_r_v<R, Callable, Args...>
-    any_callable(Callable&& f)
+    AnyCallable(Callable&& f)
     {
         class impl : public base
         {
@@ -78,7 +78,7 @@ public:
         @param args Arguments forwarded to the callable.
         @return Result of the wrapped callable.
     */
-    R operator()(Args&&...args) const
+    R operator()(Args&&... args) const
     {
         return p_->invoke(std::forward<Args>(args)...);
     }
@@ -87,4 +87,4 @@ public:
 } // mrdocs
 
 
-#endif
+#endif // MRDOCS_API_SUPPORT_TYPETRAITS_ANYCALLABLE_HPP

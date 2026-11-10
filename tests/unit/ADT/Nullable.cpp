@@ -94,12 +94,12 @@ struct NullableTest {
         BOOST_TEST(!sentinel_traits<int*>::is_sentinel(p));
 
         // nullable_traits uses sentinel for pointers
-        BOOST_TEST(is_null<int*>(nullptr));
+        BOOST_TEST(isNull<int*>(nullptr));
         int* q = &x;
-        BOOST_TEST(!is_null(q));
-        make_null(q);
-        BOOST_TEST(is_null(q));
-        auto n = null_of<int*>();
+        BOOST_TEST(!isNull(q));
+        makeNull(q);
+        BOOST_TEST(isNull(q));
+        auto n = nullOf<int*>();
         BOOST_TEST(n == nullptr);
     }
 
@@ -111,12 +111,12 @@ struct NullableTest {
         BOOST_TEST(sentinel_traits<std::nullptr_t>::sentinel() == nullptr);
 
         // nullable_traits via sentinel
-        BOOST_TEST(is_null(z));
-        auto n = null_of<std::nullptr_t>();
+        BOOST_TEST(isNull(z));
+        auto n = nullOf<std::nullptr_t>();
         (void) n; // always null
         std::nullptr_t t = nullptr;
-        make_null(t);
-        BOOST_TEST(is_null(t));
+        makeNull(t);
+        BOOST_TEST(isNull(t));
     }
 
     void
@@ -130,11 +130,11 @@ struct NullableTest {
 
         // nullable_traits via sentinel
         U v = 7u;
-        BOOST_TEST(!is_null(v));
-        make_null(v);
-        BOOST_TEST(is_null(v));
+        BOOST_TEST(!isNull(v));
+        makeNull(v);
+        BOOST_TEST(isNull(v));
         BOOST_TEST(sentinel_traits<U>::is_sentinel(v));
-        BOOST_TEST(is_null(null_of<U>()));
+        BOOST_TEST(isNull(nullOf<U>()));
     }
 
     void
@@ -148,10 +148,10 @@ struct NullableTest {
 
         // nullable_traits via sentinel (NaN)
         F v = 0.5;
-        BOOST_TEST(!is_null(v));
-        make_null(v);
-        BOOST_TEST(is_null(v));
-        BOOST_TEST(std::isnan(null_of<F>()));
+        BOOST_TEST(!isNull(v));
+        makeNull(v);
+        BOOST_TEST(isNull(v));
+        BOOST_TEST(std::isnan(nullOf<F>()));
     }
 
     void
@@ -161,10 +161,10 @@ struct NullableTest {
         BOOST_TEST(sentinel_traits<EUnknown>::is_sentinel(EUnknown::Unknown));
         BOOST_TEST(sentinel_traits<EUnknown>::sentinel() == EUnknown::Unknown);
         EUnknown eu = EUnknown::A;
-        BOOST_TEST(!is_null(eu));
-        make_null(eu);
-        BOOST_TEST(is_null(eu));
-        BOOST_TEST(null_of<EUnknown>() == EUnknown::Unknown);
+        BOOST_TEST(!isNull(eu));
+        makeNull(eu);
+        BOOST_TEST(isNull(eu));
+        BOOST_TEST(nullOf<EUnknown>() == EUnknown::Unknown);
 
         // EUNKNOWN
         BOOST_TEST(sentinel_traits<EUNKNOWN>::is_sentinel(EUNKNOWN::UNKNOWN));
@@ -184,14 +184,14 @@ struct NullableTest {
     {
         std::string s;
         BOOST_TEST(has_nullable_traits_v<std::string>);
-        BOOST_TEST(is_null(s)); // empty
+        BOOST_TEST(isNull(s)); // empty
         s = "abc";
-        BOOST_TEST(!is_null(s));
-        make_null(s); // clear()
-        BOOST_TEST(is_null(s));
+        BOOST_TEST(!isNull(s));
+        makeNull(s); // clear()
+        BOOST_TEST(isNull(s));
 
-        auto z = null_of<std::string>(); // default empty
-        BOOST_TEST(is_null(z));
+        auto z = nullOf<std::string>(); // default empty
+        BOOST_TEST(isNull(z));
     }
 
     void
@@ -199,13 +199,13 @@ struct NullableTest {
     {
         std::vector<int> v;
         BOOST_TEST(has_nullable_traits_v<std::vector<int>>);
-        BOOST_TEST(is_null(v));
+        BOOST_TEST(isNull(v));
         v.push_back(1);
-        BOOST_TEST(!is_null(v));
-        make_null(v);
-        BOOST_TEST(is_null(v));
-        auto z = null_of<std::vector<int>>();
-        BOOST_TEST(is_null(z));
+        BOOST_TEST(!isNull(v));
+        makeNull(v);
+        BOOST_TEST(isNull(v));
+        auto z = nullOf<std::vector<int>>();
+        BOOST_TEST(isNull(z));
     }
 
     void

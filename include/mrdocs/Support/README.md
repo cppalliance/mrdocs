@@ -7,13 +7,13 @@ across as many files as it needs.
 
 ## Themes
 - `Container/` — `Algorithm`, `RangeFor`.
-- `TypeTraits/` — `TypeTraits`, `Concepts`, `Visitor`, `any_callable`.
+- `TypeTraits/` — `TypeTraits`, `Concepts`, `Visitor`, `AnyCallable`.
 - `String/` — `String`, `StringList`, `SplitLines`, `Parse`.
 - `Error/` — `Error`, `Expected`, `Assert`.
 - `Reflection/` — Boost.Describe-based helpers: `Describe`, `DescribeKinds`,
   `EnumToString`, `CompareReflectedType`, `MapReflectedType`,
   `MergeReflectedType`.
-- `Concurrency/` — `ThreadPool`, `ExecutorGroup`, `unlock_guard`.
+- `Concurrency/` — `ThreadPool`, `ExecutorGroup`, `UnlockGuard`.
 - `Filesystem/` — `Path`, `Glob`.
 - (root) `Report`, `ScopeExit`, `source_location` — cross-cutting bits that
   don't belong to one theme.

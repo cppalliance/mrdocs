@@ -22,5 +22,5 @@ Function(
 {
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TFUNCTION)
-        Error("not a function").Throw();
+        Error("not a function").throwError();
 }

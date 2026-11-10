@@ -56,16 +56,16 @@ contains(std::initializer_list<T> const& range, U const& el)
 template <class El, std::ranges::range Range>
 requires std::equality_comparable_with<std::ranges::range_value_t<Range>, El>
 bool
-is_one_of(El const& el, Range const& range)
+isOneOf(El const& el, Range const& range)
 {
     return contains(range, el);
 }
 
-/// @copydoc is_one_of(El const&, Range const&)
+/// @copydoc isOneOf(El const&, Range const&)
 template <class U, class T>
 requires std::equality_comparable_with<U, T>
 bool
-is_one_of(U const& el, std::initializer_list<T> const& range)
+isOneOf(U const& el, std::initializer_list<T> const& range)
 {
     return contains(range, el);
 }
@@ -78,16 +78,16 @@ is_one_of(U const& el, std::initializer_list<T> const& range)
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
 bool
-contains_any(Range const& range, Els const& els)
+containsAny(Range const& range, Els const& els)
 {
     return std::ranges::find_first_of(range, els) != std::ranges::end(range);
 }
 
-/// @copydoc contains_any(Range const&, Els const&)
+/// @copydoc containsAny(Range const&, Els const&)
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
-contains_any(Range const& range, std::initializer_list<El> const& els)
+containsAny(Range const& range, std::initializer_list<El> const& els)
 {
     return std::ranges::find_first_of(range, els) != std::ranges::end(range);
 }
@@ -101,7 +101,7 @@ contains_any(Range const& range, std::initializer_list<El> const& els)
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
-contains_n(Range const& range, El const& el, std::size_t n)
+containsN(Range const& range, El const& el, std::size_t n)
 {
     for (auto const& item : range)
     {
@@ -126,7 +126,7 @@ contains_n(Range const& range, El const& el, std::size_t n)
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
 bool
-contains_n_any(Range const& range, Els const& els, std::size_t n)
+containsNAny(Range const& range, Els const& els, std::size_t n)
 {
     for (auto const& item : range)
     {
@@ -142,11 +142,11 @@ contains_n_any(Range const& range, Els const& els, std::size_t n)
     return false;
 }
 
-/// @copydoc contains_n_any(Range const&, Els const&, std::size_t)
+/// @copydoc containsNAny(Range const&, Els const&, std::size_t)
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
-contains_n_any(Range const& range, std::initializer_list<El> const& els, std::size_t n)
+containsNAny(Range const& range, std::initializer_list<El> const& els, std::size_t n)
 {
     for (auto const& item : range)
     {
@@ -200,7 +200,7 @@ find_last_of(Range&& range, Els&& els)
 */
 template <class Container, std::forward_iterator It, class T, class Comp>
 auto
-insert_sorted(Container& container, It first, It last, T&& value, Comp comp)
+insertSorted(Container& container, It first, It last, T&& value, Comp comp)
 {
     auto const it = std::ranges::lower_bound(first, last, value, comp);
     return container.insert(it, std::forward<T>(value));
@@ -215,9 +215,9 @@ insert_sorted(Container& container, It first, It last, T&& value, Comp comp)
 */
 template <std::ranges::range Container, class T, class Comp>
 auto
-insert_sorted(Container& container, T&& value, Comp comp)
+insertSorted(Container& container, T&& value, Comp comp)
 {
-    return insert_sorted(
+    return insertSorted(
         container,
         std::ranges::begin(container),
         std::ranges::end(container),

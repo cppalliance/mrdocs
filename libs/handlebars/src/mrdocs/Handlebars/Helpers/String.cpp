@@ -1127,7 +1127,7 @@ registerStringHelpers_6(Handlebars& hbs)
         std::string str = subjectString(arguments);
         std::string res;
         OutputRef out(res);
-        HTMLEscape(out, str);
+        escapeHTML(out, str);
         return res;
     }));}
 

@@ -54,7 +54,7 @@ public:
     /** Return a stable type-identifying string for the proxy.
     */
     char const*
-    type_key() const noexcept override
+    typeKey() const noexcept override
     {
         return "DescribedArrayProxy";
     }

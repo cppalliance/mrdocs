@@ -18,6 +18,7 @@
 // handlebars::Error, so consumers convert at the boundary with no caller changes.
 
 #include <mrdocs/Dom/Error.hpp>
+#include <mrdocs/Handlebars/Platform.hpp>
 #include <mrdocs/polyfill/expected.hpp>
 #include <format>
 #include <stdexcept>
@@ -44,7 +45,7 @@ namespace handlebars {
     and position of the error in the template so callers can produce more
     detailed diagnostics.
 */
-struct Error
+struct MRDOCS_HANDLEBARS_VISIBLE Error
     : public std::runtime_error
 {
     /** Line number in the template where the error occurred.

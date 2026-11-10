@@ -18,7 +18,7 @@
 namespace mrdocs {
 
 void
-assert_failed(
+assertFailed(
     char const* msg,
     char const* file,
     std::uint_least32_t line)

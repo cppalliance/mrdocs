@@ -47,7 +47,6 @@ compilation-database/
 The header and source file are the project's actual code; the two files under `docs/` are the MrDocs side of the example. The database:
 
 .`docs/compile_commands.json`
-[.wrap]
 [source,json]
 ----
 include::example$examples/getting-started/compilation-database/docs/compile_commands.json[]
@@ -188,7 +187,7 @@ The same pattern can be used to document a single header or source file. Set xre
 This site's landing page uses that pattern to render the panel snippets one file at a time; see https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/docs/website/render.js[`docs/website/render.js`^].
 ====
 
-== Where to look next
+== Next steps
 
 * For things that surprise people coming from Doxygen and similar tools (the code must compile, and the diagram showing how the corpus is built), see xref:migration-notes.adoc[Migration Notes].
 * For how to write doc comments and which tags MrDocs understands, see xref:commands/index.adoc[Documenting the Code].

@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_HANDLEBARS_HELPERS_LOGICAL_HPP
 #define MRDOCS_API_HANDLEBARS_HELPERS_LOGICAL_HPP
 
-// Logical/comparison helpers and the public and_fn/or_fn/eq_fn/... functions.
+// Logical/comparison helpers and the public andFn/orFn/eqFn/... functions.
 
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Handlebars/Engine.hpp>
@@ -41,7 +41,7 @@ registerLogicalHelpers(Handlebars& hbs);
 */
 MRDOCS_HANDLEBARS_DECL
 bool
-and_fn(dom::Array const& args);
+andFn(dom::Array const& args);
 
 /** "or" helper function
  *
@@ -49,7 +49,7 @@ and_fn(dom::Array const& args);
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Value
-or_fn(dom::Array const& args);
+orFn(dom::Array const& args);
 
 /** "eq" helper function
 
@@ -60,7 +60,7 @@ or_fn(dom::Array const& args);
 */
 MRDOCS_HANDLEBARS_DECL
 bool
-eq_fn(dom::Array const& args);
+eqFn(dom::Array const& args);
 
 /** "ne" helper function
 
@@ -71,7 +71,7 @@ eq_fn(dom::Array const& args);
 */
 MRDOCS_HANDLEBARS_DECL
 bool
-ne_fn(dom::Array const& args);
+neFn(dom::Array const& args);
 
 /** "gt" helper function
 
@@ -83,7 +83,7 @@ ne_fn(dom::Array const& args);
 */
 MRDOCS_HANDLEBARS_DECL
 bool
-gt_fn(dom::Array const& args);
+gtFn(dom::Array const& args);
 
 /** "not" helper function
 
@@ -93,7 +93,7 @@ gt_fn(dom::Array const& args);
 */
 MRDOCS_HANDLEBARS_DECL
 bool
-not_fn(dom::Array const& arg);
+notFn(dom::Array const& arg);
 
 /** "select" helper function
  *
@@ -102,7 +102,7 @@ not_fn(dom::Array const& arg);
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Value
-select_fn(
+selectFn(
     dom::Value const& condition,
     dom::Value const& result_true,
     dom::Value const& result_false);
@@ -114,7 +114,7 @@ select_fn(
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Value
-increment_fn(dom::Value const& value);
+incrementFn(dom::Value const& value);
 
 /** "detag" helper function
  *
@@ -123,7 +123,7 @@ increment_fn(dom::Value const& value);
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Value
-detag_fn(dom::Value html);
+detagFn(dom::Value html);
 
 /** "year" helper function
 
@@ -133,7 +133,7 @@ detag_fn(dom::Value html);
 */
 MRDOCS_HANDLEBARS_DECL
 int
-year_fn();
+yearFn();
 
 } // namespace helpers
 } // namespace handlebars

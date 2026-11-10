@@ -61,7 +61,7 @@ write_impl( std::string_view sv )
 }
 
 void
-HTMLEscape(
+escapeHTML(
     OutputRef& out,
     std::string_view str)
 {
@@ -83,11 +83,11 @@ HTMLEscape(
 }
 
 std::string
-HTMLEscape(std::string_view str)
+escapeHTML(std::string_view str)
 {
     std::string result;
     OutputRef out(result);
-    HTMLEscape(out, str);
+    escapeHTML(out, str);
     return result;
 }
 

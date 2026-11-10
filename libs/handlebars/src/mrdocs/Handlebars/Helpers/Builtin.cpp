@@ -48,15 +48,15 @@ if_fn(dom::Array const& arguments)
     dom::Value context = options.get("context");
     if (conditional.isFunction())
     {
-        auto _hbs_try24 = conditional.getFunction().try_invoke(context); if (!_hbs_try24) return Unexpected(_hbs_try24.error()); conditional = *std::move(_hbs_try24);
+        auto _hbs_try24 = conditional.getFunction().tryInvoke(context); if (!_hbs_try24) return Unexpected(_hbs_try24.error()); conditional = *std::move(_hbs_try24);
     }
 
     if ((!options.lookup("hash.includeZero") && !conditional) || isEmpty(conditional)) {
-        { auto _hbs_try25 = options.get("write_inverse").getFunction().try_invoke(context); if (!_hbs_try25) return Unexpected(_hbs_try25.error()); }
+        { auto _hbs_try25 = options.get("write_inverse").getFunction().tryInvoke(context); if (!_hbs_try25) return Unexpected(_hbs_try25.error()); }
     }
     else
     {
-        { auto _hbs_try26 = options.get("write").getFunction().try_invoke(context); if (!_hbs_try26) return Unexpected(_hbs_try26.error()); }
+        { auto _hbs_try26 = options.get("write").getFunction().tryInvoke(context); if (!_hbs_try26) return Unexpected(_hbs_try26.error()); }
     }
     return {};
 }
@@ -92,7 +92,7 @@ with_fn(dom::Array const& arguments)
     dom::Value context = arguments.get(0);
     dom::Value options = arguments.get(1);
     if (context.isFunction()) {
-        auto _hbs_try27 = context.getFunction().try_invoke(options.get("context")); if (!_hbs_try27) return Unexpected(_hbs_try27.error()); context = *std::move(_hbs_try27);
+        auto _hbs_try27 = context.getFunction().tryInvoke(options.get("context")); if (!_hbs_try27) return Unexpected(_hbs_try27.error()); context = *std::move(_hbs_try27);
     }
 
     if (!isEmpty(context))
@@ -110,11 +110,11 @@ with_fn(dom::Array const& arguments)
         cbOpt.set("data", data);
         cbOpt.set("blockParams", blockParams);
         cbOpt.set("blockParamPaths", blockParamPaths);
-        { auto _hbs_try28 = options.get("write").getFunction().try_invoke(context, cbOpt); if (!_hbs_try28) return Unexpected(_hbs_try28.error()); }
+        { auto _hbs_try28 = options.get("write").getFunction().tryInvoke(context, cbOpt); if (!_hbs_try28) return Unexpected(_hbs_try28.error()); }
     }
     else
     {
-        { auto _hbs_try29 = options.get("write_inverse").getFunction().try_invoke(options.get("context")); if (!_hbs_try29) return Unexpected(_hbs_try29.error()); }
+        { auto _hbs_try29 = options.get("write_inverse").getFunction().tryInvoke(options.get("context")); if (!_hbs_try29) return Unexpected(_hbs_try29.error()); }
     }
     return {};
 }
@@ -139,7 +139,7 @@ each_fn(dom::Value context, dom::Value const& options)
     }
 
     if (context.isFunction()) {
-        auto _hbs_try30 = context.getFunction().try_invoke(options.get("context")); if (!_hbs_try30) return Unexpected(_hbs_try30.error()); context = *std::move(_hbs_try30);
+        auto _hbs_try30 = context.getFunction().tryInvoke(options.get("context")); if (!_hbs_try30) return Unexpected(_hbs_try30.error()); context = *std::move(_hbs_try30);
     }
 
     if (options.get("data")) {
@@ -169,7 +169,7 @@ each_fn(dom::Value context, dom::Value const& options)
         cbOpt.set("data", data);
         cbOpt.set("blockParams", blockParams);
         cbOpt.set("blockParamPaths", blockParamPaths);
-        return fn.getFunction().try_invoke(context.get(field), cbOpt);
+        return fn.getFunction().tryInvoke(context.get(field), cbOpt);
     };
 
     bool const isJSObject = static_cast<bool>(
@@ -212,7 +212,7 @@ each_fn(dom::Value context, dom::Value const& options)
 
     if (i == 0)
     {
-        { auto _hbs_try34 = inverse.getFunction().try_invoke(options.get("context")); if (!_hbs_try34) return Unexpected(_hbs_try34.error()); }
+        { auto _hbs_try34 = inverse.getFunction().tryInvoke(options.get("context")); if (!_hbs_try34) return Unexpected(_hbs_try34.error()); }
     }
     return {};
 }
@@ -224,7 +224,7 @@ lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& opti
     {
         return obj;
     }
-    return options.get("lookupProperty").getFunction().try_invoke(obj, field);
+    return options.get("lookupProperty").getFunction().tryInvoke(obj, field);
 }
 
 dom::Expected<void>
@@ -256,7 +256,7 @@ log_fn(dom::Array const& arguments)
 }
 
 dom::Expected<dom::Value>
-helper_missing_fn(dom::Array const& arguments)
+helperMissingFn(dom::Array const& arguments)
 {
     if (arguments.size() == 1)
     {
@@ -268,19 +268,19 @@ helper_missing_fn(dom::Array const& arguments)
 }
 
 dom::Expected<void>
-block_helper_missing_fn(
+blockHelperMissingFn(
     dom::Value const& context, dom::Value options)
 {
     if (context == true)
     {
-        { auto _hbs_try36 = options.get("write").getFunction().try_invoke(options.get("context")); if (!_hbs_try36) return Unexpected(_hbs_try36.error()); }
+        { auto _hbs_try36 = options.get("write").getFunction().tryInvoke(options.get("context")); if (!_hbs_try36) return Unexpected(_hbs_try36.error()); }
     }
     else if (
         context == false ||
         context.isNull() ||
         context.isUndefined())
     {
-        { auto _hbs_try37 = options.get("write_inverse").getFunction().try_invoke(options.get("context")); if (!_hbs_try37) return Unexpected(_hbs_try37.error()); }
+        { auto _hbs_try37 = options.get("write_inverse").getFunction().tryInvoke(options.get("context")); if (!_hbs_try37) return Unexpected(_hbs_try37.error()); }
     }
     else if (context.isArray())
     {
@@ -294,7 +294,7 @@ block_helper_missing_fn(
         }
         else
         {
-            { auto _hbs_try39 = options.get("write_inverse").getFunction().try_invoke(options.get("context")); if (!_hbs_try39) return Unexpected(_hbs_try39.error()); }
+            { auto _hbs_try39 = options.get("write_inverse").getFunction().tryInvoke(options.get("context")); if (!_hbs_try39) return Unexpected(_hbs_try39.error()); }
         }
     }
     else
@@ -308,7 +308,7 @@ block_helper_missing_fn(
                 detail::appendContextPath(data.get("contextPath"), options.get("name")));
             fnOpt.set("data", data);
         }
-        { auto _hbs_try40 = options.get("write").getFunction().try_invoke(context, fnOpt); if (!_hbs_try40) return Unexpected(_hbs_try40.error()); }
+        { auto _hbs_try40 = options.get("write").getFunction().tryInvoke(context, fnOpt); if (!_hbs_try40) return Unexpected(_hbs_try40.error()); }
     }
     return {};
 }
@@ -322,21 +322,21 @@ registerBuiltinHelpers(Handlebars& hbs)
     hbs.registerHelper("each", dom::makeInvocable(each_fn));
     hbs.registerHelper("lookup", dom::makeInvocable(lookup_fn));
     hbs.registerHelper("log", dom::makeVariadicInvocable(log_fn));
-    hbs.registerHelper("helperMissing", dom::makeVariadicInvocable(helper_missing_fn));
-    hbs.registerHelper("blockHelperMissing", dom::makeInvocable(block_helper_missing_fn));
+    hbs.registerHelper("helperMissing", dom::makeVariadicInvocable(helperMissingFn));
+    hbs.registerHelper("blockHelperMissing", dom::makeInvocable(blockHelperMissingFn));
 }
 
 void
 registerAntoraHelpers(Handlebars& hbs)
 {
-    hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
-    hbs.registerHelper("detag", dom::makeInvocable(detag_fn));
-    hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
-    hbs.registerHelper("increment", dom::makeInvocable(increment_fn));
-    hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
-    hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
-    hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
-    hbs.registerHelper("year", dom::makeInvocable(year_fn));
+    hbs.registerHelper("and", dom::makeVariadicInvocable(andFn));
+    hbs.registerHelper("detag", dom::makeInvocable(detagFn));
+    hbs.registerHelper("eq", dom::makeVariadicInvocable(eqFn));
+    hbs.registerHelper("increment", dom::makeInvocable(incrementFn));
+    hbs.registerHelper("ne", dom::makeVariadicInvocable(neFn));
+    hbs.registerHelper("not", dom::makeVariadicInvocable(notFn));
+    hbs.registerHelper("or", dom::makeVariadicInvocable(orFn));
+    hbs.registerHelper("year", dom::makeInvocable(yearFn));
 }
 
 } // namespace helpers

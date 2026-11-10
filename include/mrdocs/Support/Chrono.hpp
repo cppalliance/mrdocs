@@ -31,7 +31,7 @@ namespace mrdocs {
 */
 template <class Rep, class Period>
 std::string
-format_duration(
+formatDuration(
     std::chrono::duration<Rep, Period> delta)
 {
     auto delta_ms = std::chrono::duration_cast<std::chrono::milliseconds>(delta);

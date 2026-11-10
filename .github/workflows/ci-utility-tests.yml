@@ -33,11 +33,40 @@ jobs:
     steps:
       - name: Clone MrDocs
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20'
+
+      # One command runs every guard that needs no build: the layout, the
+      # README and page lengths, the section titles, the header guard and
+      # include spelling on the changed lines, the generated YAML schema and bootstrap options, the
+      # commands registry and the two JSON schemas compiled with ajv. A pull
+      # request or a merge queue entry is judged against its base; a push,
+      # against the commit before it (or the parent, on a new branch). The
+      # reflected generator schemas are kept up to date by the `schema-check`
+      # ctest, and the RELAX NG one is exercised by the `xml-lint` ctest.
+      # It runs before the coverage steps, whose bootstrap-coverage.xml,
+      # coverage.xml and codecov files the layout guard would flag.
+      - name: Lint
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_GROUP_BASE_SHA: ${{ github.event.merge_group.base_sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -eux
+          base="${PR_BASE_SHA:-${MERGE_GROUP_BASE_SHA:-}}"
+          if [ -z "$base" ]; then
+            base="${PUSH_BEFORE_SHA:-}"
+          fi
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ] \
+              || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            base=HEAD~1
+          fi
+          python3 -I utils/lint/lint.py --base "$base"
 
       - name: Bootstrap Python Tests
         run: |
@@ -63,21 +92,35 @@ jobs:
           npm ci --ignore-scripts
           npx vitest run
 
-      - name: Check YAML schema
-        run: |
-          python3 ./utils/codegen/generate-yaml-schema.py --check
-          npx -y -p ajv-cli -- ajv compile -s docs/modules/ROOT/attachments/schemas/config/mrdocs.schema.json
+      # The Linux release check runs on a binary that is supposed to pass.
+      # This shows each of its rejections firing, on stub objdump listings.
+      - name: Check Linux portability script
+        run: .github/scripts/linux-portability/test-check-linux-portability.sh --transcripts .github/scripts/linux-portability/transcripts
 
-      # Confirm the reflected generator schemas are themselves valid. The DOM
-      # JSON Schema is compiled with ajv; the RELAX NG schema is exercised by
-      # the `xml-lint` ctest, which validates every golden XML fixture against
-      # it. Both are kept up to date by the `schema-check` ctest.
-      - name: Check generator DOM schema
+      # The format tests run clang-format. .clang-format uses options that need
+      # clang-format 20 or later (ReflowComments: Always), and Ubuntu 24.04
+      # ships 18.
+      - name: Install clang-format
         run: |
-          npx -y -p ajv-cli -- ajv compile -s docs/modules/ROOT/attachments/schemas/generators/mrdocs.schema.json
+          set -eux
+          pipx install 'clang-format>=21,<22'
+          clang-format --version
 
-      - name: Check bootstrap options partial is up to date
-        run: python3 ./utils/docs/generate_bootstrap_options.py --check
+      # The unit tests of the linters in utils/lint.
+      - name: Check lint unit tests
+        run: python3 -I -m unittest discover -s utils/lint/tests -t utils/lint
+
+      # The unit tests of the formatter in utils/format.
+      - name: Check format unit tests
+        run: python3 -I -m unittest discover -s utils/format/tests -t utils/format
+
+      # The unit tests of the code generators in utils/codegen.
+      - name: Check codegen unit tests
+        run: python3 -I -m unittest discover -s utils/codegen/tests -t utils/codegen
+
+      # The unit tests of the docs tooling in utils/docs.
+      - name: Check docs tooling unit tests
+        run: python3 -I -m unittest discover -s utils/docs/tests -t utils/docs
 
       # When the Coverage matrix entry was skipped because the develop cache is
       # warm, fetch develop's LCOV report and re-upload it tagged with the PR's

@@ -30,7 +30,7 @@ graph LR
   EXT <-.-> GENS
 ....
 
-== What Mr.Docs reads
+== Supported input
 
 Real C++ through Clang. Namespaces, classes and structs, function and class templates, concepts, deduction guides, enumerations, type aliases, variables, and using declarations all come through; partial and explicit specializations come along because the parser has resolved them already.
 
@@ -44,7 +44,7 @@ include::example$snippets/landing/sqrt.cpp[tag=doc]
 
 Doc comments carry LaTeX math too. The `\f$...\f$` and `$...$` spans in the comment above render as real symbols, so a complexity like stem:[O(\log n)] or a definition like stem:[\lfloor\sqrt{value}\rfloor] reads the way it would in a paper.
 
-== What Mr.Docs produces
+== Generated output
 
 * Several generators emit documentation in formats ranging from rendered documents for human readers to structured data for downstream tooling.
 * Customizable templates for the rendering generators, so the visual layout and the content shape of the output can be changed without touching the binary.
@@ -62,7 +62,7 @@ What Mr.Docs makes of the declaration above.
 ========
 
 [#why-generate-from-source]
-== Why generate from source
+== Generating from source
 
 C++ API design is hard, and the moment you write a function signature is usually the moment you know the most about what it is supposed to do. Wait a week, and the details start to fade. Wait a month, and you reconstruct them from the call sites. Writing the documentation now, next to the declaration, captures what you already have in your head.
 

@@ -277,7 +277,7 @@ public:
 
     /** Return the type key.
     */
-    char const* type_key() const noexcept;
+    char const* typeKey() const noexcept;
 
     /** Invoke the function.
     */
@@ -299,7 +299,7 @@ public:
     */
     template<class... Args>
     Expected<Value>
-    try_invoke(Args&&... args) const;
+    tryInvoke(Args&&... args) const;
 
     /** Swap two objects.
 
@@ -347,7 +347,7 @@ public:
 
     /** Return the type key of the implementation.
     */
-    virtual char const* type_key() const noexcept;
+    virtual char const* typeKey() const noexcept;
 
     /** Invoke the function.
     */
@@ -395,9 +395,9 @@ public:
     {
     }
 
-    /** @copydoc FunctionImpl::type_key
+    /** @copydoc FunctionImpl::typeKey
     */
-    char const* type_key() const noexcept override
+    char const* typeKey() const noexcept override
     {
         return "Function";
     }
@@ -449,9 +449,9 @@ public:
     {
     }
 
-    /** @copydoc FunctionImpl::type_key
+    /** @copydoc FunctionImpl::typeKey
     */
-    char const* type_key() const noexcept override
+    char const* typeKey() const noexcept override
     {
         return "VariadicFunctionImpl";
     }

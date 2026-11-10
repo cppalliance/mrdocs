@@ -1,0 +1,57 @@
+:page-aliases: contribute/coding-standards.adoc
+= C++ Conventions
+
+When a rule and the surrounding code disagree, follow the surrounding code and mention it in the pull request.
+Names, directories, header guards and includes live in xref:contribute/invariants/naming-and-layout.adoc[Naming and Layout].
+
+[#exceptions]
+== Code throws Exception only
+
+Throw cpp:mrdocs::Exception[], never another type.
+
+* An cpp:Exception[] carries an cpp:Error[] object, so scripting depends on it: errors travel from library code to scripts and back to the invoking code.
+* Leave fatal exceptions uncaught. The tool installs a handler that prints a stack trace and exits the process immediately.
+
+[source,cpp]
+----
+// Wrong: scripts never see the error.
+throw std::runtime_error("bad input");
+
+// Accepted: the error travels to scripts and back.
+formatError("Failed to parse '{}'", name).throwError();
+----
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====
+
+[#comments]
+== Reference documentation describes present code
+
+Describe the code as it is now.
+A comment never names a past state of the code or an earlier version of your change. That history goes in the commit message.
+
+Bad:
+
+[source,cpp]
+----
+/// Wrong: names a past state.
+/// This used to return a raw pointer.
+int* foo();
+----
+
+Good:
+
+[source,cpp]
+----
+/// Returns a pointer to bar or null when the symbol has no parent.
+int* foo();
+----
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====

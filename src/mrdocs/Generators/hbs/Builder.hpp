@@ -77,7 +77,7 @@ public:
 
         @par Example
         @code
-        Builder b(corpus, Handlebars::htmlEscape);
+        Builder b(corpus, handlebars::escapeHTML);
         std::ostringstream out;
         b(out, *corpus.root()); // writes HTML/Adoc for the root symbol
         @endcode

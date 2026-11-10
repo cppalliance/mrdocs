@@ -7,11 +7,49 @@
       "depends": ["Unit Tests", "Golden Tests"]
     },
     {
+      "name": "Run All Tests",
+      "id": "run-all-tests",
+      "group": "Test",
+      "script": "${mrdocs_src_dir}/utils/testing/run_all_tests.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
       "name": "Unit Tests",
       "group": "Test",
       "target": "mrdocs-unit-tests",
-      "program": "${mrdocs_build_dir}/tests/bin/mrdocs-unit-tests",
       "args": [],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "XML Lint",
+      "id": "xml-lint",
+      "group": "Test",
+      "ctest": ["-R", "^xml-lint$"],
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Integration Tests",
+      "id": "integration-tests",
+      "group": "Test",
+      "ctest": ["-L", "integration"],
+      "build_all": true,
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Schema Check",
+      "id": "schema-check",
+      "group": "Test",
+      "ctest": ["-R", "^schema-check$"],
+      "needs_target": "mrdocs",
+      "requires": ["build_tests"]
+    },
+    {
+      "name": "Self-Documentation",
+      "id": "self-doc",
+      "group": "Test",
+      "ctest": ["-R", "^mrdocs-self-doc$"],
+      "needs_target": "mrdocs",
       "requires": ["build_tests"]
     },
     {
@@ -20,7 +58,6 @@
       "group": "Test",
       "target": "mrdocs-golden-tests",
       "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/tests/bin/mrdocs-golden-tests",
       "args": [
         "${mrdocs_src_dir}/tests/golden/fixtures",
         "--action=test",
@@ -37,7 +74,6 @@
       "group": "Codegen",
       "target": "mrdocs-golden-tests",
       "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/tests/bin/mrdocs-golden-tests",
       "args": [
         "${mrdocs_src_dir}/tests/golden/fixtures",
         "--action=update",
@@ -54,7 +90,6 @@
       "group": "Codegen",
       "target": "mrdocs-golden-tests",
       "folder": "Golden Tests",
-      "program": "${mrdocs_build_dir}/tests/bin/mrdocs-golden-tests",
       "args": [
         "${mrdocs_src_dir}/tests/golden/fixtures",
         "--action=create",
@@ -76,21 +111,18 @@
       "name": "Version",
       "group": "Run",
       "target": "mrdocs",
-      "program": "${mrdocs_build_dir}/tools/mrdocs/bin/mrdocs",
       "args": ["--version"]
     },
     {
       "name": "Help",
       "group": "Run",
       "target": "mrdocs",
-      "program": "${mrdocs_build_dir}/tools/mrdocs/bin/mrdocs",
       "args": ["--help"]
     },
     {
       "name": "Self-Reference",
       "group": "Documentation",
       "target": "mrdocs",
-      "program": "${mrdocs_build_dir}/tools/mrdocs/bin/mrdocs",
       "args": [
         "../CMakeLists.txt",
         "--config=${mrdocs_src_dir}/docs/mrdocs.yml",
@@ -109,7 +141,6 @@
       "name": "Check Reference",
       "group": "Documentation",
       "target": "mrdocs",
-      "program": "${mrdocs_build_dir}/tools/mrdocs/bin/mrdocs",
       "args": [
         "../CMakeLists.txt",
         "--config=${mrdocs_src_dir}/docs/mrdocs.yml",
@@ -175,6 +206,75 @@
       "script": "npm",
       "args": ["install"],
       "cwd": "${mrdocs_src_dir}/docs/website"
+    },
+    {
+      "name": "Check Layout",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/check_layout.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Check README Length",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/check_readme_length.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Check Page Length",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/check_page_length.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Check Section Titles",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/check_section_titles.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Check Header Rules",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/check_header_rules.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Lint",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/lint.py",
+      "args": [],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Lint the Whole Tree",
+      "group": "Develop",
+      "script": "${mrdocs_src_dir}/utils/lint/lint.py",
+      "args": ["--all"],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Test the Lint Scripts",
+      "group": "Develop",
+      "script": "python3",
+      "args": ["-I", "-m", "unittest", "discover", "-s", "${mrdocs_src_dir}/utils/lint/tests", "-t", "${mrdocs_src_dir}/utils/lint"],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Test the Format Script",
+      "group": "Develop",
+      "script": "python3",
+      "args": ["-I", "-m", "unittest", "discover", "-s", "${mrdocs_src_dir}/utils/format/tests", "-t", "${mrdocs_src_dir}/utils/format"],
+      "cwd": "${mrdocs_src_dir}"
+    },
+    {
+      "name": "Test the Linters",
+      "id": "test-the-linters",
+      "group": "Develop",
+      "depends": ["Test the Lint Scripts", "Test the Format Script"]
     }
   ]
 }
