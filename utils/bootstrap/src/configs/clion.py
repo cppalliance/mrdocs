@@ -281,7 +281,9 @@ def generate_clion_run_configs(
     # exist. Only files carrying the ownership marker are removed; files a
     # user created by hand are left untouched.
     if not dry_run and os.path.isdir(run_config_dir):
-        valid_files = {f"{config['name']}.run.xml" for config in configs}
+        # An aggregate emits no file, so a file left under its name is stale.
+        valid_files = {f"{config['name']}.run.xml" for config in configs
+                       if 'target' in config or 'script' in config}
         for fname in os.listdir(run_config_dir):
             if not fname.endswith(".run.xml") or fname in valid_files:
                 continue

@@ -22,9 +22,11 @@ namespace dom {
 //
 //------------------------------------------------
 
-struct Object::value_type
+struct MRDOCS_DOM_VISIBLE Object::value_type
 {
+    /// The key of the entry.
     String key;
+    /// The value of the entry.
     Value value;
 
     value_type() = default;
@@ -71,9 +73,9 @@ struct Object::value_type
 //
 //------------------------------------------------
 
-inline char const* Object::type_key() const noexcept
+inline char const* Object::typeKey() const noexcept
 {
-    return impl_->type_key();
+    return impl_->typeKey();
 }
 
 inline bool Object::empty() const

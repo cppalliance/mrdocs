@@ -76,7 +76,7 @@ public:
 
     /** A constant iterator referencing an element in an Array.
     */
-    class iterator;
+    class MRDOCS_DOM_VISIBLE iterator;
 
     /** A constant iterator referencing an element in an Array.
     */
@@ -169,7 +169,7 @@ public:
 
     /** Return the type key of the implementation.
     */
-    char const* type_key() const noexcept;
+    char const* typeKey() const noexcept;
 
     /** Return true if the array is empty.
     */
@@ -276,18 +276,21 @@ public:
     /** Compare two arrays for equality.
     */
     friend
+    MRDOCS_DOM_DECL
     bool
     operator==(Array const&, Array const&) noexcept;
 
     /** Compare two arrays for precedence.
     */
     friend
+    MRDOCS_DOM_DECL
     std::strong_ordering
     operator<=>(Array const&, Array const&) noexcept;
 
     /** Return a diagnostic string.
     */
     friend
+    MRDOCS_DOM_DECL
     std::string
     toString(Array const& arr);
 
@@ -330,7 +333,7 @@ public:
 
     /** Return the type key of the implementation.
     */
-    virtual char const* type_key() const noexcept;
+    virtual char const* typeKey() const noexcept;
 
     /** Return the number of elements in the array.
     */
@@ -387,6 +390,15 @@ public:
     */
     explicit DefaultArrayImpl(
         storage_type elements) noexcept;
+
+    // The destructor is defined in the source file, where `Value` is
+    // complete, and copying is deleted, because a compiler that exports the
+    // class defines implicit members here, while `Value` is still
+    // incomplete.
+    DefaultArrayImpl(DefaultArrayImpl const&) = delete;
+    DefaultArrayImpl& operator=(DefaultArrayImpl const&) = delete;
+    ~DefaultArrayImpl() override;
+
     /** Return the number of stored elements.
     */
     size_type size() const override;
@@ -404,7 +416,7 @@ public:
     void emplace_back(value_type value) override;
     /** Return the type key string for this array.
     */
-    char const* type_key() const noexcept override;
+    char const* typeKey() const noexcept override;
 
 private:
     std::vector<value_type> elements_;

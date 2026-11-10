@@ -30,7 +30,7 @@ namespace handlebars {
     @see https://handlebarsjs.com/api-reference/compilation.html
 
 */
-struct HandlebarsOptions
+struct MRDOCS_HANDLEBARS_VISIBLE HandlebarsOptions
 {
     /** Escape HTML entities or entities defined by the escape function
     */
@@ -38,14 +38,14 @@ struct HandlebarsOptions
 
     /** Function to escape entities
 
-        It's initialized with a reference to the HTMLEscape function overload
+        It's initialized with a reference to the escapeHTML function overload
         that takes an OutputRef and a string_view. This function can be
         replaced with a custom function that escapes entities in a different
         way.
 
     */
     std::function<void(OutputRef&, std::string_view)> escapeFunction =
-        static_cast<void(*)(OutputRef&, std::string_view)>(HTMLEscape);
+        static_cast<void(*)(OutputRef&, std::string_view)>(escapeHTML);
 
     /** Templates will throw rather than ignore missing fields
 

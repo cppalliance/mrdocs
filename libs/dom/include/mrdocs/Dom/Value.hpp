@@ -48,6 +48,7 @@ namespace mrdocs {
 
     @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
 */
+MRDOCS_DOM_DECL
 dom::Value
 safeString(std::string_view str);
 
@@ -56,6 +57,7 @@ safeString(std::string_view str);
     This overload is useful when a helper already produced a `dom::Value`
     and only needs to flip the safe-string flag before it is rendered.
 */
+MRDOCS_DOM_DECL
 dom::Value
 safeString(dom::Value const& str);
 
@@ -269,7 +271,7 @@ public:
 
     /** Return the type key of the value.
     */
-    char const* type_key() const noexcept;
+    char const* typeKey() const noexcept;
 
     /** Return the type of value contained.
     */
@@ -547,6 +549,7 @@ public:
         operator, which does not perform type conversions.
     */
     friend
+    MRDOCS_DOM_DECL
     bool
     operator==(
         Value const& lhs,
@@ -555,6 +558,7 @@ public:
     /** Compare two values for inequality.
     */
     friend
+    MRDOCS_DOM_DECL
     std::strong_ordering
     operator<=>(
         Value const& lhs,
@@ -585,6 +589,7 @@ public:
     /** Add or concatenate two values.
     */
     friend
+    MRDOCS_DOM_DECL
     dom::Value
     operator+(Value const& lhs, Value const& rhs);
 
@@ -609,6 +614,7 @@ public:
         This function is equivalent to the JavaScript `||` operator.
     */
     friend
+    MRDOCS_DOM_DECL
     dom::Value
     operator||(Value const& lhs, Value const& rhs);
 
@@ -633,6 +639,7 @@ public:
         This function is equivalent to the JavaScript `&&` operator.
     */
     friend
+    MRDOCS_DOM_DECL
     dom::Value
     operator&&(Value const& lhs, Value const& rhs);
 
@@ -655,6 +662,7 @@ public:
     /** Return value as a string.
     */
     friend
+    MRDOCS_DOM_DECL
     std::string
     toString(Value const& value);
 };
@@ -723,16 +731,16 @@ stringOrNull(
 /** Customization point tag.
 
     This tag type is used by the function
-    @ref dom::ValueFrom to select overloads
+    @ref dom::valueFrom to select overloads
     of `tag_invoke`.
 
     @note This type is empty; it has no members.
 
-    @see @ref dom::ValueFrom
+    @see @ref dom::valueFrom
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
-struct ValueFromTag { };
+struct MRDOCS_DOM_VISIBLE ValueFromTag { };
 
 /** Concept to determine if a type can be converted to a @ref dom::Value
     with a user-provided conversion.
@@ -774,11 +782,11 @@ concept HasValueFromWithContext = requires(
 /** Determine if `T` can be converted to @ref dom::Value.
 
     If `T` can be converted to @ref dom::Value via a
-    call to @ref dom::ValueFrom, the static data member `value`
+    call to @ref dom::valueFrom, the static data member `value`
     is defined as `true`. Otherwise, `value` is
     defined as `false`.
 
-    @see @ref dom::ValueFrom
+    @see @ref dom::valueFrom
 */
 template <class T, class Context>
 concept HasValueFrom =
@@ -847,7 +855,7 @@ concept HasStandaloneValueFrom =
 */
 template <class Context, HasValueFrom<Context> T>
 void
-ValueFrom(
+valueFrom(
     T&& t,
     Context const& ctx,
     Value& v)
@@ -859,7 +867,7 @@ ValueFrom(
     }
     else
     {
-        ValueFrom(static_cast<T&&>(t), v);
+        valueFrom(static_cast<T&&>(t), v);
     }
 }
 
@@ -895,7 +903,7 @@ ValueFrom(
 template<class T>
 requires HasStandaloneValueFrom<T>
 void
-ValueFrom(
+valueFrom(
     T&& t,
     Value& v)
 {
@@ -942,10 +950,10 @@ ValueFrom(
 template<class T>
 requires HasStandaloneValueFrom<T>
 Value
-ValueFrom(T&& t)
+valueFrom(T&& t)
 {
     dom::Value v;
-    ValueFrom(static_cast<T&&>(t), v);
+    valueFrom(static_cast<T&&>(t), v);
     return v;
 }
 
@@ -983,10 +991,10 @@ ValueFrom(T&& t)
 template <class T, class Context>
 requires HasValueFrom<T, Context>
 Value
-ValueFrom(T&& t, Context const& ctx)
+valueFrom(T&& t, Context const& ctx)
 {
     dom::Value v;
-    ValueFrom(std::forward<T>(t), ctx, v);
+    valueFrom(std::forward<T>(t), ctx, v);
     return v;
 }
 

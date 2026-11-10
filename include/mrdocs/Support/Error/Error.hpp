@@ -206,13 +206,13 @@ public:
 
         @pre this->failed()
     */
-    [[noreturn]] void Throw() const&;
+    [[noreturn]] void throwError() const&;
 
     /** Throw Exception(std::move(*this))
 
         @pre this->failed()
     */
-    [[noreturn]] void Throw() &&;
+    [[noreturn]] void throwError() &&;
 
     /** Swap the contents with another error.
     */

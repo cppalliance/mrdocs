@@ -291,15 +291,15 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special functions that can return bool
-    if (is_one_of(
+    if (isOneOf(
             I.OverloadedOperator,
-            { OperatorKind::EqualEqual,
-              OperatorKind::ExclaimEqual,
-              OperatorKind::Less,
-              OperatorKind::LessEqual,
-              OperatorKind::Greater,
-              OperatorKind::GreaterEqual,
-              OperatorKind::Exclaim }))
+            {OperatorKind::EqualEqual,
+                OperatorKind::ExclaimEqual,
+                OperatorKind::Less,
+                OperatorKind::LessEqual,
+                OperatorKind::Greater,
+                OperatorKind::GreaterEqual,
+                OperatorKind::Exclaim}))
     {
         MRDOCS_CHECK_OR(I.ReturnType, false);
         MRDOCS_CHECK_OR(I.ReturnType->isNamed(), false);

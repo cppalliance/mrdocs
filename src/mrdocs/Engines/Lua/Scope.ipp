@@ -27,7 +27,7 @@ Expected<Function>
 Scope::
 loadChunk(
     std::string_view luaChunk,
-    zstring chunkName,
+    ZString chunkName,
     source_location loc)
 {
     Access A(*this);

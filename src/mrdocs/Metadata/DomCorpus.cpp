@@ -215,13 +215,11 @@ DomCorpus::
 construct(Symbol const& I) const
 {
     // See the declaration for what this view is. `visit` downcasts to
-    // the concrete symbol type; `dom::ValueFrom` then produces the
-    // reflection view for it (see the ValueFrom tag_invoke in
+    // the concrete symbol type; `dom::valueFrom` then produces the
+    // reflection view for it (see the valueFrom tag_invoke in
     // DescribedToDom.hpp). `U` is const, so the view is read-only.
     return visit(I, []<class T>(T const& U) -> dom::Object
-    {
-        return dom::ValueFrom(U).getObject();
-    });
+        { return dom::valueFrom(U).getObject(); });
 }
 
 dom::Value

@@ -81,7 +81,7 @@ public:
         pairs where the key is a string. This type is
         a copyable, movable value type.
     */
-    struct value_type;
+    struct MRDOCS_DOM_VISIBLE value_type;
 
     /** A reference to an element.
 
@@ -204,7 +204,7 @@ public:
 
     /** Return the type key.
     */
-    char const* type_key() const noexcept;
+    char const* typeKey() const noexcept;
 
     /** Return true if the container is empty.
     */
@@ -319,6 +319,7 @@ public:
     /** Compare two objects for equality.
     */
     friend
+    MRDOCS_DOM_DECL
     bool
     operator==(Object const& a, Object const& b) noexcept;
 
@@ -339,7 +340,10 @@ public:
 
     /** Return a diagnostic string.
     */
-    friend std::string toString(Object const& object);
+    friend
+    MRDOCS_DOM_DECL
+    std::string
+    toString(Object const& object);
 };
 
 //------------------------------------------------
@@ -368,7 +372,7 @@ public:
 
     /** Return the type key of the implementation.
     */
-    virtual char const* type_key() const noexcept;
+    virtual char const* typeKey() const noexcept;
 
     /** Return the value for the specified key, or null.
 
@@ -458,6 +462,15 @@ public:
     */
     explicit DefaultObjectImpl(
         storage_type entries) noexcept;
+
+    // The destructor is defined in the source file, where
+    // `Object::value_type` is complete, and copying is deleted, because a
+    // compiler that exports the class defines implicit members here, while
+    // the type is still incomplete.
+    DefaultObjectImpl(DefaultObjectImpl const&) = delete;
+    DefaultObjectImpl& operator=(DefaultObjectImpl const&) = delete;
+    ~DefaultObjectImpl() override;
+
     /** Return number of elements stored.
     */
     std::size_t size() const override;

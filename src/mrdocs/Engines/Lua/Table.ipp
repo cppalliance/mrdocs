@@ -31,7 +31,7 @@ Table(
         return;
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TTABLE)
-        Error("not a Table").Throw();
+        Error("not a Table").throwError();
 }
 
 Table::
@@ -41,7 +41,7 @@ Table(
 {
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TTABLE)
-        Error("not a Table").Throw();
+        Error("not a Table").throwError();
 }
 
 Table::

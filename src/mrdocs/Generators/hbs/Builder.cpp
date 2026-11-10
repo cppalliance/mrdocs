@@ -19,7 +19,7 @@
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/DescribedToDom.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <algorithm>
 #include <filesystem>
 #include <format>
@@ -43,11 +43,7 @@ namespace {
 dom::Value
 generatorConfig(HandlebarsCorpus const& domCorpus)
 {
-    auto const& genOpts = domCorpus.config().generatorOptions;
-    auto const it = genOpts.find(domCorpus.fileExtension);
-    return it != genOpts.end()
-        ? dom::Value(it->second)
-        : dom::Value(dom::Object());
+    return dom::Value(domCorpus.params);
 }
 
 /** Loads Handlebars partial templates from a directory.
@@ -98,7 +94,7 @@ loadPartials(
         });
     if (!exp)
     {
-        exp.error().Throw();
+        exp.error().throwError();
     }
 }
 
@@ -483,7 +479,7 @@ Builder(
     // ids it extends, most-general first (e.g. {"adoc", "md"} for a `md`
     // generator that extends `adoc`). Partials and helpers are searched
     // along it so a derived format inherits its base's addons.
-    auto const formatChain = addon_paths::extensionChain(domCorpus.fileExtension);
+    auto const& formatChain = domCorpus.formatChain;
     auto const partialDirs = addon_paths::partialDirs(roots, formatChain);
     auto const helperDirs = addon_paths::helperDirs(roots, formatChain);
     // Layouts do not inherit: each format owns its index.<id>.hbs and
@@ -605,15 +601,15 @@ Builder(
     mrdocs_ = dom::Value(std::move(mrdocsObj));
 
     if (auto exp = registerUserJsHelpers(hbs_, ctx_, helperDirs); !exp)
-        exp.error().Throw();
+        exp.error().throwError();
     if (auto exp = registerUserLuaHelpers(hbs_, lua_ctx_, helperDirs); !exp)
-        exp.error().Throw();
+        exp.error().throwError();
 
     // Load layout templates
     if (auto exp = loadLayoutTemplate(templates_, layoutDirs, std::format("index.{}.hbs", domCorpus.fileExtension)); !exp)
-        exp.error().Throw();
+        exp.error().throwError();
     if (auto exp = loadLayoutTemplate(templates_, layoutDirs, std::format("wrapper.{}.hbs", domCorpus.fileExtension)); !exp)
-        exp.error().Throw();
+        exp.error().throwError();
 }
 
 //------------------------------------------------
@@ -632,7 +628,7 @@ callTemplate(
     options.escapeFunction = escapeFn_;
     handlebars::OutputRef out(os);
     Expected<void, handlebars::Error> exp =
-        hbs_.try_render_to(out, fileText, context, options);
+        hbs_.tryRenderTo(out, fileText, context, options);
     if (!exp)
     {
         return Unexpected(Error(exp.error().what()));

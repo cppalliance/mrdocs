@@ -29,7 +29,7 @@ String(
     case LUA_TSTRING:
         break;
     default:
-        Error("not a string").Throw();
+        Error("not a string").throwError();
     }
 }
 

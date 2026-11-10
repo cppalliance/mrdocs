@@ -1,0 +1,3 @@
+error: bin/../lib/libstdc++.so.6 needs a glibc newer than 2.31:
+  GLIBC_2.38, used by:
+    __isoc23_strtol

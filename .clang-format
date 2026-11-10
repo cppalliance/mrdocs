@@ -13,22 +13,16 @@
 # ---------------------------------------------------------------------------
 # MrDocs Formatting Guidelines (Clang-Format Reference)
 #
-# This file encodes the formatting style we generally follow in MrDocs,
-# based on conventions we have been using in Boost projects.
+# This file encodes the style the MrDocs code is written in, which follows the
+# conventions of earlier Boost projects. It is tuned to the code as it stands,
+# so formatting the lines a change touches adds little churn. A whole-file run
+# still rewrites about one line in ten, mostly where files disagree with each
+# other, such as `if(` beside `if (`.
 #
-# Important:
-# - Do not run clang-format across entire files or the whole project.
-# - This configuration is provided as a *reference* to help new contributors
-#   understand the style rules and configure their editors/IDEs.
-# - You may use clang-format to format only the *new code you add or modify*
-#   in a commit. Never reformat unrelated code.
-#
-# The goal is to keep the codebase consistent and allow new contributors
-# to follow the same style, while minimizing churn and noise, and
-# without introducing large, style-only changes in version history.
-#
-# If in doubt, look at the surrounding code in the file and follow its style.
-# This file is here to make that easier, not to replace careful review.
+# - `python3 utils/format/format.py` formats the lines a change touched.
+# - Running clang-format over whole files is a deliberate choice, made with
+#   `format.py --all`, because it rewrites lines the change did not touch.
+# - Lines wrap by hand, so ColumnLimit is 0 and existing line breaks stay.
 # ---------------------------------------------------------------------------
 
 Language: Cpp
@@ -36,15 +30,17 @@ Standard: Latest
 BasedOnStyle: Microsoft
 
 # Columns and Lines
-ColumnLimit: 80
-ReflowComments: Always
+# The code wraps long lines by hand, and a limit would rewrap many of them.
+ColumnLimit: 0
+# Comments keep their hand-wrapped lines.
+ReflowComments: Never
 TabWidth: 8
-UseCRLF: false
 UseTab: Never
-DeriveLineEnding: true
+LineEnding: DeriveLF
 
 # Breaking around braces
-InsertBraces: true
+# Single-statement bodies appear with and without braces.
+InsertBraces: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   # Control
@@ -55,13 +51,15 @@ BraceWrapping:
   BeforeWhile: true
   # Definition
   AfterNamespace: false
-  AfterStruct: false
-  AfterClass: false
+  # Classes, structs and enums put the opening brace on its own line.
+  AfterStruct: true
+  AfterClass: true
+  AfterEnum: true
   SplitEmptyRecord: false
   AfterFunction: true
   SplitEmptyFunction: false
-  BeforeLambdaBody: false
-  AfterEnum: false
+  # A lambda body with a wrapped signature opens its brace on its own line.
+  BeforeLambdaBody: true
   SplitEmptyNamespace: true
   AfterUnion: false
   AfterExternBlock: true
@@ -72,38 +70,46 @@ BraceWrapping:
 #     Namespaces
 CompactNamespaces: false
 #     Templates
-AlwaysBreakTemplateDeclarations: Yes
-BreakBeforeConceptDeclarations: true
+# `template<class T> using X = ...;` stays on one line.
+BreakTemplateDeclarations: No
+BreakBeforeConceptDeclarations: Always
 #     Classes
 BreakInheritanceList: BeforeComma
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: Leave
 #     Functions
-AlwaysBreakAfterDefinitionReturnType: All
-AlwaysBreakAfterReturnType: All
+# Out-of-class definitions put the return type on its own line.
+BreakAfterReturnType: TopLevelDefinitions
 MaxEmptyLinesToKeep: 2
 #     Strings
 AlwaysBreakBeforeMultilineStrings: false
-BreakStringLiterals: true
+# String literals are never split across lines.
+BreakStringLiterals: false
 #     Expressions
 BreakConstructorInitializers: BeforeComma
-BreakBeforeBinaryOperators: All
+# A wrapped expression ends the line with its operator.
+BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
 
 # Breaking single line blocks
 #     Control
 AllowShortBlocksOnASingleLine: Never
-AllowShortCaseLabelsOnASingleLine: false
+# A case label with a single statement shares its line.
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
 #     Declarations
 AllowShortEnumsOnASingleLine: false
 #     Function
-AllowAllParametersOfDeclarationOnNextLine: false
-AllowShortFunctionsOnASingleLine: Empty
-AllowShortLambdasOnASingleLine: Inline
+# A function with a one-line body stays on one line.
+AllowShortFunctionsOnASingleLine: All
+# A wrapped declaration may start its parameters on the next line.
+AllowAllParametersOfDeclarationOnNextLine: true
+# A lambda that fits on one line stays on it.
+AllowShortLambdasOnASingleLine: All
 #     Expressions
-AllowAllArgumentsOnNextLine: false
+# A wrapped call may start its arguments on the next line.
+AllowAllArgumentsOnNextLine: true
 
 # Indentation
 #    Parameters
@@ -111,15 +117,17 @@ IndentWidth: 4
 #    Definitions
 NamespaceIndentation: None
 IndentExternBlock: NoIndent
-IndentPPDirectives: AfterHash
+# Preprocessor directives start at the first column.
+IndentPPDirectives: None
 #    Classes
 AccessModifierOffset: -4
 IndentAccessModifiers: false
 #    Templates
-IndentRequires: false
+IndentRequiresClause: false
 #    Functions
 IndentWrappedFunctionNames: false
-LambdaBodyIndentation: OuterScope
+# A lambda body indents from its signature.
+LambdaBodyIndentation: Signature
 #    Control
 ConstructorInitializerIndentWidth: 4
 IndentCaseBlocks: false
@@ -128,11 +136,13 @@ IndentGotoLabels: true
 #    Expressions
 ContinuationIndentWidth: 4
 InsertTrailingCommas: None
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLines:
+  AtStartOfBlock: false
 
 # Alignment
 #    Macros
-AlignConsecutiveMacros: Consecutive
+# A macro's value follows its name after one space.
+AlignConsecutiveMacros: None
 AttributeMacros: [ 'FUTURES_CONSTEXPR', 'FUTURES_NODISCARD' ]
 IfMacros: [ 'FUTURES_IF_CONSTEXPR', 'SECTION', 'TEST_CASE' ]
 TypenameMacros: [ 'FUTURES_DETAIL' ]
@@ -146,17 +156,23 @@ QualifierOrder: [ 'inline', 'static', 'constexpr', 'type', 'const' ]
 #    Namespace
 ShortNamespaceLines: 0
 #    Brackets
-AlignAfterOpenBracket: AlwaysBreak
+# Wrapped arguments and parameters indent by the continuation width.
+AlignAfterOpenBracket: DontAlign
 #    Expressions
-AlignArrayOfStructures: Right
+# Rows of a braced table keep the spacing the author gave them.
+AlignArrayOfStructures: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: None
-AlignEscapedNewlines: Left
-AlignOperands: Align
-AlignTrailingComments: true
+# Macro continuation backslashes follow the text.
+AlignEscapedNewlines: DontAlign
+# Continuation operands keep the indentation the author gave them.
+AlignOperands: DontAlign
+AlignTrailingComments:
+  Kind: Always
 
 # Spaces
-SpaceAfterCStyleCast: true
+# C-style casts write `(void)x`.
+SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true
 SpaceAroundPointerQualifiers: Default
@@ -166,24 +182,27 @@ SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
-SpaceBeforeRangeBasedForLoopColon: false
+# Range-based for loops write `for (x : xs)`.
+SpaceBeforeRangeBasedForLoopColon: true
 SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
 SpacesBeforeTrailingComments: 1
 SpaceInEmptyBlock: false
-SpaceInEmptyParentheses: false
 SpacesInAngles: Never
-SpacesInCStyleCastParentheses: false
-SpacesInConditionalStatement: false
-SpacesInParentheses: false
-Cpp11BracedListStyle: false
+SpacesInParens: Never
+# Braced lists write `{a, b}` without inner spaces.
+Cpp11BracedListStyle: true
 
 # BinPack
-BinPackArguments: false
-BinPackParameters: false
+# A wrapped call may put several arguments on one line.
+BinPackArguments: true
+# A wrapped signature keeps one parameter per line.
+BinPackParameters: OnePerLine
 BitFieldColonSpacing: After
-ExperimentalAutoDetectBinPacking: true
-PackConstructorInitializers: CurrentLine
+# Packing follows the two options above in every file.
+ExperimentalAutoDetectBinPacking: false
+# Constructor initializers keep one per line.
+PackConstructorInitializers: Never
 
 # Penalties
 PenaltyBreakAssignment: 512
@@ -197,8 +216,10 @@ PenaltyIndentedWhitespace: 8
 PenaltyReturnTypeOnItsOwnLine: 2
 
 # Sorting
-SortIncludes: CaseInsensitive
-SortUsingDeclarations: true
+SortIncludes:
+  Enabled: true
+  IgnoreCase: true
+SortUsingDeclarations: LexicographicNumeric
 IncludeBlocks: Merge
 IncludeCategories:
   - Regex: '^<mrdocs/Platform\.hpp>$'            # always first
@@ -228,7 +249,8 @@ IncludeCategories:
     Priority: 12
 
 # Comments
-FixNamespaceComments: true
+# Namespace-closing comments are written by hand, as `// mrdocs` or none.
+FixNamespaceComments: false
 CommentPragmas: '^ clang-format'
 
 ---

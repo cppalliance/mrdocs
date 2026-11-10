@@ -39,17 +39,17 @@ namespace helpers {
 void
 registerLogicalHelpers(Handlebars& hbs)
 {
-    hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
-    hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
-    hbs.registerHelper("gt", dom::makeVariadicInvocable(gt_fn));
-    hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
-    hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
-    hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
-    hbs.registerHelper("select", dom::makeInvocable(select_fn));
+    hbs.registerHelper("and", dom::makeVariadicInvocable(andFn));
+    hbs.registerHelper("eq", dom::makeVariadicInvocable(eqFn));
+    hbs.registerHelper("gt", dom::makeVariadicInvocable(gtFn));
+    hbs.registerHelper("ne", dom::makeVariadicInvocable(neFn));
+    hbs.registerHelper("not", dom::makeVariadicInvocable(notFn));
+    hbs.registerHelper("or", dom::makeVariadicInvocable(orFn));
+    hbs.registerHelper("select", dom::makeInvocable(selectFn));
 }
 
 bool
-and_fn(dom::Array const& args)
+andFn(dom::Array const& args)
 {
     std::size_t const n = args.size();
     if (n == 0) return true;
@@ -64,7 +64,7 @@ and_fn(dom::Array const& args)
 }
 
 dom::Value
-or_fn(dom::Array const& args)
+orFn(dom::Array const& args)
 {
     std::size_t const n = args.size();
     if (n == 0)
@@ -82,7 +82,7 @@ or_fn(dom::Array const& args)
 }
 
 bool
-eq_fn(dom::Array const& args) {
+eqFn(dom::Array const& args) {
     if (args.empty())
     {
         return true;
@@ -100,13 +100,13 @@ eq_fn(dom::Array const& args) {
 }
 
 bool
-ne_fn(dom::Array const& args) {
-    return !eq_fn(args);
+neFn(dom::Array const& args) {
+    return !eqFn(args);
 }
 
 // Greater-than comparison via `operator<=>` on `dom::Value`.
 bool
-gt_fn(dom::Array const& args) {
+gtFn(dom::Array const& args) {
     // args carries trailing options, so we need at least two real
     // arguments plus that one.
     if (args.size() < 3)
@@ -117,7 +117,7 @@ gt_fn(dom::Array const& args) {
 }
 
 bool
-not_fn(dom::Array const& args) {
+notFn(dom::Array const& args) {
     std::size_t const n = args.size();
     for (std::size_t i = 0; i < n - 1; ++i)
     {
@@ -130,7 +130,7 @@ not_fn(dom::Array const& args) {
 }
 
 dom::Value
-increment_fn(dom::Value const& value)
+incrementFn(dom::Value const& value)
 {
     if (value)
     {
@@ -140,7 +140,7 @@ increment_fn(dom::Value const& value)
 }
 
 dom::Value
-select_fn(
+selectFn(
     dom::Value const& condition,
     dom::Value const& result_true,
     dom::Value const& result_false)
@@ -150,7 +150,7 @@ select_fn(
 }
 
 dom::Value
-detag_fn(dom::Value html)
+detagFn(dom::Value html)
 {
     if (!html)
     {
@@ -182,7 +182,7 @@ detag_fn(dom::Value html)
 }
 
 int
-year_fn() {
+yearFn() {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
     std::tm* localTime = std::localtime(&currentTime);

@@ -15,7 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
-#include <mrdocs/Support/TypeTraits/any_callable.hpp>
+#include <mrdocs/Support/TypeTraits/AnyCallable.hpp>
 #include <memory>
 #include <type_traits>
 #include <utility>
@@ -35,7 +35,7 @@ class TaskGroup;
 
 /** A pool of threads for executing work concurrently.
 */
-class MRDOCS_VISIBLE
+class MRDOCS_DECL
     ThreadPool
 {
     std::unique_ptr<llvm::StdThreadPool> impl_;
@@ -46,7 +46,8 @@ public:
     /** Helper that preserves lvalue-ref and constness for references.
     */
     template <class T>
-    struct arg_ty {
+    struct ArgTy
+    {
         /// Resulting adjusted type.
         using type = T;
     };
@@ -57,18 +58,18 @@ public:
         @return Argument type with reference/const qualifiers preserved.
     */
     template <class T>
-    struct arg_ty<T&> {
+    struct ArgTy<T&>
+    {
         /// Resulting adjusted type.
         using type = std::conditional_t<std::is_const_v<T>, T, T&>;
     };
 
     /** Helper that forwards argument qualifiers.
     */
-    template<class T> using arg_t = typename arg_ty<T>::type;
+    template <class T> using arg_t = typename ArgTy<T>::type;
 
     /** Destructor.
     */
-    MRDOCS_DECL
     ~ThreadPool();
 
     /** Constructor.
@@ -78,20 +79,17 @@ public:
         new threads. Submitted work blocks the
         caller until the work is complete.
     */
-    MRDOCS_DECL
     explicit
     ThreadPool();
 
     /** Constructor.
     */
-    MRDOCS_DECL
     explicit
     ThreadPool(
         unsigned concurrency);
 
     /** Return the number of threads in the pool.
     */
-    MRDOCS_DECL
     unsigned
     getThreadCount() const noexcept;
 
@@ -125,19 +123,18 @@ public:
 
     /** Block until all work has completed.
     */
-    MRDOCS_DECL
     void
     wait();
 
 private:
-    MRDOCS_DECL void post(any_callable<void(void)>);
+    void post(AnyCallable<void(void)>);
 };
 
 //------------------------------------------------
 
 /** A subset of possible work in a thread pool.
 */
-class MRDOCS_VISIBLE
+class MRDOCS_DECL
     TaskGroup
 {
     struct Impl;
@@ -147,12 +144,10 @@ class MRDOCS_VISIBLE
 public:
     /** Destructor.
     */
-    MRDOCS_DECL
     ~TaskGroup();
 
     /** Constructor.
     */
-    MRDOCS_DECL
     explicit
     TaskGroup(
         ThreadPool& threadPool);
@@ -176,13 +171,12 @@ public:
         @return Zero or more errors which were
         thrown from submitted work.
     */
-    MRDOCS_DECL
     [[nodiscard]]
     std::vector<Error>
     wait();
 
 private:
-    MRDOCS_DECL void post(any_callable<void(void)>);
+    void post(AnyCallable<void(void)>);
 };
 
 //------------------------------------------------

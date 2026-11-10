@@ -234,11 +234,11 @@ template <class T> inline constexpr bool IsPolymorphic<Polymorphic<T>> = true;
 
 } // namespace detail
 
-/// @copydoc CompareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
+/// @copydoc compareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
 template <class Base>
 requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
 auto
-CompareDerived(Base const& lhs, Base const& rhs)
+compareDerived(Base const& lhs, Base const& rhs)
 {
     if (lhs.Kind == rhs.Kind)
     {
@@ -269,11 +269,11 @@ CompareDerived(Base const& lhs, Base const& rhs)
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
-CompareDerived(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
+compareDerived(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
     MRDOCS_ASSERT(!lhs.valueless_after_move());
     MRDOCS_ASSERT(!rhs.valueless_after_move());
-    return CompareDerived(*lhs, *rhs);
+    return compareDerived(*lhs, *rhs);
 }
 
 /** Three-way comparison of two polymorphic objects.
@@ -284,7 +284,7 @@ requires detail::CanVisitCompare<Base>
 auto
 operator<=>(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
-    return CompareDerived(lhs, rhs);
+    return compareDerived(lhs, rhs);
 }
 
 /** Equality comparison of two polymorphic objects.

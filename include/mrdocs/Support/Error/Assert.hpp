@@ -35,7 +35,7 @@ namespace mrdocs {
 */
 MRDOCS_DECL
 void
-assert_failed(
+assertFailed(
     char const* msg,
     char const* file,
     std::uint_least32_t line);
@@ -54,8 +54,8 @@ assert_failed(
         #define MRDOCS_DETAIL_UNREACHABLE() static_cast<void>(__debugbreak(), __assume(false))
     #endif
 
-    #define MRDOCS_DETAIL_ASSERT(x) static_cast<void>(!! (x) || \
-        (assert_failed(#x, __builtin_FILE(), __builtin_LINE()), \
+#define MRDOCS_DETAIL_ASSERT(x) static_cast<void>(!!(x) || \
+    (assertFailed(#x, __builtin_FILE(), __builtin_LINE()), \
         MRDOCS_DETAIL_UNREACHABLE(), true))
 #endif
 
@@ -152,12 +152,12 @@ assert_failed(
     @code
     // MRDOCS_ASSERT(i < v.size());
     // The condition is evaluated once. If it's false,
-    // assert_failed prints "assertion failed: i < v.size()
+    // assertFailed prints "assertion failed: i < v.size()
     // on line N in <file>" to stderr, and then the program
     // traps (__builtin_trap on GCC/Clang, __debugbreak on
     // MSVC).
     static_cast<void>(!!(i < v.size()) ||
-        (assert_failed("i < v.size()",
+        (assertFailed("i < v.size()",
             __builtin_FILE(), __builtin_LINE()),
          static_cast<void>(__builtin_trap(),
              __builtin_unreachable()),
@@ -179,9 +179,9 @@ assert_failed(
       depends on, such as `MRDOCS_ASSERT(queue.pop())`, since
       release builds never run it. Variables used only inside
       assertions can trigger unused-variable warnings there.
-    - The expansion calls `assert_failed` unqualified, so in
+    - The expansion calls `assertFailed` unqualified, so in
       debug builds the macro only compiles where
-      `mrdocs::assert_failed` is found by lookup: inside
+      `mrdocs::assertFailed` is found by lookup: inside
       `namespace mrdocs`, or after `using namespace mrdocs;`.
     - It's a `void` expression, not a full statement, so a
       trailing semicolon is needed.

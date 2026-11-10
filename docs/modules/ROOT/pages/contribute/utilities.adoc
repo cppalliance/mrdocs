@@ -1,0 +1,9 @@
+= Utilities
+
+MrDocs carries utilities that help developers: tools to set up a machine, format and check changes, and generate files.
+Each utility is an independent subproject with its own requirements, tests and conventions.
+
+A new feature often changes how developers work, and then the utilities have to catch up.
+A new test command needs a recipe, and a moved directory needs new paths in the checks.
+The pages of this section say how to change each utility.
+

@@ -90,7 +90,7 @@ operator==(Object const& a, Object const& b) noexcept
 std::string
 toString(Object const& obj)
 {
-  return std::format("[object {}]", obj.type_key());
+  return std::format("[object {}]", obj.typeKey());
 }
 
 //------------------------------------------------
@@ -104,7 +104,7 @@ ObjectImpl::
 
 char const*
 ObjectImpl::
-type_key() const noexcept
+typeKey() const noexcept
 {
     return "Object";
 }
@@ -137,6 +137,9 @@ DefaultObjectImpl(
     : entries_(std::move(entries))
 {
 }
+
+DefaultObjectImpl::
+~DefaultObjectImpl() = default;
 
 std::size_t
 DefaultObjectImpl::

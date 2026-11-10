@@ -165,7 +165,7 @@ struct MRDOCS_DECL DocComment {
         }
         for (std::size_t i = 0; i < Document.size(); ++i)
         {
-            if (auto cmp = CompareDerived(Document[i], other.Document[i]);
+            if (auto cmp = compareDerived(Document[i], other.Document[i]);
                 !std::is_eq(cmp))
             {
                 return cmp;

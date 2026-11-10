@@ -1,0 +1,2 @@
+error: bin/mrdocs refers to C++ runtime versions that the bundled libraries do not define:
+  GLIBCXX_3.4.34

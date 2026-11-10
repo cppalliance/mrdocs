@@ -20,12 +20,12 @@
 #include <mrdocs/Engines/Lua/Context.hpp>
 #include <mrdocs/Engines/Lua/Function.hpp>
 #include <mrdocs/Engines/Lua/Param.hpp>
+#include <mrdocs/Engines/Lua/registerHelper.hpp>
 #include <mrdocs/Engines/Lua/Scope.hpp>
 #include <mrdocs/Engines/Lua/String.hpp>
 #include <mrdocs/Engines/Lua/Table.hpp>
 #include <mrdocs/Engines/Lua/Type.hpp>
 #include <mrdocs/Engines/Lua/Value.hpp>
-#include <mrdocs/Engines/Lua/registerHelper.hpp>
-#include <mrdocs/Engines/Lua/zstring.hpp>
+#include <mrdocs/Engines/Lua/ZString.hpp>
 
 #endif // MRDOCS_API_ENGINES_LUA_HPP

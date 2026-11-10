@@ -11,7 +11,7 @@
 #include "DerivedFinalizer.hpp"
 #include "SymbolCompare.hpp"
 #include <mrdocs/Support/Container/Algorithm.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 
 namespace mrdocs {
 
@@ -42,7 +42,7 @@ build()
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->Extraction == ExtractionMode::Regular);
             auto& baseRecord = baseInfoPtr->asRecord();
             MRDOCS_CHECK_OR_CONTINUE(!contains(baseRecord.Derived, record.id));
-            insert_sorted(
+            insertSorted(
                 baseRecord.Derived,
                 record.id,
                 SymbolIDCompareFn{corpus_, config_});

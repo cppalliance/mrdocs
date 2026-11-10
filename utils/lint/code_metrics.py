@@ -16,10 +16,14 @@ where copy-pasted code clusters. The function detector is a brace-matching
 heuristic (no real parser), so treat its output as a worklist, not ground truth.
 
 Usage:
-  python utils/linting/code_metrics.py [--top N] [--min-func L] [--dup-window W]
+  python utils/lint/code_metrics.py [--top N] [--min-func L] [--dup-window W]
                                        [--roots src include] [--md OUTFILE]
 """
 import argparse, hashlib, os, re, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import changed_lines
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SRC_EXTS = {".cpp", ".hpp", ".ipp", ".cc", ".cxx", ".h"}
@@ -78,7 +82,7 @@ def sanitize(text):
 def code_lines(text):
     """Strip // and /* */ comments and blank lines; return (kept_line, orig_index)."""
     out, in_block = [], False
-    for i, raw in enumerate(text.splitlines()):
+    for i, raw in enumerate(changed_lines.split_lines(text)):
         s = raw
         if in_block:
             end = s.find("*/")
@@ -106,7 +110,7 @@ def find_functions(text):
     function signature we brace-match its body and skip past it, so we never
     re-detect nested lambdas as separate functions.
     """
-    lines = text.splitlines()
+    lines = changed_lines.split_lines(text)
     funcs, i, n = [], 0, len(lines)
     while i < n:
         line = lines[i]
@@ -169,7 +173,7 @@ def main():
     file_lengths, all_funcs, files_lines = [], [], {}
     for f in files:
         text = open(f, encoding="utf-8", errors="replace").read()
-        file_lengths.append((len(text.splitlines()), rel(f)))
+        file_lengths.append((len(changed_lines.split_lines(text)), rel(f)))
         files_lines[f] = code_lines(text)
         for length, ln, name in find_functions(sanitize(text)):
             if length >= args.min_func:

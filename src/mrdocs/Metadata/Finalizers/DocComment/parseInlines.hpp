@@ -26,7 +26,7 @@ bool
 isPunctuation(char c)
 {
     // ASCII punctuation per CommonMark (§2.2) (includes '_')
-    return is_one_of(c, R"(!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~)");
+    return isOneOf(c, R"(!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~)");
 }
 
 // ========================== RULE TABLE & FLAGS ===============================

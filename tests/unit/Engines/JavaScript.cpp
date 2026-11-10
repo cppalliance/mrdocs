@@ -14,6 +14,7 @@
 #include <test_suite/test_suite.hpp>
 #include <array>
 #include <span>
+#include <string_view>
 #include <thread>
 #include <vector>
 
@@ -25,6 +26,19 @@ namespace detail {
 dom::Expected<dom::Value>
 invokeHelper(Value const& fn, dom::Array const& args);
 }
+
+namespace {
+
+constexpr std::string_view twoFunctionsJs = R"js(function f(a, b) { return a + b; }
+function g(a, b) { return a * b; })js";
+
+constexpr std::string_view counterJs = R"js(fCounter += 1;
+function bump() { fCounter += 10; return fCounter; })js";
+
+constexpr std::string_view sharedUtilJs = R"js(function sharedUtil(x) { return x * 2; }
+var SHARED_CONSTANT = 42;)js";
+
+} // (anon)
 
 struct JavaScript_test
 {
@@ -112,12 +126,12 @@ struct JavaScript_test
             BOOST_TEST(v.getDom() == 6);
         }
 
-        // compile_script
+        // compileScript
         {
             // last expression as implicit return value
             {
                 Scope scope(ctx);
-                Expected<Value> fnr = scope.compile_script("var x = 1; x;");
+                Expected<Value> fnr = scope.compileScript("var x = 1; x;");
                 BOOST_TEST(fnr);
                 Value fn = *fnr;
                 BOOST_TEST(fn.isFunction());
@@ -129,7 +143,7 @@ struct JavaScript_test
             // single expression
             {
                 Scope scope(ctx);
-                Expected<Value> fnr = scope.compile_script("1 + 2 + 3");
+                Expected<Value> fnr = scope.compileScript("1 + 2 + 3");
                 BOOST_TEST(fnr);
                 Value fn = *fnr;
                 BOOST_TEST(fn.isFunction());
@@ -141,19 +155,19 @@ struct JavaScript_test
             // functions are not executed or returned
             {
                 Scope scope(ctx);
-                Expected<Value> fnr = scope.compile_script("function (a, b) { return a + b; }");
+                Expected<Value> fnr = scope.compileScript("function (a, b) { return a + b; }");
                 BOOST_TEST(!fnr.has_value());
             }
         }
 
-        // compile_function
+        // compileFunction
         {
             // function: return value is function itself as JS Value
             {
                 // function with no args
                 {
                     Scope scope(ctx);
-                    Expected<Value> fnr = scope.compile_function(
+                    Expected<Value> fnr = scope.compileFunction(
                         "function () { return 3; }");
                     BOOST_TEST(fnr);
                     Value fn = fnr.value();
@@ -166,7 +180,7 @@ struct JavaScript_test
                 // named function also returned as object
                 {
                     Scope scope(ctx);
-                    Expected<Value> fnr = scope.compile_function(
+                    Expected<Value> fnr = scope.compileFunction(
                         "function a() { return 3; }");
                     BOOST_TEST(fnr);
                     Value fn = fnr.value();
@@ -179,7 +193,7 @@ struct JavaScript_test
                 // single function
                 {
                     Scope scope(ctx);
-                    Expected<Value> fnr = scope.compile_function(
+                    Expected<Value> fnr = scope.compileFunction(
                         "function f(a, b) { return a + b; }");
                     BOOST_TEST(fnr);
                     Value fn = fnr.value();
@@ -192,9 +206,8 @@ struct JavaScript_test
                 // multiple functions: first function is returned
                 {
                     Scope scope(ctx);
-                    Expected<Value> fnr = scope.compile_function(
-                        "function f(a, b) { return a + b; }\n"
-                        "function g(a, b) { return a * b; }");
+                    Expected<Value> fnr = scope.compileFunction(
+                        twoFunctionsJs);
                     BOOST_TEST(fnr);
                     Value fn = fnr.value();
                     BOOST_TEST(fn.isFunction());
@@ -1636,12 +1649,12 @@ struct JavaScript_test
     test_compile_helpers_behavior()
     {
         Context ctx;
-        // compile_script defers execution; function may run body once at
+        // compileScript defers execution; function may run body once at
         // compile then again when invoked.
         {
             Scope scope(ctx);
             scope.script("var counter = 0;");
-            auto fnExp = scope.compile_script("counter += 1; counter;");
+            auto fnExp = scope.compileScript("counter += 1; counter;");
             BOOST_TEST(fnExp);
             if (fnExp)
             {
@@ -1662,11 +1675,11 @@ struct JavaScript_test
             }
         }
 
-        // compile_script escapes quotes/newlines and preserves mutations even
+        // compileScript escapes quotes/newlines and preserves mutations even
         // when the script throws on invocation.
         {
             Scope scope(ctx);
-            auto fnExp = scope.compile_script("var s = \"a\\\"b\\n\"; s;");
+            auto fnExp = scope.compileScript("var s = \"a\\\"b\\n\"; s;");
             BOOST_TEST(fnExp);
             if (fnExp)
             {
@@ -1680,7 +1693,7 @@ struct JavaScript_test
         {
             Scope scope(ctx);
             scope.script("var side = 0;");
-            auto fnExp = scope.compile_script(
+            auto fnExp = scope.compileScript(
                 "side += 1; throw new Error('fail');");
             BOOST_TEST(fnExp);
             if (fnExp)
@@ -1700,9 +1713,8 @@ struct JavaScript_test
         {
             Scope scope(ctx);
             scope.script("var fCounter = 0;");
-            auto compiled = scope.compile_function(
-                "fCounter += 1;\n"
-                "function bump() { fCounter += 10; return fCounter; }");
+            auto compiled = scope.compileFunction(
+                counterJs);
             BOOST_TEST(compiled);
             if (compiled)
             {
@@ -1718,12 +1730,12 @@ struct JavaScript_test
             }
         }
 
-        // compile_function can leave side effects even when it cannot produce
+        // compileFunction can leave side effects even when it cannot produce
         // a callable (expression succeeds but is not a function).
         {
             Scope scope(ctx);
             scope.script("var sideOnce = 0;");
-            auto compiled = scope.compile_function("sideOnce += 1");
+            auto compiled = scope.compileFunction("sideOnce += 1");
             BOOST_TEST(!compiled);
             auto sideVal = scope.getGlobal("sideOnce");
             BOOST_TEST(sideVal);
@@ -2235,8 +2247,7 @@ struct JavaScript_test
         {
             Scope scope(ctx);
             auto exp = scope.script(
-                "function sharedUtil(x) { return x * 2; }\n"
-                "var SHARED_CONSTANT = 42;");
+                sharedUtilJs);
             BOOST_TEST(exp);
         }
 

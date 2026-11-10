@@ -1,0 +1,141 @@
+= Codebase Layout
+:page-aliases: contribute/codebase-tour.adoc
+
+== Allowed directories
+
+The project has the following directory layout:
+
+[#layout-allow-list,cols="2,5"]
+|===
+|Directory |Role
+
+|xref:contribute/layout/src.adoc[`src/`]
+|the MrDocs library sources and its private headers
+
+|xref:contribute/layout/include.adoc[`include/`]
+|the public headers of the MrDocs library
+
+|xref:contribute/layout/libs.adoc[`libs/`]
+|self-contained libraries the library and the tests depend on
+
+|xref:contribute/layout/tests.adoc[`tests/`]
+|the test suites, each its own executable (unit, golden, benchmarks, CMake package, plugin API)
+
+|xref:contribute/layout/examples.adoc[`examples/`]
+|self-contained projects that show how to run MrDocs
+
+|xref:contribute/layout/docs.adoc[`docs/`]
+|the Antora site, its extensions and its build scripts
+
+|xref:contribute/layout/data.adoc[`data/`]
+|assets the project ships or feeds the build with, but does not compile
+
+|xref:contribute/layout/tools.adoc[`tools/`]
+|user-facing tools built on MrDocs, and the CMake files it installs
+
+|xref:contribute/layout/utils.adoc[`utils/`]
+|developer and CI tooling the project never ships
+|===
+
+[TIP]
+====
+This is a small variant of the https://joholl.github.io/pitchfork-website[Pitchfork] layout.
+It only differs from it in that:
+
+* User-facing tools live in `tools/` rather than `extras/` or directly in `src/`. (An LLVM convention)
+* Developer tooling lives in `utils/` rather than `tools/`.
+* The project has no `external/`, as we do not bundle third-party dependencies.
+* The project has no `extras/`, as all user-facing tools are in `tools/`.
+* `libs/` and the `src/`/`include/` pair are allowed at the same time for utility libraries and the core library.
+
+All other conventions of the Pitchfork layout apply, including the rules for `libs/` and `tests/`.
+====
+
+Any tracked files and file git does not ignore at the top level should hold only the entries on this page.
+Each directory has its own page and constraints.
+
+.Guard
+[NOTE]
+====
+`python3 -I utils/lint/lint.py` runs the layout check. The allowed entries are the lists in `utils/lint/check_layout.py`, and the tables on this page must agree with them. The check fails on:
+
+* any other top-level entry
+* a table on this page that names an entry the lists lack, or misses one they have
+* a directory without its page
+* a page without its directory
+* a library under `libs/` or a C++ tool whose top level breaks the root layout
+====
+
+== Allowed entries
+
+The root holds these files and nothing else for tools that require them at a fixed path.
+
+[#layout-allow-files,cols="2,5"]
+|===
+|File |Role
+
+|`CMakeLists.txt`
+|the root build
+
+|`CMakePresets.json`
+|the shared CMake presets
+
+|`bootstrap.py`
+|entry point of the dependency and build setup
+
+|`mrdocs-config.cmake.in`
+|template of the installed CMake package config
+
+|`LICENSE.txt`
+|the license
+
+|`README.adoc`
+|the project readme
+|===
+
+== Tolerated entries
+
+Hidden or generated entries that a tool owns and do not support anywhere else are also tolerated.
+
+[#layout-tolerated,cols="2,5"]
+|===
+|Entry |Role
+
+|`.github/`
+|workflows, the composite actions they share under `actions/`, templates, repository settings and the scripts the workflows run, such as the release checks in `scripts/linux-portability/`
+
+|`.clang-format`
+|the formatting rules
+
+|`.gitattributes`
+|line-ending and diff attributes
+
+|`.gitignore`
+|ignored files
+|===
+
+Gitignored files and directories are also tolerated by the checks. For instance, a ./local directory is gitignored as a common place to put temporary local build artifacts, and the check does not fail on it.
+
+== Not allowed
+
+Any top-level entry that the tables on this page do not list is forbidden, and the check fails on it.
+A few common examples that tempt people are:
+
+[cols="2,5"]
+|===
+|Entry |Correct destination
+
+|`cmake/`
+|Build helpers for the root build go in `utils/cmake/`. CMake files that users of the installed package consume go in `tools/cmake/`.
+
+|`scripts/`
+|Contributor scripts go in one of the categories of `utils/`.
+
+|`third-party/` and `external/`
+|Nowhere, because bootstrap fetches dependencies into `build/third-party/` and the repository doesn't bundle dependencies. Recipes and logic related to dependencies are in `utils/bootstrap`.
+
+|`extras/`
+|User-facing tools go in `tools/`, and developer-facing tools go in `utils/`. Data and assets go in `data/`.
+|===
+
+Allowed root-level directories should not have README.md files explaining their contents as this belongs in this documentation. Short READMEs deeper in the tree stay when they document one tool or suite, but `python3 -I utils/lint/lint.py` fails a README you changed when it is over 180 words.

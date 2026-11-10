@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_HANDLEBARS_OUTPUTREF_HPP
 #define MRDOCS_API_HANDLEBARS_OUTPUTREF_HPP
 
-// The OutputRef output-stream adapter and the HTMLEscape helpers.
+// The OutputRef output-stream adapter and the escapeHTML helpers.
 
 #include <mrdocs/Handlebars/Platform.hpp>
 #include <mrdocs/Handlebars/detail/OutputRef.hpp>
@@ -35,7 +35,7 @@ namespace handlebars {
     std::string, std::ostream, llvm::raw_string_ostream, and others.
 
 */
-class MRDOCS_HANDLEBARS_DECL OutputRef
+class MRDOCS_HANDLEBARS_VISIBLE OutputRef
 {
     friend class Handlebars;
 
@@ -82,6 +82,7 @@ class MRDOCS_HANDLEBARS_DECL OutputRef
         , fptr_( &noop_output )
     {}
 
+    MRDOCS_HANDLEBARS_DECL
     OutputRef&
     write_impl( std::string_view sv );
 
@@ -220,11 +221,11 @@ public:
 */
 MRDOCS_HANDLEBARS_DECL
 void
-HTMLEscape(
+escapeHTML(
     OutputRef& out,
     std::string_view str);
 
-/** Character-to-entity table used by `HTMLEscape`.
+/** Character-to-entity table used by `escapeHTML`.
 */
 inline constexpr std::pair<char, std::string_view>
 htmlEscapeEntities[] = {
@@ -258,7 +259,7 @@ htmlEscapeEntities[] = {
 */
 MRDOCS_HANDLEBARS_DECL
 std::string
-HTMLEscape(std::string_view str);
+escapeHTML(std::string_view str);
 
 } // namespace handlebars
 } // namespace mrdocs

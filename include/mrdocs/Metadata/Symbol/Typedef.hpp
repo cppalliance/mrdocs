@@ -14,20 +14,20 @@
 #ifndef MRDOCS_API_METADATA_SYMBOL_TYPEDEF_HPP
 #define MRDOCS_API_METADATA_SYMBOL_TYPEDEF_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
 
 /** Info for typedef and using declarations.
 */
-struct TypedefSymbol final
+struct MRDOCS_VISIBLE TypedefSymbol final
     : SymbolCommonBase<SymbolKind::Typedef>
 {
     /** The aliased type.

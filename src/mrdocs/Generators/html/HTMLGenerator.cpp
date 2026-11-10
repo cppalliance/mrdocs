@@ -28,7 +28,7 @@ void
 HTMLGenerator::
 escape(handlebars::OutputRef& os, std::string_view str) const
 {
-    handlebars::HTMLEscape(os, str);
+    handlebars::escapeHTML(os, str);
 }
 
 } // html

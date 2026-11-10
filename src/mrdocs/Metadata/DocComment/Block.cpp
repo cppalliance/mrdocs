@@ -19,7 +19,7 @@ namespace doc {
 std::strong_ordering
 operator<=>(Polymorphic<Block> const& lhs, Polymorphic<Block> const& rhs)
 {
-    return CompareDerived(lhs, rhs);
+    return compareDerived(lhs, rhs);
 }
 
 }

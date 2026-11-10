@@ -1823,8 +1823,8 @@ subexpressions()
     {
         hbs.registerHelper("input", [](dom::Value const& options) {
             dom::Value hash = options.get("hash");
-            std::string ariaLabel = HTMLEscape(hash.get("aria-label"));
-            std::string placeholder = HTMLEscape(hash.get("placeholder"));
+            std::string ariaLabel = escapeHTML(hash.get("aria-label"));
+            std::string placeholder = escapeHTML(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -1849,8 +1849,8 @@ subexpressions()
         ctx.set("item", item);
         hbs.registerHelper("input", [](dom::Value const& options) {
             auto hash = options.get("hash");
-            std::string ariaLabel = HTMLEscape(hash.get("aria-label"));
-            std::string placeholder = HTMLEscape(hash.get("placeholder"));
+            std::string ariaLabel = escapeHTML(hash.get("aria-label"));
+            std::string placeholder = escapeHTML(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -4544,33 +4544,33 @@ utils()
         }
     }
 
-    // HTMLEscape
+    // escapeHTML
     {
         // should escape html
         {
-            BOOST_TEST(HTMLEscape("foo<&\"'>") == "foo&lt;&amp;&quot;&#x27;&gt;");
-            BOOST_TEST(HTMLEscape("foo=") == "foo&#x3D;");
+            BOOST_TEST(escapeHTML("foo<&\"'>") == "foo&lt;&amp;&quot;&#x27;&gt;");
+            BOOST_TEST(escapeHTML("foo=") == "foo&#x3D;");
         }
 
         // should not escape SafeString
         {
             dom::Value string = safeString("foo<&\"'>");
-            BOOST_TEST(HTMLEscape(string) == "foo<&\"'>");
+            BOOST_TEST(escapeHTML(string) == "foo<&\"'>");
 
             dom::Object ctx;
             ctx.set("toHTML", dom::makeInvocable([]() {
                 return "foo<&\"'>";
             }));
-            BOOST_TEST(HTMLEscape(ctx) == "foo<&\"'>");
+            BOOST_TEST(escapeHTML(ctx) == "foo<&\"'>");
         }
 
         // should handle falsy
         {
-            BOOST_TEST(HTMLEscape("").empty());
-            BOOST_TEST(HTMLEscape(dom::Value(dom::Kind::Undefined)).empty());
-            BOOST_TEST(HTMLEscape(dom::Value(dom::Kind::Null)).empty());
-            BOOST_TEST(HTMLEscape(false) == "false");
-            BOOST_TEST(HTMLEscape(0) == "0");
+            BOOST_TEST(escapeHTML("").empty());
+            BOOST_TEST(escapeHTML(dom::Value(dom::Kind::Undefined)).empty());
+            BOOST_TEST(escapeHTML(dom::Value(dom::Kind::Null)).empty());
+            BOOST_TEST(escapeHTML(false) == "false");
+            BOOST_TEST(escapeHTML(0) == "0");
         }
     }
 

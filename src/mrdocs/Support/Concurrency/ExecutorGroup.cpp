@@ -10,7 +10,7 @@
 //
 
 #include <mrdocs/Support/Concurrency/ExecutorGroup.hpp>
-#include <mrdocs/Support/Concurrency/unlock_guard.hpp>
+#include <mrdocs/Support/Concurrency/UnlockGuard.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <condition_variable>
 #include <unordered_set>
@@ -76,7 +76,7 @@ ExecutorGroupBase(
 
 void
 ExecutorGroupBase::
-post(any_callable<void(void*)> work)
+post(AnyCallable<void(void*)> work)
 {
     std::unique_lock<std::mutex> lock(mutex_);
     work_.emplace_back(std::move(work));
@@ -103,7 +103,7 @@ run(std::unique_lock<std::mutex> lock)
         {
             if(work_.empty())
                 break;
-            any_callable<void(void*)> work(
+            AnyCallable<void(void*)> work(
                 std::move(work_.front()));
             work_.pop_front();
             {

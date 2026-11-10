@@ -15,7 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
-#include <mrdocs/Support/TypeTraits/any_callable.hpp>
+#include <mrdocs/Support/TypeTraits/AnyCallable.hpp>
 #include <condition_variable>
 #include <deque>
 #include <memory>
@@ -35,7 +35,7 @@ class MRDOCS_DECL ExecutorGroupBase
 protected:
     /** Type-erased agent holder used by the base class.
     */
-    struct AnyAgent
+    struct MRDOCS_DECL AnyAgent
     {
         /** Virtual destructor to allow deleting through the base pointer.
         */
@@ -65,14 +65,14 @@ protected:
     std::vector<std::unique_ptr<AnyAgent>> agents_;
     /** Pending work posted to the group.
     */
-    std::deque<any_callable<void(void*)>> work_;
+    std::deque<AnyCallable<void(void*)>> work_;
 
     /** Construct with a backing thread pool.
     */
     explicit ExecutorGroupBase(ThreadPool&);
     /** Queue work to run on the group agents.
     */
-    void post(any_callable<void(void*)> work);
+    void post(AnyCallable<void(void*)> work);
     /** Execute queued work until empty.
         @param lock Held lock protecting the work queue.
     */

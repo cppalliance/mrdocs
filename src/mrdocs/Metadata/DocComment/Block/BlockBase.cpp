@@ -79,7 +79,7 @@ isEmpty(Block const& el)
         }
         else
         {
-            return is_one_of(
+            return isOneOf(
                 N.Kind,
                 {BlockKind::ThematicBreak});
         }

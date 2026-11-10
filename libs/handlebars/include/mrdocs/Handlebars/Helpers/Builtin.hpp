@@ -33,7 +33,7 @@ namespace helpers {
 /** Register all the built-in helpers into a Handlebars instance
 
     Individual built-in helpers can also be registered with the
-    public `*_fn` functions in this namespace.
+    public `*Fn` functions in this namespace.
 
     This allows the user to override only some of the built-in
     helpers. In particular, this is important for mandatory
@@ -54,7 +54,7 @@ registerBuiltinHelpers(Handlebars& hbs);
     default Antora UI.
 
     Individual Antora helpers can also be registered with the
-    public `*_fn` functions in this namespace.
+    public `*Fn` functions in this namespace.
 
     Since the Antora helpers are not mandatory and include
     many functions not applicable to all applications,
@@ -76,7 +76,7 @@ registerAntoraHelpers(Handlebars& hbs);
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Expected<dom::Value>
-helper_missing_fn(dom::Array const& arguments);
+helperMissingFn(dom::Array const& arguments);
 
 /** The `blockHelperMissing` helper: renders a block for a missing block helper.
 
@@ -85,7 +85,7 @@ helper_missing_fn(dom::Array const& arguments);
 */
 MRDOCS_HANDLEBARS_DECL
 dom::Expected<void>
-block_helper_missing_fn(dom::Value const& context, dom::Value options);
+blockHelperMissingFn(dom::Value const& context, dom::Value options);
 
 } // namespace helpers
 } // namespace handlebars

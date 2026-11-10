@@ -13,6 +13,7 @@
 #ifndef MRDOCS_API_METADATA_SYMBOL_VARIABLE_HPP
 #define MRDOCS_API_METADATA_SYMBOL_VARIABLE_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -20,7 +21,6 @@
 #include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 
 namespace mrdocs {
@@ -30,7 +30,7 @@ namespace mrdocs {
     This includes variables at namespace
     or record scope.
 */
-struct VariableSymbol final
+struct MRDOCS_VISIBLE VariableSymbol final
     : SymbolCommonBase<SymbolKind::Variable>
 {
     /** The type of the variable

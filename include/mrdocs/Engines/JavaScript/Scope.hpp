@@ -47,7 +47,7 @@ namespace js {
     @note Multiple Scopes can exist for the same Context (even in different
     threads), but operations are serialized by the Context's mutex.
 */
-class Scope
+class MRDOCS_VISIBLE Scope
 {
     std::shared_ptr<Context::Impl> impl_;
 
@@ -174,7 +174,7 @@ public:
     */
     MRDOCS_DECL
     Expected<Value>
-    compile_script(std::string_view jsCode);
+    compileScript(std::string_view jsCode);
 
     /** Compile a script and push results to stack.
 
@@ -193,7 +193,7 @@ public:
     */
     MRDOCS_DECL
     Expected<Value>
-    compile_function(std::string_view jsCode);
+    compileFunction(std::string_view jsCode);
 
     /** Return a global object if it exists.
 

@@ -79,7 +79,7 @@ namespace handlebars {
       Handlebars env;
       dom::Object context;
       context["foo"] = "bar";
-      env.render_to(std::cout, "{{ foo }}", context);
+      env.renderTo(std::cout, "{{ foo }}", context);
       // prints "bar" to stdout
     @endcode
 
@@ -88,7 +88,7 @@ namespace handlebars {
       dom::Object context;
       context["foo"] = "bar";
       std::string result;
-      env.render_to(result, "{{ foo }}", context);
+      env.renderTo(result, "{{ foo }}", context);
       assert(result == "bar");
     @endcode
 
@@ -172,7 +172,7 @@ namespace handlebars {
 
     @see https://handlebarsjs.com/
 */
-class Handlebars {
+class MRDOCS_HANDLEBARS_DECL Handlebars {
     using helpers_map = std::unordered_map<
         std::string, dom::Function, detail::string_hash, std::equal_to<>>;
 
@@ -216,7 +216,7 @@ public:
         dom::Value const& context,
         HandlebarsOptions const& options) const
     {
-        auto exp = try_render(templateText, context, options);
+        auto exp = tryRender(templateText, context, options);
         if (!exp)
         {
             throw exp.error();
@@ -230,7 +230,7 @@ public:
         std::string_view templateText,
         dom::Value const& context) const
     {
-        auto exp = try_render(templateText, context, {});
+        auto exp = tryRender(templateText, context, {});
         if (!exp)
         {
             throw exp.error();
@@ -244,7 +244,7 @@ public:
     {
         dom::Value emptyContext(dom::Object{});
         HandlebarsOptions defaultOptions;
-        auto exp = try_render(templateText, emptyContext, defaultOptions);
+        auto exp = tryRender(templateText, emptyContext, defaultOptions);
         if (!exp)
         {
             throw exp.error();
@@ -267,13 +267,13 @@ public:
         @return The rendered text
     */
     void
-    render_to(
+    renderTo(
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context,
         HandlebarsOptions const& options) const
     {
-        auto exp = try_render_to(out, templateText, context, options);
+        auto exp = tryRenderTo(out, templateText, context, options);
         if (!exp)
         {
             throw exp.error();
@@ -282,12 +282,12 @@ public:
 
     /// @overload
     void
-    render_to(
+    renderTo(
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context) const
     {
-        auto exp = try_render_to(out, templateText, context, {});
+        auto exp = tryRenderTo(out, templateText, context, {});
         if (!exp)
         {
             throw exp.error();
@@ -296,29 +296,29 @@ public:
 
     /// @overload
     void
-    render_to(
+    renderTo(
         OutputRef& out,
         std::string_view templateText) const
     {
         dom::Object const& context = {};
-        auto exp = try_render_to(out, templateText, context, {});
+        auto exp = tryRenderTo(out, templateText, context, {});
         if (!exp)
         {
             throw exp.error();
         }
     }
 
-    /** @copydoc render_to(OutputRef&, std::string_view, dom::Value const&, HandlebarsOptions const&) const
+    /** @copydoc renderTo(OutputRef&, std::string_view, dom::Value const&, HandlebarsOptions const&) const
     */
     Expected<std::string, Error>
-    try_render(
+    tryRender(
         std::string_view templateText,
         dom::Value const& context,
         HandlebarsOptions const& options) const
     {
         std::string out;
         OutputRef os(out);
-        auto exp = try_render_to(os, templateText, context, options);
+        auto exp = tryRenderTo(os, templateText, context, options);
         if (!exp)
         {
             return Unexpected(exp.error());
@@ -328,19 +328,19 @@ public:
 
     /// @overload
     Expected<std::string, Error>
-    try_render(
+    tryRender(
         std::string_view templateText,
         dom::Value const& context) const
     {
-        return try_render(templateText, context, {});
+        return tryRender(templateText, context, {});
     }
 
     /// @overload
     Expected<std::string, Error>
-    try_render(std::string_view templateText) const
+    tryRender(std::string_view templateText) const
     {
         dom::Object const& context = {};
-        return try_render(templateText, context, {});
+        return tryRender(templateText, context, {});
     }
 
     /** Render a handlebars template
@@ -358,7 +358,7 @@ public:
         @return The rendered text
     */
     Expected<void, Error>
-    try_render_to(
+    tryRenderTo(
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context,
@@ -366,22 +366,22 @@ public:
 
     /// @overload
     Expected<void, Error>
-    try_render_to(
+    tryRenderTo(
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context) const
     {
-        return try_render_to(out, templateText, context, {});
+        return tryRenderTo(out, templateText, context, {});
     }
 
     /// @overload
     Expected<void, Error>
-    try_render_to(
+    tryRenderTo(
         OutputRef& out,
         std::string_view templateText) const
     {
         dom::Object const& context = {};
-        return try_render_to(out, templateText, context, {});
+        return tryRenderTo(out, templateText, context, {});
     }
 
     /** Register a partial
@@ -496,7 +496,7 @@ public:
 private:
     // render to ostream using extra partials from parent contexts
     Expected<void, Error>
-    try_render_to_impl(
+    tryRenderToImpl(
         OutputRef& out,
         dom::Value const &context,
         HandlebarsOptions const& opt,
@@ -632,6 +632,7 @@ dom::Object
 createFrame(dom::Value const& parent);
 
 /// @overload
+MRDOCS_HANDLEBARS_DECL
 dom::Object
 createFrame(dom::Object const& child, dom::Object const& parent);
 

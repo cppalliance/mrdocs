@@ -12,7 +12,7 @@
 
 #include "SinglePageVisitor.hpp"
 #include "VisitorHelpers.hpp"
-#include <mrdocs/Support/Concurrency/unlock_guard.hpp>
+#include <mrdocs/Support/Concurrency/UnlockGuard.hpp>
 #include <cstddef>
 #include <sstream>
 #include <utility>
@@ -37,7 +37,7 @@ operator()(T const& I)
             }
             else
             {
-                r.error().Throw();
+                r.error().throwError();
             }
         });
     }
@@ -83,7 +83,7 @@ writePage(
     {
         // Write the current symbol
         {
-            unlock_guard unlock(mutex_);
+            UnlockGuard unlock(mutex_);
             os_.write(
                 pageText.data(),
                 static_cast<std::streamsize>(pageText.size()));

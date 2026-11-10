@@ -373,36 +373,36 @@ concept has_nullable_traits_v  =
         { nullable_traits<T>::make_null(std::declval<T&>()) } -> std::same_as<void>;
     };
 
-/** make_null helper that uses nullable_traits<T> if available.
+/** makeNull helper that uses nullable_traits<T> if available.
 
     @param v The value to make null.
 */
 template <has_nullable_traits_v T>
 inline void
-make_null(T& v) noexcept(noexcept(nullable_traits<T>::make_null(v)))
+makeNull(T& v) noexcept(noexcept(nullable_traits<T>::make_null(v)))
 {
     nullable_traits<T>::make_null(v);
 }
 
-/** is_null helper that uses nullable_traits<T> if available.
+/** isNull helper that uses nullable_traits<T> if available.
 
     @param v The value to test for null.
     @return true if v is null, false otherwise.
 */
 template <has_nullable_traits_v T>
 inline bool
-is_null(T const& v) noexcept(noexcept(nullable_traits<T>::is_null(v)))
+isNull(T const& v) noexcept(noexcept(nullable_traits<T>::is_null(v)))
 {
     return nullable_traits<T>::is_null(v);
 }
 
-/** null_of helper that constructs a null T using nullable_traits<T>.
+/** nullOf helper that constructs a null T using nullable_traits<T>.
 
     @return A null T value.
 */
 template <has_nullable_traits_v T>
 inline T
-null_of() noexcept(noexcept(nullable_traits<T>::null()))
+nullOf() noexcept(noexcept(nullable_traits<T>::null()))
 {
     return nullable_traits<T>::null();
 }

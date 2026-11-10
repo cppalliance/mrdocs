@@ -24,7 +24,7 @@ namespace dom {
 //
 //------------------------------------------------
 
-class MRDOCS_DOM_DECL
+class MRDOCS_DOM_VISIBLE
     Array::iterator
 {
     ArrayImpl const* obj_ = nullptr;
@@ -41,26 +41,35 @@ class MRDOCS_DOM_DECL
     }
 
 public:
+    /// The type of the elements.
     using value_type = Array::value_type;
+    /// The type returned when dereferencing.
     using reference = Array::value_type;
+    /// The type of the distance between two iterators.
     using difference_type = std::ptrdiff_t;
+    /// The type of an element count.
     using size_type  = std::size_t;
+    /// The type returned by the arrow operator.
     using pointer = reference;
+    /// The iterator category.
     using iterator_category =
         std::random_access_iterator_tag;
 
     iterator() = default;
 
+    /// Return the element the iterator refers to.
     reference operator*() const noexcept
     {
         return obj_->get(i_);
     }
 
+    /// Return the element the iterator refers to.
     pointer operator->() const noexcept
     {
         return obj_->get(i_);
     }
 
+    /// Return the element `n` positions after the iterator.
     reference operator[](difference_type n) const noexcept
     {
         return obj_->get(i_ + n);
@@ -135,6 +144,7 @@ public:
         return {*obj_, i_ + n};
     }
 
+    /// Return the distance between two iterators of the same array.
     difference_type operator-(iterator other) const noexcept
     {
         assert(obj_ == other.obj_);
@@ -153,9 +163,9 @@ public:
 //
 //------------------------------------------------
 
-inline char const* Array::type_key() const noexcept
+inline char const* Array::typeKey() const noexcept
 {
-    return impl_->type_key();
+    return impl_->typeKey();
 }
 
 inline bool Array::empty() const noexcept

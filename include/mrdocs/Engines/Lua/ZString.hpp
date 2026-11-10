@@ -23,7 +23,7 @@ namespace lua {
 
 /** A null-terminated string.
 */
-class zstring
+class MRDOCS_VISIBLE ZString
 {
     std::string s_;
     char const* c_str_;
@@ -32,7 +32,7 @@ public:
     /** Construct from a C-string pointer.
         @param s Null-terminated string.
     */
-    zstring(char const* s) noexcept
+    ZString(char const* s) noexcept
         : c_str_(s)
     {
     }
@@ -40,7 +40,7 @@ public:
     /** Construct from string_view (stores an owned copy).
         @param s String view to copy.
     */
-    zstring(std::string_view s)
+    ZString(std::string_view s)
         : s_(s)
         , c_str_(s_.c_str())
     {
@@ -49,7 +49,7 @@ public:
     /** Construct from std::string without copying.
         @param s Source string.
     */
-    zstring(std::string const& s)
+    ZString(std::string const& s)
         : c_str_(s.c_str())
     {
     }

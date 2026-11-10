@@ -1,0 +1,240 @@
+= Bootstrap
+
+`utils/bootstrap/` holds the tool behind `python bootstrap.py`.
+This page is for contributors who change the tool.
+xref:bootstrap.adoc[The Bootstrap Tool Reference] covers running it.
+
+The top-level `bootstrap.py` only forwards to the package in `utils/bootstrap/src`.
+
+[#run]
+== Run phases
+
+A run does these things in order:
+
+. Checks the system prerequisites: `cmake`, `git`, Python, a C compiler and Java.
+. Finds the tools and the compilers, asks for the options that have no flag (unless you pass `-y`), and probes the compilers with CMake.
+. Sets up Ninja when it is missing.
+. Installs each recipe in dependency order (see <<recipes>>), skipping the ones whose stamp is current.
+. Writes `CMakeUserPresets.json`, one configure preset per run (the preset name combines the build type, the OS, the compiler and the sanitizer).
+. Configures, builds and installs Mr.Docs into the install directory, then writes the IDE run configurations that need the build.
+
+Two flags change what a run does:
+
+* `--dry-run` prints every command the run would execute as shell, and builds nothing.
+* `--skip-build` skips the build and install of Mr.Docs. Unless you pass `--no-run-configs`, it still configures Mr.Docs so that it can write the run configurations.
+
+=== Rebuild stamps
+
+Each recipe installs into `build/third-party/install/<preset>/<name>`.
+A recipe whose `install_scope` is `global` installs into `build/third-party/install/<name>`.
+The install directory holds a `.bootstrap-stamp.json` with these fields:
+
+* The resolved source reference.
+* A copy of the recipe fields.
+* The platform: OS, version and architecture.
+* For sanitizer builds, the compilers and flags.
+
+On the next run, the tool skips a recipe whose stamp matches.
+It rebuilds any other and prints the reason first, such as `ref changed: 'abc' -> 'def'`.
+`--force` rebuilds even when the stamp matches, and `--clean` also deletes the downloaded source and fetches it again.
+
+A sanitizer rebuilds the recipes only when the sanitizer needs instrumented dependencies: Clang with `address`, `memory` or `thread`.
+`undefined` checks only the project's own code, so it keeps the dependency builds.
+
+=== Cache keys and the cache directory
+
+`--cache-dir DIR` installs every recipe into `DIR/<name>` instead of the build tree.
+A CI job can then cache that one directory and let the stamps decide what to rebuild.
+`--cache-key <recipe>` prints the key CI uses to cache that recipe and exits.
+It needs `--os-key`, the name of the OS or container image, such as `macos-15` or `ubuntu:24.04`:
+
+[source,text]
+----
+$ python3 bootstrap.py --cache-key llvm --os-key macos-15
+llvm-77e43ec-release-macos-15
+----
+
+The key has the form `name-hash-buildtype-os`, where `hash` is the first 7 characters of the recipe version.
+
+A sanitizer changes the key only with Clang:
+
+* `address` adds `-clang-<major version>-ASan` at the end.
+* `memory` adds `-clang-<major version>-` with nothing after it.
+* No other sanitizer changes the key. The cache-key code names a `UBSan` tail, but no run produces it, because only `address` and `memory` add a suffix.
+
+[#recipes]
+== Recipes and how to add one
+
+A recipe is a JSON file in `utils/bootstrap/recipes/`.
+It says where to fetch a dependency, what it depends on, and how to build it.
+`python bootstrap.py --list-recipes` prints them.
+`--recipe-filter llvm,libxml2` installs only the names you list.
+
+=== The recipes in the tree
+
+[cols="1,1,3",options="header"]
+|===
+| Recipe | Version | What it builds
+
+| `llvm`
+| commit `77e43ec`
+| LLVM and Clang, the compiler library Mr.Docs extracts symbols with. With a sanitizer it also builds the matching libc++ runtimes. Built per preset, with the files under `patches/llvm/`.
+
+| `libxml2`
+| `v2.12.6`
+| The XML library the `xml-lint` test uses. Installed once for all presets.
+
+| `jerryscript`
+| `3.0.0`
+| The JavaScript engine of the Handlebars templates. Built per preset, with the patches under `patches/jerryscript/`.
+
+| `lua`
+| `5.4.8`
+| The Lua engine of scripts and plugins. Built per preset, with the patches under `patches/lua/`.
+|===
+
+=== The fields of a recipe
+
+[cols="1,3",options="header"]
+|===
+| Field | Meaning
+
+| `name`, `version`
+| The recipe name, and the version it pins.
+
+| `source`
+| `type` (`archive` or `git`), `url`, and one of `tag`, `commit`, `branch` or `ref`.
+
+| `dependencies`
+| Names of recipes the run installs first. It sorts the recipes topologically and stops on a cycle or a missing name.
+
+| `build`
+| The steps: `cmake` steps (options, config, targets) and command steps.
+
+| `build_type`, `tags`
+| The build type of the dependency, and free-form tags that are part of the stamp.
+
+| `package_root_var`
+| One name or a list: the `<Package>_ROOT` variables the presets set to the install directory (`LLVM_ROOT` and `Clang_ROOT` for `llvm`).
+
+| `install_scope`
+| `per-preset` (the default) or `global`.
+|===
+
+The paths are not in the file.
+The tool puts sources in `build/third-party/source/<name>`.
+`libxml2` is the only global recipe, so every other one builds and installs per preset.
+
+=== Adding a dependency
+
+. Add a JSON file with these fields to `recipes/`.
+. Put its patches under `patches/<name>/`.
+. Run `python bootstrap.py --list-recipes` and check that it loads.
+
+[#structure]
+== Project structure
+
+[cols="2,3",options="header"]
+|===
+| Path | Holds
+
+| `bootstrap.py`, `utils/bootstrap/main.py`
+| The two entry points. Both run the package `src` as `__main__`.
+
+| `utils/bootstrap/src/__main__.py`
+| The command line: every option, its help text, and the early exits (`--list-recipes`, `--cache-key`).
+
+| `src/installer.py`
+| `MrDocsInstaller`, which runs the phases of <<run>> in order.
+
+| `src/core/`
+| Options (`options.py` and `option_help.py`), platform detection, the console output (`ui.py`), prompts, git, file operations and process execution.
+
+| `src/tools/`
+| Finding and probing tools: compilers, Ninja, Java, Visual Studio and the system prerequisites.
+
+| `src/recipes/`
+| The recipe schema, loader and topological sort, the source fetcher with the stamps, archive extraction, the builder and the cache keys.
+
+| `src/presets/`
+| The generator for `CMakeUserPresets.json`.
+
+| `src/configs/`
+| The run configurations. `run_configs.json` lists the targets once, and `clion.py`, `vscode.py`, `visual_studio.py` and `justfile.py` write them in each format. `pretty_printers.py` writes `.gdbinit` and `.lldbinit`.
+
+| `recipes/`, `patches/`
+| The recipe files, and the files copied over a dependency's source before it builds.
+
+| `refresh_ide_configs.py`
+| Rewrites the run configurations without a full run (see xref:contribute/workflow.adoc[Development Workflow]).
+
+| `tests/`
+| The unit tests.
+
+| `dependencies.adoc`
+| A short note on third-party dependencies bundled with the source.
+
+| `pyproject.toml`
+| The coverage settings CI uses for the tests. It is not a packaging manifest.
+
+| `CMakeLists.txt`
+| The `bootstrap` and `refresh-ide-configs` targets, and the `utils-bootstrap-tests` test.
+|===
+
+[#tests]
+== Running the tests
+
+The unit tests need no network and build nothing.
+Run them from the repository root:
+
+[source,bash]
+----
+python3 -m unittest discover -s utils/bootstrap/tests
+----
+
+`python3 -m unittest discover -s utils/bootstrap/tests -k cache_keys` runs the tests whose name contains `cache_keys`.
+CMake registers the same command as the `utils-bootstrap-tests` test, except on Windows.
+
+[#troubleshooting]
+== Troubleshooting
+
+[cols="2,3",options="header"]
+|===
+| Condition | Fix
+
+| A dependency looks stale, or a build left a broken directory.
+| `python bootstrap.py --clean --force` fetches every source again and rebuilds every recipe.
+
+| A step fails and the message does not say why.
+| `python bootstrap.py --verbose --debug` prints every command and the Python traceback.
+
+| You only need the dependencies and the presets.
+| `python bootstrap.py --skip-build` skips the build and install of Mr.Docs.
+
+| You do not know which commands the run would execute.
+| `python bootstrap.py --yes --dry-run` prints them as shell.
+
+| The output has stray escape codes, or CI logs are unreadable.
+| `python bootstrap.py --plain`, or set `BOOTSTRAP_PLAIN=1`.
+
+| A recipe rebuilds on every run.
+| Read the line that starts with the recipe name: it says which stamp field changed. A path to a different compiler, or sanitizer flags, change the stamp of a sanitizer build.
+
+| A tool is not found.
+| Put it on `PATH`, or set `<TOOL>_ROOT` (see xref:bootstrap.adoc#environment[Environment variables]). `--install-system-deps` installs the missing ones with the system package manager.
+
+| The IDE entries point to a program that does not exist.
+| CMake has not configured the preset yet. Run `cmake --preset <preset>`, then `python utils/bootstrap/refresh_ide_configs.py --preset <preset>`.
+|===
+
+[#conventions]
+== Conventions for changing the tool
+
+A change to the tool follows these rules:
+
+. A new option goes in the argument parser of `src/__main__.py`, and its text goes in `src/core/option_help.py`.
+. Regenerate the options page after an option change, as xref:contribute/invariants/codegen.adoc#bootstrap-options[Code Generation] describes.
+. A run target for the IDEs and `just` goes once in `src/configs/run_configs.json`, and the writers generate every entry from it.
+. A recipe field that changes a build also goes into the stamp, so a changed recipe rebuilds on the next run.
+. Every change has a unit test under `tests/`. The tests need no network and build nothing.
+. A change that users see updates xref:bootstrap.adoc[the user page] in the same change.

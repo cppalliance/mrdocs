@@ -115,13 +115,15 @@ Error(
     loc_ = loc;
 }
 
-void Error::Throw() const&
+void
+Error::throwError() const&
 {
     MRDOCS_ASSERT(failed());
     throw Exception(*this);
 }
 
-void Error::Throw() &&
+void
+Error::throwError() &&
 {
     MRDOCS_ASSERT(failed());
     throw Exception(std::move(*this));

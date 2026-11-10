@@ -65,17 +65,17 @@ wait()
 void
 ThreadPool::
 post(
-    any_callable<void(void)> f)
+    AnyCallable<void(void)> f)
 {
     if(impl_)
     {
         impl_->async(
-        [sp = std::make_shared<
-            any_callable<void(void)>>(std::move(f))]
-        {
-            // do NOT catch exceptions here
-            (*sp)();
-        });
+            [sp = std::make_shared<
+                 AnyCallable<void(void)>>(std::move(f))]
+            {
+                // do NOT catch exceptions here
+                (*sp)();
+            });
         return;
     }
 
@@ -145,29 +145,28 @@ wait()
 void
 TaskGroup::
 post(
-    any_callable<void(void)> f)
+    AnyCallable<void(void)> f)
 {
     if(impl_->taskGroup)
     {
         impl_->taskGroup->async(
-        [&, sp = std::make_shared<
-            any_callable<void(void)>>(std::move(f))]
-        {
-            try
+            [&, sp = std::make_shared<AnyCallable<void(void)>>(std::move(f))]
             {
-                (*sp)();
-            }
-            catch(Exception const& ex)
-            {
-                std::lock_guard<std::mutex> lock(impl_->mutex);
-                impl_->errors.emplace(ex.error());
-            }
-            catch(std::exception const& ex)
-            {
-                std::lock_guard<std::mutex> lock(impl_->mutex);
-                impl_->errors.emplace(Error(ex));
-            }
-        });
+                try
+                {
+                    (*sp)();
+                }
+                catch (Exception const& ex)
+                {
+                    std::lock_guard<std::mutex> lock(impl_->mutex);
+                    impl_->errors.emplace(ex.error());
+                }
+                catch (std::exception const& ex)
+                {
+                    std::lock_guard<std::mutex> lock(impl_->mutex);
+                    impl_->errors.emplace(Error(ex));
+                }
+            });
         return;
     }
 

@@ -80,11 +80,11 @@ namespace detail
         {
             if constexpr (std::is_same_v<Context, NoLazyObjectContext>)
             {
-                mapFn(name, dom::ValueFrom(value));
+                mapFn(name, dom::valueFrom(value));
             }
             else
             {
-                mapFn(name, dom::ValueFrom(value, ctx));
+                mapFn(name, dom::valueFrom(value, ctx));
             }
         }
 
@@ -127,7 +127,7 @@ namespace detail
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
-struct LazyObjectMapTag { };
+struct MRDOCS_DOM_VISIBLE LazyObjectMapTag { };
 
 /** Concept to determine if a type can be mapped to a
     @ref dom::LazyObjectImpl with a user-provided conversion.
@@ -185,7 +185,7 @@ concept HasLazyObjectMapWithContext = requires(
 /** Determine if `T` can be converted to @ref dom::Value.
 
     If `T` can be converted to @ref dom::Value via a
-    call to @ref dom::ValueFrom, the static data member `value`
+    call to @ref dom::valueFrom, the static data member `value`
     is defined as `true`. Otherwise, `value` is
     defined as `false`.
 */
@@ -267,9 +267,9 @@ public:
     */
     ~LazyObjectImpl() override = default;
 
-    /// @copydoc ObjectImpl::type_key
+    /// @copydoc ObjectImpl::typeKey
     char const*
-    type_key() const noexcept override
+    typeKey() const noexcept override
     {
         return "LazyObject";
     }
@@ -369,11 +369,11 @@ get(std::string_view key) const
             {
                 if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(value)>, Context>)
                 {
-                    ValueFrom(value, context_, result);
+                    valueFrom(value, context_, result);
                 }
                 else
                 {
-                    ValueFrom(value, result);
+                    valueFrom(value, result);
                 }
             }
         }, [&result, key, this](std::string_view name, auto const& deferred)
@@ -382,11 +382,11 @@ get(std::string_view key) const
             {
                 if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(deferred())>, Context>)
                 {
-                    ValueFrom(deferred(), context_, result);
+                    valueFrom(deferred(), context_, result);
                 }
                 else
                 {
-                    ValueFrom(deferred(), result);
+                    valueFrom(deferred(), result);
                 }
             }
         },
@@ -454,7 +454,7 @@ visit(std::function<bool(String, Value)> fn) const
 */
 template <HasLazyObjectMapWithoutContext T>
 Object
-LazyObject(T const& obj)
+lazyObject(T const& obj)
 {
     return newObject<LazyObjectImpl<T>>(obj);
 }
@@ -468,7 +468,7 @@ LazyObject(T const& obj)
 template <class T, class Context>
 requires HasLazyObjectMap<T, Context>
 Object
-LazyObject(T const& arr, Context const& context)
+lazyObject(T const& arr, Context const& context)
 {
     return newObject<LazyObjectImpl<T, Context>>(arr, context);
 }

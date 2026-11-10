@@ -10,7 +10,7 @@
 
 # Developer/maintainer tooling. Every subdirectory is wired through CMake here,
 # unconditionally: its scripts are exposed as custom targets so anyone can run
-# them (bootstrap, reformat, the test runner, ...) at any time, independent of
+# them (bootstrap, format, the test runner, ...) at any time, independent of
 # whether tests, docs, or anything else is enabled. Only the ctest tests these
 # directories register are gated on MRDOCS_BUILD_TESTS, inside each subdir.
 # codegen/ is first because it also generates the project headers every build
@@ -19,6 +19,7 @@ add_subdirectory(codegen)
 add_subdirectory(bootstrap)
 add_subdirectory(danger)
 add_subdirectory(docs)
-add_subdirectory(linting)
+add_subdirectory(format)
+add_subdirectory(lint)
 add_subdirectory(testing)
 add_subdirectory(cmake)
