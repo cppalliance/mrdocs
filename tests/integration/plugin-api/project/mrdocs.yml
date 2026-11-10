@@ -1,0 +1,6 @@
+# The project the runs that must succeed use: the plugin under test loads,
+# and the run then extracts this one small file with the noop generator.
+source-root: .
+file-patterns:
+  - sample.cpp
+warn-if-undocumented: false

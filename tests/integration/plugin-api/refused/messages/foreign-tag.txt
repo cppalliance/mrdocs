@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-foreign-tag.so" was built with foreign-stdlib, and this MrDocs with <standard library>; rebuild it with the same standard library and settings

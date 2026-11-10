@@ -1,0 +1,99 @@
+= examples/
+
+`examples/` holds worked examples of using MrDocs, each a self-contained project you can run.
+The user documentation links to them, so write an example for a reader, not for the test suite.
+
+== Scope of an example
+
+An example shows one useful task on the happy path, written the way a user would write it.
+It does not check the behavior of the library or exercise failure paths.
+Those checks go to `tests/unit/` or `tests/integration/`.
+Short error handling that a real program would have, such as printing the error a call returns, stays.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Fixtures that only the test suite reads
+|`tests/golden/fixtures/`.
+
+|Checks of the library's behavior or of its failure paths
+|`tests/unit/` or `tests/integration/`.
+
+|Library code an example happens to need
+|`libs/` or `src/`.
+
+|A program users install
+|`tools/`.
+
+|The documentation text around an example
+|`docs/modules/ROOT/pages/`.
+|===
+
+== Contents by subdirectory
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`examples/getting-started/`
+|The basic setups: regular CMake (`cmake/`), header-only (`cmake-header-only/`), compilation database (`compilation-database/`) and scanned (`scanned/`).
+
+|`examples/configuration/`
+|Configuration features: `diagnostics/`, `inputs/`, `parsing/` and an `overview/`.
+
+|`examples/dependencies/`
+|Handling dependencies: `find/`, `accept-missing/`, `shim-files/` and `shim-snippets/`.
+
+|`examples/generators/`
+|Data-driven (`data-driven/`), script-driven (`script-driven/`) and no-op (`noop/`) output generators.
+
+|`examples/extensions/`
+|Script extensions and compiled plugins, each with a project to run it on. See <<extension-examples>>.
+
+|`examples/library/`
+|Programs that build against the MrDocs library API directly.
+
+|`examples/third-party/`
+|Real external libraries (fmt, mp-units, nlohmann-json and others) that MrDocs documents. `projects.json` lists them, and `.github/scripts/clone-demo-projects.sh` clones them for the release demos.
+|===
+
+[#extension-examples]
+== Extension examples
+
+An example of an extension keeps all its variants and its tests in one directory under `examples/extensions/<name>/`.
+It has the variants it needs from this list:
+
+* `lua/extensions/` and `js/extensions/` have the Lua and the JavaScript script. Each is an addon root of its own, because two scripts of one name cannot share an `extensions/` directory.
+* `plugin/plugin.cpp` has the same extension as a compiled plugin.
+* `generator/` has a generator plugin on the same theme, with its own sample project and test.
+* `input/` has the source file the example documents, and `mrdocs.yml` has the configuration that runs on it. The configuration names no addon root, because each test passes its own.
+* `expected.adoc` or `expected.txt` (`warnings.txt` for project-conventions) has the one output every variant has to produce.
+* `CMakeLists.txt` calls `mrdocs_add_extension_example`, which `examples/extensions/CMakeLists.txt` defines.
+
+The function builds the plugin into an addon root in the build tree. It runs each variant alone with `--addons-supplemental` set to that root, `lua/` or `js/`, and compares the result with the one expected output.
+Each test is named after the example and the variant it runs.
+The tests that are not a variant are the `-cpp-check` test of brief-filler and the `-run-sh` tests of ghostwriter and project-conventions:
+
+[source]
+----
+mrdocs-extension-example-hello-world-transform-lua
+mrdocs-extension-example-brief-from-name-cpp
+mrdocs-extension-example-brief-from-name-js
+----
+
+The manual includes the input and the expected output from the example, so no copy of them exists elsewhere.
+
+== Build integration
+
+The root build adds `examples/` when `MRDOCS_BUILD_EXAMPLES` is on.
+The option defaults to the value of `MRDOCS_BUILD_TESTS`.
+`examples/CMakeLists.txt` adds six subdirectories, and each one registers the tests that run its examples:
+
+* `generators`, `extensions`, `library`, `configuration`, `getting-started` and `dependencies` each own their `add_test` rules.
+* No CMake file reaches `third-party/`, because the examples there are projects that CI clones.
+
+Examples compile as ordinary consumer code under the project's warning flags.
+`examples/CMakeLists.txt` silences the MSVC diagnostics that the public headers raise, at the directory scope of `examples/`.

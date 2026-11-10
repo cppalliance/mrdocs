@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-main-error.so" failed: the entry point gave up

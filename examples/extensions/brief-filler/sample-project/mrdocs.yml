@@ -1,0 +1,4 @@
+generator: xml
+source-root: .
+file-patterns:
+  - simple.cpp

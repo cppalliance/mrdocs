@@ -1,0 +1,32 @@
+outside::gone (function)
+    no path to show
+shapes::(anonymous) (enum) at legacy.hpp:45
+    use Style instead
+shapes::Box<int>::store (function) at legacy.hpp:107
+    use Box<long> instead
+shapes::Box<vendor::Old>::store (function) at legacy.hpp:115
+    use Box<int> instead
+shapes::Circle::getRadius (function) at legacy.hpp:20
+    use the radius member instead
+shapes::Circle::reset (function) at legacy.hpp:29
+    no message
+shapes::Circle::resize (function) at legacy.hpp:26
+    slated for removal
+shapes::Ring (record) at legacy.hpp:7
+    use Circle instead
+shapes::Style::solid (enum-constant) at legacy.hpp:41
+    no message
+shapes::defaultStyle (variable) at legacy.hpp:61
+    use Style::filled instead
+shapes::drop (function) at legacy.hpp:130
+    use Circle::resize with an int
+shapes::drop (function) at legacy.hpp:133
+    use Circle::resize with a double
+shapes::grow (function) at legacy.hpp:53
+    use Circle::resize instead
+shapes::grow (function) at legacy.hpp:57
+    use Circle::resize with a factor instead
+shapes::retire (function) at legacy.hpp:124
+    use Circle::resize instead
+shapes::retire (function) at legacy.hpp:127
+    use Circle::resize instead

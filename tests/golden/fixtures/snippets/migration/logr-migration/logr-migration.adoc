@@ -1,0 +1,56 @@
+= Reference
+:mrdocs:
+
+[#logr-detail-scope_token]
+== logr::detail::scope&lowbar;token
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;detail&sol;scope&lowbar;token&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct scope&lowbar;token;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#logr-detail-scope_token-2destructor[`&#126;scope&lowbar;token`] [.small]#[destructor]#
+| Destructor
+|===
+
+
+[#logr-detail-scope_token-2destructor]
+== logr::detail::link:#logr-detail-scope_token[scope&lowbar;token]::&#126;scope&lowbar;token
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;detail&sol;scope&lowbar;token&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;scope&lowbar;token();
+----
+
+[#logr-scoped_context]
+== logr::scoped&lowbar;context
+
+=== Synopsis
+
+Declared in `&lt;logr&sol;log&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#logr-detail-scope_token[detail::scope&lowbar;token]
+scoped&lowbar;context(
+    char const* key,
+    char const* value);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

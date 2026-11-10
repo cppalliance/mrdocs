@@ -1,0 +1,8 @@
+source-root: input
+input:
+  - input
+file-patterns:
+  - hello-world-transform.cpp
+generator: adoc
+multipage: false
+show-namespaces: false

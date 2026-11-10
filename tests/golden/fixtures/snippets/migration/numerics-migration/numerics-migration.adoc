@@ -1,0 +1,27 @@
+= Reference
+:mrdocs:
+
+[#numerics-clamp]
+== numerics::clamp
+
+=== Synopsis
+
+Declared in `&lt;numerics&sol;clamp&period;hpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+T
+clamp(
+    T const& v,
+    T const& lo,
+    T const& hi);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

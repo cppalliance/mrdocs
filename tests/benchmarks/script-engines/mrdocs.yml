@@ -1,8 +1,7 @@
 # The script engine benchmarks run over MrDocs's own corpus, the same
-# input as docs/mrdocs.yml, with the two bench transforms loaded from
-# ./addons and no generator, so the timing is the scripts' own.
-addons-supplemental:
-  - addons
+# input as docs/mrdocs.yml, and no generator, so the timing is the scripts' own.
+# run.py adds the addon root of the bench transform, lua/ or js/, to each run:
+# the two scripts have the same name, so one run loads only one of them.
 source-root: ../../..
 input:
   - ../../../include
