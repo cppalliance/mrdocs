@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-not-a-plugin.so" does not export mrdocs_plugin_build_id

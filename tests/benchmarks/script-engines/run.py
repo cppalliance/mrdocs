@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Run the script engine benchmarks and print a table of averages.
 
-Runs mrdocs over MrDocs's own corpus with bench.js and bench.lua loaded,
-30 times by default, and reports the mean of each workload per engine plus
+Runs mrdocs over MrDocs's own corpus with bench.js and with bench.lua
+loaded, each in a run of its own (the scripts have the same name, so one run
+loads one), 30 times by default, and reports the mean of each workload per engine plus
 the Lua-to-JavaScript ratio. The scripts time themselves, so only the
 scripts' own work is measured.
 
@@ -21,11 +22,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LINE = re.compile(r"^bench-(js|lua): (\S+) (\d+) ms")
 
 
-def run_once(mrdocs, addons, output):
+def run_once(mrdocs, addons, output, engine):
     cmd = [
         mrdocs,
         f"--config={os.path.join(HERE, 'mrdocs.yml')}",
         f"--output={output}",
+        f"--addons-supplemental={os.path.join(HERE, engine)}",
     ]
     if addons:
         cmd.append(f"--addons={addons}")
@@ -62,8 +64,10 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         for i in range(args.runs):
             print(f"run {i + 1}/{args.runs} ...", file=sys.stderr, flush=True)
-            for key, ms in run_once(args.mrdocs, args.addons, tmp).items():
-                samples.setdefault(key, []).append(ms)
+            for engine in ("lua", "js"):
+                for key, ms in run_once(
+                        args.mrdocs, args.addons, tmp, engine).items():
+                    samples.setdefault(key, []).append(ms)
 
     names = []
     for engine, name in samples:

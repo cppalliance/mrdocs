@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-main-false.so" reported a failure

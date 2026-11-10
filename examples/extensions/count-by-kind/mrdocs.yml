@@ -1,0 +1,8 @@
+source-root: input
+input:
+  - input
+file-patterns:
+  - count-by-kind.cpp
+generator: adoc
+multipage: false
+show-namespaces: false

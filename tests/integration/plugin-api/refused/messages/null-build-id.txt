@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-null-build-id.so" reports no build id

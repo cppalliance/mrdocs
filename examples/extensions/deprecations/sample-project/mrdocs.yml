@@ -1,0 +1,12 @@
+generator: deprecations
+source-root: .
+warnings: false
+implementation-defined:
+  - 'shapes::detail'
+input:
+  - .
+  - ../external
+file-patterns:
+  - legacy.hpp
+  - legacy.cpp
+  - outside.hpp

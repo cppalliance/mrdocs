@@ -1,0 +1,1 @@
+the plugin "mrdocs-plugin-foreign-build-id.so" was built for MrDocs build 0123456789ab, and this is build <build id>; rebuild it against this MrDocs
