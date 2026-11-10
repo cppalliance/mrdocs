@@ -37,6 +37,19 @@ jobs:
       - name: Container Bootstrap
         uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.5
 
+      # Adds the apt source that publishes the release GCC for ubuntu:20.04, so that Setup C++ finds it.
+      - name: Add The Release GCC Source
+        if: ${{ matrix.container == 'ubuntu:20.04' }}
+        run: |
+          set -eux
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl
+          mkdir -p /etc/apt/keyrings
+          curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60C317803A41BA51845E371A1E9377A2BA9EF27F' \
+            -o /etc/apt/keyrings/ubuntu-toolchain-r-test.asc
+          echo 'deb [signed-by=/etc/apt/keyrings/ubuntu-toolchain-r-test.asc] https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu focal main' \
+            > /etc/apt/sources.list.d/ubuntu-toolchain-r-test.list
+
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.9.5
         id: setup-cpp
@@ -54,6 +67,30 @@ jobs:
 
       - name: Clone MrDocs
         uses: actions/checkout@v6
+
+      - name: Fetch the nearest release tag
+        # A push build labels itself with the nearest calendar tag, which a depth-1 clone lacks.
+        if: ${{ github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/') }}
+        uses: ./.github/actions/fetch-release-tag
+
+      # ubuntu:20.04 has Python 3.8, and the scripts need 3.9.
+      - name: Setup Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.11'
+          activate-environment: true
+          enable-cache: false
+
+      - name: Setup CMake
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.5
+        with:
+          version: '>=3.26'
+
+      # clang and CMake both read MACOSX_DEPLOYMENT_TARGET, so bootstrap.py and
+      # the cmake-workflow builds below build for the same macOS as the release.
+      - name: Set The macOS Deployment Target
+        if: ${{ matrix.macos-deployment-target != '' }}
+        run: echo "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos-deployment-target }}" >> "$GITHUB_ENV"
 
       - name: Restore LLVM Cache
         id: llvm-cache
@@ -123,8 +160,13 @@ jobs:
           path: build/third-party/install/llvm
           key: ${{ matrix.llvm-cache-key }}
 
+      # Configures, builds, tests and installs MrDocs.
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
+        env:
+          # The CMake that mrdocs-self-doc starts reads CC and CXX.
+          CC: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          CXX: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -140,42 +182,44 @@ jobs:
           export-compile-commands: true
           run-tests: true
           install: true
-          package: ${{ matrix.is-main }}
+          extra-args: ${{ matrix.mrdocs-linux-release == 'true' && '-D MRDOCS_BUNDLE_CXX_RUNTIME=ON' || '' }} ${{ matrix.macos-deployment-target != '' && format('-D CMAKE_OSX_DEPLOYMENT_TARGET={0}', matrix.macos-deployment-target) || '' }} ${{ matrix.shared && '-D MRDOCS_BUILD_SHARED=ON' || '' }}
+          package: ${{ matrix.is-release-build == 'true' }}
           package-dir: ../packages
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
           ctest-timeout: 9000
 
-      # Consume the freshly installed mrdocs through its exported CMake package,
-      # from an out-of-tree project (tests/cmake): find_package(mrdocs), link
-      # mrdocs::mrdocs-core, and run the installed binary via MRDOCS_EXECUTABLE.
-      # This is the only coverage of mrdocs-as-a-library, so it runs on every
-      # normal build, on every platform (the default static library bundles its
-      # private toolchain, so this is where we prove a consumer links it with no
-      # LLVM/Clang/JerryScript/Lua present). It goes through the same
-      # cmake-workflow action as the main build (configure + build + ctest),
-      # pointed at tests/cmake, discovering the install through mrdocs_ROOT -- the
-      # package-specific find_package hint rather than CMAKE_PREFIX_PATH, so the
-      # <PackageName>_ROOT search path is exercised. Only the ABI flags mrdocs was
-      # built with are reused (the consumer must match the same standard library),
-      # not mrdocs's own -Werror/-static/-WX matrix flags. Coverage/sanitizer
-      # builds use instrumented toolchains an out-of-tree consumer would have to
-      # mirror exactly, so those are skipped. mrdocs_ROOT gets the MRDOCS_PREFIX
-      # resolved above.
+      # Checks that MRDOCS_BUILD_SHARED took effect, since CMake only warns
+      # about an unknown -D name.
+      - name: Shared row builds a shared core
+        if: ${{ matrix.shared }}
+        run: |
+          ninja -C build/mrdocs -t targets all | grep -E '^src/(lib)?mrdocs-core\.(so|dylib|dll):'
+
+      # Consumes the installed MrDocs from an out-of-tree project
+      # (tests/integration/cmake): find_package(mrdocs), then run the installed
+      # binary (executable/), build and load a plugin (plugin/), and link
+      # mrdocs::mrdocs-core (library/). It is the only coverage of MrDocs as a
+      # library, so it runs on every platform.
       - name: CMake Consumer Test (cmake test)
+        # Sanitizer and coverage builds use instrumented toolchains that a
+        # consumer would have to mirror.
         if: ${{ !matrix.coverage && !matrix.bootstrap-sanitizer }}
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.9.5
         with:
           cmake-version: '>=3.26'
-          source-dir: tests/cmake
+          source-dir: tests/integration/cmake
           build-dir: build/cmake-consumer
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          # Only the ABI flags MrDocs was built with, not its -Werror/-WX flags.
           cxxflags: ${{ env.BOOTSTRAP_CXXFLAGS }}
           ldflags: ${{ env.BOOTSTRAP_LDFLAGS }}
           generator: Ninja
           build-type: ${{ matrix.build-type }}
+          # mrdocs_ROOT, rather than CMAKE_PREFIX_PATH, exercises the
+          # package-specific search path.
           extra-args: -D mrdocs_ROOT=${{ env.MRDOCS_PREFIX }}
           run-tests: true
           install: false

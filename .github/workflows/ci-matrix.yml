@@ -40,30 +40,36 @@ jobs:
             msvc >=14.40
             apple-clang >=17
           standards: '23'
+          subrange-policy: |
+            gcc: one-per-major
           main-entry-factors: |
             clang Coverage
           latest-factors: |
-            clang UBSan MSan ASan
+            clang UBSan MSan ASan Shared
+            gcc UBSan Shared
           factors: |
-            gcc UBSan
-            apple-clang UBSan ASan
+            msvc Shared
+            apple-clang UBSan ASan Shared
           build-types: |
             gcc: Release
             clang: Release
             apple-clang: Release
             msvc: RelWithDebInfo
+          # The glibc 2.31 of ubuntu:20.04 is the floor of the Linux release, so
+          # do not move it to a newer Ubuntu (see binary-compatibility.adoc).
+          # The cache key of LLVM derives from the container name (llvm-os-key).
+          containers: |
+            gcc >=15 <16: ubuntu:20.04
           append-install: |
             gcc: cmake ninja-build unzip openjdk-11-jdk-headless libncurses-dev nodejs npm
             clang: cmake ninja-build unzip openjdk-11-jdk-headless libncurses-dev libstdc++-14-dev nodejs npm
           append-ccflags: |
             gcc: -Werror -Wall
-            gcc is-main: -static
             clang: -Werror -Wall
             apple-clang: -Werror -Wall
             msvc: /WX /W4
           append-cxxflags: |
             gcc: -Werror -Wall
-            gcc is-main: -static
             clang: -Werror -Wall
             apple-clang: -Werror -Wall
             msvc: /WX /W4
@@ -96,7 +102,12 @@ jobs:
             # UBSan shares the plain LLVM cache (compile-time checks only).
             llvm-cache-sanitizer: {{select asan "asan" msan "msan" tsan "tsan"}}
             llvm-cache-sanitizer-suffix: {{#if llvm-cache-sanitizer}}-{{{compiler}}}-{{{version}}}-{{{llvm-cache-sanitizer}}}{{/if}}
-            llvm-cache-key: llvm-{{{llvm-short-hash}}}-{{{llvm-preset-build-type}}}-{{{llvm-os-key}}}{{{llvm-cache-sanitizer-suffix}}}
+            # The oldest macOS the macOS rows build for; the release runs on it
+            # or later. The cache key carries it, so a cache built for the
+            # runner's own macOS is never reused.
+            macos-deployment-target: {{#if (ieq os 'macOS')}}14.0{{/if}}
+            llvm-cache-macos-suffix: {{#if macos-deployment-target}}-macos{{{macos-deployment-target}}}{{/if}}
+            llvm-cache-key: llvm-{{{llvm-short-hash}}}-{{{llvm-preset-build-type}}}-{{{llvm-os-key}}}{{{llvm-cache-sanitizer-suffix}}}{{{llvm-cache-macos-suffix}}}
 
             # Maps sanitizer factor to LLVM_USE_SANITIZER cmake value
             llvm-sanitizer-config: {{#if (includes (list "clang" "apple-clang") compiler)}}{{select asan "Address" msan "MemoryWithOrigins"}}{{/if}}
@@ -105,7 +116,12 @@ jobs:
             bootstrap-sanitizer: {{select asan "address" msan "memory" ubsan "undefined" tsan "thread"}}
 
             # Packaging and release configuration
-            is-release-build: {{and is-main (includes (list "gcc" "msvc" "apple-clang") compiler)}}
+            # The release compiler of each platform: GCC 15 on Linux (the newest
+            # with a released build for ubuntu:20.04), and the main entry of msvc
+            # and apple-clang. Factor rows (shared, ubsan) are not releases.
+            is-release-build: {{or (and (ieq compiler 'gcc') (eq major 15) (not shared) (not ubsan)) (and is-main (includes (list "msvc" "apple-clang") compiler))}}
+            # Adds the toolchain PPA and bundles the C++ runtime (release-linux.cmake).
+            mrdocs-linux-release: {{and (ieq is-release-build 'true') (ieq os 'linux')}}
             mrdocs-package-generators: {{select (ieq os 'windows') "7Z ZIP WIX" "TGZ TXZ"}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
 
