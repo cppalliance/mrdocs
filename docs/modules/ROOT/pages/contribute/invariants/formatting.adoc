@@ -1,0 +1,62 @@
+= Formatting
+
+Mr.Docs follows a number of style conventions of earlier Boost projects by the C++ Alliance. `.clang-format` attempts to replicate the style of the existing code, but it's only a rule of thumb. It should only be applied incrementally.
+
+[#changed-lines]
+== Format your changes
+
+Use `utils/format/format.py` to format the lines of your branch that changed since the main branch.
+That means everything since the merge base with the default branch of `upstream` (or `upstream/develop`, then `origin/develop`, when that is unknown).
+
+[source,bash]
+----
+python3 utils/format/format.py
+----
+
+`just format` runs the same command, and the `format` target of CMake does too.
+
+You can also name the files you want to format.
+A named file still covers only its changed lines:
+
+[source,bash]
+----
+python3 utils/format/format.py include/mrdocs/Support/Reporter.hpp
+----
+
+Although `format.py --all` formats whole files for a deliberate whole-tree run, do not run clang-format over whole files or the whole project.
+Do not send style-only commits that produce large diffs.
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====
+
+[#clang-format]
+== Project style
+
+`format.py` applies the project style to the changed lines:
+
+* It runs clang-format on them, following `.clang-format`.
+* It rewrites a quoted include of a public header to the angle form, and it rewrites the header guard to match the path.
+* The rules for both are in xref:contribute/invariants/naming-and-layout.adoc#include-order[Include order] and xref:contribute/invariants/naming-and-layout.adoc#header-guards[Header guard format].
+* `--check` rewrites nothing, prints each line it would change and exits 1 if there are any.
+* `--base REF` takes another base than the merge base.
+* The five source trees are `include/mrdocs`, `src/mrdocs`, `tools/mrdocs`, `tests` and `libs/test_suite`, and `--all` formats every file of them (or of the named paths) whole.
+* It never formats `tests/golden/fixtures/`, whose sources are golden test inputs, or `tests/integration/cmake/`.
+
+A change with a badly indented line shows what `--check` prints:
+
+[source,text]
+----
+include/mrdocs/Support/Example.hpp:21: clang-format would change this line (clang-format)
+----
+
+The fix is to run `format.py` without `--check`, or the `just format` recipe.
+
+.Guard
+[NOTE]
+====
+`format.py --check` lists the changed lines that are not formatted, and `format.py` fixes them. The `format-check` target of CMake runs the check. Formatting is not mandatory, so CI and `lint.py` never fail because of it.
+The header guard and include spelling rules are the exception, as xref:contribute/invariants/naming-and-layout.adoc#header-rules[Naming and Layout] describes.
+====

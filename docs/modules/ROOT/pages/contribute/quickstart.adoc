@@ -1,9 +1,51 @@
 = Contributor Quickstart
 
-This page contains information for contributors to the Mr.Docs project.
-It is intended to provide an overview of the codebase and the process of adding new features.
+Pick an issue, branch off `upstream/develop`, and ask for review once the full check passes.
 
-Before sending changes, run `python utils/testing/run_all_tests.py`.
-This script is treated as a “source of truth” pass that configures the preferred preset, builds, runs golden + unit + lint/schema/self-doc checks, installs into a local `install/<preset>` prefix, and (by default) builds docs using that fresh install.
-Not every policy can be enforced programmatically, but this script covers the checks that are automated; prefer it over ad-hoc command sequences.
-Use `--skip-docs` to omit docs or `--no-strict` to relax strict warning handling when needed.
+== Contribution steps
+
+. Open an issue for a bug or feature request, or pick an open one, on the https://github.com/cppalliance/mrdocs/issues[issue tracker].
+. To talk a change over first, use the `#mrdocs` channel on the https://cpplang.slack.com/[Cpplang Slack].
+. Fork and clone the repository, then add the main repository as `upstream` with `git remote add upstream https://github.com/cppalliance/mrdocs.git` and `git fetch upstream`.
+. Install the prerequisites and run the bootstrap script, as xref:install.adoc#mrdocs-bootstrap-script[Build from Source] describes. xref:contribute/workflow.adoc[Development Setup] covers what to do after bootstrap.
+. Create a branch off `upstream/develop`, not off your fork's `develop`, which may be behind.
+. Keep one purpose per pull request. Send a bug fix and an unrelated cleanup separately.
+. Add tests for the change, as xref:contribute/testing.adoc[] describes.
+. Follow xref:contribute/invariants/cpp.adoc[]. Name commits as xref:contribute/invariants/git.adoc#commit-subjects[Git Repository] says, and add `fix #<n>` to the body when the change closes issue `<n>`.
+. Open a https://github.com/cppalliance/mrdocs/pulls[pull request] and describe the change and its tests.
+. Run `python3 utils/testing/run_all_tests.py`, fix what it reports, and request review once it passes.
+
+[#run-the-full-check]
+== Run the full check
+
+The full check is the source of truth before you send changes.
+Run it with:
+
+[source,bash]
+----
+python3 utils/testing/run_all_tests.py
+----
+
+It does these things in order:
+
+. Lints the files changed since the upstream base.
+. Configures the preferred preset and builds.
+. Runs the golden, unit, lint, schema and self-documentation checks.
+. Installs into a local `install/<preset>` prefix.
+. Builds the docs from that install, unless you skip it.
+
+No program can enforce every policy, but this script runs every check a program can.
+Use it instead of a hand-written sequence of commands.
+
+Bootstrap has to have run first: without its `CMakeUserPresets.json` the script stops with "CMake user presets are missing".
+The docs step needs Node, so pass `--skip-docs` on a machine without it.
+
+Two flags drop part of the check:
+
+* `--skip-docs` drops the docs build.
+* `--no-strict` drops the strict tests: the xml-lint test and the self-documentation check that treats warnings as errors (`MRDOCS_BUILD_STRICT_TESTS=OFF`).
+
+Use `--no-strict` on a machine without LibXml2 or Java. CI runs those tests, so a change can pass with the flag and still fail there.
+
+`--update-golden` refreshes the golden fixtures first. Use it only for an intended output change.
+

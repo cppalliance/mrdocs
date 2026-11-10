@@ -182,8 +182,8 @@ def main():
             existing_schema = f.read()
         if yaml_schema != existing_schema:
             print(
-                "The generated schema does not match the existing schema."
-                "Please run `utils/generate-yaml-schema.py` to update the schema."
+                "The generated schema does not match the existing schema.\n"
+                "Please run `utils/codegen/generate-yaml-schema.py` to update the schema."
             )
             sys.exit(1)
         else:

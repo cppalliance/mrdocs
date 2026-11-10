@@ -7,13 +7,15 @@ Mr.Docs generates the reference and nothing else. Overviews, tutorials, and desi
 
 The https://github.com/cppalliance/antora-cpp-reference-extension[C++ reference extension^] runs Mr.Docs during an Antora build and drops the generated `.adoc` files into an Antora module with its virtual filesystem. The module's name is `reference` by default and is settable per playbook or per component.
 
-Minimal playbook configuration:
+The playbook of these docs registers it like this, with `auto-base-url` and `breadcrumbs` set:
 
 [source,yaml]
 ----
 antora:
   extensions:
     - require: '@cppalliance/antora-cpp-reference-extension'
+      auto-base-url: true
+      breadcrumbs: true
 ----
 
 Navigation and cross-component xrefs resolve without post-processing. Two options worth knowing: `breadcrumbs` for the generated pages, and `version` to pin Mr.Docs to a semver range.
@@ -24,7 +26,7 @@ Each component that ships a reference points at its Mr.Docs configuration in its
 ----
 ext:
   cpp-reference:
-    config: doc/mrdocs.yml
+    config: docs/mrdocs.yml
 ----
 
 The https://github.com/cppalliance/antora-cpp-reference-extension#readme[README^] documents other features, such as custom module name, dependency download, `auto-base-url` detection, `skip` mode for fast iteration without a C++ toolchain.
@@ -36,7 +38,19 @@ The https://github.com/cppalliance/antora-cpp-tagfiles-extension[C++ tagfiles ex
 
 The extension also bundles the cppreference tagfile, so `std::*` names resolve to https://en.cppreference.com[cppreference.com^] without extra configuration. Adding more tagfiles (Boost libraries, in-house projects) extends the macro to those targets.
 
-Loading extra tagfiles for other projects:
+The playbook of these docs registers the macro like this, so that names in the `mrdocs` namespace need no qualifier:
+
+[source,yaml]
+----
+antora:
+  extensions:
+    - require: '@cppalliance/antora-cpp-tagfiles-extension'
+      cpp-tagfiles:
+        using-namespaces:
+          - mrdocs
+----
+
+A project that loads extra tagfiles for other projects adds a `files` list under `cpp-tagfiles`, with a `file` and a `base_url` for each entry:
 
 [source,yaml]
 ----

@@ -6,7 +6,7 @@ option:
 
 [source,yaml]
 ----
-generator: noop
+include::example$examples/generators/noop/documentation-check/mrdocs.yml[tag=generator]
 ----
 
 In other words, you can combine it with xref:configuration/reference.adoc#warn-as-error_option[`warn-as-error`] to get a documentation linter.

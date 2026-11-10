@@ -1,0 +1,94 @@
+= libs/
+
+`libs/` holds self-contained libraries that the main MrDocs library, or the tests, depend on.
+Each one is a cohesive component consumed through a stable public surface, the Pitchfork convention of a library per concern instead of one grab-bag.
+Each one builds and tests on its own.
+
+A library under `libs/` holds only the entries the root layout allows.
+`CPP_PROJECTS` in `utils/lint/check_layout.py` lists `libs/*` among the projects that follow it.
+A library inside a library follows the same rule, so the layout check applies at every depth.
+In practice a component follows this shape:
+
+* It owns its `include/`, `src/` and `tests/`, and has its own `CMakeLists.txt`.
+* `libs/CMakeLists.txt` adds it to the build.
+* A header-only component is an `INTERFACE` library, and a compiled one is a `STATIC` library.
+
+== The dependency rule
+
+The arrow of dependency always points from `mrdocs-core` into `libs/`, never the other way.
+A component never depends on `mrdocs-core`.
+
+The base libraries (`dom` and `handlebars`) depend only on the C++ standard library, the `polyfill` library and each other where it makes sense: `handlebars` operates on `dom` values.
+They must not depend on `mrdocs/Support/*` or anything else in `mrdocs-core`.
+That keeps them reusable and independently testable.
+
+Each library's tests live in its own `tests/` and link only that library plus `test_suite`, so a failure points at one component. Its unit tests sit in `tests/unit/`, mirroring the headers under `include/mrdocs/`, as xref:contribute/layout/tests.adoc#unit-test-mirror[Unit tests mirror headers] explains. The handlebars golden tests also link LLVMSupport, to read their JSON fixtures.
+
+== Polyfill versus Support
+
+`polyfill/` holds stand-ins for standard-library features that are not yet available on every compiler we support: source locations, `expected` and the C++23 type traits.
+A polyfill is temporary: we delete it once its feature is available everywhere, and the call sites move to `std::`.
+
+A polyfill mirrors the standard name exactly, `snake_case` included.
+`source_location` and the type traits become aliases of the `std` entity when the compiler provides it.
+`expected` stays a class of its own and also supports `expected<T&, E>`.
+Deleting one of those two is then a find-and-replace to the `std::` spelling.
+`mrdocs/Support/` holds permanent project utilities with no standard-library equivalent.
+
+The project names stay PascalCase as thin aliases: `mrdocs::Expected`, `dom::Expected` and `handlebars::Expected` are all `polyfill::expected`.
+
+A type that looks standard but differs from it is not a polyfill.
+`mrdocs::Optional` is the example.
+It looks like `std::optional`.
+It uses the empty state of a nullable type instead of a separate flag and falls back to the standard type otherwise, so it lives in `mrdocs/ADT`.
+
+`Polymorphic` is the same case, and `Error` and `Platform` are permanent domain and build types, so all three stay out of `polyfill/`.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Code that needs `mrdocs-core`, LLVM or Clang
+|`src/` for library code, `tools/` for a program.
+
+|A permanent utility with no standard equivalent
+|`include/mrdocs/Support/` and `src/mrdocs/Support/`.
+
+|Tests of the whole library
+|`tests/`. Only a component's own tests stay in `libs/<lib>/tests/`.
+|===
+
+== Contents by component
+
+[cols="2,5,3"]
+|===
+|Directory |Purpose |Target and dependencies
+
+|`libs/test_suite/`
+|The unit-test framework: assertions, `unit_test_main` and `diff`. Consumers include it as `<test_suite/...>`.
+|`test_suite`, `STATIC`, alias `mrdocs::test_suite`. Built only when tests are on.
+
+|`libs/polyfill/`
+|The standard-library stand-ins of the Polyfill versus Support section, header-only.
+|`mrdocs-polyfill`, `INTERFACE`, alias `mrdocs::polyfill`. Depends on the standard library only. Tests: `mrdocs-polyfill-tests`.
+
+|`libs/dom/`
+|The document object model.
+|`mrdocs-dom`, `STATIC`, alias `mrdocs::dom`. Depends on the standard library and `polyfill`. Tests: `mrdocs-dom-tests`.
+
+|`libs/handlebars/`
+|The Handlebars template engine.
+|`mrdocs-handlebars`, `STATIC`, alias `mrdocs::handlebars`. Depends on the standard library, `polyfill` and `dom`. Tests: `mrdocs-handlebars-unit-tests` and `mrdocs-handlebars-golden-tests`.
+|===
+
+== Build integration
+
+The root build adds `libs/` unconditionally.
+`libs/CMakeLists.txt` adds the components in dependency order: `test_suite`, `polyfill`, `dom` and `handlebars`.
+It adds `test_suite` only when tests are on.
+
+Every component except `test_suite` adds its own `tests/` subdirectory when `MRDOCS_BUILD_TESTS` is on.
+With `MRDOCS_INSTALL` on, each component except `test_suite` installs into the shared `mrdocs-targets` export set and installs its `include/` into `CMAKE_INSTALL_INCLUDEDIR`.
+They install this way because `mrdocs-core` links them publicly.

@@ -1,0 +1,5 @@
+transform-options:
+  brief-filler:
+    text: TODO
+  brief-checker:
+    suffix: checked

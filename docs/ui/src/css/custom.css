@@ -311,6 +311,12 @@ body {
   background: var(--bg) !important;
 }
 
+/* Mermaid also paints the label's paragraph with its own tint, which would sit
+   on the chip above. */
+.doc .mermaid :is(.flowchart, .flowchart-v2) .edgeLabel p {
+  background: transparent !important;
+}
+
 .doc .mermaid :is(.flowchart, .flowchart-v2) .flowchart-link {
   stroke: var(--diagram-line) !important;
 }

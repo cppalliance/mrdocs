@@ -1,12 +1,69 @@
-= Script Generators
+= Programmatic Generators
+:page-aliases: extensions/script-generators.adoc
+:url-plugins: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/extensions
 
-A *script generator* is the second kind of Mr.Docs extension driven by scripts. This covers the cases where customizing xref:extensions/handlebars-extensions.adoc[Handlebars templates] is not enough to express the output format. A generator hands the whole emit to the script instead.
+A *programmatic generator* is the kind of pipeline extension that owns the whole emit. In a script it writes files through `ctx.output`, and in {cpp} it implements cpp:Generator::build[]. Either way it decides which files exist and what goes in them, instead of rendering one page per symbol.
+
+[TIP]
+====
+A xref:extensions/data-driven-generators.adoc[data-driven generator] is the other kind of custom generator: a directory of Handlebars templates and a manifest define it, and code does not. Reach for a programmatic generator when customizing xref:extensions/handlebars-extensions.adoc[templates] is not enough to express the output format.
+====
+
+[#registering-a-generator]
+== Registering a generator
+
+A generator is written and loaded like a xref:extensions/corpus-transforms.adoc[corpus transform], as xref:extensions/defining-extensions.adoc#registering-an-extension[Defining Extensions] describes. A script registers it with `mrdocs.cpp:PluginContext::registerGenerator[register_generator](id, fn)` and a plugin registers it with cpp:PluginContext::registerGenerator[registerGenerator]:
+
+[tabs]
+======
+JavaScript::
++
+.`addons/extensions/hello_world_generator.js`
+[source,javascript]
+----
+include::example$examples/extensions/hello-world-generator/js/extensions/hello_world_generator.js[]
+----
+
+Lua::
++
+.`addons/extensions/hello_world_generator.lua`
+[source,lua]
+----
+include::example$examples/extensions/hello-world-generator/lua/extensions/hello_world_generator.lua[]
+----
+
+{cpp}::
++
+.`hello-world-generator/plugin.cpp`
+[source,cpp]
+----
+include::example$examples/extensions/hello-world-generator/plugin/plugin.cpp[tag=plugin,indent=0]
+----
+======
+
+A generator registered as a function receives a cpp:GeneratorExtensionContext[]. It holds the corpus, the configuration, the output path, the options block and the reporter of the run.
 
 [NOTE]
 ====
-A generator is written and loaded exactly like a xref:extensions/corpus-transforms.adoc[corpus transform]: a `.js` or `.lua` script under `extensions/` in an xref:configuration/output.adoc#addons[addon directory], handed the same `ctx`. It declares itself with `mrdocs.register_generator(id, fn)` instead of `mrdocs.register_transform`. The `id` is the name you select on the command line with `--generator=<id>`; a registered generator takes precedence over a built-in of the same name.
+The rules for generator `id`s:
+
+* Its block of options is xref:configuration/reference.adoc#generator-options_option[`generator-options.<id>`].
+* You select it on the command line with `--generator=<id>`.
+* It must differ from the id of every other generator, built-in or not, or Mr.Docs stops the run with `generator id="<id>" already exists`.
 ====
 
+The generator receives the corpus and writes whatever it wants into the output directory. The examples above write one file. A script writes it with the helper `ctx.output.write(path, text)`, a function the script binding adds to the context, as it does `ctx.stringify` and the functions of `ctx.report`.
+
+Once a plugin is xref:extensions/defining-extensions.adoc#installing-a-plugin[installed], its generator is selectable like any other, through the xref:configuration/reference.adoc#generator_option[`generator`] option:
+
+[source,yaml]
+----
+generator: hello-world-generator
+----
+
+A generator class gets its xref:configuration/reference.adoc#generator-options_option[`generator-options.<id>`] block from cpp:getGeneratorParams[], which it calls from cpp:Generator::build[]. The block is an empty object when the configuration sets none.
+
+[#outputting-the-corpus]
 == Outputting the corpus
 
 The smallest useful generator hands the corpus straight to `JSON.stringify`. A complete, runnable example lives at `examples/generators/script-driven/json/`. Given this input:
@@ -17,7 +74,7 @@ The smallest useful generator hands the corpus straight to `JSON.stringify`. A c
 include::example$examples/generators/script-driven/json/simple.cpp[]
 ----
 
-In very few lines of code, this extension declares a `json` generator that writes every symbol to a single `reference.json`:
+In very few lines of code, this extension declares a `symbols-json` generator that writes every symbol to a single `reference.json`:
 
 .`addons/extensions/json.js`
 [source,js]
@@ -25,7 +82,7 @@ In very few lines of code, this extension declares a `json` generator that write
 include::example$examples/generators/script-driven/json/addons/extensions/json.js[]
 ----
 
-Select it with `--generator=json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. A script generator takes precedence over a built-in of the same name, so this replaces the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
+Select it with `--generator=symbols-json`. Because `ctx.corpus.symbols` is already plain data, the whole generator is one `JSON.stringify` call, and the shape is yours: `map` or `filter` the array, or read `ctx.params` to add options, before writing it. The id has to be new: a generator whose id is taken, by a built-in generator or by another extension, is refused, so this one cannot be called `json`, the id of the built-in xref:generators/json.adoc[JSON generator], which is the same idea implemented in C++.
 
 The output is an array of every symbol, each a full DOM object as seen by the templates, with parent/child relationships expressed as `id` references. Its first entry, the global namespace, begins (the file continues with one object per symbol):
 
@@ -33,6 +90,7 @@ The output is an array of every symbol, each a full DOM object as seen by the te
 [source,json]
 ----
 include::example$examples/generators/script-driven/json/reference.json[lines=1..45]
+...
 ----
 
 == Filtering the corpus
@@ -60,6 +118,10 @@ Select it with `--generator=search-index`; it writes search-index.json into the 
 ----
 include::example$examples/generators/script-driven/search-index/search-index.json[]
 ----
+
+=== Symbol selection
+
+An index does not list every entry of the corpus. The fields that decide what to keep are on cpp:Symbol[]. Its extraction mode (cpp:ExtractionMode[]) says whether it is shown, which `regular` and `see-below` symbols are. Its inherited-from id marks a copy of a base class member, and an overload set has its own kind and members.
 
 == Table of Contents
 
@@ -123,7 +185,7 @@ include::example$examples/generators/script-driven/toc/toc.html[]
 
 == Reflection Generators
 
-A custom generator does not have to emit documentation. It could be used for any task related to the project's public API and even write back to the files used to generate the Corpus. For instance, https://www.boost.org/doc/libs/release/libs/describe/[Boost.Describe^] adds compile-time reflection to C++ types, but its `BOOST_DESCRIBE_STRUCT` and `BOOST_DESCRIBE_ENUM` annotations are written by hand. The corpus already knows every type and its members, so the same walk that produces docs can emit those annotations to keep them in sync with the code. A complete, runnable example lives at `examples/generators/script-driven/describe/`:
+A custom generator does not have to emit documentation. It could be used for any task related to the project's public API and even write back to the files used to generate the Corpus. For instance, https://www.boost.org/doc/libs/release/libs/describe/[Boost.Describe^] adds compile-time reflection to C++ types, but its `BOOST_DESCRIBE_STRUCT` and `BOOST_DESCRIBE_ENUM` annotations are hand-written. The corpus already knows every type and its members, so the same walk that produces docs can emit those annotations to keep them in sync with the code. A complete, runnable example lives at `examples/generators/script-driven/describe/`:
 
 [tabs]
 ======
@@ -211,7 +273,7 @@ include::example$examples/generators/script-driven/describe/level.described.hpp[
 ----
 ======
 
-Notice the level of customization provided by extensions here. There are so many ways to achieve this that no tool could ever ship it as a built-in feature. A script generator provides you with the corpus, and the project can specify the final customization step.
+Notice the level of customization provided by extensions here. There are so many ways to achieve this that no tool could ever ship it as a built-in feature. A programmatic generator provides you with the corpus, and the project can specify the final customization step.
 
 == Round-trip extensions
 
@@ -234,8 +296,10 @@ Extension::
 .`addons/extensions/snippets.lua`
 [source,lua]
 ----
-include::example$examples/generators/script-driven/snippets/addons/extensions/snippets.lua[]
+include::example$examples/generators/script-driven/snippets/addons/extensions/snippets.lua[tag=extension]
 ----
++
+The helpers that read the example files, extract and dedent the snippets, fingerprint them and convert values are in the full file, https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}/examples/generators/script-driven/snippets/addons/extensions/snippets.lua[`snippets.lua`^].
 
 Headers::
 +
@@ -280,7 +344,7 @@ In the input, `add` keeps its example inline in the header comment, while `multi
 include::example$examples/generators/script-driven/snippets/reference.adoc[]
 ========
 
-Export runs comments into files, and writes complete translation units, one per header. Each file includes its header and a small prelude, gives every symbol a function that runs its snippets (each in its own scope when there is more than one), and ends with a `main` that calls them all, so the file both compiles and runs as a test. It exports only the examples written inline in the headers; ones the transform imported are left out, since they already live in a file the build compiles. `exported/arithmetic.cpp` therefore holds only `add`, not the imported `multiply` and `subtract`:
+Export runs comments into files, and writes complete translation units, one per header. Each file includes its header and a small prelude, gives every symbol a function that runs its snippets (each in its own scope when there is more than one), and ends with a `main` that calls them all, so the file both compiles and runs as a test. It exports only the examples written inline in the headers. It leaves out the ones the transform imported, since they already live in a file the build compiles. `exported/arithmetic.cpp` therefore holds only `add`, not the imported `multiply` and `subtract`:
 
 .Exported test files
 [tabs]
@@ -304,5 +368,5 @@ Knowing which examples to skip is where the two halves of the extension meet. Th
 
 [TIP]
 ====
-This extension can also compose with the xref:extensions/corpus-transforms.adoc#reading-files[ghostwriter extension]. A typical problem with technical writers is that their examples are only tested locally, so they can drift and break as the API moves. This extension would ensure these import snippets are alo tested as inline scripts.
+This extension can also compose with the xref:extensions/corpus-transforms.adoc#reading-files[ghostwriter transform]. A typical problem with technical writers is that their examples are only tested locally, so they can drift and break as the API moves. This extension would ensure these import snippets are also tested as inline scripts.
 ====

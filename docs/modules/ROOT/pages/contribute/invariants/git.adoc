@@ -1,0 +1,104 @@
+= Git Repository
+
+A branch is a series of commits a reviewer can read one by one.
+Five rules keep it that way: one concern per commit, a linear history, Conventional Commits subjects, subjects that name the result, and `fix #<n>` for issues.
+
+[#commit-logic]
+== A commit has one concern
+
+Each commit does one thing, so a reviewer can accept it or ask for a change without reading the rest of the branch.
+A commit that renames a function and also changes what it does becomes two commits.
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====
+
+[#linear-history]
+== History stays linear
+
+The history of `develop` has no merge commits.
+A branch catches up with `develop` by rebasing onto it, never by merging `develop` into the branch.
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====
+
+[#commit-subjects]
+== A commit subject follows Conventional Commits
+
+A subject has a type, usually a scope in parentheses, and a summary, following https://www.conventionalcommits.org/en/v1.0.0/[Conventional Commits].
+The whole subject stays under 72 characters.
+You can add a short body only when the subject is not self-explanatory.
+
+The supported commit types are:
+
+- `feat`: a new feature,
+- `fix`: a bug fix,
+- `docs`: documentation only,
+- `style`: formatting that changes no behavior,
+- `refactor`: a change that is neither a feature nor a fix,
+- `perf`: a performance improvement,
+- `test`: tests only,
+- `build`: CMake, dependencies and the bootstrap tool,
+- `ci`: the workflows under `.github/`,
+- `chore`: maintenance that fits no other type, and
+- `revert`: a revert of an earlier commit.
+
+There is no policy for scopes yet, so pick the module or directory the change is about.
+Run `git log --oneline -30` to see the formats in use.
+
+A subject such as `Updated the docs` has no type, so Danger warns:
+
+[source,text]
+----
+Some commits do not follow Conventional Commit first-line formatting (`type(scope): subject`): `Updated the docs` Examples: `fix: adjust docs link`, `feat(api): allow overrides`.
+----
+
+The fix is to reword the subject as `docs: install page wording`.
+
+.Guard
+[NOTE]
+====
+Danger warns when the first line of a commit does not match `type(scope): subject` or uses a type outside this list. It only warns, and it does not check the length or the body.
+====
+
+[#subject-names-result]
+== A commit subject names the result
+
+The summary describes the state of things after the commit, and typically starts with a noun.
+It does NOT describe the change or what things were like before:
+
+[source,text]
+----
+good:  refactor(examples): one directory per example with every variant
+bad:   refactor(examples): stop splitting examples across two directories
+----
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====
+
+[#fix-issue]
+== A commit that solves an issue says fix
+
+A commit that solves an issue says so in its body with `fix #<n>`, which closes issue `<n>` when the pull request merges.
+GitHub explains the keyword in https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue[Linking a pull request to an issue].
+
+[source,text]
+----
+fix(bootstrap): IDE config refresh keeps the saved bootstrap arguments
+
+fix #1309
+----
+
+.Guard
+[NOTE]
+====
+No tool checks this rule.
+====

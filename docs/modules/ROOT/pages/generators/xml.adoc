@@ -4,7 +4,7 @@ The `xml` generator emits a single XML document that contains every symbol Mr.Do
 
 [source,yaml]
 ----
-generator: xml
+include::example$examples/configuration/overview/customized/docs/mrdocs.yml[tag=generator]
 ----
 
 The most common reasons to use it are:
@@ -19,22 +19,8 @@ The output is a single file (`reference.xml` by default) regardless of the xref:
 
 [source,xml]
 ----
-<?xml version="1.0" encoding="UTF-8"?>
-<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng">
-<namespace>
-  <name>logr</name>
-  <kind>namespace</kind>
-  <id>...</id>
-  <extraction>regular</extraction>
-  <namespace-tranche>
-    <functions>...</functions>
-  </namespace-tranche>
-</namespace>
-<function>
-  <name>scoped_context</name>
-  ...
-</function>
-</mrdocs>
+include::example$snippets/generators/xml/xml.xml[lines=1..11]
+...
 ----
 
 Symbols are emitted flat as siblings of the root; parent/child relationships are expressed through `<id>` references rather than nesting.
@@ -43,10 +29,5 @@ Symbols are emitted flat as siblings of the root; parent/child relationships are
 
 The schema is the same model Mr.Docs uses internally, just serialized. The xref:generators/reference.adoc[DOM reference] documents every field by name, and applies to the XML output element-for-element: a field shown as `Name` in the DOM appears as `<name>` in the XML, `Loc` as `<location>`, and so on.
 
-The canonical https://relaxng.org/[RELAX NG^] schema ships at the URL referenced in the root element:
-
-[source]
-----
-https://mrdocs.com/docs/mrdocs/master/_attachments/schemas/generators/mrdocs.rng
-----
+The canonical https://relaxng.org/[RELAX NG^] schema ships at the URL in the `xsi:noNamespaceSchemaLocation` attribute of the root element above.
 

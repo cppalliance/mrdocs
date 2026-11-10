@@ -1,0 +1,7 @@
+# tag::stylesheets[]
+generator: html
+stylesheets:
+  - custom.css
+linkcss: true
+stylesdir: css
+# end::stylesheets[]

@@ -1,7 +1,7 @@
 = Filters
 :page-aliases: config-file/filters.adoc
 
-Filters are the gate at the front of the pipeline: they decide which symbols enter the documentation corpus at all. MrDocs filters by qualified name, by where the source sits on disk, and by category (undocumented declarations, private members, friends, and so on), and it can hide the implementation details of a type without dropping it from the corpus. Once a symbol has cleared the filters, xref:configuration/extraction.adoc[Extraction] decides how MrDocs presents it. The xref:configuration/reference.adoc#_filters_options_reference[Filters reference] lists every option.
+Filters are the gate at the front of the pipeline: they decide which symbols enter the documentation corpus at all. MrDocs filters by qualified name, by where the source sits on disk, and by category (undocumented declarations, private members, friends, and so on), and it can hide the implementation details of a type without dropping it from the corpus. Once a symbol has cleared the filters, xref:configuration/extraction.adoc[Extraction] decides how MrDocs presents it. The xref:configuration/reference.adoc#filters-options-reference[Filters reference] lists every option.
 
 == Name filters
 
@@ -40,6 +40,7 @@ The pattern delimiter is `::` instead of `/`. A single `+*+` matches anything th
 
 NOTE: The Doxygen option analogous to `exclude-symbols` is https://www.doxygen.nl/manual/config.html#cfg_exclude_symbols[`EXCLUDE_SYMBOLS`^]. Doxygen has no inclusion counterpart. It documents everything by default and narrows the set with the https://www.doxygen.nl/manual/config.html#cfg_extract_all[`EXTRACT_*`^] family plus `EXCLUDE_SYMBOLS`.
 
+[#implementation-details]
 == Implementation details
 
 Sometimes a type that lives in the library's implementation appears in a public signature: a return type, a parameter, an inherited base. Dropping it with `exclude-symbols` would break cross-references and leave the reference as a bare name. The two options below keep the symbol in the corpus and hide its details from the reader.
@@ -174,7 +175,7 @@ A single `+'**/_generated/**'+` pattern drops both `storage/_generated/` and `pa
 
 xref:configuration/reference.adoc#file-patterns_option[`file-patterns`] narrows the file set MrDocs scans inside the input directories: only files whose names match one of the globs are read. The default already covers the common C++ header extensions, so you set it only to narrow further (for example, to skip `.ipp`).
 
-WARNING: `exclude` and `exclude-patterns` are for code that should not appear in the docs at all, such as vendored libraries or generated code. Do not reach for them when the directory holds *your own* library's private internals. Dropped symbols leave the corpus entirely, so any reference to one from a kept declaration renders as the literal name (`detail::cache_entry`) instead of an implementation marker. For your own internals, use the xref:#_implementation_details[`implementation-defined` and `see-below` options] covered above. They keep the cross-references intact and render them as `+/* implementation-defined */+` or collapse the synopsis to `+/* see-below */+`.
+WARNING: `exclude` and `exclude-patterns` are for code that should not appear in the docs at all, such as vendored libraries or generated code. Do not reach for them when the directory holds *your own* library's private internals. Dropped symbols leave the corpus entirely, so any reference to one from a kept declaration renders as the literal name (`detail::cache_entry`) instead of an implementation marker. For your own internals, use the xref:#implementation-details[`implementation-defined` and `see-below` options] covered above. They keep the cross-references intact and render them as `+/* implementation-defined */+` or collapse the synopsis to `+/* see-below */+`.
 
 NOTE: The analogous Doxygen options are https://www.doxygen.nl/manual/config.html#cfg_input[`INPUT`^], https://www.doxygen.nl/manual/config.html#cfg_recursive[`RECURSIVE`^], https://www.doxygen.nl/manual/config.html#cfg_exclude[`EXCLUDE`^], https://www.doxygen.nl/manual/config.html#cfg_exclude_patterns[`EXCLUDE_PATTERNS`^], and https://www.doxygen.nl/manual/config.html#cfg_file_patterns[`FILE_PATTERNS`^].
 

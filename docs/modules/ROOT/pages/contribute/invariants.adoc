@@ -1,0 +1,27 @@
+= Project Invariants
+
+This section lists the conventions developers must maintain for this project. For each promise this project makes, we provide a corresponding test or check that fails when it breaks. When possible, we also provide scripts that fix the problem automatically.
+
+[WARNING]
+====
+The page does not cover regular application behavior users rely on. These are covered by regular tests. This page is about project conventions that must be maintained for the project to work.
+====
+
+If you change a promise, you change its test or check in the same commit, so the guard and the promise never disagree.
+
+== Linter command
+
+Run `python3 -I utils/lint/lint.py`, or `just lint`, to run every project linter described in the following pages.
+
+The linters are incremental.
+Every guard judges only what your branch changes, compared with the merge base of your branch and the default branch of `upstream` (or `upstream/develop`, then `origin/develop`, when that is unknown).
+That means the lines it adds or edits, and the files it adds or renames.
+
+A branch answers only for what it changed, so an old problem elsewhere never blocks someone else's change.
+For example, a header whose include guard was already wrong passes until your branch edits that line.
+This is also what lets a new rule land without fixing the whole codebase first.
+
+* `--base REF` compares with another branch or commit, and `--all` judges the whole tree.
+* `run_all_tests.py` runs the linters first.
+* `--sarif FILE` collects the findings of all the guards in one SARIF file, one run per guard.
+* Formatting is optional, so `lint.py` never fails on it, as xref:contribute/invariants/formatting.adoc[Formatting] explains.

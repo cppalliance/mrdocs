@@ -1,0 +1,142 @@
+= tests/
+
+`tests/` holds the test suites of the MrDocs library and tool, each its own executable target and not one binary behind flags.
+Each suite has its own `CMakeLists.txt`, and `tests/CMakeLists.txt` adds them to the build.
+The unit and golden suites link the `test_suite` framework from `libs/test_suite`.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Tests of a standalone component
+|`libs/<lib>/tests/`, linking only that component and `test_suite`. The handlebars golden tests also link LLVMSupport, to read their JSON fixtures.
+
+|Tests of an example project
+|The `examples/<group>/` directory that owns the example, which registers its own `add_test` rules.
+
+|The test framework itself
+|`libs/test_suite/`.
+
+|Scripts that run the suites or drive CI
+|`utils/testing/`.
+|===
+
+== Contents by suite
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`tests/unit/`
+|Unit tests, mirroring the module layout of `src/mrdocs/`: `ADT/`, `AST/`, `Engines/`, `Extensions/`, `Generators/`, `Metadata/` and `Support/`.
+
+A test for `<module>/Foo` lives at `tests/unit/<module>/Foo.cpp`. The entry point is `tests/unit/UnitMain.cpp`. The tests use the public API plus `test_suite`.
+
+`tests/unit/TestProject.hpp` is the one shared header. It builds the scratch project, with its scripts and loaded configuration, that the tests of extensions and plugins run over.
+
+A unit test mirrors the header it tests, as xref:#unit-test-mirror[Unit tests mirror headers] describes.
+
+|`tests/golden/`
+|The reference-output harness. It walks `tests/golden/fixtures/`, renders each test with the generators its own configuration names, and compares the result with the committed output.
+
+The harness is `TestMain.cpp`, `TestRunner.cpp` and `TestCliArgs.cpp`.
+
+The fixtures under `fixtures/snippets/extensions/` are snippets shown in the documentation. They keep their templates and helpers in an addon directory of their own. The fixtures under `fixtures/snippets/migration/` end in `-migration`, and each keeps the `Doxyfile` a user migrates from.
+
+|`tests/integration/`
+|Suites that use the built tool or the installed package from outside, as a user does. Every test carries the `integration` label, and `tests/integration/README.md` lists the suites. `tests/integration/CMakeLists.txt` adds the ones the build registers.
+
+|`tests/integration/plugin-api/`
+|The plugin API and the plugin loader. It builds a plugin that calls the API and loads it, checks the export table of the tool, and covers every plugin MrDocs must refuse.
+
+`CMakeLists.txt` lists the cases, one numbered section each. The sources sit in subdirectories by role:
+
+* `exports/` holds the export check and the plugins that probe the exported API and the symbol isolation.
+* `refused/` holds the plugins MrDocs must refuse. `refused/messages/` holds the scripts that compare the refusal messages and the messages they expect.
+* `dependencies/` holds the plugin that needs a helper library, the helper, and the script of the non-ASCII path case.
+* `reload/` holds the program and the plugin of the reload case.
+
+|`tests/integration/cmake/`
+|An out-of-tree project that consumes an installed MrDocs the way a user does, with `find_package(mrdocs)` once in its top `CMakeLists.txt`. Its `executable/` runs the installed tool, `plugin/` builds a plugin and loads it, and `library/` links the core library into a program.
+
+|`tests/self-doc/`
+|The `mrdocs-self-doc` tests. Its own `CMakeLists.txt` defines them, and `addons/` holds the addons they load with `--addons-supplemental`, on top of the built-in ones.
+
+`addons/extensions/self_doc_checks/` is one directory extension. `init.lua` loads the three checks, and `helpers.lua` holds the code they share.
+
+* `type_names.lua` holds the `type-names` transform. It warns about each type in `namespace mrdocs` whose name is not `PascalCase`.
+* `function_names.lua` holds the `function-names` transform. It warns about each free function that is not `camelCase` and each class whose member functions mix naming styles.
+* `export_markers.lua` holds the `export-markers` transform. It reports an error for each public declaration whose `MRDOCS_DECL` or `MRDOCS_VISIBLE` marker is missing or wrong.
+
+`export-markers/` holds the test of that check, `mrdocs-self-doc-export-markers`.
+
+* `cases/cases.hpp` has the declarations the check must accept and the ones it must flag.
+* `expected.txt` lists the errors the check reports for them.
+* `rejected/rejected.hpp` has the `MRDOCS_VISIBLE` uses that do not parse.
+* `mrdocs.yml` is the configuration of the runs.
+* `CheckExportMarkers.cmake` runs them and compares the output.
+
+|`tests/benchmarks/`
+|Benchmarks kept to re-measure numbers that the docs or a PR quote. They are custom targets, not CTest tests.
+|===
+
+[#unit-test-mirror]
+== Unit tests mirror headers
+
+A unit test `tests/unit/<path>.cpp` needs a header `<path>.hpp` under `include/mrdocs/` or `src/mrdocs/`.
+The same holds in each library: `libs/<lib>/tests/unit/<path>.cpp` needs `libs/<lib>/include/mrdocs/<path>.hpp`.
+
+[source,text]
+----
+tests/unit/Extensions/ScriptContext.cpp: no header Extensions/ScriptContext.hpp under include/mrdocs/ or src/mrdocs/; a unit test mirrors the header it tests
+----
+
+The fix is to move the tests into the file of the header whose API they exercise.
+`tests/unit/UnitMain.cpp` is the test driver and has no header.
+
+.Guard
+[NOTE]
+====
+`utils/lint/check_unit_test_mirror.py`, with a test next to it, runs as the `unit-test-mirror` guard of `lint.py`. It judges the unit test files the branch adds or renames.
+====
+
+== Build integration
+
+The root build adds `tests/` when `MRDOCS_BUILD_TESTS` is on.
+`tests/CMakeLists.txt` adds `unit`, `golden`, `benchmarks`, `integration` and `self-doc`.
+
+`tests/integration/cmake/` is the exception: no `add_subdirectory` reaches it, because CI configures it as a separate project against an install prefix.
+
+[cols="3,4"]
+|===
+|Target or test |Defined in
+
+|`mrdocs-unit-tests`, executable and test
+|`tests/unit/CMakeLists.txt`. It links `mrdocs-core-object-files` and `test_suite`, and it puts `src/` on its private include path, so it includes internals as `<mrdocs/...>`. Run it with `ctest -R mrdocs-unit-tests`.
+
+|`mrdocs-golden-tests`, executable and test
+|`tests/golden/CMakeLists.txt`. It links the same targets and puts `src/` on its private include path the same way.
+
+|`mrdocs-test-test-fixtures-all`, `mrdocs-create-test-fixtures-all` and `mrdocs-update-test-fixtures-all`
+|`tests/golden/CMakeLists.txt`. One target per action: validate, write missing fixtures, overwrite fixtures with the current output.
+
+|`xml-lint` and `schema-check`
+|`tests/golden/CMakeLists.txt`. `xml-lint` validates the XML fixtures and needs LibXml2. `schema-check` checks the generated schema and needs Bash, so Windows skips it.
+
+|`mrdocs-self-doc` and `mrdocs-self-doc-private` tests
+|`tests/self-doc/CMakeLists.txt`. They run `mrdocs` over its own build file with the `noop` generator, read the `*.hpp` and `*.ipp` files, and load the addons in `tests/self-doc/addons`. The second one also extracts private members.
+
+|`mrdocs-self-doc-export-markers` test
+|`tests/self-doc/CMakeLists.txt`. It runs `export-markers/CheckExportMarkers.cmake`, which checks the errors of the `export-markers` transform over the cases in `tests/self-doc/export-markers`.
+
+|`mrdocs-benchmark-script-engines`
+|`tests/benchmarks/CMakeLists.txt`. Compares the JavaScript and Lua engines over the corpus of MrDocs.
+
+|`mrdocs-plugin-*` tests
+|`tests/integration/plugin-api/CMakeLists.txt`, apart from the `mrdocs-plugin-example-*` tests, which the example directories under `examples/extensions/` define without the `integration` label.
+
+|`mrdocs-extension-example-*` tests
+|`examples/extensions/<name>/CMakeLists.txt`, which calls `mrdocs_add_extension_example`, defined in `examples/extensions/CMakeLists.txt`. They carry the `integration` label.
+|===

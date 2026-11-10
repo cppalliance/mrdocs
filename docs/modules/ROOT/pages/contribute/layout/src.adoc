@@ -1,0 +1,99 @@
+= src/
+
+`src/` holds the private implementation of the MrDocs library, in `src/mrdocs/`.
+The tree mirrors the public module layout: a public `include/mrdocs/X/Foo.hpp` pairs with `src/mrdocs/X/Foo.cpp`, and private headers live beside their sources.
+
+== Include rules
+
+These rules decide how a `#include` names a header:
+
+* A public header is `<mrdocs/...>`.
+* A private header is a quoted, relative path, for example `"Foo.hpp"` or `"../Support/Filesystem/Temp.hpp"`.
+* The private companion of a public header `X.hpp` is `XImpl.hpp` (`src/mrdocs/Support/ReporterImpl.hpp` is one).
+* To use another module, call its public API and never include its private headers.
+
+The core target has `src/` on its private include path, and the unit and golden test targets add it too, so tests reach internals as `<mrdocs/...>`.
+The angle form therefore also resolves for private headers, and some library sources use it today.
+
+New library code uses the quoted form, and a reviewer has to catch the angle form, because the compiler accepts both.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Public headers
+|`include/mrdocs/`.
+
+|Programs with a `main`
+|`tools/`.
+
+|Components that never depend on the core
+|`libs/`. The DOM implementation is one: it lives in `libs/dom/src/mrdocs/Dom/`.
+
+|Tests
+|`tests/`, except a component's own tests, which live in `libs/<lib>/tests/`.
+|===
+
+== Contents by subdirectory
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`src/mrdocs/AST/`
+|Clang AST traversal and symbol extraction.
+
+|`src/mrdocs/Metadata/`
+|Builds and finalizes the extracted-symbol model.
+
+|`src/mrdocs/Generators/`
+|The output generators, one subdirectory per format (`adoc/`, `hbs/`, `html/`, `json/`, `noop/`, `script/`, `xml/`).
+
+|`src/mrdocs/Engines/`
+|The scripting and templating engine implementations.
+
+|`src/mrdocs/Extensions/`
+|The extension mechanism, the bindings and the discovery of addons.
+
+|`src/mrdocs/Config/`
+|The implementation of the configuration types.
+
+|`src/mrdocs/Support/`
+|Private utility implementations, mirroring the public `Support` themes, plus the plugin loader.
+
+|`src/mrdocs/detail/`
+|The implementation of `include/mrdocs/detail/`.
+|===
+
+Two files sit at the top of `src/`.
+One is `CMakeLists.txt`, and the other is `setup-llvm.cmake`, which finds LLVM and defines the `mrdocs-llvm` target.
+The file `src/mrdocs/ConfigOptions.json` is the schema of the configuration options, and the generators in `utils/codegen/` read it.
+
+== Build integration
+
+The root build adds `src/` unconditionally.
+`src/CMakeLists.txt` collects every `.cpp`, `.hpp`, `.ipp` and `.natvis` file under `src/mrdocs/` with `GLOB_RECURSE CONFIGURE_DEPENDS`.
+A new file needs no edit to the list.
+`src/CMakeLists.txt` defines these targets:
+
+[cols="2,4"]
+|===
+|Target |What it is
+
+|`mrdocs-core`
+|The installed library: static, or shared when `MRDOCS_BUILD_SHARED` is on. The tool and external programs link it. Plugins link `mrdocs::plugin-api`.
+
+|`mrdocs-core-object-files`
+|An object library: it compiles the core's sources to object files (`.o` or `.obj`) without archiving or linking them. `mrdocs-core` links it privately, so the core's objects and dependencies come from this target. The tests link it directly, in a static build as well, so they can call what `MRDOCS_DECL` does not export from `src/`. A static `mrdocs-core` names it in its link interface. The export set carries it, and the install copies no object files.
+
+|`mrdocs-core-headers`
+|The interface target described on xref:contribute/layout/include.adoc[].
+
+|`mrdocs-hidden-archives`
+|An interface target made by `mrdocs_add_hidden_archives` in `utils/cmake/helpers/`. It carries the link options for the static archives behind LLVM, Lua and JerryScript. The options keep their symbols out of the binary's exports, so only the MrDocs API is visible to plugins. `mrdocs-core` links it `PRIVATE`. A static core passes its link options on to every program that links it.
+|===
+
+With `MRDOCS_INSTALL` on, `mrdocs-core` installs its runtime file into `CMAKE_INSTALL_BINDIR` and its library and archive files into `CMAKE_INSTALL_LIBDIR`.
+The same file installs the bundled libc++ and Clang resource headers into `share/mrdocs/headers/`.

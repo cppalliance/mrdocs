@@ -4,7 +4,7 @@ The `adoc` generator emits https://asciidoc.org/[AsciiDoc^] files, the source fo
 
 [source,yaml]
 ----
-generator: adoc
+include::example$examples/extensions/ghostwriter/mrdocs.yml[tag=generator]
 ----
 
 This is the format Mr.Docs uses to build its own documentation site, and it's the recommended choice when the reference is folded into a larger Antora component (or any pipeline that already consumes AsciiDoc).

@@ -4,16 +4,21 @@
 Four checks:
 
   1. Every node type declared in BlockNodes.inc, BlockCommandNodes.inc,
-     or InlineNodes.inc has a registry entry (or is marked Planned).
+     or InlineNodes.inc has a registry entry (or is marked `planned`).
+     An entry names its node by the AST class: `ParagraphBlock` for
+     `INFO(Paragraph)` in a block file, `EmphInline` for `INFO(Emph)` in
+     the inline file.
   2. Every parser-dispatched command name from the C++ source appears
      in some entry's `syntaxes` list.
-  3. Every entry carries the prose payload the page needs: a
-     `description` string for every entry, and a `preview` block
-     (with `title` and `caption`) for every non-Planned entry.
-  4. Every non-Planned entry has at least one example, and each example
-     resolves to its golden-test mirror under tests/golden/fixtures/
-     snippets/, its Antora source under docs/modules/ROOT/examples/,
-     and its rendered .adoc next to that source.
+  3. Every entry carries the fields commands-registry-extension.js
+     renders: a `description`, a `partial` of the form
+     `commands/<slug>.adoc`, and at least one syntax.
+  4. Every entry that is not `planned` has at least one example, and
+     each example resolves to a golden fixture under tests/golden/
+     fixtures/snippets/: the `.cpp` source and the `.adoc` output the
+     golden test generates. The extension includes both through the
+     `example$snippets/` mount (docs/extensions/repo-snippets-extension.js),
+     so there is no separate copy under docs/modules/ROOT/examples/.
 
 Runs in the utility-tests CI step. Reads source files only; does not
 need mrdocs built.
@@ -58,7 +63,12 @@ def parse_inc_file(path):
 
 
 def collect_declared_types(root):
-    """Return the set of node type names declared in the three .inc files."""
+    """Return the AST class names declared in the three .inc files.
+
+    `INFO(Paragraph)` in a block file is the class `ParagraphBlock`;
+    `INFO(Emph)` in the inline file is `EmphInline`. These are the names
+    the registry stores in `node_type`.
+    """
     block_inc = os.path.join(
         root, "include/mrdocs/Metadata/DocComment/Block/BlockNodes.inc"
     )
@@ -70,12 +80,14 @@ def collect_declared_types(root):
     )
 
     types = set()
-    for p in (block_inc, block_cmd_inc, inline_inc):
-        types.update(parse_inc_file(p))
+    for p, suffix in ((block_inc, "Block"),
+                      (block_cmd_inc, "Block"),
+                      (inline_inc, "Inline")):
+        types.update(name + suffix for name in parse_inc_file(p))
 
     # `Text` holds plain text inside another node; users do not type it as
     # a command, so it has no registry entry.
-    types.discard("Text")
+    types.discard("TextInline")
 
     return types
 
@@ -149,9 +161,8 @@ def extract_html_tag_handlers(path):
     """Pull HTML tag names handled by parseInlines.hpp outside the kRules table.
 
     Matches the dispatch pattern the file uses: `if (... name == "a")`
-    and `if (... name == "img")`. An earlier version of this function
-    fired on any occurrence of the strings `"a"` or `"img"`, which would
-    match for the wrong reason if those literals showed up elsewhere.
+    and `if (... name == "img")`, not any occurrence of the strings
+    `"a"` or `"img"`.
     """
     tags = set()
     with open(path, encoding="utf-8") as f:
@@ -194,6 +205,11 @@ def collect_dispatched_commands(root):
     # for the same reason as above. (`@related` has its own `KCI_related`
     # constant; extract_kci_commands finds it without help.)
     commands.update({"sa", "arg"})
+
+    # Output-format verbatim commands: visitVerbatimBlock strips the
+    # `only` suffix to get the code block language, so no literal names them.
+    commands.update({"htmlonly", "xmlonly", "latexonly",
+                     "docbookonly", "manonly", "rtfonly"})
 
     # kRules carries the inline delimiters (Markdown plus HTML opening tags
     # like `<em>`, `<strong>`, `<br>`). The Markdown ones (`*`, `**`, `~~`,
@@ -238,21 +254,8 @@ def load_registry(root):
 
 
 def registry_node_types(entries):
-    """Return every `node_types` value across the registry as one set."""
-    types = set()
-    for e in entries:
-        for nt in e.get("node_types", []):
-            types.add(nt)
-    return types
-
-
-def registry_all_syntaxes(entries):
-    """Return every `syntaxes` value across the registry as one set."""
-    syntaxes = set()
-    for e in entries:
-        for s in e.get("syntaxes", []):
-            syntaxes.add(s)
-    return syntaxes
+    """Return every `node_type` value across the registry as one set."""
+    return {e["node_type"] for e in entries if e.get("node_type")}
 
 
 def syntax_to_command_name(syntax):
@@ -260,18 +263,19 @@ def syntax_to_command_name(syntax):
 
     Examples:
 
-        "@brief"           -> "brief"
-        "@code / @endcode" -> "code"
-        "<em>text</em>"    -> "<em>"
-        "<br>"             -> "<br>"
-        "*text*"           -> "*text*"    (Markdown; left as-is)
+        "@brief"                       -> "brief"
+        "@code[{.lang}] ... @endcode"  -> "code"
+        "<em>text</em>"                -> "<em>"
+        "<br>"                         -> "<br>"
+        "*text*"                       -> "*text*"  (Markdown; left as-is)
     """
     s = syntax.strip()
 
     if s.startswith("@"):
-        # Strip the `@`; for `@code / @endcode`, keep the first command.
-        name = s[1:].split()[0].rstrip(",/")
-        return name
+        # The first word after `@` is the command; a `[{.lang}]` suffix
+        # or a closing `@endcode` does not change it.
+        m = re.match(r"@(\w+)", s)
+        return m.group(1) if m else s
 
     m = re.match(r"<(\w+)", s)
     if m:
@@ -293,6 +297,15 @@ def check_node_types_covered(declared_types, entries):
         if t not in registry_types:
             errors.append(
                 f"  Declared node type '{t}' has no registry entry"
+            )
+    # The other direction: a `node_type` must name a declared class, so a
+    # renamed or misspelled class cannot hide behind a stale entry.
+    for e in entries:
+        t = e.get("node_type")
+        if t and t not in declared_types:
+            errors.append(
+                f"  Entry '{e.get('heading', '?')}' names node type '{t}', "
+                f"which no .inc file declares"
             )
     return errors
 
@@ -328,81 +341,82 @@ def check_commands_covered(dispatched_commands, html_commands, entries):
 
 
 def check_payload_present(entries, root):
-    """Check 3: every entry carries the prose payload the page needs.
+    """Check 3: every entry carries the fields the extension renders.
 
-    `description` is required everywhere. `preview.title` and
-    `preview.caption` are required for non-Planned entries (Planned
-    entries have no example, so they have no preview block).
+    The extension writes one partial per entry at the path named by
+    `partial`, using `heading`, `syntaxes` and `description`. It keys
+    partials by slug and anchors by heading, so both must be unique, and
+    each `see_also` name must be the heading of some entry.
     """
     del root  # No filesystem reads here; the registry itself is the source.
     errors = []
+    headings = [e.get("heading", "?") for e in entries]
+    partials = [e.get("partial") for e in entries if e.get("partial")]
+    for h in sorted({h for h in headings if headings.count(h) > 1}):
+        errors.append(f"  Heading '{h}' is used by more than one entry")
+    for pt in sorted({pt for pt in partials if partials.count(pt) > 1}):
+        errors.append(f"  Partial '{pt}' is used by more than one entry")
+    for e in entries:
+        for name in e.get("see_also", []):
+            if name not in headings:
+                errors.append(
+                    f"  Entry '{e.get('heading', '?')}' lists see_also "
+                    f"'{name}', which is not the heading of any entry")
     for e in entries:
         heading = e.get("heading", "?")
         if not e.get("description"):
             errors.append(f"  Entry '{heading}' has no `description`")
-        if "Planned" in e.get("status", ""):
-            continue
-        preview = e.get("preview") or {}
-        if not preview.get("title"):
-            errors.append(f"  Entry '{heading}' has no `preview.title`")
-        if not preview.get("caption"):
-            errors.append(f"  Entry '{heading}' has no `preview.caption`")
+        if not e.get("syntaxes"):
+            errors.append(f"  Entry '{heading}' has no `syntaxes`")
+        if not re.fullmatch(r"commands/[\w-]+\.adoc", e.get("partial", "")):
+            errors.append(
+                f"  Entry '{heading}' has no `partial` of the form "
+                f"`commands/<slug>.adoc`")
     return errors
 
 
 def check_examples_exist(entries, root):
-    """Check 4: Every non-Planned entry has at least one example, and every
-    referenced example resolves to a real snippet under
-    tests/golden/fixtures/snippets/.
+    """Check 4: every entry that is not `planned` has at least one example,
+    and each example is a golden fixture.
 
-    Per spec R9, examples are mandatory for non-Planned entries; missing
-    examples are an error, not a warning. Each example also has to back
-    a partial that includes it via `include::example$commands/<slug>.cpp[]`,
-    so the Antora-side source at docs/modules/ROOT/examples/commands/
-    must exist too.
+    An example `commands/x` names tests/golden/fixtures/snippets/commands/
+    x.cpp (the source) and x.adoc (the output the golden test generates).
+    The extension includes both through the `example$snippets/` mount, so
+    a missing file is an include error in the docs build.
     """
     errors = []
     snippets_dir = os.path.join(root, "tests/golden/fixtures/snippets")
-    antora_examples_dir = os.path.join(
-        root, "docs/modules/ROOT/examples")
     for e in entries:
         examples = e.get("examples", [])
-        status = e.get("status", "")
         heading = e.get("heading", "?")
 
-        # Planned entries are exempt from the example requirement
-        if "Planned" in status:
+        if e.get("planned"):
             continue
 
         if not examples:
             errors.append(
-                f"  Entry '{heading}' has no examples and is not Planned "
+                f"  Entry '{heading}' has no examples and is not planned "
                 f"(at least one example is required)"
             )
             continue
 
         for ex in examples:
-            mirror_cpp = os.path.join(snippets_dir, ex + ".cpp")
-            antora_cpp = os.path.join(antora_examples_dir, ex + ".cpp")
-            rendered = os.path.join(antora_examples_dir, ex + ".rendered.adoc")
-            if not os.path.isfile(mirror_cpp):
+            # The extension strips `commands/` and includes
+            # `example$snippets/commands/<slug>`, so any other prefix
+            # points the docs at a file this check never looked at.
+            if not re.fullmatch(r"commands/[\w-]+", ex):
                 errors.append(
-                    f"  Example '{ex}' for entry '{heading}' is missing its "
-                    f"golden-test mirror at "
-                    f"tests/golden/fixtures/snippets/{ex}.cpp"
+                    f"  Example '{ex}' for entry '{heading}' is not of the "
+                    f"form `commands/<slug>`"
                 )
-            if not os.path.isfile(antora_cpp):
-                errors.append(
-                    f"  Example '{ex}' for entry '{heading}' is missing its "
-                    f"Antora source at docs/modules/ROOT/examples/{ex}.cpp"
-                )
-            if not os.path.isfile(rendered):
-                errors.append(
-                    f"  Example '{ex}' for entry '{heading}' is missing its "
-                    f"rendered output at "
-                    f"docs/modules/ROOT/examples/{ex}.rendered.adoc "
-                    f"(run `python utils/render_snippets.py --update`)"
-                )
+                continue
+            for ext in (".cpp", ".adoc"):
+                path = os.path.join(snippets_dir, ex + ext)
+                if not os.path.isfile(path):
+                    errors.append(
+                        f"  Example '{ex}' for entry '{heading}' is missing "
+                        f"tests/golden/fixtures/snippets/{ex}{ext}"
+                    )
     return errors
 
 
@@ -439,14 +453,14 @@ def main():
     for e in errs:
         print(e)
 
-    print("Check 3: entries carry description + preview payload...")
+    print("Check 3: entries carry the fields the extension renders...")
     errs = check_payload_present(entries, root)
     all_errors.extend(errs)
     print(f"  {'FAIL' if errs else 'OK'} ({len(entries)} entries, {len(errs)} missing)")
     for e in errs:
         print(e)
 
-    print("Check 4: example files exist (mirror, source, rendered)...")
+    print("Check 4: example fixtures exist (source and golden output)...")
     errs = check_examples_exist(entries, root)
     all_errors.extend(errs)
     print(f"  {'FAIL' if errs else 'OK'} ({len(entries)} entries, {len(errs)} missing)")

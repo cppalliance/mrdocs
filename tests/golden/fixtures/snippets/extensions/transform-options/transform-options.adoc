@@ -1,0 +1,22 @@
+= Reference
+:mrdocs:
+
+[#logr-scoped_context]
+== logr::scoped&lowbar;context
+
+Attach a key&sol;value pair to every log line in the current scope&period;
+
+=== Synopsis
+
+Declared in `&lt;transform&hyphen;options&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+scoped&lowbar;context(
+    char const* key,
+    char const* value);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

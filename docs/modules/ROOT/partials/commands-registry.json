@@ -96,14 +96,23 @@
         "kind": "Block",
         "syntaxes": [
           "@code[{.lang}] ... @endcode",
-          "@verbatim ... @endverbatim"
+          "@verbatim ... @endverbatim",
+          "@dot ... @enddot",
+          "@msc ... @endmsc",
+          "@startuml ... @enduml",
+          "@htmlonly ... @endhtmlonly",
+          "@xmlonly ... @endxmlonly",
+          "@latexonly ... @endlatexonly",
+          "@docbookonly ... @enddocbookonly",
+          "@manonly ... @endmanonly",
+          "@rtfonly ... @endrtfonly"
         ],
         "partial": "commands/code-block.adoc",
         "examples": [
           "commands/code-block"
         ],
         "see_also": [],
-        "description": "Inserts a block of preformatted code into the documentation.\nEverything between the opening and closing tags is preserved verbatim, including whitespace and indentation.\n\n`@code` and `@verbatim` produce the same output.\nUse `@code` for source code and `@verbatim` for other preformatted text, though MrDocs treats them identically.",
+        "description": "Inserts a block of preformatted code into the documentation.\nEverything between the opening and closing tags is preserved verbatim, including whitespace and indentation.\n\n`@code` and `@verbatim` produce the same output.\nUse `@code` for source code and `@verbatim` for other preformatted text, though MrDocs treats them identically.\n\nThe diagram commands `@dot`, `@msc`, and `@startuml` also produce a code block. Their language is `dot`, `msc`, and `plantuml`, so a generator or a template can hand the body to the matching renderer.\n\nThe output-format commands such as `@htmlonly` and `@latexonly` produce a code block too. The command name without `only` becomes the language, so `@htmlonly` gives `html`.",
         "parameters": [
           {
             "name": "lang",
@@ -216,7 +225,9 @@
           "[^label]: text"
         ],
         "partial": "commands/footnote-definition.adoc",
-        "examples": [],
+        "examples": [
+          "commands/footnote"
+        ],
         "see_also": [
           "Footnote Reference"
         ],
@@ -243,7 +254,9 @@
           "\\f[ expression \\f]"
         ],
         "partial": "commands/math-block.adoc",
-        "examples": [],
+        "examples": [
+          "commands/math"
+        ],
         "see_also": [
           "Math"
         ],
@@ -474,7 +487,7 @@
         "note": "`@see` looks special, but its argument is just an ordinary paragraph. MrDocs does not auto-link names inside it (Doxygen's documentation is misleading on this point). To link to a symbol, use `@ref` inside the paragraph."
       },
       {
-        "node_type": "RelatesInline",
+        "node_type": "ReferenceInline",
         "heading": "Relates",
         "kind": "Metadata block",
         "syntaxes": [
@@ -879,10 +892,7 @@
         "examples": [
           "commands/copydoc"
         ],
-        "see_also": [
-          "Copy Brief",
-          "Copy Details"
-        ],
+        "see_also": [],
         "description": "Copy documentation from another symbol. `@copydoc` copies the whole doc comment (brief, description, and every metadata block); `@copybrief` copies only the brief; `@copydetails` copies only the detailed description. Useful for overloads, redeclarations, and wrappers that share documentation with another symbol.",
         "parameters": [
           {

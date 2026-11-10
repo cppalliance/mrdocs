@@ -5,7 +5,7 @@
 :url-latex: https://www.latex-project.org/
 :url-handlebars: https://handlebarsjs.com/
 
-Beyond the three built-in generators, you can add an output format of your own by dropping a template directory under either an xref:configuration/reference.adoc#addons_option[addon root] or an xref:configuration/reference.adoc#addons-supplemental_option[supplemental addon root]. Mr.Docs walks the immediate template subdirectories of every {url-handlebars}[Handlebars^] generator it finds at startup, and any subdirectory that ships an `mrdocs-generator.yml` file is installed as a new generator.
+A data-driven generator is a template extension that adds a whole output format. Beyond the three built-in generators, you can add one of your own by dropping a template directory under either an xref:configuration/reference.adoc#addons_option[addon root] or an xref:configuration/reference.adoc#addons-supplemental_option[supplemental addon root]. Mr.Docs walks the immediate template subdirectories of every {url-handlebars}[Handlebars^] generator it finds at startup, and any subdirectory that ships an `mrdocs-generator.yml` file is installed as a new generator.
 
 [[the-mrdocs-generator-yml-manifest]]
 == The manifest
@@ -53,7 +53,7 @@ Once everything is in place, the format is selectable through the xref:configura
 
 [source,yaml]
 ----
-generator: jsonl
+include::example$examples/generators/data-driven/jsonl/mrdocs.yml[tag=generator]
 ----
 
 Or on the command line, where the flag wins over the file:
@@ -246,6 +246,6 @@ include::example$examples/generators/data-driven/tex/simple.tex[]
 ----
 ======
 
-To build the output structure yourself, e.g. one file per namespace or a single aggregated artifact like a search index, hand the whole emit to a script instead of rendering one page per symbol. See the xref:extensions/script-generators.adoc[generators] section of the extensions page.
+To build the output structure yourself, e.g. one file per namespace or a single aggregated artifact like a search index, hand the whole emit to a script instead of rendering one page per symbol. See xref:extensions/programmatic-generators.adoc[Programmatic Generators], a kind of pipeline extension.
 
 

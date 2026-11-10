@@ -1,0 +1,82 @@
+= docs/
+
+`docs/` holds the documentation of MrDocs: the Antora site, its extensions, its UI and the scripts that build them.
+The pages use AsciiDoc, and Antora builds them.
+The page on changing the docs, xref:contribute/docs.adoc[], covers the Antora facts and the writing rules.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Projects a page tells the reader to run
+|`examples/`, which the docs point at by URL.
+
+|Expected output a page quotes
+|`tests/golden/fixtures/snippets/`. The repo-snippets extension mounts it as `snippets` and `examples/` as `examples`, and nothing else.
+
+|Scripts that check or generate documentation inputs
+|`utils/docs/`.
+
+|The generated reference and the built site
+|`generate_reference` writes the reference under the build tree, and the site builds into `docs/build/`, which git ignores.
+|===
+
+== Contents by path
+
+[cols="2,5"]
+|===
+|Path |Purpose
+
+|`docs/modules/ROOT/`
+|The AsciiDoc source: `pages/`, `partials/`, `examples/`, `images/`, `attachments/` and `nav.adoc`, the navigation of the site.
+
+|`docs/extensions/`
+|Antora extensions: `repo-snippets-extension.js`, `commands-registry-extension.js`, `adoc-preview-extension.js`, `config-options-reference.js`, `mrdocs-demos.js` and `mrdocs-releases.js`. The playbook loads them.
+
+|`docs/ui/`
+|The Antora UI bundle sources, built by `docs/ui/build.sh` into `docs/ui/build/ui-bundle.zip`.
+
+|`docs/website/`
+|The landing page, an `index.html` rendered from `index.html.hbs` and `data.json`.
+
+|`docs/mrdocs/extensions/`
+|`schema.js`, the script-driven generator that reflects the DOM schema from the MrDocs headers.
+
+|`docs/shared/`
+|CSS shared by the site and the landing page.
+
+|`docs/extra/`
+|`generator_front.py`, the script behind the generator comparison figure.
+|===
+
+The files at the top of `docs/` are the build itself:
+
+* `antora.yml` is the component descriptor, and `antora-playbook.yml` is the site playbook.
+* `mrdocs.yml` is the configuration that documents MrDocs with MrDocs.
+* `package.json` lists the Node dependencies.
+* `build_docs.sh` and `build_local_docs.sh` build the site, with `.bat` twins for Windows.
+* `CMakeLists.txt` and `mrdocs-build.cmake` are the CMake side, covered in the next section.
+
+== Build integration
+
+The root build adds `docs/` when `MRDOCS_BUILD_DOCS` is on.
+`docs/CMakeLists.txt` then defines these targets:
+
+[cols="2,4"]
+|===
+|Target |What it does
+
+|`generate_reference`
+|Runs the built `mrdocs` over the public headers with `docs/mrdocs.yml`. It exists when `MRDOCS_GENERATE_REFERENCE` is on, which follows `MRDOCS_BUILD_DOCS`.
+
+|`generate_antora_reference`
+|Copies that output into `docs/modules/ROOT/pages/reference/`. It exists when `MRDOCS_GENERATE_ANTORA_REFERENCE` is on.
+
+|`generate_docs`
+|Runs Antora over the site. It exists when `npm` and `npx` are on the path.
+|===
+
+`docs/mrdocs-build.cmake` is not part of that build.
+When `MRDOCS_MRDOCS_BUILD` is on, the root `CMakeLists.txt` includes it and returns, so the configure step produces only a `compile_commands.json` that covers every public header.

@@ -4,23 +4,65 @@
 [#mrdocs-binaries]
 == Binary Packages
 
-Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"]. Most users should start here; if no binary release fits your platform, build from source below.
+Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"].
+Most users should start here; if no binary release fits your platform, build from source below.
 
 mrdocs-releases::[]
+
+[NOTE]
+.System requirements
+====
+[tabs]
+======
+Linux::
++
+--
+You need glibc 2.31 or later: Ubuntu 20.04, Debian 11, Fedora 32, RHEL 9, or anything newer.
+The package needs nothing else from the system.
+The package ships its own {cpp} runtime (`+++libstdc++.so.6+++` and `libgcc_s.so.1`) in `lib/`.
+--
+
+macOS::
++
+--
+You need macOS 14 (Sonoma) or later.
+The executable's deployment target is 14.0, so an older macOS refuses to start it.
+--
+
+Windows::
++
+--
+You need 64-bit Windows with the Microsoft Visual C++ Redistributable (x64) installed.
+The executable loads the {cpp} runtime from it.
+--
+======
+====
 
 [#mrdocs-bootstrap-script]
 == Build from Source
 
-If no binary release fits your platform, build Mr.Docs from source with the bootstrap script. The script provisions every dependency Mr.Docs needs (LLVM, Clang, and the other third-party libraries) into the install prefix you choose, configures the project, and runs the build. See https://cppalliance.org/alan/2026/04/15/Alan.html[the bootstrap walkthrough on the C++ Alliance site,window="_blank"] for the design rationale.
-
 [TIP]
 ====
-Already installed Mr.Docs from a xref:#mrdocs-binaries[binary package]? Skip the rest of this section and go straight to xref:#_verification[Verification].
+Already installed Mr.Docs from a xref:#mrdocs-binaries[binary package]?
+Skip the rest of this section and go straight to xref:#verification[Verification].
+====
+
+If no binary release fits your platform, build Mr.Docs from source with the bootstrap script.
+The script provisions every dependency Mr.Docs needs (LLVM, Clang, and the other third-party libraries) into the installation prefix you choose, configures the project, and runs the build.
+Other important reasons to build from source are to set up an environment where xref:extensions/defining-extensions.adoc#building[plugins] work best in terms of ABI compatibility and to set up a xref:page$contribute/workflow.adoc[development environment] to contribute to Mr.Docs itself.
+
+.Plugin compatibility
+[NOTE]
+====
+When you build Mr.Docs from source, it's easier to ensure you're building a plugin against the exact Mr.Docs that loads it, with the same compiler and standard library.
+Compiler plugins such as Clang's work the same way, and it is the way to get Mr.Docs, and plugins for it, on a platform the xref:#mrdocs-binaries[binary packages] do not cover.
+See the xref:extensions/defining-extensions.adoc#plugin-compatibility[plugin compatibility] section for the rules imposed by packages.
 ====
 
 === Prerequisites
 
-You need Python, a recent C++ toolchain (Clang or a recent GCC), CMake, and Git on the machine. If any of those are missing, pass `--install-system-deps` to the bootstrap script below and it will use your system package manager to install them.
+You need Python, a recent C++ toolchain (Clang or a recent GCC), CMake, and Git on the machine.
+If any of those are missing, pass `--install-system-deps` to the bootstrap script below and it will use your system package manager to install them.
 
 === Running the script
 
@@ -31,35 +73,70 @@ cd mrdocs
 python bootstrap.py
 ----
 
-The script prompts for the install directory and other settings interactively. Every prompt has an equivalent CLI flag; the `--help` output lists them all.
+The script prompts for the install directory and other settings interactively.
+Every prompt has an equivalent CLI flag; the `--help` output lists them all.
 
-=== Usage patterns
+Here are common usage patterns:
 
-*Non-interactive (CI or scripted installs):* `--yes` accepts every default without prompting.
+[tabs]
+======
+Non-interactive::
++
+--
+Accepts every default without prompting.
+Useful for CI or scripted installs.
 
 [source,bash]
 ----
 python bootstrap.py --yes --build-type Release
 ----
+--
 
-*Dry-run:* `--dry-run` prints every command the script would run, fully resolved. The output is copy-paste-ready shell, useful when you want to follow the build manually:
-
-[source,bash]
-----
-python bootstrap.py --yes --dry-run --build-type Release
-----
-
-*Continuous integration:* point `--cache-dir` at a CI-cached directory of dependency installs; the script checks stamp files and skips up-to-date recipes. Pair with `--skip-build` if you only need the dependencies.
+Dry-run::
++
+--
+Prints every command the script would run, fully resolved.
+The output is copy-paste-ready shell, useful when you want to follow the build manually:
 
 [source,bash]
 ----
-python bootstrap.py --yes --plain \
-  --build-type Release --sanitizer address \
-  --cache-dir ../third-party --skip-build
+python bootstrap.py --yes --build-type Release
 ----
+--
 
-For more options and details, see the xref:#_bootstrap-options[Bootstrap Options Reference] section at the end of this page.
+Continuous integration::
++
+--
+Point `--cache-dir` at a CI-cached directory of dependency installs.
+The script checks stamp files and skips up-to-date recipes.
+Pair with `--skip-build` if you only need the dependencies.
 
+[source,bash]
+----
+python bootstrap.py --yes --plain --build-type Release --sanitizer address --cache-dir ../third-party --skip-build
+----
+--
+======
+
+.Reference page
+[TIP]
+====
+To customize the build, see xref:bootstrap.adoc[The Bootstrap Tool Reference page] for the full list of options.
+====
+
+.Design Rationale
+[NOTE]
+====
+See https://cppalliance.org/newsmedia/news/mrdocs-bootstrap-one-script-to-build-them-all/[the bootstrap walkthrough on the C++ Alliance site,window="_blank"] for the design rationale of the bootstrap script.
+====
+
+.Contributor workflow
+[WARNING]
+====
+If you are going to contribute to Mr.Docs, continue on the xref:contribute/workflow.adoc[Development Setup] page once the script has finished.
+====
+
+[#verification]
 == Verification
 
 After install, confirm the binary is on `PATH` and reports the expected version:
@@ -69,9 +146,24 @@ After install, confirm the binary is on `PATH` and reports the expected version:
 mrdocs --version
 ----
 
+It prints the release, the version and the build it was made from:
+
+[source,text]
+----
+MrDocs
+Release: <Release>
+Version: <Version>
+Built with LLVM <version>
+Plugin build id: <Plugin build id>
+Build SHA: <Build SHA>
+Target: <Target>
+InstalledDir: <InstalledDir>
+----
+
 [TIP]
 ====
-If the shell reports "command not found" (or "is not recognized as an internal or external command" on Windows), Mr.Docs is installed but its `bin/` directory is not on your `PATH`. Add it and reopen the terminal:
+If the shell reports "command not found" (or "is not recognized as an internal or external command" on Windows), Mr.Docs is installed but its `bin/` directory is not on your `PATH`.
+Add it and reopen the terminal:
 
 [tabs]
 ======
@@ -88,7 +180,8 @@ Append the install prefix's `bin\` to your user `PATH` from PowerShell:
   'User')
 ----
 
-Replace `C:\path\to\install` with the prefix you passed to `--install-dir`. Close and reopen the terminal so the new `PATH` takes effect.
+Replace `C:\path\to\install` with the prefix you passed to `--install-dir`.
+Close and reopen the terminal so the new `PATH` takes effect.
 --
 
 Linux / macOS::
@@ -102,23 +195,19 @@ echo 'export PATH="/path/to/install/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 ----
 
-Replace `/path/to/install` with the prefix you passed to `--install-dir` (or the default expansion shown in xref:#directories[Directories]).
+Replace `/path/to/install` with the prefix you passed to `--install-dir` (or the default shown in xref:bootstrap.adoc#default-directories[Default directories]).
 --
 ======
 
-If `mrdocs --version` still fails after fixing `PATH`, the binary is on disk but cannot start. Run it with the full path (`/path/to/install/bin/mrdocs --version`) to see the actual error: missing shared library, wrong CPU architecture, or a mismatched glibc are the usual suspects, all fixable by rerunning bootstrap with the right `--cc` / `--cxx`.
+If `mrdocs --version` still fails after fixing `PATH`, the binary is on disk but cannot start.
+Run it with the full path (`/path/to/install/bin/mrdocs --version`) to see the actual error: missing shared library, wrong CPU architecture, or a mismatched glibc are the usual suspects, all fixable by rerunning bootstrap with the right `--cc` / `--cxx`.
 ====
 
 == Package layout
 
-A Mr.Docs install follows the conventional Unix layout. After install, the prefix contains:
+A Mr.Docs install follows the conventional Unix layout.
+After install, the prefix contains:
 
 * `bin/` -- the `mrdocs` executable.
 * `share/mrdocs/` -- bundled resources Mr.Docs reads at runtime
 * `lib/` and `include/` -- the Mr.Docs core library and its public headers, for embedding Mr.Docs in another program.
-
-[#bootstrap-reference]
-== Appendix: Bootstrap Options Reference
-
-include::partial$bootstrap-options.adoc[leveloffset=0]
-

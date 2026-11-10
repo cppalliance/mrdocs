@@ -9,9 +9,10 @@
 #
 
 # polyfills: stand-ins for standard-library features not yet available on every
-# supported compiler (see ../README.md). All header-only today, so this is an
-# INTERFACE library. Depends ONLY on the standard library. Deleted piece by
-# piece as each feature becomes universally available.
+# supported compiler (see docs/modules/ROOT/pages/contribute/layout/libs.adoc).
+# All header-only today, so this is an INTERFACE library. Depends ONLY on the
+# standard library. Deleted piece by piece as each feature becomes universally
+# available.
 add_library(mrdocs-polyfill INTERFACE)
 add_library(mrdocs::polyfill ALIAS mrdocs-polyfill)
 target_include_directories(mrdocs-polyfill

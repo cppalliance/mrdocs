@@ -4,7 +4,7 @@ The `html` generator is the default. It produces a tree of HTML pages backed by 
 
 [source,yaml]
 ----
-generator: html
+include::example$snippets/generators/html/html.yml[tag=generator]
 ----
 
 == Output layout
@@ -47,11 +47,7 @@ Directory (relative to the output root) used for linked styles. `stylesdir: css`
 
 [source,yaml]
 ----
-generator: html
-stylesheets:
-  - custom.css
-linkcss: true
-stylesdir: css
+include::example$snippets/generators/html-stylesheets/html-stylesheets.yml[tag=stylesheets]
 ----
 
 The same options can be passed on the command line. LLVM's command-line parser expects `--name=value` for options that take a value, and a bare `--name` (or `--name=true` / `--name=false`) for boolean switches:
