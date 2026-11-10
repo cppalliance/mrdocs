@@ -49,7 +49,7 @@ namespace mrdocs::doc {
     </dl>
     @endcode
 */
-struct DefinitionListBlock final
+struct MRDOCS_VISIBLE DefinitionListBlock final
     : BlockCommonBase<BlockKind::List>
 {
     /** Sequence of definition list items.

@@ -28,7 +28,7 @@ namespace mrdocs::detail {
 
     This hasher is used to implement the SymbolSet.
 */
-struct SymbolPtrHasher
+struct MRDOCS_DECL SymbolPtrHasher
 {
     using is_transparent = void;
 
@@ -60,7 +60,7 @@ struct SymbolPtrHasher
 
     This equality comparison is used to implement the SymbolSet.
 */
-struct SymbolPtrEqual
+struct MRDOCS_DECL SymbolPtrEqual
 {
     using is_transparent = void;
 

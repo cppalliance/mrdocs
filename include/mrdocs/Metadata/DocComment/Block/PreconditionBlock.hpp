@@ -29,7 +29,7 @@ namespace mrdocs::doc {
     @pre condition
     @endcode
 */
-struct PreconditionBlock final
+struct MRDOCS_VISIBLE PreconditionBlock final
     : BlockCommonBase<BlockKind::Precondition>
     , InlineContainer
 {

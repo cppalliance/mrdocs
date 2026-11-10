@@ -23,7 +23,7 @@ namespace mrdocs {
 
 /** C++ array type (bounded or unbounded).
 */
-struct ArrayType final
+struct MRDOCS_VISIBLE ArrayType final
     : TypeCommonBase<TypeKind::Array>
 {
     /** Element type held by the array.

@@ -40,7 +40,7 @@ namespace mrdocs::doc {
     <a href="https://www.example.com">Visit Example.com</a>
     @endcode
 */
-struct LinkInline final
+struct MRDOCS_VISIBLE LinkInline final
     : InlineCommonBase<InlineKind::Link>
     , InlineContainer
 {

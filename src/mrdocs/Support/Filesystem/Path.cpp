@@ -12,12 +12,14 @@
 
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <llvm/Support/raw_ostream.h>
 #include <algorithm>
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 
 
@@ -228,7 +230,10 @@ Expected<std::string>
 getFileText(
     std::string_view pathName)
 {
-    std::ifstream file((std::string(pathName)));
+    // Windows opens a narrow path through the ANSI code page, so the path is
+    // built from a u8string to be read as UTF-8.
+    std::ifstream file(std::filesystem::path(
+        std::u8string(pathName.begin(), pathName.end())));
     if(! file.good())
         return Unexpected(formatError("std::ifstream(\"{}\" returned \"{}\"",
             pathName, std::error_code(errno, std::generic_category())));
@@ -239,6 +244,36 @@ getFileText(
         return Unexpected(formatError("getFileText(\"{}\") returned \"{}\"",
             pathName, std::error_code(errno, std::generic_category())));
     return text;
+}
+
+Expected<void>
+writeFileText(
+    std::string_view pathName,
+    std::string_view text)
+{
+    // LLVM opens the path as UTF-8 on every platform and writes the bytes
+    // unchanged (no newline translation).
+    std::error_code ec;
+    llvm::raw_fd_ostream os(pathName, ec);
+    if (ec)
+    {
+        return Unexpected(formatError(
+            "writeFileText(\"{}\") could not open the file: \"{}\"",
+            pathName,
+            ec));
+    }
+    os << text;
+    os.close();
+    if (os.has_error())
+    {
+        ec = os.error();
+        os.clear_error();
+        return Unexpected(formatError(
+            "writeFileText(\"{}\") could not write the file: \"{}\"",
+            pathName,
+            ec));
+    }
+    return {};
 }
 
 std::string

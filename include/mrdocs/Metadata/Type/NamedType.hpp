@@ -26,7 +26,7 @@ namespace mrdocs {
 
 /** A type identified by name (possibly fundamental).
 */
-struct NamedType final
+struct MRDOCS_VISIBLE NamedType final
     : TypeCommonBase<TypeKind::Named>
 {
     /** The name of the type (identifier or specialization).

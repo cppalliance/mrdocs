@@ -44,7 +44,7 @@ MRDOCS_DESCRIBE_ENUM(
 
 /** Information about templates and specializations thereof.
 */
-struct TemplateInfo final
+struct MRDOCS_VISIBLE TemplateInfo final
 {
     /** Template parameter list.
     */

@@ -28,7 +28,7 @@ namespace mrdocs {
 
 /** Base class for any template argument.
 */
-struct TArg
+struct MRDOCS_VISIBLE TArg
 {
     /** The kind of template argument this is.
     */

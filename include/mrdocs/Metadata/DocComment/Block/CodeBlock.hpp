@@ -22,7 +22,7 @@ namespace mrdocs::doc {
 
 /** Preformatted source code.
 */
-struct CodeBlock final
+struct MRDOCS_VISIBLE CodeBlock final
     : BlockCommonBase<BlockKind::Code>
 {
     /** Raw code text inside the fenced block.

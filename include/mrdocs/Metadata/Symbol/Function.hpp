@@ -29,7 +29,7 @@ namespace mrdocs {
 
 /** Metadata for a function or method.
 */
-struct FunctionSymbol final
+struct MRDOCS_VISIBLE FunctionSymbol final
     : SymbolCommonBase<SymbolKind::Function>
 {
     /** Info about the return type of this function.

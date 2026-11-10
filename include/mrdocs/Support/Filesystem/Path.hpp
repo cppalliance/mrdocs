@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Polymorphic visitor for files discovered during traversal.
 */
-struct MRDOCS_VISIBLE
+struct MRDOCS_DECL
     AnyFileVisitor
 {
     /** Virtual destructor.
@@ -267,7 +267,7 @@ getFileName(
 /** Make a source path relative to the mrdocs project root.
 
     Strips the build-time project-root prefix so diagnostics print short,
-    repository-relative paths (e.g. `src/mrdocs/Support/Report.cpp`). The root
+    repository-relative paths (e.g. `src/mrdocs/Support/Reporter.cpp`). The root
     is derived from this translation unit's own location, so it needs no marker
     file at the repository root. A path that is not under the project root falls
     back to its bare file name.
@@ -295,6 +295,23 @@ MRDOCS_DECL
 Expected<std::string>
 getFileText(
     std::string_view pathName);
+
+/** Write a string to a file, creating or truncating it.
+
+    The path is UTF-8 on every platform, and the bytes of `text` are
+    written unchanged.
+
+    @param pathName The absolute or relative path
+        to the file.
+    @param text The contents to write.
+    @return Nothing on success, or an error naming
+        the path if the file could not be opened or written.
+*/
+MRDOCS_DECL
+Expected<void>
+writeFileText(
+    std::string_view pathName,
+    std::string_view text);
 
 /** Append a trailing native separator if not already present.
 

@@ -1,2 +1,4 @@
 tests/golden/fixtures/** text eol=lf
 **.sh text eol=lf
+examples/extensions/deprecations/sample-project/deprecations.txt text eol=lf
+utils/codegen/git-archival.txt export-subst

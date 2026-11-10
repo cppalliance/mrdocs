@@ -60,7 +60,7 @@ MRDOCS_DESCRIBE_ENUM(
     and class scopes.
 
 */
-struct UsingSymbol final
+struct MRDOCS_VISIBLE UsingSymbol final
     : SymbolCommonBase<SymbolKind::Using>
 {
     /** The using declaration.

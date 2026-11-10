@@ -22,7 +22,7 @@ namespace mrdocs {
 
     Encourages the compiler to warn if the return value is discarded.
 */
-struct NodiscardAttribute final
+struct MRDOCS_VISIBLE NodiscardAttribute final
     : AttributeCommonBase<AttributeKind::Nodiscard>
 {
     /** The reason, if any.

@@ -29,7 +29,7 @@ namespace mrdocs::doc {
     @post condition
     @endcode
 */
-struct PostconditionBlock
+struct MRDOCS_VISIBLE PostconditionBlock
     : BlockCommonBase<BlockKind::Postcondition>
     , InlineContainer
 {

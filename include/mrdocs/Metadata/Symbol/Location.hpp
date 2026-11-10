@@ -27,7 +27,7 @@ class DomCorpus;
 
 /** Source location of a symbol or entity.
 */
-struct MRDOCS_DECL
+struct MRDOCS_VISIBLE
     Location
 {
     /** The full file path

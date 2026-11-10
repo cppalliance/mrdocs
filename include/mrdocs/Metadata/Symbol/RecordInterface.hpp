@@ -35,7 +35,7 @@ namespace mrdocs {
     with an Interface.
 
 */
-class RecordInterface
+class MRDOCS_VISIBLE RecordInterface
 {
 public:
     /** The aggregated public interfaces.

@@ -20,8 +20,30 @@ if (NOT PYTHON_EXECUTABLE)
 endif()
 
 # ---- include/mrdocs/Version.hpp from Version.hpp.in ----
-set_ternary(MRDOCS_REQUIRE_GIT_OPT MRDOCS_REQUIRE_GIT REQUIRED QUIET)
-find_package(Git ${MRDOCS_REQUIRE_GIT_OPT})
+set(MRDOCS_BUILD_ID "" CACHE STRING
+    "Build id that plugins are checked against. Empty derives it from git or from a source archive; set it when building from an archive that has neither.")
+# Git is only required when nothing else gives the commit: an explicit build id
+# or an expanded git-archival.txt (its node field is a hex sha) makes it optional.
+# The check mirrors archive_state() in generate-version-header.py: 40 to 64 hex
+# digits and a numeric commit date.
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/git-archival.txt MRDOCS_ARCHIVE_NODE
+     REGEX "^node: [0-9a-f]+$")
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/git-archival.txt MRDOCS_ARCHIVE_DATE
+     REGEX "^node-date: [0-9]+$")
+set(MRDOCS_ARCHIVE_EXPANDED OFF)
+if (MRDOCS_ARCHIVE_NODE AND MRDOCS_ARCHIVE_DATE)
+    string(LENGTH "${MRDOCS_ARCHIVE_NODE}" MRDOCS_ARCHIVE_NODE_LENGTH)
+    math(EXPR MRDOCS_ARCHIVE_NODE_LENGTH "${MRDOCS_ARCHIVE_NODE_LENGTH} - 6")
+    if (MRDOCS_ARCHIVE_NODE_LENGTH GREATER_EQUAL 40 AND MRDOCS_ARCHIVE_NODE_LENGTH LESS_EQUAL 64)
+        set(MRDOCS_ARCHIVE_EXPANDED ON)
+    endif ()
+endif ()
+if (MRDOCS_BUILD_ID OR MRDOCS_ARCHIVE_EXPANDED)
+    find_package(Git QUIET)
+else ()
+    set_ternary(MRDOCS_REQUIRE_GIT_OPT MRDOCS_REQUIRE_GIT REQUIRED QUIET)
+    find_package(Git ${MRDOCS_REQUIRE_GIT_OPT})
+endif ()
 add_custom_target(mrdocs-version ALL
         BYPRODUCTS ${PROJECT_BINARY_DIR}/include/mrdocs/Version.hpp
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate-version-header.py
@@ -32,6 +54,7 @@ add_custom_target(mrdocs-version ALL
                 --description "${PROJECT_DESCRIPTION}"
                 --source-dir ${PROJECT_SOURCE_DIR}
                 --git "${GIT_EXECUTABLE}"
+                --build-id "${MRDOCS_BUILD_ID}"
         COMMENT "Generating Version.hpp"
         VERBATIM)
 
@@ -75,5 +98,11 @@ add_dependencies(mrdocs-codegen mrdocs-version)
 if (MRDOCS_BUILD_TESTS AND PYTHON_EXECUTABLE)
     add_test(NAME yaml-schema-check
              COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate-yaml-schema.py --check
+             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+endif()
+
+if (MRDOCS_BUILD_TESTS AND PYTHON_EXECUTABLE)
+    add_test(NAME utils-codegen-tests
+             COMMAND ${PYTHON_EXECUTABLE} -I -m unittest discover -s utils/codegen/tests -t utils/codegen
              WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endif()

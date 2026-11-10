@@ -22,7 +22,7 @@ namespace mrdocs {
 
     Indicates that the use of the entity is allowed but discouraged.
 */
-struct DeprecatedAttribute final
+struct MRDOCS_VISIBLE DeprecatedAttribute final
     : AttributeCommonBase<AttributeKind::Deprecated>
 {
     /** The deprecation message, if any.

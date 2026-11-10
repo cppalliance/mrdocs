@@ -59,7 +59,7 @@ namespace mrdocs::doc {
     > *Emphasis* and **strong emphasis** also work within blockquotes.
     @endcode
 */
-struct QuoteBlock final
+struct MRDOCS_VISIBLE QuoteBlock final
     : BlockCommonBase<BlockKind::Quote>
     , BlockContainer
 {

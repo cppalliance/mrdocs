@@ -20,7 +20,7 @@ namespace mrdocs {
 
 /** `decltype(expr)` type wrapper.
 */
-struct DecltypeType final
+struct MRDOCS_VISIBLE DecltypeType final
     : TypeCommonBase<TypeKind::Decltype>
 {
     /** Operand expression for decltype.

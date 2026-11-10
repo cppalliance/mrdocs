@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[fallthrough]]` attribute (C++17): an intentional switch fall-through.
 */
-struct FallthroughAttribute final
+struct MRDOCS_VISIBLE FallthroughAttribute final
     : AttributeCommonBase<AttributeKind::Fallthrough>
 {
 };

@@ -1,0 +1,20 @@
+mrdocs::BothNeedsDecl: has both MRDOCS_DECL and MRDOCS_VISIBLE and needs only MRDOCS_DECL
+mrdocs::BothNeedsVisible: has both MRDOCS_DECL and MRDOCS_VISIBLE and needs only MRDOCS_VISIBLE
+mrdocs::DeclClassInline::count: has MRDOCS_DECL and needs no marker, since its body is in a header
+mrdocs::DeclNeedsVisible: has MRDOCS_DECL and needs MRDOCS_VISIBLE, since no member is defined in a source file
+mrdocs::DeclOnCoveredMember::run: has MRDOCS_DECL and needs no marker, since mrdocs::DeclOnCoveredMember already has it
+mrdocs::DeclOnInlineMember::count: has MRDOCS_DECL and needs no marker, since its body is in a header
+mrdocs::DeclWithLateConstant: MRDOCS_DECL on the class breaks MSVC, since invalid is defined after the class; put MRDOCS_DECL on parse and MRDOCS_VISIBLE on the class instead
+mrdocs::LateInline::count: has MRDOCS_DECL and needs no marker, since its body is in a header
+mrdocs::LateMemberMarked: has no marker and needs MRDOCS_VISIBLE
+mrdocs::LateWithoutMarkers: has no marker and needs MRDOCS_VISIBLE
+mrdocs::LateWithoutMarkers::parse: its body is in a source file, so it needs MRDOCS_DECL on itself
+mrdocs::MemberNeedsDecl::walk: its body is in a source file, so it needs MRDOCS_DECL on itself
+mrdocs::NeedsDecl: has no marker and needs MRDOCS_DECL, since run is defined in a source file
+mrdocs::NeedsVisible: has no marker and needs MRDOCS_VISIBLE
+mrdocs::StaticNeedsDecl: has no marker and needs MRDOCS_DECL, since counter is defined in a source file
+mrdocs::VisibleBox: has MRDOCS_VISIBLE and needs no marker, since it is a template, instantiated in the plugin
+mrdocs::VisibleNeedsDecl: has MRDOCS_VISIBLE and needs MRDOCS_DECL, since run is defined in a source file
+mrdocs::detail::VisibleHidden: has MRDOCS_VISIBLE and needs no marker, since it is not public API
+mrdocs::freeInlineMarked: has MRDOCS_DECL and needs no marker, since its body is in a header
+mrdocs::freeNeedsDecl: has no marker and needs MRDOCS_DECL, since its body is in a source file

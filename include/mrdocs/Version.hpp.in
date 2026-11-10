@@ -15,6 +15,21 @@
 #include <cstddef>
 
 
+/** The release label of this build as a string literal.
+
+    Spelled the same as @ref mrdocs::project_release_with_build, as a
+    macro so that it can be pasted into other literals.
+*/
+#define MRDOCS_PROJECT_RELEASE_WITH_BUILD "@PROJECT_RELEASE_WITH_BUILD@"
+
+/** The build id of this build as a string literal.
+
+    Spelled the same as @ref mrdocs::project_build_id, as a macro so that
+    it can be pasted into other literals and returned from functions whose
+    result has to outlive the call.
+*/
+#define MRDOCS_PROJECT_BUILD_ID "@PROJECT_BUILD_ID@"
+
 namespace mrdocs {
 
 /** Project version string in MAJOR.MINOR.PATCH format.
@@ -48,22 +63,40 @@ inline constexpr std::string_view project_version_build       = "@PROJECT_VERSIO
 
 /** Calendar release label in YYYY.M.D format.
 
-    On a commit carrying a calendar release tag this is that tag
+    This is the nearest calendar release tag
     (for example "2026.9.2", or "2026.9.2+1" for a second release
-    on the same day). Otherwise it is the UTC commit date of the
-    build. Empty if the git information was unavailable.
+    on the same day). Off a release, such as 89 commits after the tag,
+    it is still that release, and only project_release_with_build tells
+    the build apart. Without a reachable tag it is the UTC commit date
+    of the build. Empty if the git information was unavailable.
 */
 inline constexpr std::string_view project_release             = "@PROJECT_RELEASE@";
 
 /** Calendar release label with build metadata.
 
     Equal to project_release on a tagged release. Otherwise appends
-    the git short SHA, and ".modified" if the working tree was
-    modified.
+    the git short SHA after a "+", as in "2026.9.2+fd6da6b4eeaf", or
+    after a "." when the tag has build metadata of its own, as in
+    "2026.9.2+1.fd6da6b4eeaf". ".modified" follows if the working tree
+    was modified.
 */
-inline constexpr std::string_view project_release_with_build  = "@PROJECT_RELEASE_WITH_BUILD@";
+inline constexpr std::string_view project_release_with_build  = MRDOCS_PROJECT_RELEASE_WITH_BUILD;
+
+/** The id that plugins are checked against.
+
+    The first 12 digits of the git commit SHA, as in "fd6da6b4eeaf", with
+    ".modified" after it if the working tree was modified. It depends on
+    the commit alone, so the same code has the same id whether or not it
+    was tagged when it was built. Whoever sets the build id when
+    configuring replaces it. Empty if the git information was unavailable
+    and no build id was set.
+*/
+inline constexpr std::string_view project_build_id            = MRDOCS_PROJECT_BUILD_ID;
 
 /** Year of the calendar release (0 if unavailable).
+
+    Taken from the same tag as project_release, or from the commit date
+    when no tag is reachable.
 */
 inline constexpr std::size_t      project_release_year        = @PROJECT_RELEASE_YEAR@;
 

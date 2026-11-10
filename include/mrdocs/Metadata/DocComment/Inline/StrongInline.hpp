@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     @b bold
     @endcode
 */
-struct StrongInline final
+struct MRDOCS_VISIBLE StrongInline final
     : InlineCommonBase<InlineKind::Strong>
     , InlineContainer
 {

@@ -23,7 +23,7 @@ namespace mrdocs {
 
 /** Metadata for a direct base.
 */
-struct BaseInfo
+struct MRDOCS_VISIBLE BaseInfo
 {
     /** The base type.
 

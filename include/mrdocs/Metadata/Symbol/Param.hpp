@@ -26,7 +26,7 @@ namespace mrdocs {
 
 /** Represents a single function parameter
 */
-struct Param final
+struct MRDOCS_VISIBLE Param final
 {
     /** The type of this parameter
     */

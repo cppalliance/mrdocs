@@ -30,7 +30,7 @@ namespace mrdocs::doc {
     [^footnote-id]
     @endcode
 */
-struct FootnoteReferenceInline
+struct MRDOCS_VISIBLE FootnoteReferenceInline
     : InlineCommonBase<InlineKind::FootnoteReference>
 {
     /** Footnote label that the reference points to.

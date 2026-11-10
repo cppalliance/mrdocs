@@ -23,7 +23,7 @@ namespace lua {
 
 /** A Lua table.
 */
-class Table : public Value
+class MRDOCS_DECL Table : public Value
 {
     friend struct Access;
 
@@ -38,21 +38,20 @@ class Table : public Value
 public:
     /** Construct a table by copying fields from a DOM object.
     */
-    MRDOCS_DECL Table(Scope& scope, dom::Object const& obj);
+    Table(Scope& scope, dom::Object const& obj);
     /** Wrap an existing Lua value as a table.
     */
-    MRDOCS_DECL Table(Value value);
+    Table(Value value);
     /** Create an empty table in the given scope.
     */
-    MRDOCS_DECL explicit Table(Scope& scope);
+    explicit Table(Scope& scope);
 
-    //MRDOCS_DECL Value get(zstring key) const;
+    //MRDOCS_DECL Value get(ZString key) const;
 
     /** Retrieve a table entry by key; returns nil if missing.
         @param key Table key to look up.
         @return Value stored at key or nil if absent.
     */
-    MRDOCS_DECL
     Value
     get(
         std::string_view key) const;
@@ -62,7 +61,6 @@ public:
         @param key The key to set.
         @param value The value to set.
     */
-    MRDOCS_DECL
     void
     set(
         std::string_view key,

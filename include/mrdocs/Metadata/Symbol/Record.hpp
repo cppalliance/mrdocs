@@ -27,7 +27,7 @@ namespace mrdocs {
 
 /** Metadata for struct, class, or union.
 */
-struct RecordSymbol final
+struct MRDOCS_VISIBLE RecordSymbol final
     : SymbolCommonBase<SymbolKind::Record>
 {
     /** Kind of record this is (class, struct, or union).

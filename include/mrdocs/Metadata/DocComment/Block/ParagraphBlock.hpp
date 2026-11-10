@@ -32,7 +32,7 @@ namespace mrdocs::doc {
     Another paragraph.
     @endcode
 */
-struct ParagraphBlock
+struct MRDOCS_VISIBLE ParagraphBlock
     : BlockCommonBase<BlockKind::Paragraph>
     , InlineContainer
 {

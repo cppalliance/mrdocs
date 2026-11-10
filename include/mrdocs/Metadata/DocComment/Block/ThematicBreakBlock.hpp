@@ -53,7 +53,7 @@ namespace mrdocs::doc {
     - Thematic breaks can also be used inside lists, but the character used for the break must be different from the list marker.
 
 */
-struct ThematicBreakBlock final
+struct MRDOCS_VISIBLE ThematicBreakBlock final
     : BlockCommonBase<BlockKind::ThematicBreak>
 {
     /** Copy constructor.

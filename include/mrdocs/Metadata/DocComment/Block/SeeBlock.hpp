@@ -41,7 +41,7 @@ namespace mrdocs::doc {
 
 
 */
-struct SeeBlock final
+struct MRDOCS_VISIBLE SeeBlock final
     : BlockCommonBase<BlockKind::See>
     , InlineContainer
 {

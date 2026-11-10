@@ -34,7 +34,7 @@ namespace mrdocs::doc {
     first line<br>second line
     @endcode
 */
-struct LineBreakInline
+struct MRDOCS_VISIBLE LineBreakInline
     : InlineCommonBase<InlineKind::LineBreak>
 {
     /** Virtual destructor for the inline hierarchy.

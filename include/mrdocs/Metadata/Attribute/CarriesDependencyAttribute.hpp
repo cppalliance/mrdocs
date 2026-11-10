@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[carries_dependency]]` attribute (C++11): release-consume dependency propagation.
 */
-struct CarriesDependencyAttribute final
+struct MRDOCS_VISIBLE CarriesDependencyAttribute final
     : AttributeCommonBase<AttributeKind::CarriesDependency>
 {
 };

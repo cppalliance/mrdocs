@@ -39,7 +39,7 @@ namespace mrdocs {
     without requiring the application to extract an
     unnecessary symbol.
 */
-struct Name
+struct MRDOCS_DECL Name
 {
     /** The kind of name this is.
     */
@@ -74,7 +74,6 @@ struct Name
 
     /** Order names by kind, identifier, id, and prefix.
     */
-    MRDOCS_DECL
     std::strong_ordering
     operator<=>(Name const& other) const;
 

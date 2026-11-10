@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[maybe_unused]]` attribute (C++17): suppresses unused-entity warnings.
 */
-struct MaybeUnusedAttribute final
+struct MRDOCS_VISIBLE MaybeUnusedAttribute final
     : AttributeCommonBase<AttributeKind::MaybeUnused>
 {
 };

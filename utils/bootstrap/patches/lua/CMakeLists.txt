@@ -45,6 +45,10 @@ foreach(_excl IN LISTS LUA_EXCLUDE_NAMES)
 endforeach()
 file(GLOB LUA_HEADERS "${LUA_SOURCE_DIR}/*.h")
 
+# A shared mrdocs-core links this static library into itself, which needs
+# position independent code on Linux.
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 add_library(lua ${LUA_SOURCES} ${LUA_HEADERS})
 target_include_directories(lua
         PUBLIC

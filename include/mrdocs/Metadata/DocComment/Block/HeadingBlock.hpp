@@ -38,7 +38,7 @@ namespace mrdocs::doc {
     ###### Heading 6
     @endcode
 */
-struct HeadingBlock final
+struct MRDOCS_VISIBLE HeadingBlock final
     : BlockCommonBase<BlockKind::Heading>
     , InlineContainer
 {

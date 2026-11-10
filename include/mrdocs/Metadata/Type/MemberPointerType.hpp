@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** Pointer-to-member type (object or function).
 */
-struct MemberPointerType final
+struct MRDOCS_VISIBLE MemberPointerType final
     : TypeCommonBase<TypeKind::MemberPointer>
 {
     /** Containing class type.

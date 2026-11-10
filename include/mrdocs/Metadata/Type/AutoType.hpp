@@ -23,7 +23,7 @@ namespace mrdocs {
 
 /** Represents `auto` or `decltype(auto)` placeholder type.
 */
-struct AutoType final
+struct MRDOCS_VISIBLE AutoType final
     : TypeCommonBase<TypeKind::Auto>
 {
     /** Which placeholder keyword appears (`auto` or `decltype(auto)`).

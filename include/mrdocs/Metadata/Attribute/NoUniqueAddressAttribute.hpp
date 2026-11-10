@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[no_unique_address]]` attribute (C++20): the member need not have a unique address.
 */
-struct NoUniqueAddressAttribute final
+struct MRDOCS_VISIBLE NoUniqueAddressAttribute final
     : AttributeCommonBase<AttributeKind::NoUniqueAddress>
 {
 };

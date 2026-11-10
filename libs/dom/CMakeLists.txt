@@ -10,13 +10,19 @@
 
 # dom: the document object model, extracted from mrdocs/Dom. A compiled STATIC
 # library that depends ONLY on the standard library and the polyfills library
-# (see ../README.md for the dependency rule). It never names mrdocs::Error or
-# anything in mrdocs-core; errors flow upward via mrdocs::Error's implicit
-# constructor from dom::Error.
+# (see docs/modules/ROOT/pages/contribute/layout/libs.adoc for the dependency
+# rule). It never names mrdocs::Error or anything in mrdocs-core; errors flow
+# upward via mrdocs::Error's implicit constructor from dom::Error.
 file(GLOB_RECURSE DOM_SOURCES CONFIGURE_DEPENDS
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 add_library(mrdocs-dom STATIC ${DOM_SOURCES})
 add_library(mrdocs::dom ALIAS mrdocs-dom)
+
+# A shared core links this archive whole, so its objects have to be position
+# independent.
+if (MRDOCS_BUILD_SHARED)
+    set_target_properties(mrdocs-dom PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif ()
 
 target_include_directories(mrdocs-dom
         PUBLIC
@@ -26,14 +32,16 @@ target_include_directories(mrdocs-dom
 target_compile_features(mrdocs-dom PUBLIC cxx_std_23)
 target_link_libraries(mrdocs-dom PUBLIC mrdocs::polyfill)
 
-# dom owns its export macro (mrdocs/Dom/Platform.hpp -> MRDOCS_DOM_DECL); it just
-# needs the link mode so that macro expands the same way (static vs shared) as
-# mrdocs-core, which links this library. `MRDOCS_DOM_BUILDING`, set on this
-# target alone, marks its API for export.
-target_compile_definitions(mrdocs-dom PUBLIC ${MRDOCS_LINK_MODE_DEFINITION})
-target_compile_definitions(mrdocs-dom PRIVATE MRDOCS_DOM_BUILDING)
+# dom owns its export macro (mrdocs/Dom/Platform.hpp -> MRDOCS_DOM_DECL).
+# Marks the API for export. Set on this target alone, while it is built from
+# source.
+target_compile_definitions(mrdocs-dom PRIVATE MRDOCS_DOM_SOURCE)
 
-# mrdocs-core links this PUBLIC, so it must be part of the same export set.
+# What carries MRDOCS_DOM_DECL is the exported API.
+mrdocs_hide_symbols(mrdocs-dom)
+
+# mrdocs-core-object-files links this PUBLIC, and a static mrdocs-core names
+# that target in its interface, so it must be part of the same export set.
 if (MRDOCS_INSTALL)
     install(TARGETS mrdocs-dom EXPORT mrdocs-targets)
     install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

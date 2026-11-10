@@ -37,7 +37,8 @@ namespace mrdocs {
     of type. Derived classes are used to store
     the type information according to the kind.
 */
-struct Type {
+struct MRDOCS_DECL Type
+{
     /** The kind of Type this is
     */
     TypeKind Kind;

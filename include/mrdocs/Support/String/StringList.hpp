@@ -31,7 +31,7 @@ namespace mrdocs {
     code (normalization, DOM exposure) treats it like any other list of
     strings.
 */
-struct StringList
+struct MRDOCS_VISIBLE StringList
 {
     /// The individual strings, in order.
     std::vector<std::string> values;

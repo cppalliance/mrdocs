@@ -27,7 +27,7 @@ namespace mrdocs {
 
 /** Info for deduction guides.
 */
-struct GuideSymbol final
+struct MRDOCS_VISIBLE GuideSymbol final
     : SymbolCommonBase<SymbolKind::Guide>
 {
     /** The pattern for the deduced specialization.

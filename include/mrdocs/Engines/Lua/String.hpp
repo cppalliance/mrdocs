@@ -22,7 +22,7 @@ namespace lua {
 
 /** A Lua string.
 */
-class String : public Value
+class MRDOCS_DECL String : public Value
 {
     friend struct Access;
 
@@ -31,15 +31,15 @@ class String : public Value
 public:
     /** Wrap an existing Lua value as a string.
     */
-    MRDOCS_DECL String(Value value);
+    String(Value value);
     /** Create a new Lua string from the given view.
     */
-    MRDOCS_DECL explicit String(std::string_view s);
+    explicit String(std::string_view s);
 
     /** Retrieve the underlying string view.
         @return View of the Lua string contents.
     */
-    MRDOCS_DECL std::string_view get() const noexcept;
+    std::string_view get() const noexcept;
 
     /** Dereference to the underlying string view.
         @return View of the Lua string contents.

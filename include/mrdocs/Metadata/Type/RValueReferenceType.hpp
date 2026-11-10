@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** An rvalue reference type.
 */
-struct RValueReferenceType final
+struct MRDOCS_VISIBLE RValueReferenceType final
     : TypeCommonBase<TypeKind::RValueReference>
 {
     /** The referenced type, defaults to `auto` when unknown.

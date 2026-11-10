@@ -42,7 +42,7 @@ namespace mrdocs {
     where more parameters can be defined as needed for
     parsing options.
 */
-struct ParseResult {
+struct MRDOCS_VISIBLE ParseResult {
     /** Pointer to the first unparsed character.
     */
     const char* ptr;

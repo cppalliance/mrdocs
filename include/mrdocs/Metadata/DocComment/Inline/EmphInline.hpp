@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     @e emphasized or *italic text* or _italic text_
     @endcode
 */
-struct EmphInline final
+struct MRDOCS_VISIBLE EmphInline final
     : InlineCommonBase<InlineKind::Emph>
     , InlineContainer
 {

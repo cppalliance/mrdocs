@@ -36,7 +36,8 @@ class DomCorpus;
     Derived classes add the evaluated arguments for the
     attributes that take them.
 */
-struct Attribute {
+struct MRDOCS_VISIBLE Attribute
+{
     /** The kind of attribute.
     */
     AttributeKind Kind;

@@ -30,7 +30,7 @@ namespace mrdocs::doc {
     @return description
     @endcode
 */
-struct ReturnsBlock final
+struct MRDOCS_VISIBLE ReturnsBlock final
     : BlockCommonBase<BlockKind::Returns>
     , InlineContainer
 {

@@ -16,6 +16,7 @@
 // UPWARD by implicit conversion: mrdocs::Error has an implicit constructor from
 // dom::Error, so consumers convert at the boundary with no caller changes.
 
+#include <mrdocs/Dom/Platform.hpp>
 #include <mrdocs/polyfill/expected.hpp>
 #include <string>
 #include <string_view>
@@ -26,7 +27,7 @@ namespace mrdocs {
 namespace dom {
 
 /** A std-only error value for the dom library (carries a message). */
-class Error
+class MRDOCS_DOM_VISIBLE Error
 {
     std::string message_;
 public:

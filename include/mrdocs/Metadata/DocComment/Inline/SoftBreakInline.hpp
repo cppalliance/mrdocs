@@ -38,7 +38,7 @@ namespace mrdocs::doc {
     and this is the continuation on the next line.
     @endcode
 */
-struct SoftBreakInline
+struct MRDOCS_VISIBLE SoftBreakInline
     : InlineCommonBase<InlineKind::SoftBreak>
 {
     /** Virtual destructor for inline hierarchy.

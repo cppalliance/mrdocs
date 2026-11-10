@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     x^2^
     @endcode
 */
-struct SuperscriptInline final
+struct MRDOCS_VISIBLE SuperscriptInline final
     : InlineCommonBase<InlineKind::Superscript>
     , InlineContainer
 {

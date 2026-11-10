@@ -27,7 +27,7 @@ namespace mrdocs {
 
 /** Type template parameter.
 */
-struct TypeTParam final
+struct MRDOCS_VISIBLE TypeTParam final
     : TParamCommonBase<TParamKind::Type>
 {
     /** Keyword (class/typename) the parameter uses

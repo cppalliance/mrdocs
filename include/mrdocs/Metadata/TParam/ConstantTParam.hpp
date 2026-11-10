@@ -30,7 +30,7 @@ namespace mrdocs {
     non-type template parameter in the standard wording.
     The terminology was changed by P2841R6 / PR#7587.
 */
-struct ConstantTParam final
+struct MRDOCS_VISIBLE ConstantTParam final
     : TParamCommonBase<TParamKind::Constant>
 {
     /** Type of the non-type template parameter

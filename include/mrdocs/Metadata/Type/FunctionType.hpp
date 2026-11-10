@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Function type with parameters, qualifiers, and noexcept info.
 */
-struct FunctionType final
+struct MRDOCS_VISIBLE FunctionType final
     : TypeCommonBase<TypeKind::Function>
 {
     /** Return type, defaults to `auto` when unknown.

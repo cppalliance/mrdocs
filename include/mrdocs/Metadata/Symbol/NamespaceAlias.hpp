@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** Info for namespace aliases.
 */
-struct NamespaceAliasSymbol final
+struct MRDOCS_VISIBLE NamespaceAliasSymbol final
     : SymbolCommonBase<SymbolKind::NamespaceAlias>
 {
     /** The aliased symbol.

@@ -31,13 +31,18 @@ namespace dom {
     class Value;
 }
 
+// No class-level MRDOCS_DECL: under dllimport, MSVC rejects the
+// definitions of `invalid` and `global` after the class, so
+// createFromString, the one member defined in a source file, carries
+// MRDOCS_DECL and the class carries MRDOCS_VISIBLE. That macro is empty on
+// MSVC and gives the class default visibility on GCC and Clang.
 /** A unique identifier for a symbol.
 
     This is calculated as the SHA1 digest of the
     USR. A USRs is a string that provides an
     unambiguous reference to a symbol.
 */
-class SymbolID
+class MRDOCS_VISIBLE SymbolID
 {
     std::uint8_t data_[20]{};
 
@@ -83,6 +88,7 @@ public:
         @param input The string to hash.
         @return The SymbolID created by hashing the string.
     */
+    MRDOCS_DECL
     static
     SymbolID
     createFromString(std::string_view input);

@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** Pointer type wrapper.
 */
-struct PointerType final
+struct MRDOCS_VISIBLE PointerType final
     : TypeCommonBase<TypeKind::Pointer>
 {
     /** The pointee type, defaults to `auto` when unknown.

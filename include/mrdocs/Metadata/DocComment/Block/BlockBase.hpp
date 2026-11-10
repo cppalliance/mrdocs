@@ -42,7 +42,7 @@ using mrdocs::operator==;
 
     There are two types of blocks: headings and paragraphs.
 */
-struct MRDOCS_DECL Block
+struct MRDOCS_VISIBLE Block
 {
     /** Discriminator identifying which concrete block this instance holds.
     */
@@ -195,7 +195,7 @@ isEmpty(Block const& el);
 
 /** A composite block that stores a sequence of child blocks.
 */
-struct MRDOCS_DECL BlockContainer
+struct MRDOCS_VISIBLE BlockContainer
 {
     /** Child blocks contained within this composite block.
     */

@@ -22,7 +22,7 @@ namespace mrdocs::doc {
 
 /** An item in a definition list
 */
-struct DefinitionListItem final
+struct MRDOCS_VISIBLE DefinitionListItem final
     : BlockContainer
 {
     /** The term being defined.

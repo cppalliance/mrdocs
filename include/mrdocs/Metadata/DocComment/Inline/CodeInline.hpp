@@ -34,7 +34,7 @@ namespace mrdocs::doc {
     `inline_code`
     @endcode
 */
-struct CodeInline final
+struct MRDOCS_VISIBLE CodeInline final
     : InlineCommonBase<InlineKind::Code>
     , InlineContainer
 {

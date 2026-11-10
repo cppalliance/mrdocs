@@ -30,7 +30,7 @@ namespace mrdocs::doc {
     @throws Type description
     @endcode
 */
-struct ThrowsBlock final
+struct MRDOCS_VISIBLE ThrowsBlock final
     : BlockCommonBase<BlockKind::Throws>
     , InlineContainer
 {

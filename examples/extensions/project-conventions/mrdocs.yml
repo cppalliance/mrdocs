@@ -1,5 +1,5 @@
 addons-supplemental:
-  - addons
+  - lua
 generator: adoc
 multipage: false
 warn-if-undocumented: false
@@ -7,4 +7,4 @@ source-root: .
 input:
   - .
 file-patterns:
-  - '*.cpp'
+  - project-conventions.cpp

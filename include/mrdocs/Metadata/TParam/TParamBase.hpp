@@ -33,7 +33,7 @@ class DomCorpus;
 
 /** Base class for a template parameter declaration.
 */
-struct TParam
+struct MRDOCS_VISIBLE TParam
 {
     /** The kind of template parameter this is
     */

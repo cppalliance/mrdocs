@@ -22,7 +22,7 @@ namespace mrdocs::doc {
 
 /** A cell in a table
 */
-struct TableCell final
+struct MRDOCS_VISIBLE TableCell final
     : InlineContainer
 {
 };

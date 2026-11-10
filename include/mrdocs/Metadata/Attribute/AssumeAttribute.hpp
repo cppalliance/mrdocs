@@ -22,7 +22,7 @@ namespace mrdocs {
 
     States that the expression always evaluates to true at this point.
 */
-struct AssumeAttribute final
+struct MRDOCS_VISIBLE AssumeAttribute final
     : AttributeCommonBase<AttributeKind::Assume>
 {
     /** The assumed expression, as written.

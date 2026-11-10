@@ -29,7 +29,7 @@ namespace mrdocs {
     When the symbol is not in the corpus,
     the `id` field will be set to `SymbolID::invalid`.
 */
-struct IdentifierName final
+struct MRDOCS_VISIBLE IdentifierName final
     : Name
 {
     /** The variant discriminator constant of this concrete name kind. */

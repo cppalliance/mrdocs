@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     H~2~O
     @endcode
 */
-struct SubscriptInline final
+struct MRDOCS_VISIBLE SubscriptInline final
     : InlineCommonBase<InlineKind::Subscript>
     , InlineContainer
 {
