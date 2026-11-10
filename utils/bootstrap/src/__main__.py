@@ -209,7 +209,7 @@ Examples:
     dep_group.add_argument(
         "--skip-build",
         action="store_true",
-        help="Skip the MrDocs build step",
+        help="Skip the MrDocs build step (bootstrap still configures it when it generates run configurations)",
     )
     dep_group.add_argument(
         "--list-recipes",

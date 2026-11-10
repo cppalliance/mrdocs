@@ -172,9 +172,11 @@ OPTION_DETAILS: dict[str, str] = {
         "`llvm,jerryscript`). Recipes not in the list are skipped."
     ),
     "skip_build": (
-        "Install dependencies but skip the CMake configure and build "
-        "of Mr.Docs itself. Useful when you only need the dependency "
-        "tree populated for CI cache restoration."
+        "Install dependencies but skip the CMake build and install of "
+        "Mr.Docs itself. Useful when you only need the dependency tree "
+        "populated for CI cache restoration. Bootstrap still configures "
+        "Mr.Docs unless you pass `--no-run-configs`, because the run "
+        "configurations read the program paths from CMake's reply."
     ),
     "list_recipes": (
         "Print every dependency recipe bootstrap knows about and exit."

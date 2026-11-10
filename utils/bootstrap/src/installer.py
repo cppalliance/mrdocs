@@ -64,6 +64,7 @@ from .recipes import (
 )
 from .presets import create_cmake_presets
 from .configs import generate_run_configs, generate_pretty_printer_configs
+from .configs.cmake_file_api import write_query as write_file_api_query
 
 
 class MrDocsInstaller:
@@ -627,18 +628,18 @@ class MrDocsInstaller:
         if not self.options.generate_run_configs:
             return
 
-        generate_run_configs(
-            options=self.options,
-            default_options=self.default_options,
-            package_roots=self.package_roots,
-            compiler_info=self.compiler_info,
-            generate_clion=self.options.generate_clion_run_configs,
-            generate_vscode=self.options.generate_vscode_run_configs,
-            generate_vs=self.options.generate_vs_run_configs,
-            generate_justfile=self.options.generate_justfile_run_configs,
-            dry_run=self.options.dry_run,
-            ui=self.ui,
-        )
+        if self._generates_run_configs():
+            generate_run_configs(
+                options=self.options,
+                default_options=self.default_options,
+                compiler_info=self.compiler_info,
+                generate_clion=self.options.generate_clion_run_configs,
+                generate_vscode=self.options.generate_vscode_run_configs,
+                generate_vs=self.options.generate_vs_run_configs,
+                generate_justfile=self.options.generate_justfile_run_configs,
+                dry_run=self.options.dry_run,
+                ui=self.ui,
+            )
 
         if self.options.generate_pretty_printer_configs:
             generate_pretty_printer_configs(
@@ -869,6 +870,8 @@ class MrDocsInstaller:
         force_rebuild: bool = False,
         remove_build_dir: bool = True,
         allow_skip: bool = True,
+        after_configure=None,
+        configure_only: bool = False,
     ):
         """
         Configure, build, and install a CMake project.
@@ -885,6 +888,9 @@ class MrDocsInstaller:
             force_rebuild: Force rebuild even if install_dir exists.
             remove_build_dir: Remove build_dir after install.
             allow_skip: Allow skipping if install_dir exists.
+            after_configure: Called with no arguments once the configure step
+                has finished, before the build.
+            configure_only: Stop after the configure step (and the callback).
         """
         from .core.filesystem import remove_dir, ensure_dir
 
@@ -988,6 +994,11 @@ class MrDocsInstaller:
             ui=self.ui,
         )
 
+        if after_configure is not None:
+            after_configure()
+        if configure_only:
+            return
+
         # Build
         self.ui.info("Building...")
         build_args = [cmake_exe, "--build", build_dir, "--config", cmake_build_type]
@@ -1025,10 +1036,9 @@ class MrDocsInstaller:
     def _resolve_build_install_dirs(self):
         """Expand and set build_dir/install_dir from their placeholders.
 
-        Idempotent: only fills values that are not already set. Run configs
-        are generated before MrDocs is built, so the run-config generator
-        relies on this having been called first; otherwise build_dir is empty
-        and preset-derived paths (e.g. `--stdlib-includes`) collapse.
+        Idempotent: only fills values that are not already set. The run-config
+        generator relies on this having been called first; otherwise build_dir
+        is empty and preset-derived paths (e.g. `--stdlib-includes`) collapse.
         """
         build_dir = self._expand_placeholders(self.default_options.build_dir)
         install_dir = self._expand_placeholders(self.default_options.install_dir)
@@ -1038,11 +1048,54 @@ class MrDocsInstaller:
         if not self.options.system_install and not self.options.install_dir:
             self.options.install_dir = install_dir
 
+    def _generates_run_configs(self):
+        """Whether this run writes the justfile, CLion, VS Code or Visual Studio run configurations."""
+        return self.options.generate_run_configs and any((
+            self.options.generate_justfile_run_configs,
+            self.options.generate_clion_run_configs,
+            self.options.generate_vscode_run_configs,
+            self.options.generate_vs_run_configs,
+        ))
+
+    def generate_configs_after_configure(self):
+        """Generate the IDE run configurations once CMake has configured.
+
+        The program paths come from the answer CMake gives to the file API
+        query when it configures, so this runs after the configure step.
+        """
+        if not self.options.generate_run_configs:
+            return
+        self._resolve_build_install_dirs()
+        self.ui.subsection("Generating IDE configurations")
+        self._dry_comment("Generate IDE run configurations")
+        self.generate_configs()
+        configs_generated = []
+        if self.options.generate_clion_run_configs:
+            configs_generated.append("CLion")
+        if self.options.generate_vscode_run_configs:
+            configs_generated.append("VSCode")
+        if self.options.generate_vs_run_configs:
+            configs_generated.append("Visual Studio")
+        if configs_generated:
+            self.ui.ok(f"IDE run configurations generated: {', '.join(configs_generated)}")
+
+        if self.options.generate_pretty_printer_configs:
+            self.ui.ok("Pretty printer configurations generated.")
+
     def install_mrdocs(self):
-        """Configure, build, and install MrDocs."""
-        if self.options.skip_build:
+        """Configure, build, and install MrDocs.
+
+        The run configurations are generated right after the configure step,
+        since CMake's reply to the file API query is what names the programs.
+        With ``--skip-build`` the step stops there, and without run
+        configurations it does not run at all.
+        """
+        configure_only = self.options.skip_build
+        if configure_only and not self.options.generate_run_configs:
             self.ui.info("Skipping MrDocs build (--skip-build specified).")
             return
+        if configure_only:
+            self.ui.info("Configuring MrDocs only (--skip-build specified).")
 
         # Check and repair git symlinks (important on Windows)
         check_git_symlinks(
@@ -1060,6 +1113,12 @@ class MrDocsInstaller:
 
         extra_args.append(f"--preset={self.options.preset}")
 
+        # The run configurations take their program paths from CMake's answer
+        # to this query, which CMake writes when it configures below.
+        if self._generates_run_configs():
+            write_file_api_query(
+                self.options.build_dir, dry_run=self.options.dry_run, ui=self.ui)
+
         # Handle DebugFast -> Debug mapping
         main_build_type = "Debug" if self.options.build_type.lower() in ("debugfast", "debug-fast") else self.options.build_type
 
@@ -1075,8 +1134,12 @@ class MrDocsInstaller:
             force_rebuild=False,
             remove_build_dir=False,
             allow_skip=False,
+            after_configure=self.generate_configs_after_configure,
+            configure_only=configure_only,
         )
 
+        if configure_only:
+            return
         self.ui.ok(f"MrDocs installed to {self.ui.maybe_shorten(self.options.install_dir)}")
         self.print_mrdocs_summary()
 
@@ -1342,28 +1405,6 @@ class MrDocsInstaller:
         self.ui.ok(f"CMake presets written to {self.ui.maybe_shorten(presets_path)}")
         if not self.options.dry_run:
             self.show_preset_summary()
-
-        # Generate IDE configs
-        if self.options.generate_run_configs:
-            # Run configs reference build_dir/install_dir, which are only
-            # expanded during the build step below; resolve them first so
-            # preset-derived paths (e.g. --stdlib-includes) are correct.
-            self._resolve_build_install_dirs()
-            self.ui.subsection("Generating IDE configurations")
-            self._dry_comment("Generate IDE run configurations")
-            self.generate_configs()
-            configs_generated = []
-            if self.options.generate_clion_run_configs:
-                configs_generated.append("CLion")
-            if self.options.generate_vscode_run_configs:
-                configs_generated.append("VSCode")
-            if self.options.generate_vs_run_configs:
-                configs_generated.append("Visual Studio")
-            if configs_generated:
-                self.ui.ok(f"IDE run configurations generated: {', '.join(configs_generated)}")
-
-            if self.options.generate_pretty_printer_configs:
-                self.ui.ok("Pretty printer configurations generated.")
 
         # Build and install MrDocs
         self.ui.subsection("Building MrDocs")

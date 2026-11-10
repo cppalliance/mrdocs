@@ -20,20 +20,18 @@ file(GLOB_RECURSE GOLDEN_TEST_SOURCES CONFIGURE_DEPENDS
 # harness build.
 list(FILTER GOLDEN_TEST_SOURCES EXCLUDE REGEX "/fixtures/")
 add_executable(mrdocs-golden-tests ${GOLDEN_TEST_SOURCES})
-target_include_directories(mrdocs-golden-tests
-        PUBLIC
-        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
-        "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-        PRIVATE
-        # The harness exercises private library internals. Expose the source
-        # (and generated) tree so they include those as <mrdocs/...> rather
-        # than reaching in with ../../src/mrdocs/... relative paths. The
-        # public include/ above is searched first, so public headers win.
-        "${PROJECT_SOURCE_DIR}/src"
-        "${PROJECT_BINARY_DIR}/src"
-        )
-target_link_libraries(mrdocs-golden-tests PUBLIC mrdocs-core test_suite)
+target_include_directories(mrdocs-golden-tests PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+# The harness exercises private library internals. Expose the source
+# (and generated) tree so they include those as <mrdocs/...> rather
+# than reaching in with ../../src/mrdocs/... relative paths. The
+# public include/ above is searched first, so public headers win.
+target_include_directories(mrdocs-golden-tests PRIVATE
+    "${PROJECT_SOURCE_DIR}/src"
+    "${PROJECT_BINARY_DIR}/src")
+target_link_libraries(mrdocs-golden-tests PUBLIC mrdocs-core-object-files test_suite)
 # The harness uses MrDocs's private headers, some of which include LLVM.
 target_link_libraries(mrdocs-golden-tests PRIVATE mrdocs-llvm)
 if (MRDOCS_CLANG)
@@ -78,6 +76,7 @@ endif()
 if (LibXml2_FOUND)
     file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/*.xml)
+    list(FILTER XML_SOURCES EXCLUDE REGEX "\\.bad\\.xml$")
     add_test(NAME xml-lint
              COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
              --relaxng ${PROJECT_SOURCE_DIR}/docs/modules/ROOT/attachments/schemas/generators/mrdocs.rng ${XML_SOURCES}
