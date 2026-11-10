@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Non-type template argument.
 */
-struct ConstantTArg final
+struct MRDOCS_VISIBLE ConstantTArg final
     : TArgCommonBase<TArgKind::Constant>
 {
     /** Template argument expression.

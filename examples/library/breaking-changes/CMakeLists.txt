@@ -10,7 +10,7 @@
 
 # If not inside the Mr.Docs source tree.
 if (NOT TARGET mrdocs::mrdocs-core)
-    cmake_minimum_required(VERSION 3.20)
+    cmake_minimum_required(VERSION 3.21)
     project(mrdocs-breaking-changes-example LANGUAGES CXX)
     # tag::package[]
     find_package(mrdocs REQUIRED CONFIG)
@@ -26,6 +26,7 @@ add_executable(mrdocs-breaking-changes-example
     src/BreakingChangesGenerator.cpp
 )
 target_link_libraries(mrdocs-breaking-changes-example PRIVATE mrdocs::mrdocs-core)
+mrdocs_ensure_runtime_dlls(mrdocs-breaking-changes-example)
 # end::target[]
 if (MRDOCS_CLANG)
     target_compile_options(mrdocs-breaking-changes-example PRIVATE -Wno-covered-switch-default)

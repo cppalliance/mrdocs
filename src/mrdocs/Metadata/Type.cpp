@@ -12,11 +12,12 @@
 
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/TArg.hpp>
-#include <mrdocs/Support/Error/Expected.hpp>
-#include <algorithm>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/NamedType.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
+#include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
+#include <algorithm>
 
 namespace mrdocs {
 

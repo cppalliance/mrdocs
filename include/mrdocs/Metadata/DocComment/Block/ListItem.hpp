@@ -22,7 +22,7 @@ namespace mrdocs::doc {
 
 /** An item in a @ref ListBlock
 */
-struct ListItem final
+struct MRDOCS_VISIBLE ListItem final
     : BlockContainer
 {
 };

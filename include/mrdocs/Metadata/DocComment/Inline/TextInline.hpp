@@ -31,7 +31,7 @@ namespace mrdocs::doc {
     plain text
     @endcode
 */
-struct TextInline
+struct MRDOCS_VISIBLE TextInline
     : InlineCommonBase<InlineKind::Text>
 {
     /** Plain text carried by this inline node.

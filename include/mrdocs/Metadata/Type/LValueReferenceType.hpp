@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** An lvalue reference type.
 */
-struct LValueReferenceType final
+struct MRDOCS_VISIBLE LValueReferenceType final
     : TypeCommonBase<TypeKind::LValueReference>
 {
     /** The referenced type.

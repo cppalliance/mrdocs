@@ -29,7 +29,7 @@ namespace mrdocs::doc {
     $2 + 2 = 4$ or $x_{i+1}^2$
     @endcode
 */
-struct MathInline
+struct MRDOCS_VISIBLE MathInline
     : InlineCommonBase<InlineKind::Math>
 {
     /** Raw LaTeX/TeX math content.

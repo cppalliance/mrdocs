@@ -25,7 +25,7 @@ namespace mrdocs {
     All other reference directories come directly from the
     configuration file.
 */
-struct ReferenceDirectories
+struct MRDOCS_VISIBLE ReferenceDirectories
 {
     /** Absolute path to the current working directory.
     */
@@ -44,7 +44,8 @@ struct ReferenceDirectories
         argument, so it is evaluated in the caller's translation unit -- that is
         what lets a linking project's find_package-provided prefix reach here.
         The constructor then refines it: MRDOCS_ROOT in the environment wins;
-        otherwise an empty root falls back to the running executable's location.
+        otherwise an empty root falls back to the location of the module that
+        holds mrdocs-core (the executable when the core is linked into it).
         Defined in mrdocs-core to keep the platform/LLVM lookups out of this
         header.
     */

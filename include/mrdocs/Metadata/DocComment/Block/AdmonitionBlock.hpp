@@ -35,7 +35,7 @@ namespace mrdocs::doc {
     @note text
     @endcode
 */
-struct AdmonitionBlock final
+struct MRDOCS_VISIBLE AdmonitionBlock final
     : BlockCommonBase<BlockKind::Admonition>
     , BlockContainer
 {

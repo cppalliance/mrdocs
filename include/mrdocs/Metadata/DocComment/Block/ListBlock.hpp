@@ -72,7 +72,7 @@ namespace mrdocs::doc {
     : Another definition for Term 2
     @endcode
 */
-struct ListBlock final
+struct MRDOCS_VISIBLE ListBlock final
     : BlockCommonBase<BlockKind::List>
 {
     /** Items contained in the list.

@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     ==highlight== or <mark>highlighted</mark>
     @endcode
 */
-struct HighlightInline final
+struct MRDOCS_VISIBLE HighlightInline final
     : InlineCommonBase<InlineKind::Highlight>
     , InlineContainer
 {

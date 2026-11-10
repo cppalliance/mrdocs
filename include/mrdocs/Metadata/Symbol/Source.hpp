@@ -25,7 +25,7 @@ namespace mrdocs {
 
 /** Stores source information for a declaration.
 */
-struct MRDOCS_DECL
+struct MRDOCS_VISIBLE
     SourceInfo
 {
     /** Construct with no locations.

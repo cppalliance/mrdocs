@@ -31,7 +31,7 @@ namespace mrdocs::doc {
           Here is the second paragraph, which needs to be indented.
     @endcode
 */
-struct FootnoteDefinitionBlock final
+struct MRDOCS_VISIBLE FootnoteDefinitionBlock final
     : BlockCommonBase<BlockKind::FootnoteDefinition>
     , BlockContainer
 {

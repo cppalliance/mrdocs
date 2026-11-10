@@ -17,9 +17,9 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/Lua/Context.hpp>
 #include <mrdocs/Engines/Lua/Type.hpp>
-#include <mrdocs/Engines/Lua/zstring.hpp>
-#include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Engines/Lua/ZString.hpp>
 #include <mrdocs/polyfill/source_location.hpp>
+#include <mrdocs/Support/Error/Expected.hpp>
 #include <string_view>
 
 namespace mrdocs {
@@ -29,7 +29,7 @@ namespace lua {
 */
 /** Helper that balances the Lua stack for a Context scope.
 */
-class Scope
+class MRDOCS_DECL Scope
 {
     Context ctx_;
     std::size_t refs_;
@@ -40,13 +40,11 @@ class Scope
     void reset();
 
 public:
-    MRDOCS_DECL
     /** Create a scope that manages Lua stack references.
         @param ctx Lua context to guard.
     */
     Scope(Context const& ctx) noexcept;
 
-    MRDOCS_DECL
     /** Pop any pending stack references on destruction.
     */
     ~Scope();
@@ -58,11 +56,10 @@ public:
         @param loc The source location of the call site.
         @return The function if successful, or an error.
     */
-    MRDOCS_DECL
     Expected<Function>
     loadChunk(
         std::string_view luaChunk,
-        zstring chunkName,
+        ZString chunkName,
         source_location loc =
             source_location::current());
 
@@ -72,7 +69,6 @@ public:
         @param loc The source location of the call site.
         @return The function if successful, or an error.
     */
-    MRDOCS_DECL
     Expected<Function>
     loadChunk(
         std::string_view luaChunk,
@@ -85,7 +81,6 @@ public:
         @param loc The source location of the call site.
         @return The function if successful, or an error.
     */
-    MRDOCS_DECL
     Expected<Function>
     loadChunkFromFile(
         std::string_view fileName,
@@ -94,7 +89,6 @@ public:
 
     /** Return the global table.
     */
-    MRDOCS_DECL
     Table
     getGlobalTable();
 
@@ -104,7 +98,6 @@ public:
         @param loc The source location of the call site.
         @return The value if it exists, or an error.
     */
-    MRDOCS_DECL
     Expected<Value>
     getGlobal(
         std::string_view key,
@@ -121,7 +114,6 @@ public:
         @param value The DOM value to push.
         @return A Value referring to the new stack slot.
     */
-    MRDOCS_DECL
     Value
     pushDom(dom::Value const& value);
 };

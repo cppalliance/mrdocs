@@ -15,20 +15,28 @@
 set(MRDOCS_BUILT_SHARED "@MRDOCS_BUILD_SHARED@")
 set(MRDOCS_BUILT_BUNDLED "@MRDOCS_DO_BUNDLE_DEPENDENCIES@")
 set(MRDOCS_BUILT_REEXPORT_DEPENDENCIES "@MRDOCS_DO_REEXPORT_DEPENDENCIES@")
-set(MRDOCS_BUILT_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
-set(MRDOCS_BUILT_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@")
-# Whether this MrDocs can build and load plugins: the value of the
-# `MRDOCS_BUILD_PLUGIN_MODULES` option it was built with, which is off by
-# default for a statically linked or shared build.
-set(MRDOCS_BUILT_PLUGIN_MODULES "@MRDOCS_BUILD_PLUGIN_MODULES@")
+# Empty when the build left them at CMake's defaults: the DLL runtime, and the
+# host's own macOS.
+set(MRDOCS_BUILT_OSX_DEPLOYMENT_TARGET "@CMAKE_OSX_DEPLOYMENT_TARGET@")
+set(MRDOCS_BUILT_MSVC_RUNTIME_LIBRARY "@CMAKE_MSVC_RUNTIME_LIBRARY@")
+# The standard library tag of the compiler that built MrDocs, such as
+# `libc++, abi 1`. It is the tag mrdocs::plugin-api passes to a plugin as
+# MRDOCS_EXPECTED_STDLIB_TAG. Empty when the build could not read it. Tags that
+# differ between configurations are listed with the configuration name.
+set(MRDOCS_BUILT_STDLIB_TAG "@MRDOCS_STDLIB_TAG@")
 
-# Calendar release this installation was built from (YYYY.M.D), decomposed
-# like mrdocs_VERSION_MAJOR/MINOR/PATCH. Empty/0 when git was unavailable.
+# Calendar release this installation was built from (YYYY.M.D), the newest
+# release tag, decomposed like
+# mrdocs_VERSION_MAJOR/MINOR/PATCH. Empty/0 when git was unavailable.
 set(MRDOCS_RELEASE            "@MRDOCS_RELEASE@")
 set(MRDOCS_RELEASE_WITH_BUILD "@MRDOCS_RELEASE_WITH_BUILD@")
 set(MRDOCS_RELEASE_YEAR       "@MRDOCS_RELEASE_YEAR@")
 set(MRDOCS_RELEASE_MONTH      "@MRDOCS_RELEASE_MONTH@")
 set(MRDOCS_RELEASE_DAY        "@MRDOCS_RELEASE_DAY@")
+# The id plugins are checked against: the first 12 digits of the commit this
+# installation was built from, with ".modified" after them when the tree had
+# edits, or the build id its packager set.
+set(MRDOCS_BUILD_ID_VALUE     "@MRDOCS_BUILD_ID_VALUE@")
 
 # Installation paths, relocated relative to this file by @PACKAGE_INIT@.
 set_and_check(MRDOCS_INCLUDE_DIR  "@PACKAGE_INCLUDE_INSTALL_DIR@")   # e.g. "include"
@@ -48,6 +56,9 @@ endif ()
 
 # Imported targets.
 include("${CMAKE_CURRENT_LIST_DIR}/mrdocs-targets.cmake")
+
+# Helper functions for consumers, such as mrdocs_ensure_runtime_dlls.
+include("${CMAKE_CURRENT_LIST_DIR}/mrdocs-helpers.cmake")
 
 # Bake the relocated MrDocs root into consumers, so a default-constructed
 # ReferenceDirectories in a program that links mrdocs-core finds the bundled

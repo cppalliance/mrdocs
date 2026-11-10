@@ -534,8 +534,7 @@ public:
         @note In JavaScript, this is equivalent to the `===`
         operator, which does not perform type conversions.
     */
-    friend
-    bool
+    friend MRDOCS_DECL bool
     operator==(
         Value const& lhs,
         Value const& rhs) noexcept;
@@ -583,19 +582,19 @@ public:
 
     /** Compare two values for inequality.
     */
-    friend
-    std::strong_ordering
-    operator<=>(
-        Value const& lhs,
-        Value const& rhs) noexcept;
+    friend MRDOCS_DECL
+        std::strong_ordering
+        operator<=>(
+            Value const& lhs,
+            Value const& rhs) noexcept;
 
     /** Return the first Value that is truthy, or the last one.
 
         This function is equivalent to the JavaScript `||` operator.
     */
-    friend
-    Value
-    operator||(Value const& lhs, Value const& rhs);
+    friend MRDOCS_DECL
+        Value
+        operator||(Value const& lhs, Value const& rhs);
 
     /// @overload
     template <std::convertible_to<Value> S>
@@ -617,9 +616,9 @@ public:
 
         This function is equivalent to the JavaScript `&&` operator.
     */
-    friend
-    Value
-    operator&&(Value const& lhs, Value const& rhs);
+    friend MRDOCS_DECL
+        Value
+        operator&&(Value const& lhs, Value const& rhs);
 
     /// @overload
     template <std::convertible_to<Value> S>
@@ -641,9 +640,9 @@ public:
 
         This function coerces any value to a string.
     */
-    friend
-    std::string
-    toString(Value const& value);
+    friend MRDOCS_DECL
+        std::string
+        toString(Value const& value);
 };
 
 inline

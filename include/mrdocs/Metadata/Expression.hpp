@@ -27,7 +27,7 @@ class DomCorpus;
 
 /** Represents an expression
 */
-struct ExprInfo
+struct MRDOCS_VISIBLE ExprInfo
 {
     /** The expression, as written
     */

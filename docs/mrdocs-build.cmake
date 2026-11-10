@@ -68,7 +68,6 @@ target_include_directories(mrdocs-reference PRIVATE
         "${PROJECT_SOURCE_DIR}/libs/polyfill/include"
         "${PROJECT_SOURCE_DIR}/libs/dom/include"
         "${PROJECT_SOURCE_DIR}/libs/handlebars/include")
-target_compile_definitions(mrdocs-reference PRIVATE MRDOCS_STATIC_LINK)
 # This target only needs the headers to compile, not to be warning-clean, so
 # silence all warnings. The /Zc flags stay: they are needed to compile, not to
 # quiet warnings (Platform.hpp gates on __cplusplus, Describe.hpp uses __VA_OPT__).

@@ -30,7 +30,7 @@ namespace mrdocs::doc {
     @tparam T description
     @endcode
 */
-struct TParamBlock final
+struct MRDOCS_VISIBLE TParamBlock final
     : BlockCommonBase<BlockKind::TParam>
     , InlineContainer
 {

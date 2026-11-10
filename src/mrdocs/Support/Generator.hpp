@@ -25,26 +25,6 @@ namespace mrdocs {
 // generators (and the golden-test comparison). These are MrDocs internals,
 // not part of the public, plugin-facing Generator interface.
 
-/** Resolve the output location for a generator from the configuration.
-
-    A per-generator `output` (under `generator-options.<id>`) is used as
-    given. Otherwise the top-level `output` is used directly for a single
-    generator, or a subdirectory named after the generator id when several
-    run, so each writes into its own directory. All paths are resolved
-    relative to the configuration file.
-
-    Generators call this from @ref Generator::build to find where their
-    files go; they remain free to interpret the result as a file or a
-    directory.
-
-    @return The absolute output path for the generator.
-
-    @param generator The generator whose output is being resolved.
-    @param corpus The corpus being built; its config drives the result.
-*/
-std::string
-getGeneratorOutputPath(Generator const& generator, Config const& config);
-
 /** Return the full path for single page output.
 
     Resolves the file a single-page generator writes from `outputPath`. When

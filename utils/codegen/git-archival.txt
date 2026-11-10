@@ -1,0 +1,3 @@
+node: $Format:%H$
+node-date: $Format:%ct$
+describe-name: $Format:%(describe:tags=true,match=20*,exclude=*[!0-9.+]*)$

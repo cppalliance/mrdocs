@@ -38,7 +38,7 @@ namespace mrdocs::doc {
     ```
     @endcode
 */
-struct MathBlock final
+struct MRDOCS_VISIBLE MathBlock final
     : BlockCommonBase<BlockKind::Math>
 {
     /// Raw TeX math source

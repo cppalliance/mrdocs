@@ -1,0 +1,96 @@
+= tools/
+
+`tools/` holds user-facing tools built on MrDocs.
+`libs/` is the opposite, because it holds libraries the project depends on.
+
+Most tools link the MrDocs library and use its public API.
+Others are scripts that drive the `mrdocs` executable, or files that users of the installed package consume.
+Either way, tools serve the project's users, unlike `utils/`, which holds developer and build tooling the project never ships.
+
+== Layout of a tool
+
+`tools/<tool>/` is one tool, and its layout depends on its kind:
+
+[cols="3,4",options="header"]
+|===
+|Kind |Layout
+
+|C++ tool
+|The root layout, with a `src/`, a `CMakeLists.txt` and, optionally, a `tests/`.
+
+|Script tool
+|Just its files, with no build step.
+
+|Neither a program nor a script, such as the CMake helper
+|Just the files it installs.
+|===
+
+`CPP_PROJECTS` in `utils/lint/check_layout.py` lists the C++ tools that follow the root layout, and today that is `tools/mrdocs/`.
+A tool in C++ joins the list, and the layout check then applies at every depth.
+A stray directory in `tools/mrdocs/` fails:
+
+[source,text]
+----
+layout: tools/mrdocs/scripts/: not a directory the root layout allows in a C++ tool
+----
+
+A C++ tool consumes the library through the public API (`<mrdocs/...>`).
+Reaching into the private headers is a smell, and the fix is to promote the API or refactor.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Scripts and CMake files for contributors, CI and the build
+|`utils/`. The helpers of the root build are in `utils/cmake/`.
+
+|Libraries the project depends on
+|`libs/`.
+
+|Code of the library itself, including anything the tool needs from `mrdocs-core`
+|`src/`.
+
+|Projects that show how to run a tool
+|`examples/`.
+|===
+
+== Contents by tool
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`tools/mrdocs/`
+|The command-line documentation generator, the `mrdocs` executable.
+
+|`tools/cmake/`
+|The CMake helper that a program linking MrDocs calls, and the script it runs. `mrdocs-helpers.cmake` is the entry point that includes one file per helper: `mrdocs_ensure_runtime_dlls.cmake` defines `mrdocs_ensure_runtime_dlls(<target>)` and `mrdocs_add_plugin.cmake` defines `mrdocs_add_plugin(<target> <sources>...)`. `LinkOrCopyDlls.cmake` is the script that runs after the build. It is the example of a user-facing tool that is not a program: users get it by installing MrDocs and calling `find_package(mrdocs)`.
+
+|`tools/fix-docs/`
+|A Python tool that drives an AI agent and the `mrdocs` executable to bring the documentation of a project up to date.
+|===
+
+== Build integration
+
+The root build adds `tools/` unconditionally.
+Each tool connects to the build in its own way:
+
+[cols="2,5"]
+|===
+|Tool |Wiring
+
+|`tools/mrdocs/`
+|`tools/CMakeLists.txt` adds it, and `tools/mrdocs/CMakeLists.txt` defines the `mrdocs` target from `tools/mrdocs/src/`.
+
+The same file defines `mrdocs-plugin-api`, the `INTERFACE` target that plugins link, installed as `mrdocs::plugin-api`.
+
+With `MRDOCS_INSTALL` on, both targets join the `mrdocs-targets` export set, and the executable installs into `CMAKE_INSTALL_BINDIR`.
+
+|`tools/cmake/`
+|No `add_subdirectory`. The root build includes `mrdocs-helpers.cmake`, and `mrdocs_install()` installs all four files next to `mrdocs-config.cmake`, into `+${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs+`. The installed config file includes the helper.
+
+|`tools/fix-docs/`
+|Not in the build. It is a script you run from the source tree.
+|===

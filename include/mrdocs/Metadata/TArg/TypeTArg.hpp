@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Type template argument.
 */
-struct TypeTArg final
+struct MRDOCS_VISIBLE TypeTArg final
     : TArgCommonBase<TArgKind::Type>
 {
     /** Template argument type.

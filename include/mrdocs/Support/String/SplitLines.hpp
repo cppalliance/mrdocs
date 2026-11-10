@@ -72,7 +72,7 @@ lbLen(std::string_view s, std::size_t i) noexcept
 
 /** A lazy input range of std::string_view lines split on all known line breaks.
 */
-struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
+struct MRDOCS_VISIBLE SplitLinesView : std::ranges::view_interface<SplitLinesView> {
     /** Underlying string to split.
     */
     std::string_view sv_;
@@ -87,7 +87,7 @@ struct SplitLinesView : std::ranges::view_interface<SplitLinesView> {
 
     /** Iterator over lines produced by SplitLinesView.
     */
-    struct Iterator {
+    struct MRDOCS_VISIBLE Iterator {
         /** Reference to the source string.
         */
         std::string_view sv{};

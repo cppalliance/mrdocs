@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[indeterminate]]` attribute (C++26): the object has an indeterminate value if uninitialized.
 */
-struct IndeterminateAttribute final
+struct MRDOCS_VISIBLE IndeterminateAttribute final
     : AttributeCommonBase<AttributeKind::Indeterminate>
 {
 };

@@ -13,9 +13,9 @@
 #ifndef MRDOCS_API_METADATA_SYMBOL_NAMESPACE_HPP
 #define MRDOCS_API_METADATA_SYMBOL_NAMESPACE_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Reflection/Describe.hpp>
 #include <ranges>
 #include <vector>
@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Buckets the members that appear inside a namespace.
 */
-struct NamespaceTranche {
+struct MRDOCS_VISIBLE NamespaceTranche {
     /** Nested namespaces.
     */
     std::vector<SymbolID> Namespaces;
@@ -94,7 +94,7 @@ allMembers(NamespaceTranche const& T)
 
 /** Describes a namespace and its members.
 */
-struct NamespaceSymbol final
+struct MRDOCS_VISIBLE NamespaceSymbol final
     : SymbolCommonBase<SymbolKind::Namespace>
 {
     /** Whether this declaration is inline.

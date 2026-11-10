@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Metadata for an enumeration declaration.
 */
-struct EnumSymbol final
+struct MRDOCS_VISIBLE EnumSymbol final
     : SymbolCommonBase<SymbolKind::Enum>
 {
     /** Indicates whether this enum is scoped (e.g. enum class).

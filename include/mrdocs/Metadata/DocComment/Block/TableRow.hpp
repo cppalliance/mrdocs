@@ -22,7 +22,7 @@ namespace mrdocs::doc {
 
 /** An item in a list
 */
-struct TableRow final
+struct MRDOCS_VISIBLE TableRow final
 {
     /** True if this row represents a header.
     */

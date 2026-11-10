@@ -21,7 +21,7 @@ namespace mrdocs {
 
 /** Info for enum constants.
 */
-struct EnumConstantSymbol final
+struct MRDOCS_VISIBLE EnumConstantSymbol final
     : SymbolCommonBase<SymbolKind::EnumConstant>
 {
     /** The initializer expression, if any

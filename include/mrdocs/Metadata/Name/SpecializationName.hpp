@@ -20,7 +20,7 @@ namespace mrdocs {
 
 /** Represents a (possibly qualified) symbol name with template arguments.
 */
-struct SpecializationName final
+struct MRDOCS_VISIBLE SpecializationName final
     : Name
 {
     /** The variant discriminator constant of this concrete name kind. */

@@ -38,7 +38,7 @@ namespace mrdocs::doc {
     @endcode
 
 */
-struct StrikethroughInline final
+struct MRDOCS_VISIBLE StrikethroughInline final
     : InlineCommonBase<InlineKind::Strikethrough>
     , InlineContainer
 {

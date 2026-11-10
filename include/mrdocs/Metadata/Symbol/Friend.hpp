@@ -32,7 +32,7 @@ namespace mrdocs {
     stored in the befriended symbol's metadata rather than in the
     relationship.
 */
-struct FriendInfo final
+struct MRDOCS_VISIBLE FriendInfo final
 {
     /** Befriended symbol.
     */

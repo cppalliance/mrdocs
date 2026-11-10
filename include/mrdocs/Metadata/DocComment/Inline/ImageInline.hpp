@@ -34,7 +34,7 @@ namespace mrdocs::doc {
     ![Alt text](image_url "Optional title text")
     @endcode
 */
-struct ImageInline final
+struct MRDOCS_VISIBLE ImageInline final
     : InlineCommonBase<InlineKind::Image>
     , InlineContainer
 {

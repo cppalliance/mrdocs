@@ -30,7 +30,7 @@ namespace mrdocs::doc {
     @ref target "label"
     @endcode
 */
-struct ReferenceInline
+struct MRDOCS_VISIBLE ReferenceInline
     : InlineCommonBase<InlineKind::Reference>
 {
     /** Display text of the reference.

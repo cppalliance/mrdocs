@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[noreturn]]` attribute (C++11): the function does not return.
 */
-struct NoreturnAttribute final
+struct MRDOCS_VISIBLE NoreturnAttribute final
     : AttributeCommonBase<AttributeKind::Noreturn>
 {
 };

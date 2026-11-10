@@ -1,0 +1,9 @@
+# The configuration of the `mrdocs-self-doc-export-markers` test. Each run
+# takes one header as its input, and the public headers of MrDocs are on the
+# include path for `mrdocs/Support/Export.hpp`.
+includes:
+  - ../../../include
+file-patterns:
+  - '*.hpp'
+include-symbols:
+  - 'mrdocs::**'

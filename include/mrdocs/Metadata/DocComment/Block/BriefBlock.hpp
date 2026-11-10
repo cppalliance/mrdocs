@@ -29,7 +29,7 @@ namespace mrdocs::doc {
     @brief summary
     @endcode
 */
-struct BriefBlock final
+struct MRDOCS_VISIBLE BriefBlock final
     : BlockCommonBase<BlockKind::Brief>
     , InlineContainer
 {

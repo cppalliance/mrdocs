@@ -21,7 +21,7 @@ namespace mrdocs {
 
 /** Represents a set of function overloads.
 */
-struct OverloadsSymbol final
+struct MRDOCS_DECL OverloadsSymbol final
     : SymbolCommonBase<SymbolKind::Overloads>
 {
     /// The class of the functions.

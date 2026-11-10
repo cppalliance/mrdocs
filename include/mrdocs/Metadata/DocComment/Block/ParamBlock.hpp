@@ -31,7 +31,7 @@ namespace mrdocs::doc {
     @param name description
     @endcode
 */
-struct ParamBlock final
+struct MRDOCS_VISIBLE ParamBlock final
     : BlockCommonBase<BlockKind::Param>
     , InlineContainer
 {

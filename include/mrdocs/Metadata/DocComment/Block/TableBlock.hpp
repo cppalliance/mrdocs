@@ -35,7 +35,7 @@ namespace mrdocs::doc {
     | Cell 2A  | Cell 2B  | Cell 2C  |
     @endcode
 */
-struct TableBlock final: BlockCommonBase<BlockKind::Table>
+struct MRDOCS_VISIBLE TableBlock final : BlockCommonBase<BlockKind::Table>
 {
     /** Column alignments for each table column.
     */

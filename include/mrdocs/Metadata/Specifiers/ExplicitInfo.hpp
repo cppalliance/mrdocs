@@ -24,7 +24,7 @@ namespace mrdocs {
     The complete expression is not preserved at this time.
     This is a temporary design and may be improved in the future.
 */
-struct ExplicitInfo
+struct MRDOCS_VISIBLE ExplicitInfo
 {
     /** Whether an explicit-specifier was user-written.
     */

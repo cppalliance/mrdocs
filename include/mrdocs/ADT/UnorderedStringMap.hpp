@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** Transparent hash functor for string-like keys.
 */
-struct StringHash
+struct MRDOCS_VISIBLE StringHash
 {
     /** Underlying hash implementation.
     */
@@ -59,7 +59,7 @@ using UnorderedStringMultiMap = std::unordered_multimap<std::string, T, StringHa
     Folds each character to lowercase while hashing, so keys that differ only
     in ASCII case hash to the same bucket. No copy of the key is made.
 */
-struct CIStringHash
+struct MRDOCS_VISIBLE CIStringHash
 {
     /** Marker for heterogeneous lookup.
     */
@@ -92,7 +92,7 @@ struct CIStringHash
 
 /** Transparent case-insensitive equality functor for string-like keys.
 */
-struct CIStringEqual
+struct MRDOCS_VISIBLE CIStringEqual
 {
     /** Marker for heterogeneous lookup.
     */

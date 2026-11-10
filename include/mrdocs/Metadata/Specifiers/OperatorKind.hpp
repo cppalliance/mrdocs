@@ -222,6 +222,7 @@ getSafeOperatorName(
     @param nParams The number of parameters the operator takes.
     @return The readable name, or nullopt if the operator is not recognized.
 */
+MRDOCS_DECL
 Optional<std::string_view>
 getOperatorReadableName(
     OperatorKind kind,

@@ -14,7 +14,10 @@
 # Project data
 #
 #-------------------------------------------------
-cmake_minimum_required(VERSION 3.13)
+# 3.18 is the lowest that has `cmake_language(EVAL)`, which `set_ternary` in
+# utils/cmake/helpers/set_ternary.cmake uses. It also turns on policy CMP0099, which
+# src/CMakeLists.txt needs for `mrdocs-hidden-archives`.
+cmake_minimum_required(VERSION 3.18)
 project(
     MrDocs
     VERSION 0.8.0
@@ -26,6 +29,7 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 include(utils/cmake/helpers.cmake)
+include(tools/cmake/mrdocs-helpers.cmake)
 
 #-------------------------------------------------
 #
@@ -51,45 +55,35 @@ if (MRDOCS_BUILD_TESTS OR MRDOCS_BUILD_EXAMPLES)
 endif()
 
 # How to build
-option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
+option(MRDOCS_REQUIRE_GIT "Git is required to configure unless MRDOCS_BUILD_ID is set or the source is a git archive with git-archival.txt expanded" ON)
 option(MRDOCS_BUNDLE_DEPENDENCIES "Bundle the private dependencies into the library" ON)
 option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_GENERATE_ANTORA_REFERENCE "Generate MrDocs reference in Antora module pages" OFF)
 
 # Helper variables based on options
-set_ternary(MRDOCS_LINK_MODE MRDOCS_BUILD_SHARED SHARED "")
-set_ternary(MRDOCS_LINK_MODE_DEFINITION MRDOCS_BUILD_SHARED MRDOCS_SHARED_LINK MRDOCS_STATIC_LINK)
 set_ternary(MRDOCS_DO_BUNDLE_DEPENDENCIES "MRDOCS_BUNDLE_DEPENDENCIES AND NOT MRDOCS_BUILD_SHARED" ON OFF)
 set_ternary(MRDOCS_DO_REEXPORT_DEPENDENCIES "NOT MRDOCS_DO_BUNDLE_DEPENDENCIES AND NOT MRDOCS_BUILD_SHARED" ON OFF)
 set_ternary(MRDOCS_GCC   "CMAKE_CXX_COMPILER_ID STREQUAL \"GNU\"" ON OFF)
 set_ternary(MRDOCS_CLANG "CMAKE_CXX_COMPILER_ID MATCHES \"Clang$\"" ON OFF)
 
-# Plugins need a MrDocs that can load a shared library and that a plugin can
-# link against. A statically linked one can do neither: a module library
-# cannot even be linked with the startup files a static link brings in. Nor
-# can a shared build, where the API a plugin calls lives in mrdocs-core
-# rather than in the tool it links. The check only sees -static in the two
-# flag variables below; set the option by hand when the flag comes from
-# somewhere else, such as a toolchain file or LDFLAGS.
-set_ternary(MRDOCS_PLUGIN_MODULES_DEFAULT
-    "MRDOCS_BUILD_SHARED OR CMAKE_CXX_FLAGS MATCHES \"(^| )-static($| )\" OR CMAKE_EXE_LINKER_FLAGS MATCHES \"(^| )-static($| )\""
-    OFF ON)
-option(MRDOCS_BUILD_PLUGIN_MODULES
-    "This MrDocs can build and load plugins; also builds the plugin example and tests"
-    ${MRDOCS_PLUGIN_MODULES_DEFAULT})
+# Bundles the C++ runtime for the Linux release package.
+option(MRDOCS_BUNDLE_CXX_RUNTIME "Bundle the C++ runtime for the Linux release package (libstdc++ and libgcc_s in lib/, RUNPATH $ORIGIN/../lib, no -static); a local build leaves it off" OFF)
+if (MRDOCS_BUNDLE_CXX_RUNTIME)
+    # The file holds the settings and what each is for.
+    include(utils/cmake/release-linux.cmake)
+endif ()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# MSVC flags shared by every mrdocs target below (not installed consumers):
-#  - /EHs enables C++ exception handling. The mrdocs tool, the unit tests, and the
-#    examples are separate targets whose TUs include exception-using STL headers, so
-#    without it MSVC raises C4530 and /WX makes it fatal; the EH model must also be
-#    uniform across all TUs, so it belongs here rather than on mrdocs-core alone.
-#  - /wd4100 accepts unused parameters, an accepted style across mrdocs (visitor /
-#    tag_invoke / finalizer signatures) that the clang build already allows via
-#    -Wno-unused-parameter; mirror it so /W4 /WX does not fail on C4100.
+# The standard library tag of this compiler. A plugin is given it to check its
+# own settings at its first compile.
+mrdocs_detect_stdlib_tag(MRDOCS_STDLIB_TAG_DEFINITIONS MRDOCS_STDLIB_TAG)
+
 if (MSVC)
-    add_compile_options(/EHs /wd4100)
+    # Exception handling, uniform across every target, as the STL headers need it.
+    add_compile_options(/EHs)
+    # Accepts unused parameters, as the clang build does.
+    add_compile_options(/wd4100)
 endif()
 
 #-------------------------------------------------

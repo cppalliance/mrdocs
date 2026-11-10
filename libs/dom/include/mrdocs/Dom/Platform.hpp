@@ -12,30 +12,49 @@
 #ifndef MRDOCS_API_DOM_PLATFORM_HPP
 #define MRDOCS_API_DOM_PLATFORM_HPP
 
-// Export/visibility macros for the dom library. Self-contained on purpose: dom
-// depends neither on mrdocs-core's <mrdocs/Platform.hpp> nor on the defines
-// mrdocs-core and the tool are built with. The expansion is driven by
-// `MRDOCS_DOM_BUILDING`, which only the dom target defines, and by the
-// `MRDOCS_STATIC_LINK` define the build passes to every target.
+// Export/visibility macro for the dom library. Self-contained on purpose:
+// dom does not depend on mrdocs-core's <mrdocs/Platform.hpp>. The expansion is
+// driven by `MRDOCS_DOM_SOURCE`, which is defined only while the
+// dom library is built from source, and by `MRDOCS_DYNAMIC_LINK`, which
+// marks code that links MrDocs dynamically, to the shared mrdocs-core or to a
+// host executable (the `mrdocs-core` and `mrdocs::plugin-api` CMake targets
+// define it for such code).
 //
-// `MRDOCS_DOM_BUILDING` comes first: a static build exports the API too.
+// On GCC and Clang the marker is always default visibility, static or shared:
+// the library, mrdocs-core and the tool are compiled with hidden visibility,
+// so an empty marker would hide these types in the units that use them. What
+// carries the marker is exported and the rest stays local. On MSVC
+// `MRDOCS_DOM_SOURCE` comes first (dllexport, also in a static build),
+// then `MRDOCS_DYNAMIC_LINK` (dllimport), else empty. See
+// docs/modules/ROOT/pages/contribute/invariants.adoc.
+//
+// `MRDOCS_DOM_VISIBLE` goes on a public class that has no `MRDOCS_DOM_DECL`
+// of its own. It is empty on MSVC and gives the class default visibility on
+// GCC and Clang, so a member that lacks its own `MRDOCS_DOM_DECL` still links
+// there and fails only on MSVC. MrDocs records it as `type_visibility` when it
+// parses.
 
-#if defined(_MSC_VER)
-# if defined(MRDOCS_DOM_BUILDING) // building the library
+// MrDocs defines `__MRDOCS__` when it parses. The marker then expands to the
+// GNU attribute on every platform, since a parse on Windows uses the MSVC
+// target and would otherwise record no marker.
+#if defined(__MRDOCS__)
+# define MRDOCS_DOM_DECL __attribute__((__visibility__("default")))
+# define MRDOCS_DOM_VISIBLE __attribute__((__type_visibility__("default")))
+#elif defined(_MSC_VER)
+# if defined(MRDOCS_DOM_SOURCE) // building the library from source
 #  define MRDOCS_DOM_DECL __declspec(dllexport)
-# elif defined(MRDOCS_STATIC_LINK)
-#  define MRDOCS_DOM_DECL
-# else
+# elif defined(MRDOCS_DYNAMIC_LINK)
 #  define MRDOCS_DOM_DECL __declspec(dllimport)
-# endif
-#elif defined(__GNUC__)
-# if defined(MRDOCS_DOM_BUILDING) || defined(MRDOCS_STATIC_LINK)
-#  define MRDOCS_DOM_DECL
 # else
-#  define MRDOCS_DOM_DECL __attribute__((__visibility__("default")))
+#  define MRDOCS_DOM_DECL
 # endif
+# define MRDOCS_DOM_VISIBLE
+#elif defined(__GNUC__)
+# define MRDOCS_DOM_DECL __attribute__((__visibility__("default")))
+# define MRDOCS_DOM_VISIBLE __attribute__((__visibility__("default")))
 #else
 # define MRDOCS_DOM_DECL
+# define MRDOCS_DOM_VISIBLE
 #endif
 
 #if __has_cpp_attribute(no_unique_address)

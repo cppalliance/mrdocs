@@ -9,12 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Support/Filesystem/Temp.hpp>
 #include <test_suite/test_suite.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
 
+
+using namespace std::string_literals;
 
 namespace mrdocs {
 
@@ -155,8 +158,62 @@ struct Path_test
         fs::remove_directories(tmp);
     }
 
+    void
+    testWriteFileText()
+    {
+        using namespace files;
+
+        ScopedTempDirectory dir("mrdocs-write-file-text");
+        BOOST_TEST(dir);
+        std::string const path = appendPath(dir.path(), "out.txt");
+
+        // Round trip, including a NUL byte
+        std::string const text = "first\nsecond\n\0third"s;
+        BOOST_TEST(writeFileText(path, text).has_value());
+        auto read = getFileText(path);
+        BOOST_TEST(read.has_value());
+        BOOST_TEST(read.value_or("") == text);
+
+        // An existing file is truncated
+        BOOST_TEST(writeFileText(path, "x").has_value());
+        auto truncated = getFileText(path);
+        BOOST_TEST(truncated.has_value());
+        BOOST_TEST(truncated.value_or("") == "x");
+
+        // A directory that does not exist is an error naming the path
+        std::string const missing =
+            appendPath(dir.path(), "missing", "out.txt");
+        auto failed = writeFileText(missing, "x");
+        BOOST_TEST(!failed.has_value());
+        if (!failed)
+        {
+            BOOST_TEST(failed.error().reason().find("missing") !=
+                std::string::npos);
+        }
+    }
+
+    void
+    testNonAsciiPath()
+    {
+        using namespace files;
+
+        ScopedTempDirectory dir("mrdocs-non-ascii-path");
+        BOOST_TEST(dir);
+        // Characters outside the ANSI code page of Windows, as UTF-8.
+        std::string const sub =
+            appendPath(dir.path(), "ext-\xC3\xA9\xE6\x97\xA5\xE6\x9C\xAC");
+        BOOST_TEST(createDirectory(sub).has_value());
+        std::string const path = appendPath(sub, "init.lua");
+        BOOST_TEST(writeFileText(path, "return 1\n").has_value());
+        auto read = getFileText(path);
+        BOOST_TEST(read.has_value());
+        BOOST_TEST(read.value_or("") == "return 1\n");
+    }
+
     void run()
     {
+        testWriteFileText();
+        testNonAsciiPath();
         testPaths();
         testIsSubpathOf();
         testRealPathAndResolvedSubpath();

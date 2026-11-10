@@ -22,7 +22,7 @@ namespace mrdocs {
     The spelling is preserved in @ref Attribute::Name and the
     arguments in @ref Attribute::balancedTokens.
 */
-struct OtherAttribute final
+struct MRDOCS_VISIBLE OtherAttribute final
     : AttributeCommonBase<AttributeKind::Other>
 {
 };

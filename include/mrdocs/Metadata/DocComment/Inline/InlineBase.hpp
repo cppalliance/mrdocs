@@ -39,7 +39,7 @@ using mrdocs::operator==;
     this would be represented as multiple text nodes
     within a Paragraph node.
 */
-struct MRDOCS_DECL Inline
+struct MRDOCS_VISIBLE Inline
 {
     /** Discriminator identifying which inline variant is active.
     */
@@ -475,7 +475,7 @@ getAsPlainText(doc::InlineContainer const& in)
 }
 
 /// A leaf node that stores a string of text.
-struct MRDOCS_DECL InlineTextLeaf
+struct MRDOCS_VISIBLE InlineTextLeaf
 {
     /** Raw literal text stored in this leaf node.
     */

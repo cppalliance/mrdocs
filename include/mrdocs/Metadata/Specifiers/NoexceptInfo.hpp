@@ -25,7 +25,7 @@ namespace mrdocs {
 
 /** Captures a `noexcept` specification and its evaluated form.
 */
-struct NoexceptInfo
+struct MRDOCS_VISIBLE NoexceptInfo
 {
     /** Whether a noexcept-specifier was user-written.
     */

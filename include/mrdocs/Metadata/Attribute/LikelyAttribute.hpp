@@ -19,7 +19,7 @@ namespace mrdocs {
 
 /** The `[[likely]]` attribute (C++20): this path is more likely.
 */
-struct LikelyAttribute final
+struct MRDOCS_VISIBLE LikelyAttribute final
     : AttributeCommonBase<AttributeKind::Likely>
 {
 };

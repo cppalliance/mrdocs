@@ -20,7 +20,7 @@ namespace mrdocs {
 
 /** Type of all exceptions thrown by the API.
 */
-class MRDOCS_DECL
+class MRDOCS_VISIBLE
     Exception final : public std::exception
 {
     Error err_;

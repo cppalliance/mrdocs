@@ -23,7 +23,7 @@ namespace mrdocs {
 
     Covers both object-like and function-like macros.
 */
-struct MacroSymbol final
+struct MRDOCS_VISIBLE MacroSymbol final
     : SymbolCommonBase<SymbolKind::Macro>
 {
     /** Whether this is a function-like macro.

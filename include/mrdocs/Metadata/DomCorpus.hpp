@@ -118,6 +118,7 @@ public:
     @param corpus The corpus to view.
     @return A DOM object exposing the corpus.
 */
+MRDOCS_DECL
 dom::Value buildCorpusDom(Corpus& corpus);
 
 /** Build a DOM object representing an entire corpus.
@@ -129,6 +130,7 @@ dom::Value buildCorpusDom(Corpus& corpus);
     @param corpus The corpus to view.
     @return A DOM object exposing the corpus.
 */
+MRDOCS_DECL
 dom::Value buildCorpusDom(Corpus const& corpus);
 
 /** Build the DOM value for a single symbol.
@@ -142,6 +144,7 @@ dom::Value buildCorpusDom(Corpus const& corpus);
     @param sym The symbol to project.
     @return A DOM value proxying the symbol.
 */
+MRDOCS_DECL
 dom::Value buildSymbolDom(Symbol const& sym);
 
 } // mrdocs

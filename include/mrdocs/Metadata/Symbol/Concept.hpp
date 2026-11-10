@@ -25,7 +25,7 @@ namespace mrdocs {
 
 /** Info for concepts.
 */
-struct ConceptSymbol final
+struct MRDOCS_VISIBLE ConceptSymbol final
     : SymbolCommonBase<SymbolKind::Concept>
 {
     /** The concepts template parameters

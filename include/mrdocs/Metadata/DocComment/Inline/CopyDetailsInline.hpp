@@ -28,7 +28,7 @@ namespace mrdocs::doc {
     @copydetails other_symbol
     @endcode
 */
-struct CopyDetailsInline final
+struct MRDOCS_VISIBLE CopyDetailsInline final
     : InlineCommonBase<InlineKind::CopyDetails>
 {
     /** Element to copy the details from

@@ -25,7 +25,7 @@ namespace mrdocs {
 
 /** Template template parameter.
 */
-struct TemplateTParam final
+struct MRDOCS_VISIBLE TemplateTParam final
     : TParamCommonBase<TParamKind::Template>
 {
     /** Template parameters for the template-template parameter

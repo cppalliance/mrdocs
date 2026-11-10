@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,111 +15,109 @@
 #ifndef MRDOCS_API_PLUGIN_HPP
 #define MRDOCS_API_PLUGIN_HPP
 
+// The standard library check comes right after Platform.hpp, which defines
+// the tag, and before every other MrDocs header: with the old libstdc++ ABI
+// those headers fail to compile, and the compiler reports errors in the
+// order it meets them.
 #include <mrdocs/Platform.hpp>
+#include <string_view>
+
+// `MRDOCS_EXPECTED_STDLIB_TAG` is the standard library tag of the MrDocs a
+// plugin is built for, a string literal the build of the plugin defines. The
+// `mrdocs::plugin-api` CMake target defines it with the value
+// `MRDOCS_PLUGIN_STDLIB_TAG` had when MrDocs was built. When it is defined,
+// a plugin compiled with other standard library settings stops at its first
+// source file, instead of at load time. A plugin that does not define it is
+// checked when MrDocs loads it.
+#if defined(MRDOCS_EXPECTED_STDLIB_TAG)
+static_assert(
+    std::string_view(MRDOCS_PLUGIN_STDLIB_TAG) == MRDOCS_EXPECTED_STDLIB_TAG,
+    "the standard library settings of this plugin differ from the ones "
+    "MrDocs was built with: this plugin has " MRDOCS_PLUGIN_STDLIB_TAG
+    " and MrDocs has " MRDOCS_EXPECTED_STDLIB_TAG
+    "; rebuild the plugin with the same standard library and settings");
+#endif
+
 #include <mrdocs/Config.hpp>
+#include <mrdocs/Extensions/GeneratorExtensionContext.hpp>
+#include <mrdocs/Extensions/TransformExtensionContext.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
 #include <mrdocs/Transform.hpp>
+#include <mrdocs/Version.hpp>
+#include <mrdocs/detail/CallableGenerator.hpp>
+#include <mrdocs/detail/CallableTransform.hpp>
+#include <concepts>
+#include <functional>
 #include <memory>
-#include <vector>
+#include <string>
+#include <type_traits>
+#include <utility>
 
-/** The version of the interface a plugin is built against.
+/** The identity of the MrDocs build a plugin is compiled against.
 
-    A plugin exports `mrdocs_plugin_api_version`, which returns the
-    value of this macro as it was defined when the plugin was compiled.
-    MrDocs calls the plugin only when that value matches its own, so a
-    plugin built against a different interface is reported as an error
-    instead of being called with the wrong expectations.
+    A plugin sees MrDocs types by their layout, and that layout changes
+    in most commits, so a plugin loads only into the exact build it was
+    compiled against. A plugin reports this value through
+    `mrdocs_plugin_build_id`, and MrDocs refuses one whose value differs
+    from its own instead of letting it fail later, somewhere unrelated.
 
-    The value changes whenever the plugin interface changes, which means
-    every plugin has to be rebuilt against the new headers.
+    The text is the one of `mrdocs::project_build_id`: the first 12 digits
+    of the commit, such as `662773e585c8`, with `.modified` after them for a
+    tree with edits.
 */
-#define MRDOCS_PLUGIN_API_VERSION 1
-
-#define MRDOCS_DETAIL_PLUGIN_STRINGIZE_I(x) #x
-#define MRDOCS_DETAIL_PLUGIN_STRINGIZE(x) MRDOCS_DETAIL_PLUGIN_STRINGIZE_I(x)
+#define MRDOCS_PLUGIN_BUILD_ID MRDOCS_PROJECT_BUILD_ID
 
 #if defined(_MSC_VER)
-#    define MRDOCS_DETAIL_PLUGIN_COMPILER_TAG \
-         "msvc " MRDOCS_DETAIL_PLUGIN_STRINGIZE(_MSC_VER)
-#elif defined(__clang__)
-#    define MRDOCS_DETAIL_PLUGIN_COMPILER_TAG \
-         "clang " MRDOCS_DETAIL_PLUGIN_STRINGIZE(__clang_major__)
-#elif defined(__GNUC__)
-#    define MRDOCS_DETAIL_PLUGIN_COMPILER_TAG \
-         "gcc " MRDOCS_DETAIL_PLUGIN_STRINGIZE(__GNUC__)
+#define MRDOCS_DETAIL_PLUGIN_EXPORT __declspec(dllexport)
 #else
-#    define MRDOCS_DETAIL_PLUGIN_COMPILER_TAG "unrecognized compiler"
-#endif
-
-#if defined(_DLL)
-#    define MRDOCS_DETAIL_PLUGIN_CRT_TAG "dynamic"
-#else
-#    define MRDOCS_DETAIL_PLUGIN_CRT_TAG "static"
-#endif
-
-#if defined(_GLIBCXX_DEBUG)
-#    define MRDOCS_DETAIL_PLUGIN_GLIBCXX_DEBUG_TAG "on"
-#else
-#    define MRDOCS_DETAIL_PLUGIN_GLIBCXX_DEBUG_TAG "off"
-#endif
-
-// Alongside the standard library itself, only the settings that change how
-// its types are laid out, or which heap they allocate from: the MSVC
-// iterator debug level and C runtime, the libc++ ABI version, and the
-// libstdc++ dual ABI and debug mode. Assertion and hardening settings are
-// left out, as they change what the inline code checks rather than what it
-// operates on, and a plugin should not have to match them. A static C
-// runtime on both sides passes the check, yet gives each module a heap of
-// its own, so MrDocs and its plugins have to use the DLL runtime.
-#if defined(_MSVC_STL_UPDATE)
-#    define MRDOCS_DETAIL_PLUGIN_STDLIB_TAG                              \
-         "msvc-stl " MRDOCS_DETAIL_PLUGIN_STRINGIZE(_MSVC_STL_UPDATE)    \
-         ", iterator-debug-level "                                       \
-         MRDOCS_DETAIL_PLUGIN_STRINGIZE(_ITERATOR_DEBUG_LEVEL)           \
-         ", crt " MRDOCS_DETAIL_PLUGIN_CRT_TAG
-#elif defined(_LIBCPP_VERSION)
-#    define MRDOCS_DETAIL_PLUGIN_STDLIB_TAG                              \
-         "libc++ " MRDOCS_DETAIL_PLUGIN_STRINGIZE(_LIBCPP_VERSION)       \
-         ", abi " MRDOCS_DETAIL_PLUGIN_STRINGIZE(_LIBCPP_ABI_VERSION)
-#elif defined(_GLIBCXX_RELEASE)
-#    define MRDOCS_DETAIL_PLUGIN_STDLIB_TAG                              \
-         "libstdc++ " MRDOCS_DETAIL_PLUGIN_STRINGIZE(_GLIBCXX_RELEASE)   \
-         ", cxx11-abi "                                                  \
-         MRDOCS_DETAIL_PLUGIN_STRINGIZE(_GLIBCXX_USE_CXX11_ABI)          \
-         ", debug " MRDOCS_DETAIL_PLUGIN_GLIBCXX_DEBUG_TAG
-#else
-#    define MRDOCS_DETAIL_PLUGIN_STDLIB_TAG "unrecognized standard library"
-#endif
-
-/** The toolchain a plugin was built with.
-
-    A plugin and MrDocs pass C++ objects between them: the plugin
-    allocates a generator that MrDocs destroys, and both inline the
-    standard library types the API exposes. That holds together only when
-    the two were built with the same compiler and standard library, in a
-    configuration that lays those types out the same way. A plugin
-    reports this through `mrdocs_plugin_build_tag`, so that MrDocs can
-    refuse one whose toolchain differs rather than fail later, somewhere
-    unrelated.
-*/
-#define MRDOCS_PLUGIN_BUILD_TAG \
-    MRDOCS_DETAIL_PLUGIN_COMPILER_TAG ", " MRDOCS_DETAIL_PLUGIN_STDLIB_TAG
-
-#if defined(_MSC_VER)
-#    define MRDOCS_DETAIL_PLUGIN_EXPORT __declspec(dllexport)
-#else
-#    define MRDOCS_DETAIL_PLUGIN_EXPORT \
-         __attribute__((__visibility__("default")))
+#define MRDOCS_DETAIL_PLUGIN_EXPORT \
+    __attribute__((__visibility__("default")))
 #endif
 
 /** The attribute that makes a plugin's entry points visible.
 
-    MrDocs looks the entry points up by name in the loaded library, so
-    they have to be exported from it. @ref MRDOCS_PLUGIN_MAIN applies it
-    to the functions it defines, and a plugin that writes them out by
-    hand applies it itself.
+    It expands to `__declspec(dllexport)` on MSVC and to
+    `__attribute__((__visibility__("default")))` elsewhere. MrDocs looks
+    the entry points up by name in the loaded library, so they have to be
+    exported from it. The plugin recipe compiles a plugin with hidden
+    visibility, and Windows exports nothing that lacks the attribute, so
+    an entry point without it is invisible to the loader.
+
+    @ref MRDOCS_PLUGIN_MAIN applies it to the functions it defines. A
+    plugin that does not use that macro puts it before the return type of
+    each of the three `extern "C"` entry points, `mrdocs_plugin_build_id`,
+    `mrdocs_plugin_stdlib_tag` and `mrdocs_plugin_main`:
+
+    @code
+    extern "C" MRDOCS_PLUGIN_EXPORT char const*
+    mrdocs_plugin_build_id()
+    {
+        return MRDOCS_PLUGIN_BUILD_ID;
+    }
+
+    extern "C" MRDOCS_PLUGIN_EXPORT char const*
+    mrdocs_plugin_stdlib_tag()
+    {
+        return MRDOCS_PLUGIN_STDLIB_TAG;
+    }
+
+    extern "C" MRDOCS_PLUGIN_EXPORT bool
+    mrdocs_plugin_main(mrdocs::PluginContext& plugin, mrdocs::Error* error)
+    {
+        // Register generators and transforms, and fill in *error on failure.
+        return true;
+    }
+    @endcode
+
+    The attribute is for the entry points only. The other functions of a
+    plugin stay hidden on purpose, and `MRDOCS_DECL` marks the MrDocs API,
+    not plugin code.
+
+    Without it the library loads but the loader cannot find the entry
+    points, and the run stops with `the plugin "<name>" does not export
+    mrdocs_plugin_build_id`, the first of the three it looks for.
 */
 #define MRDOCS_PLUGIN_EXPORT MRDOCS_DETAIL_PLUGIN_EXPORT
 
@@ -127,7 +126,7 @@ namespace mrdocs {
 /** The interface a plugin uses to extend MrDocs.
 
     MrDocs creates a context and passes it to the plugin entry point,
-    which installs through it whatever the plugin provides. The
+    which registers through it whatever the plugin provides. The
     reference is valid for the duration of that call only.
 */
 class MRDOCS_VISIBLE
@@ -144,60 +143,178 @@ public:
     /** Return the configuration MrDocs is running with.
 
         The configuration is already loaded and normalized when the
-        plugin is called, so a plugin can decide what to install from
+        plugin is called, so a plugin can decide what to register from
         the settings the user wrote.
+
+        A plugin's entry point runs once per @ref
+        ExtensionRegistry::LibraryRegistry (the `mrdocs` tool has one for the
+        whole process), with the configuration of the first run that loads it.
+        A later run that shares the library registry reuses what the plugin
+        registered. A choice that depends on the run belongs in @ref
+        Transform::apply, which receives the configuration of every
+        run and reads its options with @ref getTransformParams. The
+        reference is valid for the duration of the call, so a plugin must
+        not keep it.
     */
-    virtual
-    Config const&
+    virtual Config const&
     config() const noexcept = 0;
 
-    /** Install a generator.
+    /** Register a generator.
 
         The generator becomes selectable under its own id, on the
         command line and in the configuration, alongside the ones that
         ship with MrDocs.
 
         @return An error if the generator is null, or if one with the
-        same id is already installed.
+        same id is already registered.
 
-        @param G The generator to install. Ownership is transferred to
-        MrDocs, which keeps it for the rest of the run.
+        @param G The generator to register. Ownership is transferred to
+        MrDocs, which keeps it while a registry or the library registry
+        holds it. The library stays loaded for the rest of the process.
     */
-    virtual
-    Expected<void>
-    installGenerator(std::unique_ptr<Generator> G) = 0;
+    virtual Expected<void>
+    registerGenerator(std::unique_ptr<Generator> G) = 0;
 
-    /** Install a corpus transform.
+    /** Register a corpus transform.
 
-        Transforms a plugin installs run before the ones an extension
-        script registers.
+        The transform joins the pipeline of the run, with the transforms
+        that pipeline extension scripts register. The order is not
+        something a transform may rely on: it works on whatever corpus it
+        is handed and must not assume another transform ran before it or
+        will run after it. It reads the `transform-options.<id>` block of
+        its @ref Transform::id with @ref getTransformParams.
 
         @return An error if the transform is null.
 
-        @param T The transform to install. Ownership is transferred to
-        MrDocs, which keeps it for the rest of the run.
+        @param T The transform to register. Ownership is transferred to
+        MrDocs, which keeps it while a registry or the library registry
+        holds it and shares it with any later run that loads the same
+        plugin through the same library registry. The library stays loaded
+        for the rest of the process.
     */
-    virtual
+    virtual Expected<void>
+    registerTransform(std::unique_ptr<Transform> T) = 0;
+
+    /** Register a generator from an id and a callable.
+
+        The callable is the generator's whole job, the way the function a
+        script passes to `mrdocs.register_generator` is. It is called with a
+        @ref GeneratorExtensionContext each time the generator runs, and
+        returns an error to stop the run. MrDocs wraps it in a @ref Generator whose
+        @ref Generator::id is `id` and registers that with the overload
+        above, so the same rules apply: the generator is selectable under
+        `id`, and one with that id already registered is refused.
+
+        The callable is copied for each call, so state it captures does not
+        carry from one call to the next and it has to be copy constructible;
+        use the overload above for a generator that keeps state across calls.
+        The callable must not throw: it reports a failure by returning an
+        error, the way the generator does.
+
+        @code
+        return context.registerGenerator("notes",
+            [](mrdocs::GeneratorExtensionContext const& ctx) -> mrdocs::Expected<void>
+            {
+                // write files under ctx.outputPath
+                return {};
+            });
+        @endcode
+
+        @return An error if a generator with the same id is already
+        registered.
+
+        @param id The generator's id.
+        @param fn A callable taking a @ref GeneratorExtensionContext const& and
+        returning `Expected<void>`.
+        @param displayName The generator's display name; `id` when empty.
+        @param fileExtension The generator's file extension, without a leading
+        period; empty by default.
+    */
+    template <class F>
+    requires std::copy_constructible<std::decay_t<F>> &&
+        std::is_invocable_r_v<
+            Expected<void>,
+            std::decay_t<F>&,
+            GeneratorExtensionContext const&>
     Expected<void>
-    installTransform(std::unique_ptr<Transform> T) = 0;
+    registerGenerator(
+        std::string_view id,
+        F&& fn,
+        std::string_view displayName = {},
+        std::string_view fileExtension = {})
+    {
+        return registerGenerator(
+            std::make_unique<detail::CallableGenerator<std::decay_t<F>>>(
+                id, displayName, fileExtension, std::forward<F>(fn)));
+    }
+
+    /** Register a corpus transform from an id and a callable.
+
+        The callable is the transform's whole job, the way the function a
+        script passes to `mrdocs.register_transform` is. It is called with a
+        @ref TransformExtensionContext each time the pipeline runs, and
+        returns an error to stop the run. MrDocs wraps it in a @ref Transform whose
+        @ref Transform::id is `id` and registers that with the overload
+        above, so the transform joins the pipeline the same way and receives
+        the `transform-options.<id>` block as `params`.
+
+        The callable is copied for each call, so state it captures does not
+        carry from one call to the next and it has to be copy constructible;
+        use the overload above for a transform that keeps state across calls.
+        The callable must not throw: it reports a failure by returning an
+        error, the way the transform does.
+
+        @code
+        return context.registerTransform("tidy",
+            [](mrdocs::TransformExtensionContext const& ctx) -> mrdocs::Expected<void>
+            {
+                for (mrdocs::Symbol const& symbol : *ctx.corpus)
+                {
+                    mrdocs::Symbol* target = ctx.corpus->find(symbol.id);
+                    // read or change the symbol through target
+                }
+                return {};
+            });
+        @endcode
+
+        @return An error if the registration is refused.
+
+        @param id The transform's id.
+        @param fn A callable taking a @ref TransformExtensionContext const& and
+        returning `Expected<void>`.
+    */
+    template <class F>
+    requires std::copy_constructible<std::decay_t<F>> &&
+        std::is_invocable_r_v<
+            Expected<void>,
+            std::decay_t<F>&,
+            TransformExtensionContext const&>
+    Expected<void>
+    registerTransform(std::string_view id, F&& fn)
+    {
+        return registerTransform(
+            std::make_unique<detail::CallableTransform<std::decay_t<F>>>(
+                id, std::forward<F>(fn)));
+    }
 };
 
-/** The type of the version function a plugin exports.
+/** The type of the build identity function a plugin exports.
 
     The function is `extern "C"`, exported with @ref MRDOCS_PLUGIN_EXPORT,
-    and named `mrdocs_plugin_api_version`. It returns
-    @ref MRDOCS_PLUGIN_API_VERSION as the plugin saw it.
-*/
-using PluginApiVersionFn = int (*)();
-
-/** The type of the toolchain function a plugin exports.
-
-    The function is `extern "C"`, exported with @ref MRDOCS_PLUGIN_EXPORT,
-    and named `mrdocs_plugin_build_tag`. It returns
-    @ref MRDOCS_PLUGIN_BUILD_TAG as the plugin saw it, in storage that
+    and named `mrdocs_plugin_build_id`. It returns
+    @ref MRDOCS_PLUGIN_BUILD_ID as the plugin saw it, in storage that
     outlives the call.
 */
-using PluginBuildTagFn = char const* (*)();
+using PluginBuildIdFn = char const* (*)();
+
+/** The type of the standard library function a plugin exports.
+
+    The function is `extern "C"`, exported with @ref MRDOCS_PLUGIN_EXPORT,
+    and named `mrdocs_plugin_stdlib_tag`. It returns
+    @ref MRDOCS_PLUGIN_STDLIB_TAG as the plugin saw it, in storage that
+    outlives the call.
+*/
+using PluginStdlibTagFn = char const* (*)();
 
 /** The type of the entry point a plugin exports.
 
@@ -213,145 +330,107 @@ using PluginBuildTagFn = char const* (*)();
 */
 using PluginMainFn = bool (*)(PluginContext&, Error*);
 
-/** The corpus transforms the plugins installed.
-
-    @ref loadPlugins returns one, holding what each plugin installed
-    through @ref PluginContext::installTransform, and the caller applies
-    it once the corpus is built. The generators a plugin installs go
-    instead to the registry @ref findGenerator searches, next to the
-    ones that ship with MrDocs.
-
-    @code
-    MRDOCS_TRY(PluginRegistry plugins, loadPlugins(config));
-    MRDOCS_TRY(Corpus corpus, Corpus::build(config));
-    MRDOCS_TRY(plugins.applyTransforms(corpus, config));
-    @endcode
-*/
-class MRDOCS_VISIBLE
-    PluginRegistry
-{
-public:
-    /** Constructor.
-
-        @param transforms The transforms to apply, in the order they
-        were installed.
-    */
-    MRDOCS_DECL
-    explicit
-    PluginRegistry(
-        std::vector<std::unique_ptr<Transform>> transforms) noexcept;
-
-    /** Apply the transforms to a corpus.
-
-        Invokes each transform once, in the order they were installed,
-        and stops at the first one that fails.
-
-        Call this after the corpus is built and finalized and before a
-        generator runs.
-
-        @return The error, if any occurred, naming the transform it came
-        from.
-
-        @param corpus The corpus to transform.
-        @param config The configuration that drove the build.
-    */
-    MRDOCS_DECL
-    Expected<void>
-    applyTransforms(Corpus& corpus, Config const& config) const;
-
-private:
-    std::vector<std::unique_ptr<Transform>> transforms_;
-};
-
-/** Load the plugins the configuration makes visible.
-
-    Each library directly under the plugins directory of an addon root
-    is loaded for the lifetime of the process and its entry point is
-    called once, so that what a plugin installs is in place before
-    anything looks for it. The roots are taken in the order the
-    configuration lists them, `addons` first and then each entry of
-    `addons-supplemental`, and the libraries within a root by name. A
-    library reachable through more than one root is loaded once.
-
-    Call this before a generator is looked up by id with
-    @ref findGenerator. It is one of the pieces the command-line tool
-    composes to run its generate step; the order of that step lives in
-    the tool.
-
-    A library that cannot be loaded, does not export the entry points,
-    was built against another version of the plugin interface or with
-    another toolchain, or reports an error of its own fails the call: a
-    plugin is there because the user put it there, so one that does
-    nothing is not silently accepted.
-
-    @par Thread Safety
-    The generator registry this installs into is synchronized, so a
-    concurrent @ref installGenerator is safe. Two concurrent calls to this
-    function are not: both would run the same entry points, and the second
-    installation of a generator id fails.
-
-    @return The transforms the plugins installed, or the error, if
-    any occurred.
-
-    @param config The resolved configuration whose addon roots are
-    walked, and which the plugins read.
-*/
-MRDOCS_DECL
-Expected<PluginRegistry>
-loadPlugins(Config const& config);
-
 } // mrdocs
 
 /** Define the entry point of a plugin.
 
-    Name the @ref mrdocs::PluginContext parameter and write a body that
-    returns what came of the work:
+    Use it once per plugin library, in exactly one translation unit, at
+    namespace scope. It is the only thing a plugin has to define. A plugin
+    may instead define the three `extern "C"` functions itself, in C++,
+    with the signatures
+    @ref mrdocs::PluginBuildIdFn, @ref mrdocs::PluginStdlibTagFn and
+    @ref mrdocs::PluginMainFn, each exported with @ref MRDOCS_PLUGIN_EXPORT.
+
+    The macro defines `mrdocs_plugin_build_id` and
+    `mrdocs_plugin_stdlib_tag`, which return @ref MRDOCS_PLUGIN_BUILD_ID
+    and @ref MRDOCS_PLUGIN_STDLIB_TAG as the plugin's compiler saw them,
+    and `mrdocs_plugin_main`, which calls the body that follows the macro.
+    The body has the signature
+    `static mrdocs::Expected<void> installMrdocsPlugin(mrdocs::PluginContext& plugin)`,
+    with `plugin` named by the macro argument.
+
+    The parameter is a @ref mrdocs::PluginContext. Through it the body
+    reads `config()` and calls `registerGenerator` and `registerTransform`.
+    The reference is valid during the call only.
+
+    The body returns `{}` on success. To refuse, it returns
+    `mrdocs::Unexpected(mrdocs::formatError(...))`, which stops the run with
+    `the plugin "<name>" failed: <message>`. `MRDOCS_TRY` works in the body,
+    because the error of a failed registration is returned the same way. The
+    entry point runs once per @ref mrdocs::ExtensionRegistry::LibraryRegistry,
+    before the corpus is built. The tool has one per process, and a program
+    that runs more than once shares one among its sessions. Work that depends
+    on the run belongs in @ref mrdocs::Transform::apply or @ref
+    mrdocs::Generator::build.
+
+    The body must not keep the context reference or a pointer to the
+    configuration. It must not throw either: the macro does not catch
+    exceptions, and the `Expected` the body returns is the only channel,
+    so turn failures into an @ref mrdocs::Error.
+
+    Register a generator:
 
     @code
-    MRDOCS_PLUGIN_MAIN(ctx)
+    MRDOCS_PLUGIN_MAIN(plugin)
     {
-        return ctx.installGenerator(std::make_unique<MyGenerator>());
+        return plugin.registerGenerator(std::make_unique<MyGenerator>());
     }
     @endcode
 
-    Along with the entry point, which passes the error the body returned
-    back to MrDocs, the macro defines the functions reporting the
-    interface version and the toolchain the plugin was built with, so
-    that none of the three can disagree with each other.
+    Register a transform and a generator. A registration that fails, such
+    as an id that is already taken, refuses the plugin with its message:
 
-    @param context The name the body uses for the context it receives.
+    @code
+    MRDOCS_PLUGIN_MAIN(plugin)
+    {
+        mrdocs::Expected<void> added = plugin.registerTransform(
+            std::make_unique<MyTransform>());
+        if (!added)
+        {
+            return added;
+        }
+        added = plugin.registerGenerator(std::make_unique<MyGenerator>());
+        if (!added)
+        {
+            return added;
+        }
+        return {};
+    }
+    @endcode
+
+    @param plugin The name the body uses for the context it receives.
 */
-#define MRDOCS_PLUGIN_MAIN(context)                                 \
-    static ::mrdocs::Expected<void>                                 \
-    installMrdocsPlugin(::mrdocs::PluginContext&);                  \
-                                                                    \
-    extern "C" MRDOCS_PLUGIN_EXPORT int                             \
-    mrdocs_plugin_api_version()                                     \
-    {                                                               \
-        return MRDOCS_PLUGIN_API_VERSION;                           \
-    }                                                               \
-                                                                    \
-    extern "C" MRDOCS_PLUGIN_EXPORT char const*                     \
-    mrdocs_plugin_build_tag()                                       \
-    {                                                               \
-        return MRDOCS_PLUGIN_BUILD_TAG;                             \
-    }                                                               \
-                                                                    \
-    extern "C" MRDOCS_PLUGIN_EXPORT bool                            \
-    mrdocs_plugin_main(                                             \
-        ::mrdocs::PluginContext& mrdocsContext,                     \
-        ::mrdocs::Error* mrdocsError)                               \
-    {                                                               \
-        ::mrdocs::Expected<void> const mrdocsResult =               \
-            installMrdocsPlugin(mrdocsContext);                     \
-        if (!mrdocsResult)                                          \
-        {                                                           \
-            *mrdocsError = mrdocsResult.error();                    \
-        }                                                           \
-        return mrdocsResult.has_value();                            \
-    }                                                               \
-                                                                    \
-    static ::mrdocs::Expected<void>                                 \
-    installMrdocsPlugin(::mrdocs::PluginContext& context)
+#define MRDOCS_PLUGIN_MAIN(plugin) \
+    static ::mrdocs::Expected<void> \
+    installMrdocsPlugin(::mrdocs::PluginContext&); \
+\
+    extern "C" MRDOCS_PLUGIN_EXPORT char const* \
+    mrdocs_plugin_build_id() \
+    { \
+        return MRDOCS_PLUGIN_BUILD_ID; \
+    } \
+\
+    extern "C" MRDOCS_PLUGIN_EXPORT char const* \
+    mrdocs_plugin_stdlib_tag() \
+    { \
+        return MRDOCS_PLUGIN_STDLIB_TAG; \
+    } \
+\
+    extern "C" MRDOCS_PLUGIN_EXPORT bool \
+    mrdocs_plugin_main( \
+        ::mrdocs::PluginContext& mrdocsContext, \
+        ::mrdocs::Error* mrdocsError) \
+    { \
+        ::mrdocs::Expected<void> const mrdocsResult = \
+            installMrdocsPlugin(mrdocsContext); \
+        if (!mrdocsResult) \
+        { \
+            *mrdocsError = mrdocsResult.error(); \
+        } \
+        return mrdocsResult.has_value(); \
+    } \
+\
+    static ::mrdocs::Expected<void> \
+    installMrdocsPlugin(::mrdocs::PluginContext& plugin)
 
 #endif // MRDOCS_API_PLUGIN_HPP

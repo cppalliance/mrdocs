@@ -29,7 +29,7 @@ namespace mrdocs {
     record, and individual vectors for static functions, types,
     and function overloads.
 */
-struct RecordTranche
+struct MRDOCS_VISIBLE RecordTranche
 {
     /** Namespace aliases declared with this access.
     */

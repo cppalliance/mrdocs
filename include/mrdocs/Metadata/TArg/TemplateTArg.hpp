@@ -24,7 +24,7 @@ namespace mrdocs {
 
 /** Template template argument.
 */
-struct TemplateTArg final
+struct MRDOCS_VISIBLE TemplateTArg final
     : TArgCommonBase<TArgKind::Template>
 {
     /** SymbolID of the referenced template.

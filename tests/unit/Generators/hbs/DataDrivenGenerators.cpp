@@ -15,22 +15,12 @@
 #include <mrdocs/Handlebars.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <test_suite/test_suite.hpp>
-#include <fstream>
 #include <string>
 #include <string_view>
 
 namespace mrdocs::hbs {
 
 namespace {
-
-// Write `content` verbatim to `path`. Pre-existing files are truncated.
-void
-writeFile(std::string_view path, std::string_view content)
-{
-    std::ofstream os(std::string{path}, std::ios::binary | std::ios::trunc);
-    os.write(content.data(),
-             static_cast<std::streamsize>(content.size()));
-}
 
 // Apply `map` to `input` and return the escaped result, so tests can
 // observe an `EscapeMap`'s contents through its public surface.
@@ -58,7 +48,7 @@ struct DataDrivenGeneratorsTest
         BOOST_TEST(td);
         std::string const path =
             files::appendPath(td.path(), "g.yml");
-        writeFile(path, "");
+        BOOST_TEST(files::writeFileText(path, "").has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
@@ -78,7 +68,9 @@ struct DataDrivenGeneratorsTest
             files::appendPath(td.path(), "g.yml");
         // Top-level mapping with an unknown key is fine: the schema
         // explicitly tolerates extra keys for forward compatibility.
-        writeFile(path, "displayName: Markdown\n");
+        BOOST_TEST(files::writeFileText(
+            path, "displayName: Markdown\n")
+                .has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
@@ -97,10 +89,11 @@ struct DataDrivenGeneratorsTest
             files::appendPath(td.path(), "g.yml");
         // Single-quoted YAML scalars treat backslash literally, so the
         // value '\*' is the two-character string  \*.
-        writeFile(path,
+        BOOST_TEST(files::writeFileText(path,
             "escape:\n"
             "  '*': '\\*'\n"
-            "  '_': '\\_'\n");
+            "  '_': '\\_'\n")
+                .has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
@@ -119,7 +112,7 @@ struct DataDrivenGeneratorsTest
         std::string const path =
             files::appendPath(td.path(), "g.yml");
         // Top-level scalar is rejected.
-        writeFile(path, "just a string\n");
+        BOOST_TEST(files::writeFileText(path, "just a string\n").has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
@@ -133,7 +126,7 @@ struct DataDrivenGeneratorsTest
         std::string const path =
             files::appendPath(td.path(), "g.yml");
         // 'escape:' must be a mapping, not a scalar.
-        writeFile(path, "escape: nope\n");
+        BOOST_TEST(files::writeFileText(path, "escape: nope\n").has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
@@ -150,10 +143,11 @@ struct DataDrivenGeneratorsTest
         // literal `*`. A two-byte rule for `**` plus a one-byte rule
         // for `*` covers both, with the multi-byte rule taking
         // precedence at a position where both could apply.
-        writeFile(path,
+        BOOST_TEST(files::writeFileText(path,
             "escape:\n"
             "  '**': '<strong>'\n"
-            "  '*': '<em>'\n");
+            "  '*': '<em>'\n")
+                .has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
@@ -177,9 +171,10 @@ struct DataDrivenGeneratorsTest
         // 'é' is two bytes in UTF-8 (0xC3 0xA9). The whole sequence
         // becomes the multi-byte source so the replacement happens
         // as a unit instead of byte by byte.
-        writeFile(path,
+        BOOST_TEST(files::writeFileText(path,
             "escape:\n"
-            "  '\xC3\xA9': 'e'\n");
+            "  '\xC3\xA9': 'e'\n")
+                .has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(result.has_value());
@@ -196,9 +191,10 @@ struct DataDrivenGeneratorsTest
         BOOST_TEST(td);
         std::string const path =
             files::appendPath(td.path(), "g.yml");
-        writeFile(path,
+        BOOST_TEST(files::writeFileText(path,
             "escape:\n"
-            "  '': 'x'\n");
+            "  '': 'x'\n")
+                .has_value());
 
         Expected<EscapeMap> result = loadGeneratorMetadata(path);
         BOOST_TEST(!result.has_value());
