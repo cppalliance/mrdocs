@@ -1,0 +1,65 @@
+= data/
+
+`data/` holds assets that ship alongside the binaries or feed the build: everything the project packages but does not compile.
+The assets install into `CMAKE_INSTALL_DATAROOTDIR` (`/usr/local/share` on Unix), under `share/mrdocs/`, all but `data/lldb/`.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|C++ sources
+|`src/` for the library, `libs/` for a standalone component, `tools/` for a program.
+
+|Scripts that generate or check files
+|`utils/`.
+
+|Test inputs and expected outputs
+|`tests/golden/fixtures/`.
+
+|Projects that show how to run MrDocs
+|`examples/`.
+|===
+
+== Contents by subdirectory
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`data/mrdocs/addons/`
+|Runtime assets MrDocs loads. The `generator/` directory holds the Handlebars templates and helpers of the built-in generators. MrDocs looks in `extensions/` for the extensions it ships, and that directory holds only its README for now.
+
+|`data/mrdocs/headers/libc-stubs/`
+|Bundled libc stub headers, used when MrDocs parses a project.
+
+|`data/gdb/`
+|GDB pretty-printers for MrDocs types.
+
+|`data/lldb/`
+|LLDB data formatters for MrDocs types.
+|===
+
+== Build integration
+
+The root build adds `data/` only when `MRDOCS_INSTALL` is on.
+`data/CMakeLists.txt` defines no targets, only `install(DIRECTORY ...)` rules into `+${CMAKE_INSTALL_DATAROOTDIR}/mrdocs+`:
+
+[cols="2,3"]
+|===
+|Source |Destination under `share/mrdocs/`
+
+|`data/mrdocs/headers/libc-stubs/`
+|`headers/libc-stubs/`
+
+|`data/mrdocs/addons/`
+|`addons/`
+
+|`data/gdb/`
+|`gdb/`
+|===
+
+`data/lldb/` has no install rule, so the formatters stay in the source tree.
+The bundled libc++ and Clang resource headers under `share/mrdocs/headers/` come from LLVM, so `src/CMakeLists.txt` installs them, not `data/`.
+In the source tree, `MRDOCS_BUILTIN_DIR_ARGS` points the in-tree runs of MrDocs at `data/mrdocs/addons`, so editing a template needs no install.

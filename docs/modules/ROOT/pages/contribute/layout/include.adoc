@@ -1,0 +1,64 @@
+= include/
+
+`include/` holds the public API of MrDocs, and it has one directory, `include/mrdocs/`.
+Everything there installs, and consumers reach it as `<mrdocs/...>`.
+Nothing under `src/` is public: private headers live beside their sources in `src/mrdocs/`, and no header here includes one.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Private headers
+|`src/mrdocs/`, beside the `.cpp` that uses them.
+
+|Headers of the standalone components
+|`libs/<lib>/include/mrdocs/`. The DOM headers (`mrdocs/Dom.hpp` and `mrdocs/Dom/`) live in `libs/dom/include/` and install with the rest.
+
+|Generated headers (`Version.hpp` and `ConfigSchema.hpp`)
+|The build tree. The template `Version.hpp.in` stays in `include/`.
+
+|Dependencies' headers
+|Bootstrap fetches them into `build/third-party/`, so the repository tracks none.
+|===
+
+== Contents by subdirectory
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`include/mrdocs/ADT/`
+|Value types and small containers (cpp:Optional[], cpp:Polymorphic[] and others), kept free of LLVM.
+
+|`include/mrdocs/Config/`
+|Configuration types and the generated settings surface.
+
+|`include/mrdocs/Engines/`
+|The scripting engines (JavaScript, Lua).
+
+|`include/mrdocs/Extensions/`
+|The extension and generator registries, and the contexts extensions receive.
+
+|`include/mrdocs/Metadata/`
+|The extracted-symbol model, the core domain types.
+
+|`include/mrdocs/Support/`
+|Small utilities, grouped by theme: `Concurrency/`, `Container/`, `Error/`, `Filesystem/`, `Reflection/`, `String/` and `TypeTraits/`.
+
+|`include/mrdocs/detail/`
+|Implementation details of the public headers, in the `mrdocs::detail` namespace.
+|===
+
+The top-level headers (`Config.hpp`, `Corpus.hpp`, `Generator.hpp`, `Metadata.hpp`, `Plugin.hpp`, `Session.hpp`, `Transform.hpp` and others) are the entry points of those modules.
+
+== Build integration
+
+`include/` has no `CMakeLists.txt`.
+`src/CMakeLists.txt` wires it in three ways:
+
+* The sources of `mrdocs-core-object-files` take `include/*.hpp`, `*.inc` and `*.ipp` in the same glob as the private sources.
+* `mrdocs-core-headers` is an `INTERFACE` target that `mrdocs-core` and `mrdocs-core-object-files` link publicly, and so does `mrdocs-plugin-api`, which plugins link. It carries the paths, the C++23 requirement, and the compile options and definitions that every consumer of the headers needs.
+** Its own paths are `include/` and the generated `include/` of the build tree. Linking the polyfill brings the `include/` of `libs/polyfill`. Those of `libs/dom` and `libs/handlebars` come from their include-directory property, with no link.
+* With `MRDOCS_INSTALL` on, the install step copies the `*.hpp`, `*.ipp` and `*.inc` files of `include/mrdocs` and of the generated `mrdocs` directory into `CMAKE_INSTALL_INCLUDEDIR`.

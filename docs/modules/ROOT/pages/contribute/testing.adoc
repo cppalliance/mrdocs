@@ -1,23 +1,245 @@
 = Testing & fixtures
+:url-repo: https://github.com/cppalliance/mrdocs/tree/{page-origin-refname}
 
-All new features should be accompanied by tests.
-The `mrdocs-test` target is used to run the test suites.
-This target has its entry point in `src/test/TestMain.cpp`, which can take two paths:
+Every new feature needs tests.
+Pick the appropriate suite from the table and add the test.
+Run that suite, then run the full check in xref:contribute/quickstart.adoc#run-the-full-check[Contributor Quickstart].
+xref:contribute/layout/tests.adoc[] says where each suite lives and how CMake wires it.
 
-* Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `tests/golden/fixtures` comparing the input source files with the expected XML output files.
-* Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by our test-suite library in `src/test_suite/test_suite.cpp`.
+[CAUTION]
+====
+This page is about instructions for developers. It is not about instances of tests.
+====
 
-The fixtures for golden testing are defined in `tests/golden/fixtures`, where files in each directory have the following format:
+== Test suites
 
-* `mrdocs.yml`: Basic configuration options for all files in this directory.
-* `<filename>.cpp`: The input source file to extract symbols from.
-* `<filename>.xml`: The expected XML output file generated with the XML generator.
-* `<filename>.bad.xml`: The test output file generated when the test fails.
-* `<filename>.yml`: Extra configuration options for this specific file.
+[cols="2,2,3"]
+|===
+|Suite |just |CTest
+
+|xref:#unit-tests[Unit tests]
+|`just unit-tests`
+|`ctest -R '^mrdocs-unit-tests$'`
+
+|xref:#golden-workflow[Golden tests]
+|`just golden-tests`
+|`ctest -R '^mrdocs-golden-tests$'`
+
+|xref:#xml-lint-test[XML lint]
+|`just xml-lint`
+|`ctest -R '^xml-lint$'`
+
+|xref:#integration-tests[Plugin API]
+|`just integration-tests`
+|`ctest -L integration`
+
+|xref:#schema-file[Schema check]
+|`just schema-check`
+|`ctest -R '^schema-check$'`
+
+|Self-documentation
+|`just self-doc`
+|`ctest -R '^mrdocs-self-doc$'`
+|===
+
+The self-documentation test documents the `mrdocs` build file with the `noop` generator and fails on a warning, a badly named type or a missing export marker.
+
+The `ctest` commands in the table run from the build directory of a preset. The full forms are:
+
+[source,bash]
+----
+ctest --test-dir build/<preset> -R '^mrdocs-unit-tests$' --output-on-failure --no-tests=error
+ctest --test-dir build/<preset> -R '^mrdocs-golden-tests$' --output-on-failure --no-tests=error
+ctest --test-dir build/<preset> -R '^xml-lint$' --output-on-failure --no-tests=error
+ctest --test-dir build/<preset> -L integration --output-on-failure --no-tests=error
+ctest --test-dir build/<preset> -R '^schema-check$' --output-on-failure --no-tests=error
+ctest --test-dir build/<preset> -R '^mrdocs-self-doc$' --output-on-failure --no-tests=error
+----
+
+=== Suite runs
+
+Both executables link the `test_suite` framework from `libs/test_suite`.
+The unit suite starts in `tests/unit/UnitMain.cpp` and the golden suite in `tests/golden/TestMain.cpp`.
+`run_all_tests.py` runs the golden suite first, so a fixture difference shows before any other failure.
+It builds with warnings as errors, `-Werror -Wall` or `/WX /W4` on MSVC, as CI does.
+
+[#xml-lint-test]
+=== Requirements of the XML lint test
+
+`xml-lint` needs LibXml2.
+Any change that touches an XML fixture must pass it.
+Strict tests are on by default and make LibXml2 required.
+With `MRDOCS_BUILD_STRICT_TESTS=OFF` and no LibXml2 CMake skips the test, so a green local run does not prove the XML is valid.
+
+[#schema-file]
+=== The generated schema file
+
+The `schema` generator writes `mrdocs.rng`, so never edit it by hand: `schema-check` fails on a hand edit.
+`utils/codegen/generate-schema.sh` regenerates it, and `--check` verifies it.
+
+=== Tests outside the table
+
+`tests/benchmarks/` holds benchmarks you run on demand to re-measure a number the docs quote.
+Its {url-repo}/tests/benchmarks/README.md[README] lists them.
+
+[#golden-workflow]
+== Golden tests
+
+Most Mr.Docs features can be tested with a golden fixture: a source file and its expected output.
+The expected output is committed, so a difference you did not intend means a bug in your change.
+
+. Build the validate target. It runs `mrdocs-golden-tests --action=test` over `tests/golden/fixtures/` and changes nothing.
++
+[source,bash]
+----
+cmake --build build/<preset> --target mrdocs-test-test-fixtures-all
+----
+. Read each difference it reports. If a difference is not what your change should produce, fix the code and go back to step 1.
+. If every difference is what your change should produce, write the new output with the update target.
++
+[source,bash]
+----
+cmake --build build/<preset> --target mrdocs-update-test-fixtures-all
+----
+. Review the fixture diff in `git diff` as you would a source diff, then commit it with the change that caused it.
+
+=== Adding a new fixture
+
+For a new fixture, write the input `<stem>.cpp` (and a `<stem>.yml` if it needs options), then build `mrdocs-create-test-fixtures-all`.
+That target writes the expected files that are missing and leaves existing ones alone.
+
+Never edit a fixture by hand: the update and create targets are the only writers.
+`mrdocs-golden-tests --bad` also writes a `.bad.<ext>` file for each failure.
+
+=== Fixture directory contents
+
+The fixtures for golden testing are in `tests/golden/fixtures`.
+The files in each directory have this format:
+
+[cols="2,5",options="header"]
+|===
+|File |Holds
+
+|`mrdocs.yml`
+|Basic configuration options for every file in the directory.
+
+|`<filename>.cpp`
+|The input source file to extract symbols from.
+
+|`<filename>.xml`
+|The expected output of the XML generator.
+
+|`<filename>.bad.xml`
+|The actual output, written when the test fails with `--bad` on.
+
+|`<filename>.yml`
+|Extra configuration options for this one file.
+|===
+
+The nearest `mrdocs.yml` up the tree, then `<filename>.yml`, picks the generators.
+The root `tests/golden/fixtures/mrdocs.yml` sets `generator: xml`.
+A `.yml` can name other generators with `generator: [adoc, html]`, and the expected files then carry those extensions.
+The {url-repo}/tests/golden/fixtures/README.md[fixtures README] says which directory a new fixture goes in: XML by default, `javadoc/`, `generator/hbs/` or `snippets/`.
+
+These rules decide the names and generators:
+
+* A directory under `javadoc/` is named after its node kind, such as `image` or `math`.
+* An inline kind whose name collides with a block directory takes a descriptive name, so inline code is `code-span` because `code` is the `@code` block.
+* A `snippets/` area renders only the format of the page that embeds it. Commands render adoc only, and extra coverage goes in a `generator/hbs/` test.
+* Landing renders adoc and html.
+* The `.cpp` files in the `snippets/` root render html for `docs/website/render.js`.
+
+=== Multipage fixtures
 
 Multipage golden tests follow a snapshot-based layout:
 
-* The suite defaults to `multipage: false` in `tests/golden/fixtures/mrdocs.yml`; a multipage test must provide a `<stem>.yml` that sets `multipage: true`.
-* Expected output lives under `<stem>.multipage/<format>/...` (one directory per generator); single-page siblings like `<stem>.html`/`.xml` must be absent.
-* The harness skips `.multipage/` directories during discovery and compares generated temp output trees to the snapshot (strict tree + content).
-* Add a short comment in the `.cpp` explaining why multipage is required—use it only when single-page output cannot validate the behavior (e.g., relative asset/link handling).
+* `tests/golden/fixtures/mrdocs.yml` sets `multipage: false`, so a multipage test provides a `<stem>.yml` that sets `multipage: true`.
+* Expected output lives under `<stem>.multipage/<format>/` (one directory per generator), and single-page siblings like `<stem>.html` or `.xml` must be absent.
+* During discovery the harness skips `.multipage/` directories, then compares the generated output tree with the snapshot, both the tree shape and every file.
+* Comment in the `.cpp` why the test needs multipage. Single-page output should cover everything else, and relative asset or link handling is the usual exception.
+
+[#unit-tests]
+== Unit tests
+
+The unit suite is one executable, `mrdocs-unit-tests`.
+It calls the library in process and checks the results.
+
+Run it with:
+
+[source,bash]
+----
+just unit-tests
+----
+
+The suite follows these rules:
+
+. `tests/unit/CMakeLists.txt` globs every `.cpp` under `tests/unit/`, so a new file needs no CMake edit.
+. The tree mirrors the code: the test for `src/mrdocs/Support/CliOverride.cpp` lives at `tests/unit/Support/CliOverride.cpp`.
+. A test is a struct with a `run()` method. `TEST_SUITE` registers it under a dotted name such as `"clang.mrdocs.CliOverride"`.
+. Tests link `mrdocs-core-object-files`, so they reach private internals and include them as `<mrdocs/...>`, never by a relative path.
+. A test that loads a plugin, runs the `mrdocs` tool or consumes the installed package is an integration test.
+
+A small test looks like this:
+
+[source,cpp]
+----
+#include <mrdocs/Support/CliOverride.hpp>
+#include <test_suite/test_suite.hpp>
+
+namespace mrdocs {
+
+struct CliOverrideTest
+{
+    void
+    testParseScalar()
+    {
+        BOOST_TEST(parseCliScalarValue("42").isInteger());
+        BOOST_TEST(parseCliScalarValue("docs/html").isString());
+    }
+
+    void
+    run()
+    {
+        testParseScalar();
+    }
+};
+
+TEST_SUITE(
+    CliOverrideTest,
+    "clang.mrdocs.CliOverride");
+
+} // mrdocs
+----
+
+[#integration-tests]
+== Integration tests
+
+The suites under `tests/integration/` use the built tool or the installed package from outside, as a user does.
+Every test of them carries the `integration` label.
+The {url-repo}/tests/integration/README.md[README] of the directory lists the suites.
+
+The unit suite calls the API in process.
+These suites build separate shared libraries or consumer projects and check exit status and messages.
+
+The plugin suite, `tests/integration/plugin-api/`, is part of the normal build.
+Run all the integration tests registered there with the label, or one group by name:
+
+[source,bash]
+----
+ctest --test-dir build/<preset> -L integration --output-on-failure
+ctest --test-dir build/<preset> -R "mrdocs-plugin-.*-refused" --output-on-failure
+----
+
+The consumer project, `tests/integration/cmake/`, is an out-of-tree project that consumes an installed MrDocs with `find_package(mrdocs)`.
+CI configures it after the build job installs MrDocs.
+It has one subdirectory for each way of using the package: `executable/` runs the tool, `plugin/` builds a plugin and loads it, and `library/` links the core library into a program.
+Its tests carry the same label, and they run in its own build directory:
+
+[source,bash]
+----
+cmake -S tests/integration/cmake -B build/cmake-consumer -D mrdocs_ROOT=<install prefix>
+cmake --build build/cmake-consumer
+ctest --test-dir build/cmake-consumer -L integration --output-on-failure
+----
+
+The {url-repo}/tests/integration/cmake/README.md[README] of the consumer project has the details.

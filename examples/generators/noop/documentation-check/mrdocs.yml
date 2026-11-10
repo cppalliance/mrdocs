@@ -1,6 +1,8 @@
 # A validation-only MrDocs run: extract everything, write nothing, and fail on
 # any documentation problem. Point CI at this config to gate the docs.
+# tag::generator[]
 generator: noop
+# end::generator[]
 warnings: true
 warn-as-error: true
 warn-if-undocumented: true

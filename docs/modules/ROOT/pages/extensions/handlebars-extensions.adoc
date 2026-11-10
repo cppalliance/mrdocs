@@ -2,7 +2,7 @@
 :page-aliases: extensions/handlebars-helpers.adoc, extensions/handlebars-templates.adoc
 
 
-Mr.Docs renders the documentation for the xref:generators/html.adoc[`html`] and xref:generators/adoc.adoc[`adoc`] generators from a tree of https://handlebarsjs.com/[Handlebars^] templates that ship under `<mrdocs-root>/share/mrdocs/addons/generator/<generator-name>`.
+A *template extension* changes what a generator renders. Mr.Docs renders the documentation for the xref:generators/html.adoc[`html`] and xref:generators/adoc.adoc[`adoc`] generators from a tree of https://handlebarsjs.com/[Handlebars^] templates that ship under `<mrdocs-root>/share/mrdocs/addons/generator/<generator-name>`.
 
 [source,text]
 ----
@@ -100,7 +100,7 @@ HTML::
 .`custom-addons/generator/html/partials/markup/code-block.html.hbs`
 [source,handlebars]
 ----
-include::example$snippets/extensions/override-code-block/addons/generator/html/partials/markup/code-block.html.hbs[]
+include::example$snippets/extensions/override-code-block/custom-addons/generator/html/partials/markup/code-block.html.hbs[]
 ----
 
 AsciiDoc::
@@ -108,7 +108,7 @@ AsciiDoc::
 .`custom-addons/generator/adoc/partials/markup/code-block.adoc.hbs`
 [source,adoc-handlebars]
 -----
-include::example$snippets/extensions/override-code-block/addons/generator/adoc/partials/markup/code-block.adoc.hbs[]
+include::example$snippets/extensions/override-code-block/custom-addons/generator/adoc/partials/markup/code-block.adoc.hbs[]
 -----
 ======
 
@@ -116,8 +116,7 @@ include::example$snippets/extensions/override-code-block/addons/generator/adoc/p
 +
 [source,yaml]
 ----
-addons-supplemental:
-  - custom-addons
+include::example$snippets/extensions/override-code-block/override-code-block.yml[tag=addons]
 ----
 
 Run that against a small fixture:
@@ -212,7 +211,7 @@ The xref:generators/reference.adoc[DOM reference] documents the values that help
 
 A user helper is a JavaScript or Lua file that lives under an addons `helpers/` directory and is picked up automatically. The filename without extension becomes the helper name: `slug.js` registers a helper called `slug`, `markdown.lua` registers one called `markdown`, and so on. The file's top-level function (or its `module.exports` in JS) is the helper body.
 
-Either language works, and both see the same values. JavaScript gives you the ECMAScript built-ins but no module system, and Lua gives you its whole standard library and runs faster. The xref:extensions/script-engines.adoc[Script Engines] page compares the two in detail.
+Either language works, and both see the same values. JavaScript gives you the ECMAScript built-ins but no module system, and Lua gives you its whole standard library and runs faster. The xref:extensions/defining-extensions.adoc#choosing[Defining Extensions] page compares the two in detail.
 
 A small URL-slug helper, reusable across formats, lives under `common/helpers/`:
 
@@ -242,8 +241,7 @@ Wire the addon directory up with the same `addons-supplemental` option used for 
 
 [source,yaml]
 ----
-addons-supplemental:
-  - addons
+include::example$snippets/extensions/helper-slug/helper-slug.yml[]
 ----
 
 Each symbol page now carries the anchor right next to its "Declared in" line, slugged from the file path the override passed to `{{slug ...}}`:

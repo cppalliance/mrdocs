@@ -1,6 +1,6 @@
 = Diagnostics
 
-These options govern what MrDocs reports while it runs and how it behaves when something goes wrong. They change what appears in your terminal, not the documentation itself, so there is no rendered example below. The xref:configuration/reference.adoc#_diagnostics_options_reference[Diagnostics reference] has the full option list.
+These options govern what MrDocs reports while it runs and how it behaves when something goes wrong. They change what appears in your terminal, not the documentation itself, so there is no rendered example below. The xref:configuration/reference.adoc#diagnostics-options-reference[Diagnostics reference] has the full option list.
 
 == Doc-comment lint
 

@@ -1,0 +1,199 @@
+= utils/
+
+`utils/` holds contributor and developer tooling: scripts for building, testing, linting, code generation and CI checks.
+They are maintenance helpers the project never ships to its users, and user-facing executables live in `tools/`.
+No directory here holds a C++ project today.
+A C++ tool added here follows the root layout and joins `CPP_PROJECTS` in `utils/lint/check_layout.py`.
+
+== Content that belongs elsewhere
+
+[cols="3,4",options="header"]
+|===
+|Content |Where it goes
+
+|Anything users install or run
+|`tools/`. The CMake helper that installed packages consume is `tools/cmake/`, and the build's own helpers (`helpers.cmake` with `helpers/`, `install.cmake`, `release-linux.cmake`) are in `utils/cmake/`.
+
+|The test suites themselves
+|`tests/`. `utils/testing/` only holds the scripts that run them.
+
+|A script that no contributor, CI job or build step runs
+|Nowhere, because it does not belong in the repository.
+
+|The root `bootstrap.py`
+|It is an entry point and stays at the root. The tool behind it is `utils/bootstrap/`.
+|===
+
+== Contents by subdirectory
+
+[cols="2,5"]
+|===
+|Directory |Purpose
+
+|`utils/bootstrap/`
+|The dependency and build setup tool behind `bootstrap.py`, with the generators of the IDE configurations and its Python tests.
+
+|`utils/cmake/`
+|The build's CMake helpers: `helpers.cmake`, which includes one file per function from `helpers/`, `install.cmake` and `release-linux.cmake`, which sets up the Linux release (glibc floor, bundled C++ runtime, run path).
+
+`helpers/HostExport.cpp` is a stub that gives a Windows plugin host something to export, so the linker writes the import library a plugin links against (`mrdocs_target_plugin_host_compile_definitions`).
+
+`helpers/RunChecked.cmake` and `helpers/RunCommand.cmake` are the `-P` scripts behind `mrdocs_add_checked_test` and the refusal-message comparison under `tests/integration/plugin-api/refused/messages/`: they run a command and check its exit status and its output. The comparison scripts of `examples/extensions/` include `RunCommand.cmake` too, by the path they get in `-DRUN_COMMAND`.
+
+`helpers/StdlibTagProbe.cpp` is the source that `mrdocs_detect_stdlib_tag` compiles to read the tag of the standard library out of its object code.
+
+|`utils/codegen/`
+|Code generators: the version header, the config info and the YAML configuration schema.
+
+|`utils/danger/`
+|The Danger.js checks of pull-request size and hygiene that CI runs.
+
+|`utils/docs/`
+|Documentation tooling: the generator of the bootstrap options page, plus checks of the commands registry and of the getting-started example, with the Python tests of the registry check.
+
+|`utils/format/`
+|The formatter. `format.py` applies clang-format to the lines changed since the merge base and fixes include spelling and header guards. It has its own `CMakeLists.txt` and `tests/`.
+
+|`utils/lint/`
+|The checks. `lint.py` runs them, and they are `check_layout.py`, `check_readme_length.py`, `check_page_length.py`, `check_section_titles.py` and `check_header_rules.py`, next to `code_metrics.py`. `changed_lines.py` finds the lines changed since the merge base. `header_rules.py` holds the header guard and include spelling rules, which `check_header_rules.py` reports and `format.py` fixes.
+
+The layout check enforces the xref:contribute/codebase-layout.adoc[Codebase Layout] page.
+It fails on an unlisted top-level entry, a missing or extra layout page, a library under `libs/` or a C++ tool whose top level breaks the root layout, or a README.md where the layout pages forbid one.
+
+The checks write their findings as SARIF with `--sarif FILE`, through the shared writer `sarif.py`. `lint.py` runs every check that needs no build, and it never fails on formatting. The Lint step of the Utility Tests workflow runs `lint.py`.
+
+|`utils/testing/`
+|The test runners: `run_all_tests.py` and `run_ci_with_act.py`.
+|===
+
+== Danger.js checks
+
+The `repo-checks` job of `.github/workflows/pr-target-checks.yml` runs Danger on every pull request into `develop`:
+
+[source,bash]
+----
+npx --prefix utils/danger danger ci --dangerfile utils/danger/dangerfile.ts
+----
+
+It triggers on `pull_request_target`, so a forked pull request gets comments and statuses through the base-repo token and no forked code runs.
+The job holds `contents: read`, `pull-requests: write`, `issues: write` and `statuses: write`.
+The Utility Tests workflow runs the Vitest tests, and `.github/workflows/ci-scope-detector.yml` reuses the scope classifier of `logic.ts` to decide which parts of the build matrix run.
+
+=== The npm commands
+
+Run them from the repository root:
+
+[source,bash]
+----
+npm --prefix utils/danger ci
+npm --prefix utils/danger test
+npm --prefix utils/danger run danger:local
+npm --prefix utils/danger run danger:scope-map
+npm --prefix utils/danger run danger:ci
+----
+
+* `ci` installs the development dependencies without touching the root.
+* `test` runs the Vitest tests of the rule logic.
+* `danger:local` prints the report for `fixtures/sample-pr.json`.
+* `danger:scope-map` prints a JSON map from every tracked file to its scope.
+* `danger:ci` needs a GitHub pull request context, so only the workflow runs it.
+
+=== The files
+
+The Danger directory holds these files:
+
+[cols="2,5",options="header"]
+|===
+|File |Role
+
+|`logic.ts`
+|The rule logic with no I/O: scope mapping, commit validation, size and hygiene warnings.
+
+|`runner.ts`
+|Fetches the commits and files and feeds `logic.ts`.
+
+|`format.ts`
+|Renders the report.
+
+|`dangerfile.ts`
+|The entry point, which stays thin.
+
+|`fixtures/`
+|Sample pull request payloads for local runs.
+
+|`logic.test.ts` and `format.test.ts`
+|The Vitest tests.
+
+|`package.json`, `package-lock.json` and `tsconfig.json`
+|A Node setup of their own, so npm never touches the repository root.
+|===
+
+=== The rules
+
+All the rules live in `logic.ts`:
+
+[cols="2,5",options="header"]
+|===
+|Rule |What it says
+
+|Scopes
+|`source`, `tests`, `golden-tests`, `examples`, `docs`, `ci`, `build`, `toolchain`, `toolchain-tests`, `tooling`, `third-party` and `other`.
+
+|Commit types
+|`feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore` and `revert`.
+
+|Commit size
+|A commit with more than 2000 lines of source churn gets a note, unless it is a `refactor`. Only churn in the `source` scope counts.
+
+|Pull request size
+|More than 5000 lines of source churn gets a warning. The limit is higher because well-sliced commits can still add up.
+
+|Description length
+|The body needs `80 * log2(churn)` characters, about 80 for a tiny diff, 800 for 1000 lines and 1200 for 30000. HTML comments, headers and italic placeholder lines do not count.
+
+|Feature pull requests
+|One (a `feat` commit, a `feat` title or a `feature` label) with no change under `docs/` gets a warning. The `no-docs-needed` label or a `[skip danger docs]` marker in the body turns it off.
+|===
+
+A rule change edits `logic.ts`, refreshes `fixtures/` when the report changes and passes `npm test`.
+The checks report warnings and notes and never fail the run.
+
+== Build integration
+
+The root build adds `utils/` first, unconditionally.
+`utils/CMakeLists.txt` adds the subdirectories in this order: `codegen`, `bootstrap`, `danger`, `docs`, `format`, `lint`, `testing`, `cmake`.
+The first, `codegen/`, also generates the headers every build needs.
+
+The script directories expose their scripts as custom targets, which anyone can run whether or not tests or docs are on.
+Only the CTest tests that these directories register depend on `MRDOCS_BUILD_TESTS`.
+
+[cols="2,5"]
+|===
+|Directory |Targets and tests
+
+|`utils/codegen/`
+|`mrdocs-version`, `mrdocs-codegen`, and the `yaml-schema-check` and `utils-codegen-tests` tests.
+
+|`utils/bootstrap/`
+|`bootstrap`, `refresh-ide-configs` and the `utils-bootstrap-tests` test.
+
+|`utils/danger/`
+|The `utils-danger-tests` test, registered only when `utils/danger/node_modules` exists. The Utility Tests workflow runs the same tests whatever the local state.
+
+|`utils/docs/`
+|`generate-bootstrap-options` and the `utils-bootstrap-options-check` test.
+
+|`utils/format/`
+|`format` and `format-check`. `format` rewrites files and `format-check` only reports. Both cover the lines changed since the merge base in the five source trees (see xref:contribute/invariants/formatting.adoc[Formatting]).
+
+|`utils/lint/`
+|`code-metrics`.
+
+|`utils/testing/`
+|`run-all-tests` and `run-ci-with-act`.
+
+|`utils/cmake/`
+|No targets. `utils/cmake/CMakeLists.txt` includes `helpers.cmake` and `install.cmake`, and the root build includes `helpers.cmake` again before it defines any target.
+|===
+
+`check_layout.py` and `lint.py` are not targets either. CI runs `lint.py`, which runs the layout check, and the `lint` and `check-layout` recipes of the generated `justfile` run them locally.

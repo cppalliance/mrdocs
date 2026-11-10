@@ -1,0 +1,76 @@
+= Code Generation
+
+[#yaml-schema]
+== The YAML schema matches the config options
+
+`docs/modules/ROOT/attachments/schemas/config/mrdocs.schema.json` is generated from `src/mrdocs/ConfigOptions.json`. Never edit it by hand.
+
+Changing the brief of an option in `ConfigOptions.json` without regenerating the schema fails:
+
+[source,text]
+----
+The generated schema does not match the existing schema.
+Please run `utils/codegen/generate-yaml-schema.py` to update the schema.
+----
+
+The fix is to regenerate the file, and to commit it with the change:
+
+[source,bash]
+----
+python3 utils/codegen/generate-yaml-schema.py
+----
+
+.Guard
+[NOTE]
+====
+`utils/codegen/generate-yaml-schema.py --check` compares the generated text with the file on disk, as the `yaml-schema` guard of `lint.py`. It runs only when your branch changes one of its inputs or outputs, then compares whole files.
+====
+
+[#bootstrap-options]
+== The bootstrap options page matches the bootstrap tool
+
+`docs/modules/ROOT/partials/bootstrap-options.adoc` is generated from the argument parser of `utils/bootstrap` and the option texts in `utils/bootstrap/src/core/option_help.py`. Never edit it by hand.
+
+Rewording the help of `--preset` in `option_help.py` without regenerating the page fails:
+
+[source,text]
+----
+FAIL: /path/to/mrdocs/docs/modules/ROOT/partials/bootstrap-options.adoc is out of date. Run `python utils/docs/generate_bootstrap_options.py --update`.
+----
+
+The fix is the command in the message, with `python3`:
+
+[source,bash]
+----
+python3 utils/docs/generate_bootstrap_options.py --update
+----
+
+.Guard
+[NOTE]
+====
+`utils/docs/generate_bootstrap_options.py --check` is the `bootstrap-options` guard of `lint.py`. It runs only when your branch changes one of its inputs or outputs, then compares whole files.
+====
+
+[#json-schemas]
+== The JSON schemas are valid
+
+The config schema and the generator schema under `docs/modules/ROOT/attachments/schemas` are valid JSON Schema documents.
+
+A schema with a type that does not exist fails when `ajv` compiles it:
+
+[source,text]
+----
+schema docs/modules/ROOT/attachments/schemas/config/mrdocs.schema.json is invalid
+error: schema is invalid: data/properties/auto-brief/type must be equal to one of the allowed values, data/properties/auto-brief/type must be array, data/properties/auto-brief/type must match a schema in anyOf
+----
+
+The fix is to correct the source the schema is generated from and regenerate it, as in <<yaml-schema>>.
+
+.Guard
+[NOTE]
+====
+The `json-schemas` guard of `lint.py` runs `npx -y -p ajv-cli -- ajv compile -s SCHEMA` on each schema, only when your branch changes one.
+An unaffected run prints `json-schemas: not affected`.
+
+Without `npx` on the path it prints a warning and the run ends with `lint: ok, but 1 guard did not run: json-schemas`, so a guard that did not run is not a pass.
+====

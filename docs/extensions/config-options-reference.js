@@ -422,8 +422,13 @@ module.exports = function (registry) {
                 block.lines.push('<div class="sect1">')
                 if (!omitHeading) {
                     let snake_case = toSnakeCase(category.category)
-                    block.lines.push(`<h${level} id="_${snake_case}_options_reference">`)
-                    block.lines.push(`<a class="anchor" href="#_${snake_case}_options_reference"></a>`)
+                    let section_id = snake_case.replace(/_/g, '-') + '-options-reference'
+                    // The released versions this playbook also builds, and
+                    // external links, target the `_<category>_options_reference`
+                    // id, so an empty anchor keeps that id alive.
+                    block.lines.push(`<a id="_${snake_case}_options_reference"></a>`)
+                    block.lines.push(`<h${level} id="${section_id}">`)
+                    block.lines.push(`<a class="anchor" href="#${section_id}"></a>`)
                     block.lines.push(category.category)
                     block.lines.push(`</h${level}>`)
                 }

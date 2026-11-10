@@ -1,0 +1,74 @@
+= Build Invariants
+
+[#private-dependencies]
+== Dependencies are private
+
+A program or plugin that links `mrdocs::mrdocs-core` or `mrdocs::plugin-api` gets the Mr.Docs API and nothing else. Our dependencies (LLVM, Clang, Lua, JerryScript, `dom` and `handlebars`) reach neither the link line of a consumer nor the export table.
+
+A tool that exports a symbol of LLVM, for example after a dependency lost its hidden visibility, fails the export check:
+
+[source,text]
+----
+CMake Error at tests/integration/plugin-api/exports/CheckExports.cmake:212 (message):
+  /path/to/build/bin/mrdocs exports 1 symbols that are not in the mrdocs namespace, for
+  example:
+
+    llvm::StringRef::compare(llvm::StringRef) const
+----
+
+The fix is to link the dependency privately and keep its symbols hidden, so only the `mrdocs` namespace is exported.
+
+.Guard
+[NOTE]
+====
+`mrdocs-plugin-exports` (`tests/integration/plugin-api/exports/CheckExports.cmake`, with the link lines of `src/CMakeLists.txt`) fails if the finished tool exports a symbol outside the `mrdocs` namespace.
+The project in `tests/integration/cmake` consumes the installed package with `find_package(mrdocs)` alone, so a leaked dependency fails to link there.
+
+The export check runs on Linux and macOS, not in sanitized builds.
+====
+
+[#export-table]
+== Only marked declarations are exported
+
+A declaration enters the export table only when it carries `MRDOCS_DECL` (or the macro of its library).
+
+When the markers stop exporting the API, the table falls under five hundred symbols and the check says so:
+
+[source,text]
+----
+CMake Error at tests/integration/plugin-api/exports/CheckExports.cmake:199 (message):
+  /path/to/build/bin/mrdocs exports 41 symbols in the mrdocs namespace, fewer than 500: the
+  MRDOCS_DECL markers are not exporting the API
+----
+
+The fix is to put the marker back on the declaration:
+
+[source,cpp]
+----
+class MRDOCS_DECL Exception
+----
+
+.Guard
+[NOTE]
+====
+Three tests guard the table:
+
+* `mrdocs-plugin-exports` checks that the tool exports nothing else.
+* `mrdocs-plugin-api-link-test-loads` is a plugin that calls the exported API (`tests/integration/plugin-api/exports/LinkProbe.cpp`). It fails to link or load when the table lacks something.
+* `mrdocs-self-doc` warns about a public declaration that lost its marker, as xref:contribute/invariants/binary-compatibility.adoc#exports[Binary Compatibility] shows.
+
+The markers are in `include/mrdocs/Support/Export.hpp`. No test catches a marker on a declaration no plugin calls.
+====
+
+[#shared-and-static]
+== Shared and static builds have the same plugin workflow
+
+You write and build a plugin the same way whether you build Mr.Docs static or with `MRDOCS_BUILD_SHARED`.
+
+.Guard
+[NOTE]
+====
+The project in `tests/integration/cmake` builds a plugin with the documented recipe and loads it (`consumer-plugin-loads`), and the `Shared` rows of CI run it against a shared build.
+
+Those rows use GCC and Clang on Linux, MSVC on Windows and Apple Clang on macOS, so the tests do not cover another toolchain.
+====

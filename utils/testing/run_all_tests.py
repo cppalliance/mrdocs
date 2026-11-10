@@ -187,9 +187,10 @@ def run_command(
         raise subprocess.CalledProcessError(completed.returncode, command)
 
 
-def run_ctest(build_dir: Path, regex: Optional[str] = None, exclude: Optional[str] = None) -> int:
+def run_ctest(build_dir: Path, regex: Optional[str] = None, exclude: Optional[str] = None,
+              label: Optional[str] = None) -> int:
     """
-    Run ctest in a build directory, optionally filtering by regex or exclusion.
+    Run ctest in a build directory, optionally filtering by regex, exclusion or label.
 
     Returns:
         ctest exit code
@@ -199,6 +200,8 @@ def run_ctest(build_dir: Path, regex: Optional[str] = None, exclude: Optional[st
         command.extend(["-R", regex])
     if exclude:
         command.extend(["-E", exclude])
+    if label:
+        command.extend(["-L", label])
     print(f"> {' '.join(command)}")
     result = subprocess.run(command, cwd=build_dir)
     return result.returncode
@@ -219,10 +222,10 @@ def run_ctest_case(build_dir: Path, name: str) -> int:
     return result.returncode
 
 
-def list_ctest_names(build_dir: Path) -> List[str]:
-    """Return the list of test names discovered by `ctest -N`."""
+def list_ctest_names(build_dir: Path, label: Optional[str] = None) -> List[str]:
+    """Return the list of test names discovered by `ctest -N`, only those with `label` when given."""
     proc = subprocess.run(
-        ["ctest", "--test-dir", str(build_dir), "-N"],
+        ["ctest", "--test-dir", str(build_dir), "-N"] + (["-L", label] if label else []),
         text=True,
         capture_output=True,
         cwd=build_dir,
@@ -272,7 +275,11 @@ def infer_warning_flags(preset_name: str, preset: Optional[dict]) -> List[str]:
 def main() -> None:
     """CLI entry point: choose preset, configure, build, and run tests."""
     parser = argparse.ArgumentParser(
-        description="Configure, build, and run all MrDocs tests."
+        description="Configure, build, and run all MrDocs tests. The first step is "
+                    "'python3 -I utils/lint/lint.py', which runs the guards that need no "
+                    "build on what changed since the merge base with upstream; a lint "
+                    "failure stops the run before the configure. After the other tests it "
+                    "runs `ctest -L integration`."
     )
     parser.add_argument(
         "--preset",
@@ -327,6 +334,8 @@ def main() -> None:
         cache_vars.get("CMAKE_CXX_FLAGS") or os.environ.get("CXXFLAGS"), warning_flags
     )
     try:
+        run_command([sys.executable, "-I", str(ROOT / "utils" / "lint" / "lint.py")])
+
         # Configure and build using the chosen preset.
         configure_cmd = ["cmake", "--preset", preset_name]
         configure_cmd.append(f"-DMRDOCS_BUILD_STRICT_TESTS={'ON' if strict_tests else 'OFF'}")
@@ -355,7 +364,8 @@ def main() -> None:
         # Discover all tests up front so we can split golden from everything else.
         tests = list_ctest_names(build_dir)
         golden_tests = [t for t in tests if "golden" in t]
-        non_golden_tests = [t for t in tests if "golden" not in t]
+        integration_tests = set(list_ctest_names(build_dir, "integration"))
+        non_golden_tests = [t for t in tests if "golden" not in t and t not in integration_tests]
 
         # Run golden tests first to give targeted guidance.
         golden_rc = 0
@@ -412,6 +422,19 @@ def main() -> None:
                         "Address the reported failure, then rerun the same ctest command or this script."
                     )
                 sys.exit(rc)
+
+        # The integration suites run the built tool or the installed package from
+        # outside, as a user does: the plugin exports, the link probe and the
+        # refusal tests.
+        rc = run_ctest(build_dir, label="integration")
+        if rc != 0:
+            error("Integration tests failed.")
+            print(
+                "Reproduce with `ctest --test-dir {build} -V -L integration`; additional logs: "
+                "`{build}/Testing/Temporary/LastTest.log`. Fix the reported failure, then rerun "
+                "the same ctest command or this script.".format(build=build_dir)
+            )
+            sys.exit(rc)
 
         # Install into a scoped prefix under the repository root to avoid polluting the system.
         install_dir.mkdir(parents=True, exist_ok=True)

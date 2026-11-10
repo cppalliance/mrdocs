@@ -1,6 +1,6 @@
 = Inputs
 
-To document your code, MrDocs needs to know where the source lives and how to compile it. The options on this page answer both questions. The xref:configuration/reference.adoc#_inputs_options_reference[Inputs reference] lists every option with its default.
+To document your code, MrDocs needs to know where the source lives and how to compile it. The options on this page answer both questions. The xref:configuration/reference.adoc#inputs-options-reference[Inputs reference] lists every option with its default.
 
 == Pointing at your code
 

@@ -1,0 +1,184 @@
+= Documentation
+
+[#readme-length]
+== A README stays short
+
+A tracked `README.md` has at most 180 words, not counting fenced code.
+
+It says what a directory holds, a textual reference to the corresponding documentation page, and the documentation carries the rest.
+
+A README that grows to 239 words fails:
+
+[source,text]
+----
+tests/unit/README.md: 239 words, the cap is 180 (a README says what the directory holds and how it works; the docs carry the rest)
+----
+
+The fix is to cut it back and move the rest into the documentation page it points to.
+
+.Design Rationale
+[NOTE]
+====
+The rationale for this rule is that whoever is working on the project shouldn't have to remember the context for tasks they're not working on.
+====
+
+.Guard
+[NOTE]
+====
+`utils/lint/check_readme_length.py` names each README over the cap, for the READMEs the branch changed, or all of them with `--all`. It skips `third-party/`, `build/`, `local/` and `node_modules/`, and it counts words, not quality.
+====
+
+[#page-length]
+== A docs page stays short
+
+A docs page stays under 3000 prose words, and a longer page becomes an index with subpages.
+
+The count leaves out code blocks, comments and include lines.
+
+A page that reaches 3538 words fails:
+
+[source,text]
+----
+docs/modules/ROOT/pages/contribute/docs.adoc: 3538 words, the cap is 3000 (split the page into an index and subpages)
+----
+
+The fix is to split the page into an index and subpages, as this section does.
+
+.Guard
+[NOTE]
+====
+`utils/lint/check_page_length.py` names each page over the cap, for the pages the branch changed, or all of them with `--all`. It counts whole pages under `docs/modules/ROOT/pages`, not sections or paragraphs.
+====
+
+[#section-title]
+== A section title names its concept
+
+A section title names the concept the section discusses, as a noun phrase.
+It does not open with What, Where, When, How, Why, Which, Who or "In what", and it does not end with a question mark.
+Page titles are exempt, so "How to Contribute a Feature" stays.
+
+A section titled `== What goes elsewhere` fails:
+
+[source,text]
+----
+docs/modules/ROOT/pages/contribute/layout/data.adoc:8: section title "What goes elsewhere" opens with "What"; name the concept the section discusses instead, such as "Content that belongs elsewhere"
+----
+
+The fix is a concept name, here the one the message suggests:
+
+[source,asciidoc]
+----
+== Content that belongs elsewhere
+----
+
+A link to a section targets an explicit anchor, never the id Asciidoctor generates from the title.
+A generated id starts with `_` and changes when someone rewords the title, so the link breaks without a warning.
+
+A link to the generated id of "Build the documentation" fails:
+
+[source,asciidoc]
+----
+xref:contribute/workflow.adoc#_build_the_documentation[Development Setup]
+----
+
+[source,text]
+----
+docs/modules/ROOT/pages/contribute/docs.adoc:12: link to the generated id "_build_the_documentation"; give the target section an explicit anchor, such as "[#build-the-documentation]" above its title, and link to that
+----
+
+The fix is an anchor above the title and a link to it:
+
+[source,asciidoc]
+----
+[#build-docs]
+=== Build the documentation
+
+xref:contribute/workflow.adoc#build-docs[Development Setup]
+----
+
+.Guard
+[NOTE]
+====
+`utils/lint/check_section_titles.py` names each docs title and each `xref:` or `+<<...>>+` link that breaks the rules, on the changed lines, or all of them with `--all`. Its test is `utils/lint/tests/test_check_section_titles.py`, and `lint.py` runs it as the `section-title` guard. It reads every page under `docs/modules/ROOT/pages`.
+====
+
+[#commands-registry]
+== Every command is documented
+
+`docs/modules/ROOT/partials/commands-registry.json` documents every command of the doc-comment parser.
+It has an entry for each node type declared in the `.inc` files under `include/mrdocs/Metadata/DocComment`, and for each command the parser dispatches.
+An entry names its node by the AST class, so `INFO(Paragraph)` in a block file is `ParagraphBlock`.
+
+Every entry has a description, a syntax and a partial, and every entry not marked `planned` has examples that resolve to golden fixtures.
+
+A new `INFO(Callout)` line in `BlockNodes.inc`, without an entry, fails the first check:
+
+[source,text]
+----
+Commands registry coverage check
+Repository root: /path/to/mrdocs
+
+Check 1: declared node types have a registry entry...
+  FAIL (35 types, 1 gaps)
+  Declared node type 'CalloutBlock' has no registry entry
+Check 2: parser-dispatched commands appear in the registry...
+  OK (59 commands, 0 gaps)
+Check 3: entries carry the fields the extension renders...
+  OK (38 entries, 0 missing)
+Check 4: example fixtures exist (source and golden output)...
+  OK (38 entries, 0 missing)
+
+FAILED: 1 issue(s) found
+----
+
+The fix is a registry entry with `"node_type": "CalloutBlock"`.
+It needs a description, a syntax and a `partial` such as `commands/callout-block.adoc`.
+Its example names a fixture pair under `tests/golden/fixtures/snippets/commands/`.
+
+An entry for a node the parser does not produce yet carries `"planned": true` and no example.
+
+.Guard
+[NOTE]
+====
+`utils/docs/check_commands_registry.py` runs as the `commands-registry` guard of `lint.py` and reads source files only. It runs four checks, lists every issue each one finds, then ends with `PASSED: all checks passed` or a line like `FAILED: 1 issue(s) found`. Its unit tests are in `utils/docs/tests/`.
+====
+
+[#documented]
+== Every public declaration is documented
+
+Every public declaration has a documentation comment.
+The test reads `include/` and the `include/` directories of `libs/dom`, `libs/handlebars` and `libs/polyfill`, as `docs/mrdocs.yml` lists them. It reads both the `.hpp` and the `.ipp` files, so a declaration in an `.ipp` file needs a comment too.
+
+A new function without one, on line 11 of a header, fails the self-documentation test:
+
+[source,cpp]
+----
+namespace mrdocs {
+
+void undocumented_function();
+
+} // mrdocs
+----
+
+[source,text]
+----
+sample.hpp:11:1:
+    1) undocumented_function: function is undocumented
+  11 | void undocumented_function();
+     | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----
+
+The fix is a documentation comment on the declaration, as every neighbor has:
+
+[source,cpp]
+----
+/** Does the work.
+*/
+void undocumented_function();
+----
+
+.Guard
+[NOTE]
+====
+`mrdocs-self-doc` runs Mr.Docs over its own headers with the noop generator, from `tests/self-doc/CMakeLists.txt`. `warn-if-undocumented` is on by default, and `--warn-as-error` turns each warning into a failure when `MRDOCS_BUILD_STRICT_TESTS` is on, which is its default. A build with the option off reports the warnings and passes.
+====

@@ -90,7 +90,11 @@ function typeLink (type) {
   return `<<ptype-${type.toLowerCase()},${type}>>`
 }
 
-function renderPartial (entry) {
+// `shown` maps the example slugs already rendered on the page to the
+// heading that rendered them. An entry whose example is already on the
+// page links to it instead of including the fixture a second time, since
+// the fixture's block ids may appear only once per page.
+function renderPartial (entry, shown) {
   const lines = [
     `[#${cmdAnchor(entry.heading)}]`,
     `=== ${entry.heading}`,
@@ -138,8 +142,13 @@ function renderPartial (entry) {
     lines.push('Not yet supported: MrDocs does not yet produce correct output for this command.')
     lines.push('====')
     lines.push('')
+  } else if (entry.examples && entry.examples.length && shown && shown.has(exampleSlug(entry))) {
+    const owner = shown.get(exampleSlug(entry))
+    lines.push(`The example of <<${cmdAnchor(owner)},${owner}>> shows this command too.`)
+    lines.push('')
   } else if (entry.examples && entry.examples.length) {
     const slug = exampleSlug(entry)
+    if (shown) shown.set(slug, entry.heading)
     // Source followed by its rendered output. The eight-`=` adoc-preview
     // wrapper survives any four-`=` admonitions in the rendered output.
     lines.push('.Example')
@@ -164,13 +173,13 @@ function renderPartial (entry) {
 
 // Render one reference section: a `== title` heading followed by every
 // command in that section, in registry order.
-function renderGroup (data, title, top, subs) {
+function renderGroup (data, title, top, subs, shown) {
   const section = data[top] || {}
   const keys = subs || Object.keys(section)
   const parts = [`== ${title}\n`]
   for (const subKey of keys) {
     for (const entry of section[subKey] || []) {
-      parts.push(renderPartial(entry))
+      parts.push(renderPartial(entry, shown))
     }
   }
   return parts.join('\n')
@@ -223,8 +232,9 @@ module.exports.register = function () {
       // One combined partial for the whole reference: every section,
       // heading and all, in order. The reference page is then a single
       // include that stays in sync with the registry automatically.
+      const shown = new Map()
       const reference = GROUPS
-        .map((g) => renderGroup(data, g.title, g.top, g.subs))
+        .map((g) => renderGroup(data, g.title, g.top, g.subs, shown))
         .join('\n')
       addPartial('commands/groups/reference.adoc', 'reference', reference)
     }

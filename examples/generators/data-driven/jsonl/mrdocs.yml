@@ -1,6 +1,8 @@
 addons-supplemental:
   - addons
+# tag::generator[]
 generator: jsonl
+# end::generator[]
 multipage: false
 show-namespaces: false
 warn-if-undocumented: false

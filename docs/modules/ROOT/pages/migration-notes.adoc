@@ -81,11 +81,7 @@ The concrete type is wrapped in a preprocessor conditional so the documentation 
 .`include/logr/detail/scope_token.hpp`
 [source,c++]
 ----
-#if !defined(LOGR_DOCUMENTATION_BUILD)
-namespace logr::detail {
-struct scope_token { ~scope_token(); };
-}
-#endif
+include::example$snippets/migration/logr-migration/include/logr/detail/scope_token.hpp[]
 ----
 
 The public function splits its declaration into a documentation branch, with a placeholder for the return type that won't parse, and a real branch the compiler sees. This relies on the {cpp} parser not recognizing the placeholder as invalid code:
@@ -93,33 +89,7 @@ The public function splits its declaration into a documentation branch, with a p
 .`include/logr/log.hpp`
 [source,c++]
 ----
-#include <logr/detail/scope_token.hpp>
-namespace logr {
-#if defined(LOGR_DOCUMENTATION_BUILD)
-/** Attach a key/value pair to every log line in the current scope.
-
-    The context stays attached until the returned token is destroyed.
-    Hold it in `auto`; nested contexts stack and unwind in reverse order.
-
-    @par Example
-    @code
-    void handle_request(request const& req) {
-        auto ctx = logr::scoped_context("request_id", req.id);
-        do_work(req);
-    }
-    @endcode
-
-    @param key   The context name surfaced on each log line.
-    @param value The context value surfaced on each log line.
-    @return An opaque RAII token whose lifetime governs how long the pair
-            stays attached. The type is implementation-defined; store it
-            in `auto`.
-*/
-__implementation_defined__ scoped_context(char const* key, char const* value);
-#else
-detail::scope_token scoped_context(char const* key, char const* value);
-#endif
-} // namespace logr
+include::example$snippets/migration/logr-migration/include/logr/log.hpp[]
 ----
 
 The project's `Doxyfile` defines the documentation-mode macro so the documented branch is what the tool reads:
@@ -127,7 +97,7 @@ The project's `Doxyfile` defines the documentation-mode macro so the documented 
 .`Doxyfile`
 [source,ini]
 ----
-PREDEFINED = LOGR_DOCUMENTATION_BUILD=1
+include::example$snippets/migration/logr-migration/Doxyfile[]
 ----
 --
 ======
@@ -182,51 +152,19 @@ The type is declared normally so that its page stays in the documentation. The p
 .`include/netz/buffer_view.hpp`
 [source,c++]
 ----
-namespace netz {
-/** A non-owning view of a contiguous byte range.
-
-    Used as the parameter and return type for the framing helpers in
-    `netz::stream` and as the buffer surface presented to async read
-    handlers. Stores a pointer and a length, and does not extend the
-    lifetime of the storage it refers to.
-*/
-class buffer_view
-{
-public:
-    unsigned char const* data() const noexcept;
-    unsigned long size() const noexcept;
-};
-}
+include::example$snippets/migration/netz-migration/include/netz/buffer_view.hpp[]
 ----
 
 .`include/netz/stream.hpp`
 [source,c++]
 ----
-#include <netz/buffer_view.hpp>
-namespace netz {
-#if defined(NETZ_DOCUMENTATION_BUILD)
-/** Locate the first complete packet at the start of the buffer.
-
-    Scans `input` for a frame boundary. The returned view aliases the
-    same memory as `input`, so the storage behind `input` must outlive
-    the returned view.
-
-    @param input Bytes received from the stream, up to the caller's
-                 current fill mark.
-    @return A view of the bytes belonging to the first packet, or an
-            empty view if no complete packet is present yet.
-*/
-__see_below__ first_packet(__see_below__ input);
-#else
-buffer_view first_packet(buffer_view input);
-#endif
-} // namespace netz
+include::example$snippets/migration/netz-migration/include/netz/stream.hpp[]
 ----
 
 .`Doxyfile`
 [source,ini]
 ----
-PREDEFINED = NETZ_DOCUMENTATION_BUILD=1
+include::example$snippets/migration/netz-migration/Doxyfile[]
 ----
 --
 ======
@@ -275,36 +213,13 @@ The documented form is a plain function template the compiler never compiles; th
 .`include/numerics/clamp.hpp`
 [source,c++]
 ----
-namespace numerics {
-#if defined(NUMERICS_DOCUMENTATION_BUILD)
-/** Constrain a value to the inclusive range `[lo, hi]`.
-
-    Returns `lo` when `v < lo`, `hi` when `hi < v`, otherwise `v`.
-    Behavior is undefined if `hi < lo`.
-
-    @tparam T  A type comparable with `operator<`.
-    @param  v  The value to constrain.
-    @param  lo The inclusive lower bound.
-    @param  hi The inclusive upper bound.
-    @return A copy of `v`, `lo`, or `hi`, whichever lies within the range.
-*/
-template <class T>
-T clamp(T const& v, T const& lo, T const& hi);
-#else
-struct clamp_fn
-{
-    template <class T>
-    T operator()(T const& v, T const& lo, T const& hi) const;
-};
-inline constexpr clamp_fn clamp = {};
-#endif
-} // namespace numerics
+include::example$snippets/migration/numerics-migration/include/numerics/clamp.hpp[]
 ----
 
 .`Doxyfile`
 [source,ini]
 ----
-PREDEFINED = NUMERICS_DOCUMENTATION_BUILD=1
+include::example$snippets/migration/numerics-migration/Doxyfile[]
 ----
 --
 ======
@@ -353,12 +268,7 @@ Every declaration in the auxiliary namespace is wrapped in a preprocessor condit
 .`include/jzon/extra/utilities.hpp`
 [source,c++]
 ----
-namespace jzon::extra {
-#if !defined(JZON_DOCUMENTATION_BUILD)
-void enable_trace();
-void disable_trace();
-#endif
-} // namespace jzon::extra
+include::example$snippets/migration/jzon-migration/include/jzon/extra/utilities.hpp[]
 ----
 
 The public header is unchanged:
@@ -366,25 +276,13 @@ The public header is unchanged:
 .`include/jzon/parser.hpp`
 [source,c++]
 ----
-namespace jzon {
-/** Validate that the document is well-formed JSON.
-
-    Parses `source` without constructing a value tree, reporting only
-    whether the input conforms to RFC 8259. Comments and trailing
-    commas are rejected.
-
-    @param source A null-terminated UTF-8 JSON document.
-    @return `true` if the document is syntactically valid JSON, `false`
-            if any syntactic error is encountered.
-*/
-bool validate(char const* source);
-} // namespace jzon
+include::example$snippets/migration/jzon-migration/include/jzon/parser.hpp[]
 ----
 
 .`Doxyfile`
 [source,ini]
 ----
-PREDEFINED = JZON_DOCUMENTATION_BUILD=1
+include::example$snippets/migration/jzon-migration/Doxyfile[]
 ----
 
 `\cond INTERNAL` ... `\endcond` blocks are the alternative; the marker still lives next to every internal declaration. Mr.Docs's glob covers a whole namespace at once, regardless of how the source is split across files.

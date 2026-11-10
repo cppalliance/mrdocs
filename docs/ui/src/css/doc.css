@@ -298,8 +298,9 @@ html {
   max-width: var(--doc-prose-measure);
 }
 
-/* Blocks that set their own ink keep it: `color: currentColor` inherits. */
-.doc .admonitionblock,
+/* Blocks that set their own ink keep it: `color: currentColor` inherits. A
+   tab set in an admonition keeps the page's prose ink. */
+.doc .admonitionblock td.content > :not(.tabs),
 .doc .quoteblock,
 .doc .verseblock,
 #preamble .abstract {
@@ -347,7 +348,8 @@ html {
 .doc p code,
 .doc thead code,
 .doc .colist > table code,
-.doc .admonitionblock td.content > code {
+.doc .admonitionblock td.content > code,
+.doc .admonitionblock td.content > .title code {
   color: var(--code-font-color);
   background: var(--code-background);
   border-radius: 0.25em;
@@ -662,7 +664,7 @@ html {
   margin-block: 1.4rem 0;
 }
 
-.doc .admonitionblock p,
+.doc .admonitionblock p:not(.tabs p),
 .doc .admonitionblock td.content {
   font-size: calc(16 / var(--rem-base) * 1rem);
 }
@@ -672,20 +674,17 @@ html {
   margin-top: 0;
 }
 
-.doc .admonitionblock td.content pre {
+.doc .admonitionblock td.content pre:not(.tabs pre) {
   font-size: calc(15 / var(--rem-base) * 1rem);
 }
 
-/* Figma block-note (316:334386 light / 316:335621 dark) and block-warning
-   (316:334392 / 316:335627). The Note Container is a single vertical stack --
-   1px stroke, 10/20 padding, the kind name on its own line, 8px gap, body --
-   so Antora's two-cell table is unpicked into blocks and the box moves off
-   td.content onto the table. The frame draws two grounds, blue for note and
-   gold for warning, so the five AsciiDoc kinds map onto those two rather than
-   getting five inventions. caution and important never occur in these docs;
-   tip occurs on 14 pages.
-   The kind's custom properties sit on the block so both the table (which
-   paints the box) and the cells inside it inherit them. */
+/* An admonition is one vertical box: the kind badge (and the block title
+   beside it), then the body. Antora's two-cell table is unpicked into blocks
+   and the box moves onto the table. The note and tip kinds sit on the blue
+   ground and the warning, caution and important kinds on the gold one; the
+   badge carries the kind's own fill. The body and the title use the page's
+   text ink. The kind's custom properties sit on the block so the table and
+   the cells inside it inherit them. */
 .doc .admonitionblock.note,
 .doc .admonitionblock.tip {
   --admonition-background: var(--admonition-note-background);
@@ -697,6 +696,36 @@ html {
 .doc .admonitionblock.important {
   --admonition-background: var(--admonition-warning-background);
   --admonition-border: var(--admonition-warning-border);
+}
+
+.doc .admonitionblock.note {
+  --admonition-kind-color: var(--note-color);
+  --admonition-kind-on-color: var(--note-on-color);
+  --admonition-kind-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M7 6h2v1H7zM7 7h2v5H7zM7 3h2v2H7z' fill='%23000'/%3E%3Cpath d='M5 6h4v1H5zM5 11h6v1H5z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.doc .admonitionblock.tip {
+  --admonition-kind-color: var(--tip-color);
+  --admonition-kind-on-color: var(--tip-on-color);
+  --admonition-kind-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1a5 5 0 0 0-3 9c.6.5 1 1.2 1 2h4c0-.8.4-1.5 1-2a5 5 0 0 0-3-9z' fill='%23000'/%3E%3Cpath d='M6 13h4v1.2H6zM6.5 14.6h3V16h-3z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.doc .admonitionblock.important {
+  --admonition-kind-color: var(--important-color);
+  --admonition-kind-on-color: var(--important-on-color);
+  --admonition-kind-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 1h1.5v14H3z' fill='%23000'/%3E%3Cpath d='M4.5 2h9l-2.5 3.5 2.5 3.5h-9z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.doc .admonitionblock.warning {
+  --admonition-kind-color: var(--warning-color);
+  --admonition-kind-on-color: var(--warning-on-color);
+  --admonition-kind-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 1.2 15.5 14h-15zM7.2 6h1.6v4.2H7.2zM7.2 11h1.6v1.6H7.2z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.doc .admonitionblock.caution {
+  --admonition-kind-color: var(--caution-color);
+  --admonition-kind-on-color: var(--caution-on-color);
+  --admonition-kind-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M5.2 1h5.6L15 5.2v5.6L10.8 15H5.2L1 10.8V5.2zM7.2 4h1.6v5H7.2zM7.2 10.4h1.6V12H7.2z' fill='%23000'/%3E%3C/svg%3E");
 }
 
 .doc .admonitionblock > table {
@@ -714,11 +743,10 @@ html {
   display: block;
 }
 
-/* Note Title (316:334387 / 316:335622): 16px Special Elite Regular, line
-   height 1.2, the strong ink, in title case -- Antora already writes "Note" /
-   "Warning" into the title attribute, so the old uppercasing is dropped. The
-   frame has no chip and no icon behind it, so the pill ground, the hard shadow
-   and the five per-kind fills all go. */
+/* The kind badge takes the navigation's current-page treatment: a 2px
+   outline, the hard shadow and a bold label, on the kind's own fill. The icon
+   is a mask in the label's colour, so it follows the on-color token. The
+   badge cell is a block so the title can flow beside it. */
 .doc .admonitionblock td.icon {
   display: block;
   position: static;
@@ -729,17 +757,32 @@ html {
 }
 
 .doc .admonitionblock td.icon i {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   width: auto;
   height: auto;
-  padding: 0;
-  background: none;
-  box-shadow: none;
+  padding: calc(3 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
+  background: var(--admonition-kind-color, var(--gold-surface));
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
   filter: initial;
-  color: var(--admonition-title-color);
+  color: var(--admonition-kind-on-color, var(--ds-color-on-accent));
   font-size: inherit;
+  font-style: normal;
+  font-weight: var(--admonition-label-font-weight);
   line-height: inherit;
   vertical-align: initial;
+}
+
+.doc .admonitionblock td.icon i::before {
+  content: "";
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  background: currentColor;
+  -webkit-mask: var(--admonition-kind-icon) center / contain no-repeat;
+  mask: var(--admonition-kind-icon) center / contain no-repeat;
 }
 
 .doc .admonitionblock td.icon i::after {
@@ -749,13 +792,12 @@ html {
   text-transform: none;
 }
 
-/* Note Text (316:334388 / 316:335623): 16px, line height 1.6, the secondary
-   grey, 8px under the title. The box is the table's now, so the cell only
-   carries type. */
+/* The body: 16px at line height 1.6 in the page's text ink, 12px under the
+   badge. The box is the table's, so the cell only carries type. */
 .doc .admonitionblock td.content {
   display: block;
   width: auto;
-  margin-top: calc(8 / var(--rem-base) * 1rem);
+  margin-top: calc(12 / var(--rem-base) * 1rem);
   padding: 0;
   background: none;
   border: 0;
@@ -764,11 +806,51 @@ html {
   word-wrap: anywhere;
 }
 
-/* An author-supplied block title sits on the same ground as the kind name and
-   takes the same ink. */
+/* An author-supplied block title sits on the badge's row: the badge cell
+   floats left and the title's first line flows beside it, bold, in the text
+   ink. The title's bottom margin keeps the body below the row. */
+.doc .admonitionblock > table > tbody > tr:has(> td.content > .title) > td.icon {
+  float: left;
+  margin-right: 0.6em;
+}
+
+.doc .admonitionblock > table > tbody > tr:has(> td.content > .title) > td.content {
+  margin-top: 0;
+}
+
+/* A tab set in an admonition reads like one anywhere else: it takes the
+   page's font size, line height and ink, not the admonition's. The admonition
+   rules for `p` and `pre` skip tab sets, and the prose ink reset above skips
+   them too. The page size is the root size below 1024 and the desktop size
+   above, as on `.doc`. */
+.doc .admonitionblock .tabs {
+  color: var(--doc-font-color);
+  font-size: 1rem;
+  line-height: var(--doc-line-height);
+}
+
+@media screen and (min-width: 1024px) {
+  .doc .admonitionblock .tabs {
+    font-size: var(--doc-font-size--desktop);
+  }
+}
+
+/* Special Elite has one face, so the title's weight is a stroke in its own
+   ink, well above the body's --doc-prose-stroke, not a synthetic bold. */
 .doc .admonitionblock td.content > .title {
+  margin-bottom: calc(7 / var(--rem-base) * 1rem);
   color: var(--admonition-title-color);
-  font-weight: var(--body-font-weight-bold);
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  font-style: normal;
+  font-weight: normal;
+  font-synthesis: none;
+  hyphens: manual;
+  letter-spacing: normal;
+  line-height: 1.2;
+  padding-block: calc(5 / var(--rem-base) * 1rem);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: var(--admonition-title-stroke) currentColor;
 }
 
 .doc .imageblock,
@@ -1113,9 +1195,13 @@ html {
   margin-top: 0;
 }
 
-/* NEEDS REVIEW prevent pre in table from causing article to exceed bounds */
-.doc table.tableblock pre,
-.doc .listingblock.wrap pre {
+/* Listings and literal blocks soft-wrap, and a long token such as a path
+   breaks too. A `pre` with the `nowrap` class (`[%nowrap]`) keeps its columns
+   and scrolls sideways. */
+.doc .listingblock pre:not(.nowrap),
+.doc .literalblock pre:not(.nowrap),
+.doc table.tableblock pre {
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 

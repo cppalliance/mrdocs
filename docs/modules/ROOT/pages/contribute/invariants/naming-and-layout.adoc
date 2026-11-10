@@ -1,0 +1,158 @@
+= Naming and Layout
+
+When a rule and the code around it disagree, follow the code and say so in the pull request.
+
+[#naming]
+== Type and function names
+
+Types use PascalCase, as in cpp:AnyFileVisitor[] and cpp:Exception[].
+Free functions use camelCase, as LLVM does.
+The member functions of one class share one style, snake_case or camelCase.
+
+A few names keep the spelling of the library they mirror, such as the LLVM casts and classes that copy a standard container.
+
+.Guard
+[NOTE]
+====
+The self-documentation test checks the type and function names of the public API, and its exceptions are listed in the check itself.
+====
+
+[#directories]
+== File placement
+
+Public headers live under `include/mrdocs/<domain>/`, in `namespace mrdocs`.
+Private helpers sit beside their sources in `src/mrdocs/<domain>/`.
+
+For instance:
+
+* `Path.hpp` is `include/mrdocs/Support/Filesystem/Path.hpp`.
+* `Temp.hpp` is `src/mrdocs/Support/Filesystem/Temp.hpp`, included as `"Temp.hpp"` by `Temp.cpp`.
+* A directory under `src/mrdocs/` usually mirrors one under `include/mrdocs/`, as `Support/Filesystem` does.
+
+.Guard
+[NOTE]
+====
+`utils/lint/check_layout.py` checks the top level, the directory pages, and the roots of libraries as the `layout` guard of `lint.py`. It doesn't try to match files from `include/` and `src/`, so a misplaced header or a missing mirror passes, since this isn't necessarily an error.
+====
+
+xref:contribute/layout/include.adoc[] and xref:contribute/layout/src.adoc[] explain what each directory holds.
+
+[#header-guards]
+== Header guard format
+
+A header guard is the tree prefix plus the path under that tree in upper case.
+
+[cols="2,3"]
+|===
+|Tree |Prefix
+
+|`include/mrdocs`
+|`MRDOCS_API_`
+
+|`src/mrdocs`
+|`MRDOCS_LIB_`
+
+|`tools/mrdocs`
+|`MRDOCS_TOOL_`
+
+|`tests`
+|`MRDOCS_TEST_`
+
+|`libs/test_suite`
+|`MRDOCS_TEST_SUITE_`
+|===
+
+The header `include/mrdocs/Support/Filesystem/Path.hpp` has the guard `MRDOCS_API_SUPPORT_FILESYSTEM_PATH_HPP`.
+Write the guard by hand for a new header.
+
+A header that drops the `Support` directory from its guard fails:
+
+[source,cpp]
+----
+#ifndef MRDOCS_API_EXAMPLE_HPP
+#define MRDOCS_API_EXAMPLE_HPP
+----
+
+[source,text]
+----
+include/mrdocs/Support/Example.hpp:1: include guard MRDOCS_API_EXAMPLE_HPP would become MRDOCS_API_SUPPORT_EXAMPLE_HPP (header-rules)
+include/mrdocs/Support/Example.hpp:2: include guard MRDOCS_API_EXAMPLE_HPP would become MRDOCS_API_SUPPORT_EXAMPLE_HPP (header-rules)
+include/mrdocs/Support/Example.hpp:14: include guard MRDOCS_API_EXAMPLE_HPP would become MRDOCS_API_SUPPORT_EXAMPLE_HPP (header-rules)
+----
+
+The fix is the guard the message names, which `format.py` writes.
+
+.Guard
+[NOTE]
+====
+The `header-rules` guard of `lint.py` checks the guard on the lines you changed, as <<header-rules>> describes. The guard is fixed only when one of its three lines changed. The check covers the five trees and leaves a header with no guard alone.
+====
+
+[#include-order]
+== Include order
+
+Include public headers with angle brackets relative to `include/`, as in `<mrdocs/Support/Reporter.hpp>`.
+Include private headers with quoted relative paths.
+
+The order follows `.clang-format`:
+
+. Include `<mrdocs/Platform.hpp>` first.
+. Then include the quoted private headers.
+. Then include the other `<mrdocs/...>` headers.
+. Last, include the third-party and standard headers.
+
+Lines 4 to 6 of a new header `include/mrdocs/Support/Example.hpp` quote a public header and sort the block by hand:
+
+[source,cpp]
+----
+#include <vector>
+#include "Reporter.hpp"
+#include <mrdocs/Platform.hpp>
+----
+
+The quoted public include fails the `header-rules` guard:
+
+[source,text]
+----
+include/mrdocs/Support/Example.hpp:5: include would be spelled <mrdocs/Support/Reporter.hpp> (header-rules)
+----
+
+The order is a style matter, and `format.py --check` reports it as `clang-format would change this line (clang-format)`.
+The fix is the order and spelling `format.py` writes:
+
+[source,cpp]
+----
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Reporter.hpp>
+#include <vector>
+----
+
+.Guard
+[NOTE]
+====
+The `header-rules` guard of `lint.py` checks the spelling of the includes on the lines you changed, as <<header-rules>> describes.
+When you run `format.py`, clang-format sorts the blocks those lines touch, following `.clang-format`, and the quoted public includes become the angle form.
+Nothing checks whether the code needs an include, or the code between the blocks.
+====
+
+[#header-rules]
+== The header rules are mandatory
+
+The guard and include spelling rules above stay mandatory when formatting is optional.
+The `header-rules` guard of `lint.py` runs `utils/lint/check_header_rules.py`, which reports what `utils/lint/header_rules.py` finds and rewrites nothing. `format.py` imports the same module to fix those lines.
+It judges the changed lines, or every line of the five trees with `--all`, and CI fails on a finding.
+
+A header that quotes a public include, run with `python3 -I utils/lint/check_header_rules.py`, prints the finding and exits 1:
+
+[source,text]
+----
+include/mrdocs/Support/Example.hpp:5: include would be spelled <mrdocs/Support/Reporter.hpp> (header-rules)
+----
+
+The fix is to run `python3 utils/format/format.py`, which writes the spelling and the guard.
+
+.Guard
+[NOTE]
+====
+`just check-header-rules` and the `header-rules` guard of `lint.py` run the check, and `utils/lint/tests/test_check_header_rules.py` tests it. The SARIF rule id is `header-rules`, the anchor of this section.
+====

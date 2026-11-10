@@ -1,3 +1,5 @@
+# tag::addons[]
 addons-supplemental:
-  - addons
+  - custom-addons
+# end::addons[]
 generator: [adoc, html]

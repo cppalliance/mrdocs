@@ -16,19 +16,45 @@
 }
 
 .tablist > ul li {
+  /* On-accent ink, as the current page of the navigation has on the same
+     gold: `--text-strong` flips to white in dark, and the selected tab is
+     gold in both themes. The inactive tabs keep `--tab-inactive-color`
+     from the rule below. The label is a `<p>` that `.doc .ulist li > p`
+     paints with `--doc-prose-color`, so the property is reset to the
+     inherited color for the label to take the ink. */
+  --doc-prose-color: currentColor;
+
+  /* Fixed width and a one-line label: the list scrolls (rule below). */
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: var(--ds-color-on-accent);
   background-color: var(--gold-surface);
   backdrop-filter: blur(10px);
   /* 2, not 1: `borderStrokeWeightsIndependent` is set on the tab, so the
      per-side weights (all 2.0) govern and `strokeWeight: 1.0` is ignored. */
   border: 2px solid var(--outline);
-  /* Ink, not `--text-strong`: that flips to white in dark, and the
-     selected tab is gold in both themes. */
-  color: var(--outline);
   box-shadow: var(--outline-shadow);
   /* Open at the bottom, so the tab reads as continuous with the panel it
      controls. The frame does carry a bottom weight, but there it butts two
      OUTSIDE strokes together -- in CSS that just doubles into a thick rule. */
   border-bottom: 0;
+}
+
+/* Upstream lets the list wrap. Every tab is open at the bottom to meet the
+   panel, so a wrapped first row would hang over the second with nothing under
+   it. The list stays on one row and scrolls sideways when the tabs are wider
+   than the panel. The vertical overflow is hidden so no vertical scrollbar
+   appears and the open bottom edges stay flush with the panel; the right
+   padding keeps the last tab's offset shadow inside the scroll box. When the
+   tabs overflow, a thin scrollbar shows between the tabs and the panel. The
+   tabs keep their width and a one-line label (rule above), so the row
+   scrolls rather than squeezing the labels. */
+.tablist > ul {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-right: 2px;
+  scrollbar-width: thin;
 }
 
 /* 6, against the frame's 10: the mock's tabs are four equal 70px boxes

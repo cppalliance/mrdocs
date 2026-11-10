@@ -2,10 +2,6 @@
 [mermaid, height="calc(min(100cqi, 615.89px) * 860 / 615.89)"]
 ....
 graph TD
-  %% Define styles for visual clarity
-  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
-  classDef artifact fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
-  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
 
   %% Define Inputs
   subgraph Inputs
@@ -21,8 +17,7 @@ graph TD
     C[Corpus]
     G[Generator]
   end
-  class P artifact
-  class CD,C,G artifact
+  class P,CD,C,G stage
 
   %% Define Outputs
   subgraph Outputs

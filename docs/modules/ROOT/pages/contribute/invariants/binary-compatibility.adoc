@@ -1,0 +1,267 @@
+= Binary Compatibility
+
+Mr.Docs has a number of invariants that must hold for a plugin to load and for a release to run where it should. Each invariant has a guard that tests it, and the guards run in CI and on the release package. Users need to be able to find what they need on xref:install.adoc[Install] and xref:extensions/defining-extensions.adoc[Defining Extensions].
+
+A plugin sees {cpp} types by their layout, with no insulating boundary, so keep these invariants in mind when you change anything a plugin can see.
+
+[#build-identity]
+== The plugin must match the exact build
+
+A plugin loads only into the exact build it compiled against, and the loader refuses incompatible plugins. The plugin is accepted only if the text of `project_build_id` matches. That is the commit hash, such as `662773e585c8`, so the same commit has the same id whether or not it was tagged when it was built. The plugin also reports it as cpp:MRDOCS_PLUGIN_BUILD_ID[].
+
+A plugin built against another build, or one that reports no identity, is refused when the tool loads it:
+
+[source,text]
+----
+the plugin "mrdocs-plugin-foreign-build-id.so" was built for MrDocs build 0123456789ab, and this is build <build id>; rebuild it against this MrDocs
+the plugin "mrdocs-plugin-null-build-id.so" reports no build id
+----
+
+The fix is to rebuild the plugin against the Mr.Docs build that loads it. Changing the plugin header, the cpp:Generator[] and cpp:Transform[] interfaces, or any public type a plugin can hold or receive needs no interface version counter on top of the build identity.
+
+.Guard
+[NOTE]
+====
+The `mrdocs-plugin-foreign-build-id-refused` test and the refusal tests for a plugin that reports no identity, in `tests/integration/plugin-api`, test the check in the loader against the identity in `include/mrdocs/Plugin.hpp`.
+====
+
+The rationale is that the ABI can change with every version of Mr.Docs, since changes to LLVM break the ABI and almost any new feature supported in Mr.Docs also changes it. The build identity is the commit hash, with `.modified` after it when the tree has edits, and a plugin loads only into the build that it targets.
+
+This follows Clang, which has no stable {cpp} ABI either, so a Clang plugin has to be rebuilt for the Clang it loads into. Clang leaves that to the plugin author: frontend plugins have no check, and pass plugins only check `LLVM_PLUGIN_API_VERSION`, which versions one struct. Mr.Docs checks the build id when it loads the plugin.
+
+A source archive without `.git` takes the commit from `utils/codegen/git-archival.txt`, which `git archive` fills in. Any other source needs `-DMRDOCS_BUILD_ID=<id>`, which replaces the identity that plugins are checked against and leaves the release label shown by `mrdocs --version` alone. A release tarball gets its commit as the identity even when someone patches it, because the archive file wins and an archive is never marked modified. Packagers who patch should set the build id.
+
+The identity changes in these cases:
+
+* Every commit changes the commit hash.
+* A tree that differs from its commit gets `.modified`. Staged edits and untracked files count.
+
+A Mr.Docs built without git information has no identity, so it refuses every plugin.
+
+[#stdlib-tag]
+== The plugin must use the same standard library
+
+A plugin must use a standard library compatible with the one Mr.Docs was built with. A plugin built with another compiler on the same standard library should load, because the check covers only the standard library's ABI.
+
+The preprocessor computes the tag in `include/mrdocs/Platform.hpp` from the standard library's own macros, such as `_GLIBCXX_USE_CXX11_ABI`, so Mr.Docs and each plugin get it from the same header as their compiler sees it. A libstdc++ build reports `libstdc++, cxx11-abi 1, debug off`.
+
+The build records the tag of the compiler that builds Mr.Docs and `mrdocs::plugin-api` hands it to every plugin as `MRDOCS_EXPECTED_STDLIB_TAG`. A plugin built with other settings stops at its first compile. The loader checks the tag again at load time, and that is the only check for the MSVC standard library.
+
+For example, a plugin built with `-D_GLIBCXX_USE_CXX11_ABI=0` against a Mr.Docs built with `1` fails to compile.
+
+These settings must match, as reported in cpp:MRDOCS_PLUGIN_STDLIB_TAG[]:
+
+[cols="1,3"]
+|===
+|Library |Setting
+
+|libstdc++
+|`_GLIBCXX_USE_CXX11_ABI` and `_GLIBCXX_DEBUG`
+
+|libc++
+|`_LIBCPP_ABI_VERSION`
+
+|MSVC STL
+|The C runtime (dynamic or static, release or debug) and `_ITERATOR_DEBUG_LEVEL`
+|===
+
+The tag omits the toolset, compiler, and assertion settings, so the tests don't see a plugin that differs only there. Changing the settings the tag reports, or what cpp:MRDOCS_PLUGIN_STDLIB_TAG[] covers, changes which plugins load, so it is a decision about this rule and not a build flag.
+
+A plugin that reports another standard library or other settings is refused:
+
+[source,text]
+----
+the plugin "mrdocs-plugin-foreign-tag.so" was built with foreign-stdlib, and this MrDocs with <standard library>; rebuild it with the same standard library and settings
+----
+
+The fix is to rebuild the plugin with the standard library and the settings of the tool.
+
+.Guard
+[NOTE]
+====
+`mrdocs-plugin-foreign-tag-refused` and the refusal tests for a plugin that reports no tag, in `tests/integration/plugin-api`, check the tag of `include/mrdocs/Platform.hpp`.
+====
+
+
+[#exports]
+== The tool exports the API and nothing else
+
+The tool exports the Mr.Docs API and nothing else:
+
+* Every declaration a plugin needs carries `MRDOCS_DECL` (or the macro of its library).
+* Everything else stays hidden, including dependencies.
+* Templates and `inline` or `constexpr` definitions need no marker.
+
+The markers in `include/mrdocs/Support/Export.hpp` and the default hidden visibility specified in `src/CMakeLists.txt` decide which symbols the tool exports. Otherwise, a plugin that bundles its own LLVM, Lua, or any dependency would otherwise bind to the copy inside the tool.
+
+A tool that exports no type information for any class of its API fails the export check, since a plugin that derives from one of them could not link:
+
+[source,text]
+----
+CMake Error at tests/integration/plugin-api/exports/CheckExports.cmake:206 (message):
+  /path/to/build/bin/mrdocs exports no 'typeinfo for mrdocs::' symbol
+----
+
+The fix is the `MRDOCS_DECL` marker on the classes.
+
+One class that lost its marker still leaves other classes exported, so that check passes. The `mrdocs-self-doc-private` test catches it instead.
+
+It runs Mr.Docs over its own headers and `.ipp` files with `--non-standard-attributes=true` and `--extract-private=true`.
+The corpus then shows which declarations carry the marker and which private members have their body in a source file.
+The `export-markers` transform in `tests/self-doc/addons/extensions/self_doc_checks/export_markers.lua` then reports an error for each public declaration of `namespace mrdocs` whose marker is wrong.
+
+`MRDOCS_DECL` exports code, because a plugin that calls a function compiled into the tool needs its symbol.
+`MRDOCS_VISIBLE` goes on a class and exports no member of its own.
+It is empty on MSVC, and on GCC and Clang it gives the class default visibility, so a member that lacks its own `MRDOCS_DECL` still links there and fails only on MSVC.
+The self-documentation parse records it as `type_visibility`.
+Each public class carries `MRDOCS_DECL` or `MRDOCS_VISIBLE`.
+
+[cols="3,2,3"]
+|===
+|The class |Marker |Example
+
+|Has a function body or a static data member in a source file, public or private
+|`MRDOCS_DECL` on the class, or `MRDOCS_VISIBLE` on the class and `MRDOCS_DECL` on each such member
+|`class MRDOCS_DECL Config`, with `Config::load` in `Config.cpp`
+
+|Defines a static data member after its body
+|`MRDOCS_VISIBLE` on the class, and `MRDOCS_DECL` on each member defined in a source file
+|`SymbolID`, with `invalid` and `global` defined after the class
+
+|Neither
+|`MRDOCS_VISIBLE`
+|`Location`, with every member inline
+|===
+
+A class that defines a static data member after its body cannot take `MRDOCS_DECL` as a whole.
+Under `dllimport`, MSVC rejects the definition of an imported static data member (error C2491).
+A constant of the class's own type cannot be defined inside the class, because the type is still incomplete there, so its definition has to follow the body:
+
+[source,cpp]
+----
+class MRDOCS_VISIBLE Color
+{
+public:
+    constexpr Color(int r, int g, int b) : r_(r), g_(g), b_(b) {}
+    static const Color black;
+    MRDOCS_DECL static Color fromHex(std::string_view hex);
+private:
+    int r_, g_, b_;
+};
+constexpr inline Color Color::black = Color(0, 0, 0);
+----
+
+With `class MRDOCS_DECL Color`, the check prints:
+
+[source,text]
+----
+mrdocs::Color: MRDOCS_DECL on the class breaks MSVC, since black is defined after the class; put MRDOCS_DECL on fromHex and MRDOCS_VISIBLE on the class instead
+----
+
+A free function whose body is in a source file needs `MRDOCS_DECL`.
+`MRDOCS_VISIBLE` goes only on classes: on a member or a function it does not parse.
+Templates, `inline` and `constexpr` definitions, and anything in `detail` need no marker, and `MRDOCS_VISIBLE` on a template or a `detail` class is an error. An explicit specialization is not a template, so it is checked.
+The `polyfill` and `describe` namespaces are skipped entirely.
+A class with both markers is an error as well.
+
+The check reports all six ways a marker can be wrong, each naming the symbol and the marker it expects:
+
+[cols="2,2,5"]
+|===
+|Written |Expected |Message
+
+|nothing
+|`MRDOCS_DECL`
+|`mrdocs::Corpus: has no marker and needs MRDOCS_DECL, since load is defined in a source file`
+
+|nothing
+|`MRDOCS_VISIBLE`
+|`mrdocs::Location: has no marker and needs MRDOCS_VISIBLE`
+
+|`MRDOCS_DECL`
+|nothing
+|`mrdocs::Range::size: has MRDOCS_DECL and needs no marker, since its body is in a header`, for `class MRDOCS_VISIBLE Range` with `MRDOCS_DECL int size() const { return n_; }`
+
+|`MRDOCS_DECL`
+|`MRDOCS_VISIBLE`
+|`mrdocs::Range: has MRDOCS_DECL and needs MRDOCS_VISIBLE, since no member is defined in a source file`
+
+|`MRDOCS_VISIBLE`
+|`MRDOCS_DECL`
+|`mrdocs::Corpus: has MRDOCS_VISIBLE and needs MRDOCS_DECL, since load is defined in a source file`
+
+|`MRDOCS_VISIBLE`
+|nothing
+|`mrdocs::detail::Hidden: has MRDOCS_VISIBLE and needs no marker, since it is not public API`
+|===
+
+A member message names `<class>::<member>`, and it suggests only a place the marker can go. A member of a class that defines a static data member after its body is told to carry `MRDOCS_DECL` itself.
+
+A check that finds a symbol outside the `mrdocs` namespace, such as one from LLVM or Lua, means a new dependency leaked into the table. Fix the link so the dependency stays hidden. The check has no allow list, so do not widen it.
+
+.Guard
+[NOTE]
+====
+Four tests guard the export table:
+
+* `mrdocs-plugin-exports` (`tests/integration/plugin-api/exports/CheckExports.cmake`) lists the symbols the finished tool exports on Unix systems. It fails if the tool exports a symbol outside the `mrdocs` namespace or fewer than five hundred inside it.
+* `mrdocs-plugin-api-link-test-loads` (`tests/integration/plugin-api/exports/LinkProbe.cpp`) fails if a plugin cannot link or load.
+* `mrdocs-self-doc-private` (`tests/self-doc/CMakeLists.txt`) fails on a public declaration whose marker is wrong.
+* `mrdocs-self-doc-export-markers` (`tests/self-doc/export-markers/`) runs the check over a class or function for each case above and compares its errors with `expected.txt`.
+====
+
+[#linux-release]
+== The Linux release runs on glibc 2.31 or newer
+
+The Linux release runs on glibc 2.31 or newer, and ships its own C++ runtime:
+
+* A build in an `ubuntu:20.04` container with GCC 15 from the `ubuntu-toolchain-r/test` PPA produces the package.
+* `lib/libstdc++.so.6` and `lib/libgcc_s.so.1` ship in the package, with the run path `$ORIGIN/../lib`.
+* The package uses no glibc symbol newer than 2.31, and no `-static`.
+
+This matches the https://peps.python.org/pep-0600/[manylinux^] policy. A binary needs a C library at least as new as the one it linked against, so raising the floor from glibc 2.31 is a decision you make with a new check.
+
+A package whose bundled `libstdc++.so.6` was built on a newer system fails the portability check:
+
+[source,text]
+----
+error: bin/../lib/libstdc++.so.6 needs a glibc newer than 2.31:
+  GLIBC_2.38, used by:
+    __isoc23_strtol
+----
+
+The fix is to build the package in the `ubuntu:20.04` container.
+Running `.github/scripts/linux-portability/test-check-linux-portability.sh --transcripts .github/scripts/linux-portability/transcripts` shows this and the other rejections on the stub listings.
+
+.Guard
+[NOTE]
+====
+The `Check Linux Portability` step in `ci-releases.yml` runs `.github/scripts/linux-portability/check-linux-portability.sh` on the finished package, against the settings of `utils/cmake/release-linux.cmake`. `.github/scripts/linux-portability/test-check-linux-portability.sh` tests the check against stub `objdump` listings.
+
+The release checks run only in the release workflow, never in a local build. No CMake target, `just` recipe, `lint.py` guard or ctest test calls them, so a developer building locally gets no error from them.
+====
+
+[#macos-release]
+== The macOS release targets macOS 14
+
+The macOS release runs on macOS 14 and newer:
+
+* Everything matches the `macos-deployment-target` row of `ci-matrix.yml`. That row feeds `MACOSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_DEPLOYMENT_TARGET` in `ci-build.yml`.
+* The dependencies the bootstrap script builds, LLVM included, use the same target, and so does the LLVM cache key.
+* A plugin built for 14.0 or lower loads on every supported system.
+
+A binary built for macOS 26 fails the step:
+
+[source,text]
+----
+minos of bin/mrdocs: 26.0
+::error::bin/mrdocs has a minimum macOS of '26.0', expected 14.0
+----
+
+The fix is to build with `MACOSX_DEPLOYMENT_TARGET` set to 14.0, which the `macos-deployment-target` row of `ci-matrix.yml` feeds.
+
+.Guard
+[NOTE]
+====
+The `Check macOS Minimum Version` step in `ci-releases.yml` fails unless `otool -l bin/mrdocs` reports the expected `minos`. It reads the executable only, not the libraries or plugins. A run that reuses the `develop-release` package skips it. A binary records the oldest macOS it runs on, and a release built on `macos-26` would need macOS 26.
+====

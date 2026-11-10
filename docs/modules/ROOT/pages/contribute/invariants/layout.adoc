@@ -1,0 +1,43 @@
+= Layout
+
+[#layout]
+== The top level holds only allowed entries
+
+The top level lists only what the layout page allows.
+These must match the xref:contribute/codebase-layout.adoc[Codebase Layout] page: the top-level entries, the directory pages and the READMEs.
+
+A new `notes/` directory at the top level breaks it:
+
+[source,text]
+----
+layout: notes/: tracked at the top level but not in the layout lists of utils/lint/check_layout.py
+----
+
+The fix is to move the files under a directory that is allowed, or to add the entry to the lists and to the page in the same commit.
+
+.Guard
+[NOTE]
+====
+The `layout` guard of `lint.py` checks the entries your branch adds, renames or removes, and `--all` checks the whole tree.
+====
+
+[#project-roots]
+== C++ projects follow the root layout
+
+The top level of a C++ project holds the directories and files the root layout allows, plus a `CMakeLists.txt`, and no `README.md`.
+The projects are the libraries under `libs/` and the tool in `tools/mrdocs`.
+
+A `README.md` at the top of `libs/dom` breaks it:
+
+[source,text]
+----
+layout: libs/dom/README.md: not allowed, a library has no README.md at its top
+----
+
+The fix is to delete the file and move what it says into the documentation page of the library.
+
+.Guard
+[NOTE]
+====
+The `layout` guard reads the roots of the C++ projects too, and nothing deeper, except the `libs/` of a project.
+====

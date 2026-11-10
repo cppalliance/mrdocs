@@ -49,6 +49,8 @@
   --mr-red: #ff4c4c;
   --mr-red-600: #dc2626;
   --mr-pink: #ec4899;
+  --mr-pink-700: #be185d;
+  --mr-green-700: #15803d;
   --slate-50: #f8fafc;
   --slate-100: #f1f5f9;
   --slate-200: #e2e8f0;
@@ -258,14 +260,15 @@
   --tab-inactive-bg: var(--surface-tint);
   --tab-inactive-color: var(--text-strong);
 
-  /* admonitions (brand accents; readable on both themes) */
-  --caution-color: var(--mr-pink);
+  /* admonitions: badge fills under a white 16px label, each at least 4.5:1
+     (tip #15803d 5.02:1, caution #be185d 6.04:1). */
+  --caution-color: var(--mr-pink-700);
   --caution-on-color: var(--mr-white);
   --important-color: var(--mr-red-600);
   --important-on-color: var(--mr-white);
   --note-color: var(--mr-blue-600);
   --note-on-color: var(--mr-white);
-  --tip-color: #16a34a;
+  --tip-color: var(--mr-green-700);
   --tip-on-color: var(--mr-white);
   --warning-color: var(--mr-amber-700);
   --warning-on-color: var(--mr-white);
@@ -309,24 +312,19 @@
      The 1px OUTSIDE stroke is the saturated colour, and the pair the frame
      uses is exactly --blue-surface (#93C5FD light 316:334386 -> #3D8BFF dark
      316:335621) and --gold-surface (#F1D874 316:334392 -> #FACC15 316:335627).
-     Ink: the title is --text-strong (#0F172A 316:334387 -> #FFFFFF
-     316:335622); the body is the frame's secondary grey (#6E727B 316:334388 ->
-     #A9ABB2 316:335629), the same grey it puts on table descriptions. Dark
-     takes that value verbatim (--mr-slate-300, 5.34:1 on the blue and 4.62:1
-     on the gold); light takes --text-muted #5B6675 rather than the frame's
-     #6E727B, which lands at 4.10:1 on the blue tint and so misses AA -- one
-     notch darker in the same slate family clears it at 4.95:1.
-     The tinted grounds are why none of this needs --ds-color-on-accent any
-     more: nothing here sits on a saturated fill. */
+     Ink: the body takes the page's prose ink, --doc-prose-color, and the
+     title the strong ink, stroked to read bold.
+     The kind badge is the one saturated fill, drawn from the per-kind
+     --note-color family with its --*-on-color label. */
   --admonition-background: var(--surface);
   --admonition-note-background: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
   --admonition-note-border: var(--blue-surface);
   --admonition-warning-background: color-mix(in sRGB, var(--mr-yellow-300) 10%, var(--bg));
   --admonition-warning-border: var(--gold-surface);
-  --admonition-color: var(--text-muted);
+  --admonition-color: var(--doc-prose-color);
   --admonition-title-color: var(--text-strong);
-  /* Special Elite Regular in the frame (both Note Title nodes), not bold. */
-  --admonition-label-font-weight: var(--ds-weight-regular);
+  --admonition-title-stroke: 0.8px;
+  --admonition-label-font-weight: var(--body-font-weight-bold);
   --caption-font-color: var(--text-muted);
   --caption-font-style: italic;
   --caption-font-weight: var(--body-font-weight-bold);
@@ -486,9 +484,6 @@
   --blue-surface: var(--mr-blue);
   --nav-muted-color: var(--mr-slate-300);
   --toc-font-color: var(--mr-slate-300);
-  /* 316:335623 / 316:335629 Note Text -- the frame's own dark body grey,
-     not --text-muted: --slate-400 lands at 4.14:1 on the gold tint. */
-  --admonition-color: var(--mr-slate-300);
   --accent: var(--mr-blue);
   --accent-solid: var(--mr-blue);
   --accent-warm: var(--mr-yellow);
@@ -569,9 +564,6 @@
     --blue-surface: var(--mr-blue);
     --nav-muted-color: var(--mr-slate-300);
     --toc-font-color: var(--mr-slate-300);
-    /* 316:335623 / 316:335629 Note Text -- the frame's own dark body grey,
-       not --text-muted: --slate-400 lands at 4.14:1 on the gold tint. */
-    --admonition-color: var(--mr-slate-300);
     --accent: var(--mr-blue);
     --accent-solid: var(--mr-blue);
     --accent-warm: var(--mr-yellow);

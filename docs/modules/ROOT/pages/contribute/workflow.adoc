@@ -1,51 +1,166 @@
-= Workflow & PR hygiene
+= Development Workflow
 
-== Coding Standards
+Bootstrap leaves your checkout ready to build, test and debug from the terminal or from an IDE.
 
-=== Paths
+== Basic commands
 
-The AST visitor and metadata all use forward slashes to represent file pathnames, even on Windows.
-This is so the generated reference documentation does not vary based on the platform.
+These commands cover most use cases:
 
-=== Exceptions
+[source,bash]
+----
+python bootstrap.py                         # once: dependencies, presets, IDE entries
+just build                                  # build the default preset
+just unit-tests                             # the fast check while you work
+just golden-tests                           # the fast check while you work
+just run-all-tests                          # every check, before you commit
+just format                                 # format the lines you changed
+just lint                                   # the checks on your changed lines
+----
 
-Errors thrown by the program should always have type `Exception`.
-Objects of this type are capable of transporting an `Error` object.
-This is important for the scripting to work; exceptions are used to propagate errors from library code to scripts and back to the invoking code.
-For exceptional cases, these thrown exceptions should be uncaught.
-The tool installs an uncaught exception handler that prints a stack trace and exits the process immediately.
+== Bootstrap
 
-=== The plugin interface
+You can run bootstrap once per preset, and it writes the IDE entries and the `justfile` recipes for that preset:
 
-A xref:extensions/plugins.adoc[plugin] is compiled against the public headers and loaded into the running tool, so it sees {cpp} types by their layout rather than through an insulating boundary. `MRDOCS_PLUGIN_API_VERSION` is what turns a mismatch into a diagnostic instead of a crash: Mr.Docs refuses to call a plugin that reports a different value, and the plugin's copy of the value comes from the headers it was compiled against.
+[source,bash]
+----
+python bootstrap.py
+----
 
-Raise it in the same commit that changes what a plugin sees. That is wider than the plugin header: it takes in the `Generator` and `Transform` interfaces and every public type a plugin can hold or be handed, so a new member in a symbol type counts, while a change confined to `src/` does not. When in doubt, raise it. The cost of raising it is that plugin authors rebuild; the cost of not raising it is a crash in someone else's process.
+To accept the defaults for every option, run:
 
-== Style Guide
+[source,bash]
+----
+python bootstrap.py -y
+----
 
-This project follows informal formatting conventions established by previous Boost projects.
-To help contributors, we provide a `.clang-format` file that encodes these rules.
+You can also accept the defaults and customize any other option, such as the preset name, the installation directory, the compiler and the sanitizer:
 
-* Do *not* apply clang-format across entire files or the whole project.
-* Use the config only as a *reference* for your IDE/editor, or to format the code you **personally add or modify** in a commit.
-* Always check the surrounding code and keep consistent with it.
-* Do not create style-only commits that introduce large diffs without functional changes.
+[source,bash]
+----
+python bootstrap.py -y --preset release-linux --install-dir install/release-linux --compiler clang --sanitizer address
+----
 
-Why This Approach:
+It builds LLVM and the other dependencies, so the first run per preset takes a while.
+The xref:install.adoc#mrdocs-bootstrap-script[Build from Source] page and the xref:bootstrap.adoc[bootstrap reference] cover all options.
 
-* Keeps history clean: avoids large, style-only commits.
-* Ensures new contributors are not lost when adapting to project style.
-* Encourages consistency without rigid automation.
+== Justfiles
 
-General Advice: When in doubt, copy the style of the surrounding code.
-The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
+Bootstrap creates targets for VSCode, CLion, Visual Studio, and `justfile` recipes so you can see all the commands in one place:
 
-The utility script `./utils/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
+[source,bash]
+----
+just --list
+----
 
-== Contributing
+It also updates CMake presets and sets up debug visualizers.
 
-If you find a bug or have a feature request, please open an issue on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/issues
+To see what a recipe runs, ask `just` for a dry run:
 
-If you would like to contribute a feature or bug fix, please open a pull request on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/pulls
+[source,text]
+----
+$ just --dry-run build
+test -d build/release-linux || just configure-release-linux
+cmake --build build/release-linux
+----
 
-If you would like to discuss a feature or bug fix before opening a pull request, discussing happen in the `#mrdocs` channel on the Cpplang Slack: https://cpplang.slack.com/
+== Building
+
+`just build` and `just unit-tests` configure the preset when its build directory is missing, and `just unit-tests` builds the tests first.
+
+To configure and build Mr.Docs:
+
+[source,bash]
+----
+just configure
+just build
+----
+
+When many presets are available, you can use a suffixed recipe name to pick one, such as `just build-release-linux` or `just unit-tests-debug-linux`. The unsuffixed recipes use the preset that `run_all_tests.py` would pick, and the recipes below name a preset when you need another.
+
+To configure and build a preset:
+
+[source,bash]
+----
+just configure-release-linux
+just build-release-linux
+----
+
+To build a specific target such as `mrdocs`:
+
+[source,bash]
+----
+just build-mrdocs-release-linux
+----
+
+== Linting
+
+`lint.py`/`just lint` runs every linting guard incrementally: each judges what changed since the merge base with upstream, and `--all` makes them judge the whole tree.
+A generated-file guard runs only when its inputs or outputs changed, and prints `<guard>: not affected` otherwise.
+
+== Formatting
+
+`just format` formats the C++ lines you changed since the merge base. It runs `utils/format/format.py`, and its `--check` flag only reports.
+CMake offers the same through the `format` and `format-check` targets.
+xref:contribute/invariants/formatting.adoc[Formatting] covers the rules.
+
+== Tests
+
+=== Unit tests
+
+To run unit tests:
+
+[source,bash]
+----
+just unit-tests
+----
+
+To run every automated check at once, run `just run-all-tests`, which the xref:contribute/quickstart.adoc[quickstart] describes.
+
+=== Golden fixtures
+
+To run golden tests:
+
+[source,bash]
+----
+just golden-tests
+----
+
+Golden tests compare files with expected input and output. To update the expected output with current behavior:
+
+[source,bash]
+----
+just update-golden-tests
+----
+
+Run the second only for an intended change, and review the diff before you commit it.
+
+=== Examples
+
+Examples are also registered as tests:
+
+[source,bash]
+----
+ctest --test-dir build/release-linux -R mrdocs-library-example-breaking-changes --output-on-failure
+----
+
+[#build-docs]
+== Documentation
+
+The documentation renders the reference with the tool installed under `install/<preset>/`, and `just build-local-docs` builds the tool but does not install it. Install first, then build:
+
+[source,bash]
+----
+just build-release-linux
+cmake --install build/release-linux --prefix install/release-linux
+just build-local-docs
+----
+
+The build writes the site under `docs/build/site/`.
+
+== One command for everything
+
+The command `just run-all-tests` runs `utils/testing/run_all_tests.py`.
+It lints first, then configures and builds, and runs the golden tests, which stop it if they fail.
+Then it runs the unit tests, the example tests, the integration tests and the docs build.
+
+Its main flags are `--preset` to pick the preset, `--update-golden` to refresh the golden fixtures first, and `--skip-docs` to skip the docs build.

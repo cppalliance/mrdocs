@@ -4,7 +4,7 @@ The `json` generator emits a single JSON document containing every symbol Mr.Doc
 
 [source,yaml]
 ----
-generator: json
+include::example$snippets/generators/json/example.yml[lines=1]
 ----
 
 The most common reasons to use it are:
@@ -42,7 +42,7 @@ Symbols are emitted flat in the `symbols` array; parent/child relationships are 
 
 == Options
 
-The generator reads two options from xref:configuration/reference.adoc#generator_options_option[`generator-options`] under the `json` key:
+The generator reads two options from xref:configuration/reference.adoc#generator-options_option[`generator-options`] under the `json` key:
 
 [source,yaml]
 ----
@@ -58,4 +58,4 @@ The JSON mirrors the DOM one-to-one: every field is named exactly as the xref:ge
 
 == Rolling your own with a script
 
-This built-in is a convenience. The corpus reaches a script as plain data too, so the same output is a few lines of JavaScript through a xref:extensions/script-generators.adoc[script-driven generator]: `JSON.stringify(ctx.corpus.symbols)` serializes it directly. Reach for a script when you want to reshape the JSON, filter symbols, or wire up your own options; a script generator registered under `json` even replaces this built-in. The xref:extensions/script-generators.adoc[JSON example] under corpus extensions shows the whole thing.
+This built-in is a convenience. The corpus reaches a script as plain data too, so the same output is a few lines of JavaScript through a xref:extensions/programmatic-generators.adoc[script-driven generator]: `JSON.stringify(ctx.corpus.symbols)` serializes it directly. Reach for a script when you want to reshape the JSON, filter symbols, or wire up your own options. Pick a new id for it, since this built-in already uses `json`. The xref:extensions/programmatic-generators.adoc#outputting-the-corpus[JSON example] on the Programmatic Generators page shows the whole thing.

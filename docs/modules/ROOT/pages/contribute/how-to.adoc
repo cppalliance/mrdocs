@@ -1,0 +1,200 @@
+= How to Contribute a Feature
+
+Each section below is a procedure for one kind of change, with a worked case from the code.
+Each ends with the tests the change needs and the pages it must update.
+xref:contribute/testing.adoc[] says how to run the tests and write a golden fixture.
+
+[#pipeline]
+== Run pipeline
+
+A run goes from options to generated output in these stages:
+
+include::partial$workflow.adoc[]
+
+[cols="2,3",options="header"]
+|===
+| Stage | Where it lives
+
+| Options
+| `src/mrdocs/ConfigOptions.json` (the schema), `include/mrdocs/Config.hpp` and `src/mrdocs/Config.cpp` (loading), `tools/mrdocs/src/Main.cpp` (the command line)
+
+| Compilation database
+| `src/mrdocs/MrDocsCompilationDatabase.cpp`, `src/mrdocs/CompilationDatabaseBuilder.cpp`
+
+| Extraction
+| `src/mrdocs/AST/` (see <<extraction>>)
+
+| Corpus and finalization
+| `src/mrdocs/Corpus.cpp`, `src/mrdocs/Metadata/Finalizers/`
+
+| Generators
+| `src/mrdocs/Generators/`, the addons under `data/mrdocs/addons/`
+|===
+
+[#options]
+== Add or change an option
+
+An option is one entry of `src/mrdocs/ConfigOptions.json`.
+The build generates `ConfigSchema.hpp` from it into the build tree, and the generated struct holds one field per option, in camel case.
+
+The configuration file, the command line and `--help` all read that schema, so a new option needs no code in them.
+
+The worked case is `sort-members-ctors-1st`, a boolean that puts constructors first in a sorted list of members.
+
+. Add the entry to its group in `src/mrdocs/ConfigOptions.json`, with `name`, `brief`, `details`, `type` and `default`.
+. For an enum, list its `values`. For an option only the command line can set, add `command-line-only`.
+. Build. The build runs `generate-config-info.py` and `generate-yaml-schema.py` from `utils/codegen/`.
+  They write `ConfigSchema.hpp` and the JSON schema under `docs/modules/ROOT/attachments/schemas/config/`.
+. Read the value where it matters. `sort-members-ctors-1st` is `config_.sortMembersCtors1St` in `SymbolCompare.hpp`, under `src/mrdocs/Metadata/Finalizers/`.
+. Add a check, a dependent default, or a path to resolve against the config directory to `Config::normalize` in `src/mrdocs/Config.cpp`.
+. When the option changes the corpus after extraction, act on it in a finalizer (see <<finalizer>>).
+
+The option reference comes from the schema, so its entry appears with the build.
+Keep the name of a changed option unless a rename is the point, because users have it in their `mrdocs.yml`.
+
+=== Tests the change needs
+
+* Add a golden fixture per behavior, under `tests/golden/fixtures/config/<option>/`, with a `<stem>.yml` that sets the option.
+* For `sort-members-ctors-1st`, the fixture is in `tests/golden/fixtures/snippets/options/sort-members-ctors-1st/`, and its docs page embeds it.
+* Pass `yaml-schema-check`, which fails while the committed JSON schema is stale. Run `python3 utils/codegen/generate-yaml-schema.py` from the root, then the check again.
+
+=== Pages to update
+
+* Add a sentence or example to the page of its group under `docs/modules/ROOT/pages/configuration/` (`sort-members-ctors-1st` is on `extraction.adoc`).
+* Leave the reference alone, because the build generates it.
+
+[#finalizer]
+== Add a finalizer
+
+A finalizer is a pass over the whole corpus after extraction and merging.
+Each lives in `src/mrdocs/Metadata/Finalizers/` as a class with a `build()` member, and `Corpus::finalize` in `src/mrdocs/Corpus.cpp` runs them one after another.
+
+Because the order matters (sorting needs the inherited members to exist), the position of your call is part of the change.
+
+The worked case is `OverloadsFinalizer`, which folds overloaded functions into sets. It starts at the global namespace, has one `operator()` per kind of symbol it handles, and runs only when `config.overloads` is set.
+
+. Create `<Name>Finalizer.hpp` and `<Name>Finalizer.cpp` beside the others. The build globs the directory, so no build file changes.
+. Give the class a `Corpus&` and a `Config const&`, both taken by the constructor.
+. Add a `build()` member that finds the global namespace with `corpus_.find(SymbolID::global)` and visits down from it, as `OverloadsFinalizer` does.
+. Give `operator()` an overload for each kind of symbol you care about, and a no-op `operator()(Symbol&) {}` for the rest.
+. Add a block to `Corpus::finalize`, after the finalizers it depends on, that creates the finalizer and calls `build()`.
+. Guard that block with the option that enables it, as the block for `OverloadsFinalizer` does with `if (config.overloads)` in `Corpus.cpp`.
+. Befriend the finalizer in `include/mrdocs/Corpus.hpp` only when it needs private access, as `SortMembersFinalizer` does.
+
+=== Tests the change needs
+
+* Add a golden fixture that shows the pass at work, in the directory of the option that controls it (`tests/golden/fixtures/config/overloads/` for `OverloadsFinalizer`).
+* Add a unit test under `tests/unit/Metadata/Finalizers/` when the pass has logic a fixture cannot reach, as `DocComment/parseInlines.cpp` does.
+
+=== Pages to update
+
+* Update the page of the option that controls it, under `docs/modules/ROOT/pages/configuration/`.
+* Update xref:contribute/layout/src.adoc[] only if you add a directory.
+
+[#symbols]
+== Add a kind of symbol, or a field to symbols
+
+Every symbol is a struct in `include/mrdocs/Metadata/Symbol/`, derived from `SymbolCommonBase<SymbolKind::X>`, with a `MRDOCS_DESCRIBE_STRUCT` that lists its fields.
+
+The describe list is the single source of the DOM projection that templates read, the XML output, and the RELAX NG and JSON schemas.
+`Symbol/SymbolNodes.inc` lists the kinds, and each place that handles every kind expands it.
+
+The worked case for a field is `IsUsing` of `TypedefSymbol` in `Symbol/Typedef.hpp`, which tells `using` aliases from C typedefs.
+
+=== Adding a field
+
+. Declare it in the struct, with a default and a doc comment.
+. Add its name to the describe list at the end of the header.
+. When it takes part in comparison, add it to `operator<=>` in the matching file under `src/mrdocs/Metadata/Symbol/`.
+. Set it where extraction builds the symbol. `ASTVisitor::populate` in `src/mrdocs/AST/ASTVisitor.cpp` sets `IsUsing` for a `TypedefSymbol`.
+. Show it in the templates when users should see it. The `typedef.hbs` partial under `data/mrdocs/addons/generator/common/partials/symbol/signature/` prints `typedef` or `using` from it.
+. Build, then run `MRDOCS=<build-dir>/mrdocs utils/codegen/generate-schema.sh`, with the `mrdocs` you just built (it looks for `mrdocs` on `PATH` otherwise). It rewrites `mrdocs.rng`, `mrdocs.schema.json` and the `dom-schema.adoc` reference, where `isUsing` has its row.
+
+=== Adding a kind
+
+Do the field steps for a new struct and add these:
+
+. Add `INFO(<Name>)` to `Symbol/SymbolNodes.inc`.
+. Create `Symbol/<Name>.hpp` and `src/mrdocs/Metadata/Symbol/<Name>.cpp` (the comparison), and include the header from `include/mrdocs/Metadata.hpp`.
+. Handle the kind where the code expands `SymbolNodes.inc` under `src/mrdocs/Generators/`: `xml/XMLWriter.cpp`, and `hbs/TagfileWriter.cpp`, `hbs/Builder.cpp`, `hbs/MultiPageVisitor.cpp` and `hbs/SinglePageVisitor.cpp`.
+. Extract the kind in `ASTVisitor` (see <<extraction>>).
+. Add a template for it under `symbol/` in `data/mrdocs/addons/generator/common/partials/`.
+
+=== Tests the change needs
+
+* Add a golden fixture per case in `tests/golden/fixtures/symbols/<kind>/`.
+* Validate first and read each difference before you update, because every XML fixture that holds the new field changes. xref:contribute/testing.adoc#golden-workflow[The golden workflow] says how.
+* Pass `schema-check`, which fails while the committed schemas and `dom-schema.adoc` are stale.
+* Pass `xml-lint`, which validates every fixture against the schema.
+
+=== Pages to update
+
+* Regenerate `docs/modules/ROOT/partials/dom-schema.adoc` with the script above, and never edit it by hand.
+* Update the reference of a kind that users write about, under `docs/modules/ROOT/pages/`, when the change is visible in the output.
+
+[#extraction]
+== Extraction code map
+
+No common contribution starts in the Clang visitor, so this is a map and not a procedure.
+Extraction runs Clang over each source file of the compilation database, and `src/mrdocs/AST/` turns each declaration into a symbol.
+`Corpus::build` in `src/mrdocs/Corpus.cpp` drives it, then merges the results of all translation units.
+
+[cols="2,3",options="header"]
+|===
+| File | Role
+
+| `ASTAction.cpp`, `ASTVisitorConsumer.cpp`, `FrontendActionFactory.cpp`
+| The Clang entry points that hand each translation unit to the visitor.
+
+| `ASTVisitor.cpp`
+| The visitor. `traverse` overloads choose what to extract, and `populate` overloads fill one kind of symbol. `ASTVisitor/USR.ipp` forms the symbol IDs.
+
+| `ExtractDocComment.cpp`
+| Turns a Clang comment into the `DocComment` of a symbol.
+
+| `TypeBuilder.cpp`, `NameBuilder.cpp`, `TerminalTypeVisitor.hpp`
+| Build the `Type` and `Name` values a symbol holds.
+
+| `ParseRef.cpp`
+| Parses the references in documentation, such as `@ref` targets.
+
+| `MacroCollector.cpp`
+| Collects the macros of a translation unit.
+|===
+
+Pick the file by the kind of fix:
+
+* Change a `populate` overload when the fix concerns what one kind of symbol records.
+* Change `TypeBuilder` or `NameBuilder` when it concerns how the code writes a type or a name.
+* Leave everything after extraction, such as merging and ordering, to the corpus and its finalizers.
+
+[#generator]
+== Add a built-in generator
+
+A generator turns the finished corpus into files.
+Each built-in one has a directory under `src/mrdocs/Generators/` and a subclass of `Generator` from `include/mrdocs/Generator.hpp`.
+For a new output that is only a different template over the same data, use a data-driven generator instead, as xref:extensions/data-driven-generators.adoc[] explains.
+
+The worked case is the `noop` generator, the smallest one, in `src/mrdocs/Generators/noop/`.
+
+. Create `<Name>Generator.hpp` and `.cpp` in a new directory `src/mrdocs/Generators/<id>/`. The build globs the tree, so no build file changes.
+. Derive from `Generator` and override `id()`, `displayName()`, `fileExtension()` and `build()`.
+. Make the `id` a short lowercase string. Users write it in `generator:` and in `generator-options.<id>`, and the registry takes one generator per id.
+. Make the `fileExtension` lowercase, without the leading dot. An empty one means the generator writes no file.
+. End the `.cpp` with a `make<Name>Generator()` function that returns a `std::unique_ptr<Generator>`.
+. In `BuiltinGenerators.cpp` under `src/mrdocs/Generators/`, declare that function and add one `registry.install(...)` line to `registerBuiltinGenerators`.
+. Add the id to the text of the `generator` option in `src/mrdocs/ConfigOptions.json`, which lists the built-in generators.
+
+=== Tests the change needs
+
+* Add a golden fixture per behavior under `tests/golden/fixtures/generators/<id>/`, made of:
+** a `<stem>.cpp`
+** a `<stem>.yml` that sets `generator: <id>`
+** the expected `<stem>.<extension>` that the create target writes
+* Use `tests/golden/fixtures/generators/json/` as the model.
+* Add a unit test in `tests/unit/Generators/` or `tests/unit/Extensions/GeneratorRegistry.cpp` for registration rules.
+
+=== Pages to update
+
+* Update `docs/modules/ROOT/pages/configuration/output.adoc`, which names the built-in choices, and add a page for the format under `docs/modules/ROOT/pages/generators/`.
+* Update `src/mrdocs/Generators/README.md`, which lists the directories.

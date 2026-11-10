@@ -1,10 +1,24 @@
 = Docs changes
 
-== `docs`—Documentation
+Every new feature and every change in behavior updates the documentation in the same change.
+A new option gets its entry in the configuration reference, and a changed command updates the pages that show it.
 
-This directory contains the documentation for the MrDocs project.
-The documentation is written in AsciiDoc and can be built using the Antora tool.
+The documentation is an https://antora.org[Antora^] site.
+The pages are AsciiDoc files under `docs/modules/ROOT/`, and the Antora extensions sit in `docs/extensions/`.
+xref:contribute/layout/docs.adoc[] says what each directory and CMake target under `docs/` does.
+A new page in this section needs its entry in `docs/modules/ROOT/nav.adoc`.
 
-* `docs/`—Documentation configuration files and scripts
-** `docs/modules/`—The documentation asciidoc files
-** `docs/extensions`—Antora extensions for the documentation
+== Build the site
+
+Install Node.js and npm first.
+Then install MrDocs and build a preview of your working tree, as xref:contribute/workflow.adoc#build-docs[Development Workflow] shows.
+`docs/build_docs.sh` builds the published site from the playbook branches and tags. It does not preview a change.
+
+[#contributor-guide]
+== The contributor guide
+
+The Contribute section is documentation for developers, kept to the same standard as the user documentation.
+It presents its concepts in order, in a hierarchy a newcomer can follow from the quickstart down.
+
+A change that affects how developers work updates this section in the same change, the way a new feature updates the user pages.
+Examples are a new `just` recipe, a new check in `lint.py`, a moved directory and a new step in a release.
