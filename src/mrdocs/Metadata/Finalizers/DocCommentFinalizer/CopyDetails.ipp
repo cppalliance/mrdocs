@@ -7,7 +7,7 @@ copyDetails(Symbol& I)
     MRDOCS_CHECK_OR(!finalized_metadata_.contains(&I));
     finalized_metadata_.emplace(&I);
 
-    report::trace(
+    reporter_.trace(
             "Finalizing metadata for '{}'",
             corpus_.Corpus::qualifiedName(I));
 

@@ -107,7 +107,10 @@ writeReport(std::ostream& os, DiffResult const& d)
 // to bring its output to the screen instead of writing files.
 Expected<void>
 BreakingChangesGenerator::
-build(Corpus const& current, Config const& config) const
+build(
+    Corpus const& current,
+    Config const& config,
+    report::Reporter&) const
 {
     writeReport(std::cout, diff(*baseline_, current));
     return {};

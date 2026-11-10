@@ -12,11 +12,12 @@
 
 #include "MrDocsCompilationDatabase.hpp"
 #include "AST/ClangHelpers.hpp"
+#include "CompilerInfo.hpp"
 #include "Support/Debug.hpp"
 #include "Support/ExecuteAndWaitWithLogging.hpp"
 #include "Support/Filesystem/Temp.hpp"
 #include <mrdocs/Config.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/Types.h>
@@ -287,6 +288,7 @@ isValidMrDocsOption(
 static std::vector<std::string>
 adjustCommandLine(
     llvm::StringRef const workingDir,
+    llvm::StringRef const commandDir,
     std::vector<std::string> const& cmdline,
     bool is_clang_cl,
     Config const& config,
@@ -403,7 +405,8 @@ adjustCommandLine(
         char const* probedIncludeFlag = config.useSystemStdlib
             ? systemIncludeFlag
             : afterIncludeFlag;
-        if (auto const it = implicitIncludeDirectories.find(progName);
+        if (auto const it = implicitIncludeDirectories.find(implicitIncludeKey(
+                progName, findSysrootArgs(cmdline, commandDir, workingDir)));
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
@@ -523,7 +526,8 @@ MrDocsCompilationDatabase(
     llvm::StringRef const workingDir,
     CompilationDatabase const& inner,
     Config const& config,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+    report::Reporter& reporter)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -547,6 +551,7 @@ MrDocsCompilationDatabase(
         cmd.Output = cmd0.Output;
         cmd.CommandLine = adjustCommandLine(
             workingDir,
+            cmd0.Directory,
             cmd0.CommandLine,
             isClangCL_,
             config,
@@ -568,13 +573,13 @@ MrDocsCompilationDatabase(
         }
         else
         {
-            report::debug(std::format("Skipping non-C++ file: {}", cmd.Filename));
+            reporter.debug(std::format("Skipping non-C++ file: {}", cmd.Filename));
             ++nSkipped;
         }
     }
     if (nSkipped != 0)
     {
-        report::info(std::format(
+        reporter.info(std::format(
             "Skipped {} compilation database entries that aren't C or C++ files",
             nSkipped));
     }

@@ -36,11 +36,13 @@ struct MrDocsCompilationDatabase_test {
         // Create an adjusted MrDocsDatabase
         std::unordered_map<std::string, std::vector<std::string>>
             defaultIncludePaths;
+        report::Reporter reporter;
         MrDocsCompilationDatabase compilations(
             "",
             SingleFileDB(std::move(cc)),
             config,
-            defaultIncludePaths);
+            defaultIncludePaths,
+            reporter);
         return compilations.getAllCompileCommands().front().CommandLine;
     }
 

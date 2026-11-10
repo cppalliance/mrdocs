@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -32,6 +33,7 @@ class FunctionObjectFinalizer
 {
     Corpus& corpus_;
     Config const& config_;
+    report::Reporter& reporter_;
 
     /** Check if a record qualifies as a function object type via
         auto-detection: its only public non-special members are
@@ -92,9 +94,13 @@ class FunctionObjectFinalizer
         std::vector<SymbolID>& targetList);
 
 public:
-    FunctionObjectFinalizer(Corpus& corpus, Config const& config)
+    FunctionObjectFinalizer(
+        Corpus& corpus,
+        Config const& config,
+        report::Reporter& reporter)
         : corpus_(corpus)
         , config_(config)
+        , reporter_(reporter)
     {}
 
     void

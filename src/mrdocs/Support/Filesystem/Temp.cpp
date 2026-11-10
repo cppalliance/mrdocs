@@ -11,7 +11,7 @@
 //
 
 #include "Temp.hpp"
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <cstdlib>

@@ -476,9 +476,9 @@ finalizeBrief(Symbol& I)
     MRDOCS_CHECK_OR(!finalized_brief_.contains(&I));
     finalized_brief_.emplace(&I);
 
-    report::trace(
-            "Finalizing brief for '{}'",
-            corpus_.Corpus::qualifiedName(I));
+    reporter_.trace(
+        "Finalizing brief for '{}'",
+        corpus_.Corpus::qualifiedName(I));
 
     if (I.isOverloads())
     {
@@ -687,7 +687,7 @@ DocCommentFinalizer::resolveReferences(Symbol& I)
     MRDOCS_CHECK_OR(!finalized_.contains(&I));
     finalized_.emplace(&I);
 
-    report::trace(
+    reporter_.trace(
         "Finalizing doc for '{}'",
         corpus_.Corpus::qualifiedName(I));
 
@@ -778,9 +778,7 @@ generateAutoFunctionMetadata(FunctionSymbol& I) const
             return;
         }
 
-        if (!is_one_of(I.FuncClass, {
-            FunctionClass::Constructor,
-            FunctionClass::Destructor }) &&
+        if (!isOneOf(I.FuncClass, {FunctionClass::Constructor, FunctionClass::Destructor}) &&
             I.doc->returns.empty())
         {
             I.doc.reset();
@@ -885,7 +883,7 @@ processRelates(Symbol& ctx, DocComment& doc)
             doc::ReferenceInline relatedRef(std::move(currentName));
             relatedRef.id = ctx.id;
             // Insert in order by name
-            insert_sorted(related.doc->related, std::move(relatedRef), referenceCmp);
+            insertSorted(related.doc->related, std::move(relatedRef), referenceCmp);
         }
     }
 
@@ -1048,7 +1046,7 @@ setAutoRelates(Symbol& ctx)
         }))
         {
             // Insert in order by name
-            insert_sorted(
+            insertSorted(
                 I.doc->relates,
                 I.doc->relates.begin() + prevRelatesSize,
                 I.doc->relates.end(),
@@ -1224,13 +1222,7 @@ normalizeSiblings(DocComment& doc)
             [](doc::Inline const& a, doc::Inline const& b) {
             // Filter out kinds that don't make sense to merge,
             // like images and links.
-            return a.Kind == b.Kind
-                   && !is_one_of(
-                       a.Kind,
-                       { doc::InlineKind::Link,
-                         doc::InlineKind::Image,
-                         doc::InlineKind::LineBreak,
-                         doc::InlineKind::SoftBreak });
+            return a.Kind == b.Kind && !isOneOf(a.Kind, {doc::InlineKind::Link, doc::InlineKind::Image, doc::InlineKind::LineBreak, doc::InlineKind::SoftBreak});
         };
         for (auto& cur: node.children)
         {
@@ -1571,10 +1563,6 @@ DocCommentFinalizer::emitWarnings()
     warnNoParamDocs();
     warnUnnamedParams();
 
-    auto const level = !config_.warnAsError ?
-                           report::Level::warn :
-                           report::Level::error;
-
     // Simple cache for the last file we touched
     std::string_view lastPath;
     std::string fileContents;
@@ -1663,13 +1651,12 @@ DocCommentFinalizer::emitWarnings()
             }
         }
 
-        report::log(level, out);
+        reporter_.warn(out);
     }
 
-    if (warningLimitReached_ && config_.warnAsError && config_.maxErrors > 0)
+    if (warningLimitReached_ && reporter_.warnAsError() && config_.maxErrors > 0)
     {
-        report::log(
-            level,
+        reporter_.warn(
             std::format(
                 "error limit reached (max-errors={}); further diagnostics "
                 "suppressed. Rerun with --max-errors=0 for the full report.\n",
@@ -1736,7 +1723,7 @@ DocCommentFinalizer::warnUndocumented()
                 I ? corpus_.Corpus::qualifiedName(*I) : undocI.name);
             continue;
         }
-        bool const prefer_definition = is_one_of(
+        bool const prefer_definition = isOneOf(
             undocI.kind, {SymbolKind::Record, SymbolKind::Enum});
         this->warn(
             *getPrimaryLocation(undocI.Loc, prefer_definition),

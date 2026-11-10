@@ -15,7 +15,7 @@
 #include "ClangHelpers.hpp"
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <clang/AST/RawCommentList.h>
 #include <clang/Basic/SourceManager.h>
 #include <clang/Driver/Driver.h>
@@ -381,36 +381,6 @@ getQualifiedName(
 clang::Decl const*
 decayToPrimaryTemplate(clang::Decl const* D)
 {
-#ifndef NDEBUG
-    // Print only the class header (name and template args if specialization)
-    llvm::SmallString<128> symbolName;
-    if (const auto* ND = dyn_cast<clang::NamedDecl>(D))
-    {
-        if (const auto* CTS = dyn_cast<clang::ClassTemplateSpecializationDecl>(ND)) {
-            llvm::raw_svector_ostream os(symbolName);
-            CTS->getSpecializedTemplate()->printQualifiedName(os, CTS->getASTContext().getPrintingPolicy());
-            const clang::TemplateArgumentList& args = CTS->getTemplateArgs();
-            os << '<';
-            for (unsigned i = 0, e = args.size(); i != e; ++i)
-            {
-                if (i) os << ", ";
-                args[i].print(CTS->getASTContext().getPrintingPolicy(), os, true);
-            }
-            os << '>';
-        } else if (ND) {
-            llvm::raw_svector_ostream os(symbolName);
-            ND->printQualifiedName(os, ND->getASTContext().getPrintingPolicy());
-        }
-    }
-    else
-    {
-        llvm::raw_svector_ostream os(symbolName);
-        os << "<unnamed " << D->clang::Decl::getDeclKindName() << ">";
-    }
-    llvm::raw_svector_ostream os(symbolName);
-    report::trace("symbolName: ", std::string_view(os.str()));
-#endif
-
     clang::Decl const* ID = D;
 
     // Check parent

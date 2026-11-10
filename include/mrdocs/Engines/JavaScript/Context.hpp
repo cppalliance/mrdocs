@@ -16,6 +16,11 @@
 #include <memory>
 
 namespace mrdocs {
+
+namespace report {
+class Reporter;
+} // report
+
 namespace js {
 
 /** An isolated JavaScript interpreter instance.
@@ -82,6 +87,19 @@ public:
         Use the copy constructor explicitly if sharing is intended.
     */
     Context& operator=(Context const&) = delete;
+
+    /** Set the reporter of the failures of the interpreter.
+
+        A @ref Scope that cannot create a value reports a warning to it.
+        Without a reporter, the interpreter prints the warning on the
+        standard error stream. The copies of the Context share the
+        setting.
+
+        @param reporter The reporter, or null. It must outlive every use
+        of the interpreter.
+    */
+    void
+    setReporter(report::Reporter* reporter) noexcept;
 };
 
 } // js

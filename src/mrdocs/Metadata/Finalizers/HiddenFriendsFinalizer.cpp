@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Name/SpecializationName.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <algorithm>
 #include <format>
 #include <string_view>
@@ -494,7 +494,7 @@ void
 HiddenFriendsFinalizer::
 operator()(RecordSymbol& I)
 {
-    report::trace(
+    reporter_.trace(
         "Inheriting hidden friends for record '{}'",
         corpus_.Corpus::qualifiedName(I));
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));

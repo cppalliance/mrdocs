@@ -103,6 +103,7 @@ class HandlebarsGenerator
     std::string fileExtension_;
     std::string displayName_;
     std::string extends_;
+    std::vector<std::string> formatChain_;
 
 public:
     struct StylesheetRef
@@ -145,13 +146,19 @@ public:
         @param extends Id of the generator this one inherits partials
                        and helpers from. Empty means no inheritance;
                        only `common/` is consulted as a fallback.
+        @param formatChain The format ids to consult for partials and
+                       helpers, most general first and `id` last: the
+                       chain of `extends` references, which the registry
+                       the generator is added to resolves. Empty means
+                       just `id`.
     */
     HandlebarsGenerator(
         std::string const& id,
         std::string const& fileExtension,
         std::string const& displayName,
         EscapeMap escapeMap = {},
-        std::string extends = {});
+        std::string extends = {},
+        std::vector<std::string> formatChain = {});
 
     /** Id of the generator this one inherits partials and helpers from.
 
@@ -167,6 +174,19 @@ public:
     extends() const noexcept
     {
         return extends_;
+    }
+
+    /** The formats whose partials and helpers this generator uses.
+
+        The ids of the generators it inherits from, most general first,
+        and its own id last (for example `{"adoc", "md"}` for a `md`
+        generator that extends `adoc`). A generator that stands alone has
+        just its own id.
+    */
+    std::vector<std::string> const&
+    formatChain() const noexcept
+    {
+        return formatChain_;
     }
 
     std::string_view
@@ -188,7 +208,10 @@ public:
     }
 
     Expected<void>
-    build(Corpus const& corpus, Config const& config) const override;
+    build(
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter) const override;
 
     /** Build a tagfile for the corpus.
     */
@@ -196,7 +219,8 @@ public:
     buildTagfile(
         std::ostream& os,
         Corpus const& corpus,
-        Config const& config) const;
+        Config const& config,
+        report::Reporter& reporter) const;
 
     /** Build a tagfile for the corpus and store the result in a file.
     */
@@ -204,7 +228,8 @@ public:
     buildTagfile(
         std::string_view fileName,
         Corpus const& corpus,
-        Config const& config) const;
+        Config const& config,
+        report::Reporter& reporter) const;
 
     /** Append the escaped form of `str` to `os`.
 
@@ -230,7 +255,9 @@ protected:
     */
     virtual
     void
-    prepareCorpus(HandlebarsCorpus&) const;
+    prepareCorpus(
+        HandlebarsCorpus&,
+        report::Reporter& reporter) const;
 
 protected:
     /** Default stylesheet path on disk; empty means no default. */
@@ -252,18 +279,50 @@ private:
     // Collect the stylesheets and scripts a page references, as data only
     // (no files are written). See the .cpp for details.
     Expected<StylesData>
-    prepareStylesheets(Config const& config) const;
+    prepareStylesheets(
+        Config const& config,
+        report::Reporter& reporter) const;
 
     // Copy the non-external stylesheet files into `outputDir`, when the
     // configuration asks for linked-and-copied CSS. Called by build() once
     // the generator's output directory is known.
     Expected<void>
-    copyStylesheets(Config const& config, std::string_view outputDir) const;
+    copyStylesheets(
+        Config const& config,
+        std::string_view outputDir,
+        report::Reporter& reporter) const;
 
     // Render the single-page form of the documentation to a stream.
     // build() drives this, wrapping it with the file it opens.
+    // `params` is this generator's options block, read once by the caller.
     Expected<void>
-    renderSinglePage(std::ostream& os, Corpus const& corpus, Config const& config) const;
+    renderSinglePage(
+        std::ostream& os,
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter,
+        dom::Object const& params) const;
+
+    // The tagfile writers behind the public overloads. `params` and
+    // `multipage` are the generator's options block and page mode, read
+    // once by the caller.
+    Expected<void>
+    buildTagfile(
+        std::ostream& os,
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter,
+        dom::Object const& params,
+        bool multipage) const;
+
+    Expected<void>
+    buildTagfile(
+        std::string_view fileName,
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter,
+        dom::Object const& params,
+        bool multipage) const;
 };
 
 } // hbs

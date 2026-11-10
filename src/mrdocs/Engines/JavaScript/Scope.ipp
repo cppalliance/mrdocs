@@ -1,6 +1,19 @@
 // Impl fragment of JavaScript.cpp (one TU): the js::Scope methods.
 // Included within `namespace mrdocs::js {`. Not a standalone header.
 
+// A value the interpreter could not create: a warning to the reporter of
+// the context, or a line on the standard error stream without one.
+static void
+reportScopeFailure(Context::Impl const& impl, std::string_view message)
+{
+    if (impl.reporter)
+    {
+        impl.reporter->warn("{}", message);
+        return;
+    }
+    printEngineMessage("{}", message);
+}
+
 Scope::Scope(Context const& ctx) noexcept : impl_(ctx.impl_)
 {
 }
@@ -26,7 +39,7 @@ Scope::pushInteger(std::int64_t v)
     jerry_value_t jv = jerry_number(static_cast<double>(v));
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create integer value");
+        reportScopeFailure(*impl_, "JavaScript: failed to create integer value");
         jerry_value_free(jv);
         return {};
     }
@@ -41,7 +54,7 @@ Scope::pushDouble(double v)
     jerry_value_t jv = jerry_number(v);
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create double value");
+        reportScopeFailure(*impl_, "JavaScript: failed to create double value");
         jerry_value_free(jv);
         return {};
     }
@@ -56,7 +69,7 @@ Scope::pushBoolean(bool v)
     jerry_value_t jv = jerry_boolean(v);
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create boolean value");
+        reportScopeFailure(*impl_, "JavaScript: failed to create boolean value");
         jerry_value_free(jv);
         return {};
     }
@@ -71,7 +84,7 @@ Scope::pushString(std::string_view v)
     jerry_value_t jv = makeString(v);
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create string value");
+        reportScopeFailure(*impl_, "JavaScript: failed to create string value");
         jerry_value_free(jv);
         return {};
     }
@@ -86,7 +99,7 @@ Scope::pushObject()
     jerry_value_t jv = jerry_object();
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create object");
+        reportScopeFailure(*impl_, "JavaScript: failed to create object");
         jerry_value_free(jv);
         return {};
     }
@@ -101,7 +114,7 @@ Scope::pushArray()
     jerry_value_t jv = jerry_array(0);
     if (jerry_value_is_exception(jv))
     {
-        report::warn("JavaScript: failed to create array");
+        reportScopeFailure(*impl_, "JavaScript: failed to create array");
         jerry_value_free(jv);
         return {};
     }
@@ -139,7 +152,7 @@ Scope::script(std::string_view jsCode)
 }
 
 Expected<Value, Error>
-Scope::compile_script(std::string_view script)
+Scope::compileScript(std::string_view script)
 {
     // KNOWN LIMITATION: This implementation uses manual string matching and
     // eval-based wrapping, which is fragile (false positives on "function" in
@@ -178,7 +191,7 @@ Scope::compile_script(std::string_view script)
 }
 
 Expected<Value, Error>
-Scope::compile_function(std::string_view script)
+Scope::compileFunction(std::string_view script)
 {
     // KNOWN LIMITATION: This implementation uses manual string parsing to find
     // function names, which is fragile:
@@ -200,7 +213,7 @@ Scope::compile_function(std::string_view script)
     // (e.g., for scripts with statements before the function), the fallback
     // path executes the script to define the function. Scripts like:
     //   "counter++; function foo() {}"
-    // will increment counter during compile_function even though the intent
+    // will increment counter during compileFunction even though the intent
     // is only to extract the function.
     //
     // Parenthesize the provided source so it is treated as a function expression

@@ -74,7 +74,7 @@
 #include <mrdocs/Handlebars.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <algorithm>
 #include <atomic>
 #include <cctype>
@@ -82,8 +82,9 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#include <jerryscript.h>
+#include <format>
 #include <jerryscript-port.h>
+#include <jerryscript.h>
 #include <limits>
 #include <memory>
 #include <mutex>
@@ -105,6 +106,24 @@
 #else
 #include <sys/mman.h>
 #endif
+
+namespace {
+
+// The engine prints on the standard error stream what it cannot give to a
+// reporter. The port functions below are called by JerryScript with no
+// argument that leads to one, and each ends the process right after it
+// prints. A Scope reports through the reporter of its Context when it has
+// one (see Context::setReporter).
+template <class... Args>
+void
+printEngineMessage(std::format_string<Args...> fs, Args&&... args)
+{
+    std::string const s = std::format(fs, std::forward<Args>(args)...);
+    std::fputs(s.c_str(), stderr);
+    std::fputc('\n', stderr);
+}
+
+} // (anon)
 
 // ------------------------------------------------------------
 // JerryScript External Context Port Functions
@@ -332,7 +351,7 @@ jerryCommitOnDemand(PEXCEPTION_POINTERS info)
         // The system commit limit is exhausted. There is no way to hand
         // this back to the engine as an allocation failure, so stop with
         // a message rather than let the access violation propagate.
-        mrdocs::report::error(
+        printEngineMessage(
             "JavaScript engine out of memory: Windows could not commit more "
             "memory for a script's heap (system commit limit reached). "
             "Keep fewer symbol objects alive at once, or move the work to Lua.");
@@ -382,7 +401,7 @@ jerry_port_context_alloc(size_t context_size)
     }
     // jerry_init() would dereference a null context next, so stop here
     // with a message rather than crash. Not even 512 KB could be reserved.
-    mrdocs::report::error(
+    printEngineMessage(
         "JavaScript engine: cannot reserve memory for a new context");
     std::exit(EXIT_FAILURE);
 }
@@ -434,7 +453,7 @@ jerry_port_fatal(jerry_fatal_code_t code)
     if (code == JERRY_FATAL_OUT_OF_MEMORY)
     {
         std::size_t const bytes = jerryBlockSize(get_tls_jerry_context());
-        mrdocs::report::error(
+        printEngineMessage(
             "JavaScript engine out of memory: a script exhausted its "
             "{} MB heap, the most the engine can address. Keep fewer "
             "symbol objects alive at once, or move the work to Lua, "
@@ -443,7 +462,7 @@ jerry_port_fatal(jerry_fatal_code_t code)
     }
     else
     {
-        mrdocs::report::error("JavaScript engine fatal error (code {})",
+        printEngineMessage("JavaScript engine fatal error (code {})",
             static_cast<int>(code));
     }
     // Leave through _Exit: the engine state is gone, and running static
@@ -662,6 +681,10 @@ struct Context::Impl {
 
     // Serialize access to this JerryScript context (single-threaded engine).
     mutable std::recursive_mutex mtx;
+
+    // Where a Scope reports the values it cannot create, or null for the
+    // standard error stream.
+    report::Reporter* reporter = nullptr;
 
     // Optional diagnostics: track live JS handles we create (Value copies etc).
     std::atomic<int> live_handles{0};

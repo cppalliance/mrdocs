@@ -58,12 +58,14 @@ ASTVisitor::
 ASTVisitor(
     Config const& config,
     Diagnostics const& diags,
+    report::Reporter& reporter,
     clang::CompilerInstance& compiler,
     clang::ASTContext& context,
     clang::Sema& sema,
     std::vector<CollectedMacro>& macroDefs) noexcept
     : config_(config)
     , diags_(diags)
+    , reporter_(reporter)
     , compiler_(compiler)
     , context_(context)
     , source_(context.getSourceManager())
@@ -249,7 +251,7 @@ populate(MacroSymbol& I, clang::MacroInfo const* MI)
             context_.getTranslationUnitDecl());
         if (FC)
         {
-            populateDocComment(I.doc, FC, context_, config_, diags_);
+            populateDocComment(I.doc, FC, context_, config_, diags_, reporter_);
         }
     }
 }
@@ -300,7 +302,7 @@ traverse(DeclTy const* D)
 {
     MRDOCS_ASSERT(D);
     MRDOCS_CHECK_OR(!D->isInvalidDecl(), nullptr);
-    MRDOCS_SYMBOL_TRACE(D, context_);
+    MRDOCS_SYMBOL_TRACE(D, *this);
 
     if constexpr (std::same_as<DeclTy, clang::Decl>)
     {
@@ -401,12 +403,12 @@ Symbol*
 ASTVisitor::
 traverse(clang::UsingDirectiveDecl const* D)
 {
-    MRDOCS_SYMBOL_TRACE(D, context_);
+    MRDOCS_SYMBOL_TRACE(D, *this);
 
     // Find the parent namespace
     ScopeExitRestore s1(mode_, TraversalMode::Dependency);
     clang::Decl const* P = getParent(D);
-    MRDOCS_SYMBOL_TRACE(P, context_);
+    MRDOCS_SYMBOL_TRACE(P, *this);
     Symbol* PI = findOrTraverse(P);
     MRDOCS_CHECK_OR(PI, nullptr);
     MRDOCS_CHECK_OR(PI->isNamespace(), nullptr);
@@ -414,7 +416,7 @@ traverse(clang::UsingDirectiveDecl const* D)
 
     // Find the nominated namespace
     clang::Decl const* ND = D->getNominatedNamespace();
-    MRDOCS_SYMBOL_TRACE(ND, context_);
+    MRDOCS_SYMBOL_TRACE(ND, *this);
     ScopeExitRestore s2(mode_, TraversalMode::Dependency);
     Symbol* NDI = findOrTraverse(ND);
     MRDOCS_CHECK_OR(NDI, nullptr);
@@ -571,10 +573,10 @@ void
 ASTVisitor::
 traverseParent(InfoTy& I, DeclTy const* DC)
 {
-    MRDOCS_SYMBOL_TRACE(DC, context_);
+    MRDOCS_SYMBOL_TRACE(DC, *this);
     if (clang::Decl const* PD = getParent(DC))
     {
-        MRDOCS_SYMBOL_TRACE(PD, context_);
+        MRDOCS_SYMBOL_TRACE(PD, *this);
 
         // Check if we haven't already extracted or started
         // to extract the parent scope:
@@ -681,6 +683,7 @@ populate(
         D->getASTContext(),
         config_,
         diags_,
+        reporter_,
         mode != ExtractionMode::Dependency);
     return true;
 }
@@ -823,13 +826,13 @@ populate(
                 [&] {
                     auto* TST = BT->getAs<clang::TemplateSpecializationType>();
                     MRDOCS_CHECK_OR(TST);
-                    MRDOCS_SYMBOL_TRACE(TST, context_);
+                    MRDOCS_SYMBOL_TRACE(TST, *this);
 
                     auto const* CTSD = dyn_cast_or_null<
                             clang::ClassTemplateSpecializationDecl>(
                             TST->getAsCXXRecordDecl());
                     MRDOCS_CHECK_OR(CTSD);
-                    MRDOCS_SYMBOL_TRACE(CTSD, context_);
+                    MRDOCS_SYMBOL_TRACE(CTSD, *this);
 
                     // Traverse the Decl as a dependency
                     ScopeExitRestore s(mode_, TraversalMode::BaseClass);
@@ -941,7 +944,7 @@ populate(
     FunctionSymbol& I,
     clang::FunctionDecl const* D)
 {
-    MRDOCS_SYMBOL_TRACE(D, context_);
+    MRDOCS_SYMBOL_TRACE(D, *this);
 
     // D is the templated declaration if FTD is non-null
     if (D->isFunctionTemplateSpecialization())
@@ -984,9 +987,9 @@ populate(
     // Get the function type and extract information that comes from the type
     if (auto FT = getDeclaratorType(D); !FT.isNull())
     {
-        MRDOCS_SYMBOL_TRACE(FT, context_);
+        MRDOCS_SYMBOL_TRACE(FT, *this);
         auto const* FPT = FT->template getAs<clang::FunctionProtoType>();
-        MRDOCS_SYMBOL_TRACE(FPT, context_);
+        MRDOCS_SYMBOL_TRACE(FPT, *this);
         populate(I.Noexcept, FPT);
         I.HasTrailingReturn |= FPT->hasTrailingReturn();
     }
@@ -1017,7 +1020,7 @@ populate(
     for (std::size_t i = 0; i < params.size(); ++i)
     {
         clang::ParmVarDecl const* P = params[i];
-        MRDOCS_SYMBOL_TRACE(P, context_);
+        MRDOCS_SYMBOL_TRACE(P, *this);
         Param& param = I.Params[i];
 
         if (!param.Name && !P->getName().empty())
@@ -1053,7 +1056,7 @@ populate(
     // if it contains a placeholder type which is
     // deduced as a local class type
     clang::QualType const RT = D->getReturnType();
-    MRDOCS_SYMBOL_TRACE(RT, context_);
+    MRDOCS_SYMBOL_TRACE(RT, *this);
     I.ReturnType = toType(RT);
 
     if (auto* TRC = D->getTrailingRequiresClause().ConstraintExpr)
@@ -1465,7 +1468,7 @@ populate(
         using enum ExtractionMode;
         if (Symbol* SI = findOrTraverse(S);
             SI &&
-            !is_one_of(SI->Extraction,{Dependency, ImplementationDefined}))
+            !isOneOf(SI->Extraction, {Dependency, ImplementationDefined}))
         {
             I.ShadowDeclarations.emplace_back(SI->id);
         }
@@ -2265,7 +2268,7 @@ addMember(
         addMember(I.Members.Macros, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into members of namespace {}",
+    reporter_.error("Cannot push {} of type {} into members of namespace {}",
         Member.Name,
         mrdocs::toString(Member.Kind),
         I.Name);
@@ -2355,7 +2358,7 @@ addMember(RecordTranche& T, Symbol const& Member)
         addMember(T.Usings, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into tranche",
+    reporter_.error("Cannot push {} of type {} into tranche",
         Member.Name,
         mrdocs::toString(Member.Kind));
 }
@@ -2369,7 +2372,7 @@ addMember(EnumSymbol& I, Symbol const& Member) const
         addMember(I.Constants, *U);
         return;
     }
-    report::error("Cannot push {} of type {} into members of enum {}",
+    reporter_.error("Cannot push {} of type {} into members of enum {}",
         Member.Name,
         mrdocs::toString(Member.Kind),
         I.Name);
@@ -2384,7 +2387,7 @@ addMember(OverloadsSymbol& I, Symbol const& Member) const
         addMember(I.Members, Member);
         return;
     }
-    report::error("Cannot push {} of type {} into members of enum {}",
+    reporter_.error("Cannot push {} of type {} into members of enum {}",
         Member.Name,
         mrdocs::toString(Member.Kind),
         I.Name);
@@ -2571,7 +2574,7 @@ Polymorphic<Type>
 ASTVisitor::
 toType(clang::QualType const qt, TraversalMode const mode)
 {
-    MRDOCS_SYMBOL_TRACE(qt, context_);
+    MRDOCS_SYMBOL_TRACE(qt, *this);
 
     // The qualified symbol referenced by a regular symbol is a dependency.
     // For library types, can be proved wrong and the Info type promoted
@@ -2589,7 +2592,7 @@ Optional<Polymorphic<Name>>
 ASTVisitor::
 toName(clang::NestedNameSpecifier NNS)
 {
-    MRDOCS_SYMBOL_TRACE(NNS, context_);
+    MRDOCS_SYMBOL_TRACE(NNS, *this);
     ScopeExitRestore scope(mode_, Dependency);
     switch(NNS.getKind()) {
     case clang::NestedNameSpecifier::Kind::Null:
@@ -2856,7 +2859,7 @@ Optional<ASTVisitor::SFINAEInfo>
 ASTVisitor::
 extractSFINAEInfo(clang::QualType const T)
 {
-    MRDOCS_SYMBOL_TRACE(T, context_);
+    MRDOCS_SYMBOL_TRACE(T, *this);
     MRDOCS_CHECK_OR(config_.sfinae, std::nullopt);
 
     // Get the primary template information of the type
@@ -2869,11 +2872,11 @@ extractSFINAEInfo(clang::QualType const T)
 
     // Find the parameter that represents the SFINAE result
     auto const Args = templateInfo->Arguments;
-    MRDOCS_SYMBOL_TRACE(Args, context_);
+    MRDOCS_SYMBOL_TRACE(Args, *this);
     auto const resultType = tryGetTemplateArgument(
         SFINAEControl->Parameters, Args, SFINAEControl->ParamIdx);
     MRDOCS_CHECK_OR(resultType, std::nullopt);
-    MRDOCS_SYMBOL_TRACE(*resultType, context_);
+    MRDOCS_SYMBOL_TRACE(*resultType, *this);
 
     // Create a vector of template arguments that represent the
     // controlling parameters of the SFINAE template
@@ -2884,7 +2887,7 @@ extractSFINAEInfo(clang::QualType const T)
         if (I < SFINAEControl->ControllingParams.size()
             && SFINAEControl->ControllingParams[static_cast<unsigned>(I)])
         {
-            MRDOCS_SYMBOL_TRACE(Args[I], context_);
+            MRDOCS_SYMBOL_TRACE(Args[I], *this);
             clang::TemplateArgument ArgsI = Args[I];
             MRDOCS_CHECK_OR_CONTINUE(ArgsI.getKind() == clang::TemplateArgument::ArgKind::Expression);
             clang::Expr* E = Args[I].getAsExpr();
@@ -2905,8 +2908,8 @@ getSFINAEControlParams(
     clang::IdentifierInfo const* Member,
     llvm::SmallPtrSetImpl<clang::TemplateDecl const*>& InProgress)
 {
-    MRDOCS_SYMBOL_TRACE(TD, context_);
-    MRDOCS_SYMBOL_TRACE(Member, context_);
+    MRDOCS_SYMBOL_TRACE(TD, *this);
+    MRDOCS_SYMBOL_TRACE(Member, *this);
     MRDOCS_CHECK_OR(TD, std::nullopt);
 
     // Templates can derive from each other through their specializations,
@@ -2942,9 +2945,9 @@ getSFINAEControlParams(
     {
         // If the alias template is an alias template specialization,
         // we need to do the process for the underlying type
-        MRDOCS_SYMBOL_TRACE(ATD, context_);
+        MRDOCS_SYMBOL_TRACE(ATD, *this);
         auto Underlying = ATD->getTemplatedDecl()->getUnderlyingType();
-        MRDOCS_SYMBOL_TRACE(Underlying, context_);
+        MRDOCS_SYMBOL_TRACE(Underlying, *this);
         auto underlyingTemplateInfo = getSFINAETemplateInfo(Underlying, Member == nullptr);
         MRDOCS_CHECK_OR(underlyingTemplateInfo, std::nullopt);
         if (Member)
@@ -2965,7 +2968,7 @@ getSFINAEControlParams(
             underlyingTemplateInfo->Arguments,
             sfinaeControl->ParamIdx);
         MRDOCS_CHECK_OR(resultType, std::nullopt);
-        MRDOCS_SYMBOL_TRACE(*resultType, context_);
+        MRDOCS_SYMBOL_TRACE(*resultType, *this);
 
         // Find the index of the parameter that represents the SFINAE result
         // in the primary template arguments
@@ -2974,7 +2977,7 @@ getSFINAEControlParams(
         // Return the controlling parameters with values corresponding to
         // the primary template arguments
         clang::TemplateParameterList* primaryTemplParams = ATD->getTemplateParameters();
-        MRDOCS_SYMBOL_TRACE(primaryTemplParams, context_);
+        MRDOCS_SYMBOL_TRACE(primaryTemplParams, *this);
 
         llvm::SmallBitVector primaryControllingParams(
             primaryTemplParams->size());
@@ -2990,7 +2993,7 @@ getSFINAEControlParams(
                     underlyingTemplateInfo->Arguments,
                     i);
                 MRDOCS_CHECK_OR_CONTINUE(argResultType);
-                MRDOCS_SYMBOL_TRACE(*argResultType, context_);
+                MRDOCS_SYMBOL_TRACE(*argResultType, *this);
 
                 // Find the index of the parameter that represents the param
                 // in the primary template arguments
@@ -3014,7 +3017,7 @@ getSFINAEControlParams(
 
     // Ensure this is a clang::ClassTemplateDecl
     auto* CTD = dyn_cast<clang::ClassTemplateDecl>(TD);
-    MRDOCS_SYMBOL_TRACE(CTD, context_);
+    MRDOCS_SYMBOL_TRACE(CTD, *this);
     MRDOCS_CHECK_OR(CTD, std::nullopt);
 
     // A class template is only a SFINAE template through a member such
@@ -3024,7 +3027,7 @@ getSFINAEControlParams(
 
     // Get the template arguments of the primary template
     auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
-    MRDOCS_SYMBOL_TRACE(PrimaryArgs, context_);
+    MRDOCS_SYMBOL_TRACE(PrimaryArgs, *this);
 
     // Type of the member that represents the SFINAE result.
     clang::QualType MemberType;
@@ -3045,8 +3048,8 @@ getSFINAEControlParams(
     // so that they can be used to check the controlling parameters.
     auto IsMismatch = [&](clang::CXXRecordDecl* RD, llvm::ArrayRef<clang::TemplateArgument> Args)
     {
-        MRDOCS_SYMBOL_TRACE(RD, context_);
-        MRDOCS_SYMBOL_TRACE(Args, context_);
+        MRDOCS_SYMBOL_TRACE(RD, *this);
+        MRDOCS_SYMBOL_TRACE(Args, *this);
         if (!RD->hasDefinition())
         {
             return false;
@@ -3054,7 +3057,7 @@ getSFINAEControlParams(
         // Look for member in the record, such
         // as the member `::type` in `std::enable_if<B,T>`
         auto MemberLookup = RD->lookup(Member);
-        MRDOCS_SYMBOL_TRACE(MemberLookup, context_);
+        MRDOCS_SYMBOL_TRACE(MemberLookup, *this);
         clang::QualType CurrentType;
         if(MemberLookup.empty())
         {
@@ -3133,7 +3136,7 @@ getSFINAEControlParams(
                 // `std::enable_if<true,T>`, then the current type is `T`.
                 // The next checks will occur for this underlying type.
                 CurrentType = TND->getUnderlyingType();
-                MRDOCS_SYMBOL_TRACE(CurrentType, context_);
+                MRDOCS_SYMBOL_TRACE(CurrentType, *this);
             }
             else
             {
@@ -3167,12 +3170,12 @@ getSFINAEControlParams(
             // Get this primary template argument as a template
             // argument of the current type.
             clang::TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
-            MRDOCS_SYMBOL_TRACE(MappedPrimary, context_);
+            MRDOCS_SYMBOL_TRACE(MappedPrimary, *this);
             // The primary argument in SFINAE should be a type
             MRDOCS_ASSERT(MappedPrimary.getKind() == clang::TemplateArgument::Type);
             // Update the current type to the type of the primary argument
             CurrentType = MappedPrimary.getAsType();
-            MRDOCS_SYMBOL_TRACE(CurrentType, context_);
+            MRDOCS_SYMBOL_TRACE(CurrentType, *this);
         }
 
         // Update the type of the member that represents the SFINAE result
@@ -3190,13 +3193,13 @@ getSFINAEControlParams(
 
     // Check if there's a mismatch between the primary record and the arguments
     clang::CXXRecordDecl* PrimaryRD = CTD->getTemplatedDecl();
-    MRDOCS_SYMBOL_TRACE(PrimaryRD, context_);
+    MRDOCS_SYMBOL_TRACE(PrimaryRD, *this);
     MRDOCS_CHECK_OR(!IsMismatch(PrimaryRD, PrimaryArgs), std::nullopt);
 
     // Check if there's a mismatch between any explicit specialization and the arguments
     for(auto* CTSD : CTD->specializations())
     {
-        MRDOCS_SYMBOL_TRACE(CTSD, context_);
+        MRDOCS_SYMBOL_TRACE(CTSD, *this);
         if (!CTSD->isExplicitSpecialization())
         {
             continue;
@@ -3210,9 +3213,9 @@ getSFINAEControlParams(
     CTD->getPartialSpecializations(PartialSpecs);
     for(auto* CTPSD : PartialSpecs)
     {
-        MRDOCS_SYMBOL_TRACE(CTPSD, context_);
+        MRDOCS_SYMBOL_TRACE(CTPSD, *this);
         auto PartialArgs = CTPSD->getTemplateArgs().asArray();
-        MRDOCS_SYMBOL_TRACE(PartialArgs, context_);
+        MRDOCS_SYMBOL_TRACE(PartialArgs, *this);
         MRDOCS_CHECK_OR(!IsMismatch(CTPSD, PartialArgs), std::nullopt);
     }
 
@@ -3222,13 +3225,13 @@ getSFINAEControlParams(
     // non-type template parameters.
     llvm::SmallBitVector ControllingParams(static_cast<unsigned>(PrimaryArgs.size()));
     for(auto* CTPSD : PartialSpecs) {
-        MRDOCS_SYMBOL_TRACE(CTPSD, context_);
+        MRDOCS_SYMBOL_TRACE(CTPSD, *this);
         auto PartialArgs = CTPSD->getTemplateArgs().asArray();
-        MRDOCS_SYMBOL_TRACE(PartialArgs, context_);
+        MRDOCS_SYMBOL_TRACE(PartialArgs, *this);
         for(std::size_t i = 0; i < PartialArgs.size(); ++i)
         {
             clang::TemplateArgument Arg = PartialArgs[i];
-            MRDOCS_SYMBOL_TRACE(Arg, context_);
+            MRDOCS_SYMBOL_TRACE(Arg, *this);
             switch (Arg.getKind())
             {
             case clang::TemplateArgument::Integral:
@@ -3255,7 +3258,7 @@ getSFINAEControlParams(
 Optional<ASTVisitor::SFINAETemplateInfo>
 ASTVisitor::getSFINAETemplateInfo(clang::QualType T, bool const AllowDependentNames) const
 {
-    MRDOCS_SYMBOL_TRACE(T, context_);
+    MRDOCS_SYMBOL_TRACE(T, *this);
     MRDOCS_ASSERT(!T.isNull());
 
     // If the type is a dependent name type and dependent names are allowed,
@@ -3265,9 +3268,9 @@ ASTVisitor::getSFINAETemplateInfo(clang::QualType T, bool const AllowDependentNa
         DNT && AllowDependentNames)
     {
         SFINAE.Member = DNT->getIdentifier();
-        MRDOCS_SYMBOL_TRACE(SFINAE.Member, context_);
+        MRDOCS_SYMBOL_TRACE(SFINAE.Member, *this);
         T = clang::QualType(DNT->getQualifier().getAsType(), 0);
-        MRDOCS_SYMBOL_TRACE(T, context_);
+        MRDOCS_SYMBOL_TRACE(T, *this);
     }
     if (!T.getTypePtrOrNull())
     {
@@ -3278,11 +3281,11 @@ ASTVisitor::getSFINAETemplateInfo(clang::QualType T, bool const AllowDependentNa
     // and the template arguments
     if (auto* TST = T->getAsAdjusted<clang::TemplateSpecializationType>())
     {
-        MRDOCS_SYMBOL_TRACE(TST, context_);
+        MRDOCS_SYMBOL_TRACE(TST, *this);
         SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
-        MRDOCS_SYMBOL_TRACE(SFINAE.Template, context_);
+        MRDOCS_SYMBOL_TRACE(SFINAE.Template, *this);
         SFINAE.Arguments = TST->template_arguments();
-        MRDOCS_SYMBOL_TRACE(SFINAE.Arguments, context_);
+        MRDOCS_SYMBOL_TRACE(SFINAE.Arguments, *this);
         return SFINAE;
     }
 
@@ -3297,8 +3300,8 @@ tryGetTemplateArgument(
     llvm::ArrayRef<clang::TemplateArgument> const Arguments,
     std::size_t const Index)
 {
-    MRDOCS_SYMBOL_TRACE(Parameters, context_);
-    MRDOCS_SYMBOL_TRACE(Arguments, context_);
+    MRDOCS_SYMBOL_TRACE(Parameters, *this);
+    MRDOCS_SYMBOL_TRACE(Arguments, *this);
     MRDOCS_CHECK_OR(Index != static_cast<unsigned>(-1), std::nullopt);
 
     // If the index is within the range of the template arguments, return the argument
@@ -3312,17 +3315,17 @@ tryGetTemplateArgument(
 
     // Attempt to get the default argument of the template parameter
     clang::NamedDecl* ND = Parameters->getParam(static_cast<unsigned>(Index));
-    MRDOCS_SYMBOL_TRACE(ND, context_);
+    MRDOCS_SYMBOL_TRACE(ND, *this);
     if(auto* TTPD = dyn_cast<clang::TemplateTypeParmDecl>(ND);
         TTPD && TTPD->hasDefaultArgument())
     {
-        MRDOCS_SYMBOL_TRACE(TTPD, context_);
+        MRDOCS_SYMBOL_TRACE(TTPD, *this);
         return TTPD->getDefaultArgument().getArgument();
     }
     if(auto* NTTPD = dyn_cast<clang::NonTypeTemplateParmDecl>(ND);
         NTTPD && NTTPD->hasDefaultArgument())
     {
-        MRDOCS_SYMBOL_TRACE(NTTPD, context_);
+        MRDOCS_SYMBOL_TRACE(NTTPD, *this);
         return NTTPD->getDefaultArgument().getArgument();
     }
     return std::nullopt;
@@ -3451,7 +3454,7 @@ bool
 ASTVisitor::
 checkFileFilters(clang::Decl const* D)
 {
-    MRDOCS_SYMBOL_TRACE(D, context_);
+    MRDOCS_SYMBOL_TRACE(D, *this);
 
     FileInfo* fileInfo = findFileInfo(D);
     MRDOCS_CHECK_OR(fileInfo, false);
@@ -3794,7 +3797,7 @@ checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
             auto childrenMode = ExtractionMode::Dependency;
             for (auto* M : DC->decls())
             {
-                MRDOCS_SYMBOL_TRACE(M, context_);
+                MRDOCS_SYMBOL_TRACE(M, *this);
                 if (M->isImplicit() && !isa<clang::IndirectFieldDecl>(M))
                 {
                     // Ignore implicit members

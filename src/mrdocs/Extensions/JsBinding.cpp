@@ -10,13 +10,12 @@
 //
 
 #include "JsBinding.hpp"
-#include <mrdocs/Config.hpp>
 #include <mrdocs/Engines/StdGlobals.hpp>
 #include <mrdocs/Generators/script/ScriptGenerator.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Engines/JavaScript.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 
 #include <memory>
 #include <string>
@@ -25,35 +24,6 @@
 namespace mrdocs {
 
 namespace {
-
-// Join call arguments into one message the way `console.log` does, so
-// `mrdocs.warn`/`mrdocs.error` accept the same free-form argument lists.
-std::string
-joinArgs(dom::Array const& args)
-{
-    std::string msg;
-    for (std::size_t i = 0; i < args.size(); ++i)
-    {
-        if (i > 0)
-        {
-            msg += ' ';
-        }
-        dom::Value const v = args.get(i);
-        if (v.isString())
-        {
-            msg += std::string(v.getString());
-        }
-        else if (v.isObject() || v.isArray())
-        {
-            msg += dom::JSON::stringify(v);
-        }
-        else
-        {
-            msg += toString(v);
-        }
-    }
-    return msg;
-}
 
 // Install the `mrdocs` global carrying the `register_transform` and
 // `register_generator` entry points before the script runs. A JavaScript
@@ -66,8 +36,7 @@ registerJsExtensionApi(
     js::Scope& scope,
     std::shared_ptr<void> const& vm,
     std::vector<std::pair<std::string, dom::Function>>& transforms,
-    std::vector<std::unique_ptr<Generator>>& generators,
-    bool warnAsError)
+    std::vector<std::unique_ptr<Generator>>& generators)
 {
     dom::Object api;
     api.set(
@@ -131,48 +100,20 @@ registerJsExtensionApi(
                 return result;
             })));
 
-    // Reporting: `mrdocs.report.warn`/`mrdocs.report.error` route through the
-    // host's report system so an extension's diagnostics are formatted,
-    // counted, and subject to `warn-as-error` like any Mr.Docs warning, instead
-    // of just printing to the console. They live under a `report` object so the
-    // reporting surface can grow without crowding the top-level `mrdocs` API. A
-    // read-only extension can use these to flag documentation it disapproves of
-    // without modifying the corpus. `warn` emits at error level when
-    // `warn-as-error` is set, matching how the rest of Mr.Docs escalates its
-    // own warnings, so a flagged convention can fail the build.
-    dom::Object reportApi;
-    reportApi.set(
-        "warn",
-        dom::Value(dom::makeVariadicInvocable(
-            [warnAsError](dom::Array const& args)
-                -> Expected<dom::Value, dom::Error>
-            {
-                report::log(
-                    warnAsError ? report::Level::error : report::Level::warn,
-                    "{}", joinArgs(args));
-                return dom::Value();
-            })));
-    reportApi.set(
-        "error",
-        dom::Value(dom::makeVariadicInvocable(
-            [](dom::Array const& args) -> Expected<dom::Value, dom::Error>
-            {
-                report::error("{}", joinArgs(args));
-                return dom::Value();
-            })));
-    api.set("report", dom::Value(std::move(reportApi)));
-
     scope.setGlobal("mrdocs", dom::Value(std::move(api)));
 }
 
 } // (anon)
 
 Expected<LoadedExtensions>
-loadJsExtensions(std::string const& scriptPath, Config const& config)
+loadJsExtensions(std::string const& scriptPath, report::Reporter& reporter)
 {
     // The engine is a shared handle from the start, so both the transforms
     // and the generators can keep it alive without a separate owner.
     auto vm = std::make_shared<js::Context>();
+    // The engine lives in the registry of the session that owns `reporter`,
+    // so the reporter outlives it.
+    vm->setReporter(&reporter);
     js::Scope scope(*vm);
 
     js::registerStdGlobals(scope);
@@ -180,7 +121,7 @@ loadJsExtensions(std::string const& scriptPath, Config const& config)
     LoadedExtensions loaded;
     loaded.vm = vm;
     registerJsExtensionApi(
-        scope, vm, loaded.transforms, loaded.generators, config.warnAsError);
+        scope, vm, loaded.transforms, loaded.generators);
 
     MRDOCS_TRY(std::string script, files::getFileText(scriptPath));
 
@@ -198,7 +139,7 @@ loadJsExtensions(std::string const& scriptPath, Config const& config)
         // mistake (a misspelled `mrdocs.register_transform` /
         // `mrdocs.register_generator`, or a guard that skipped it), so flag
         // it rather than silently doing nothing.
-        report::warn("extension '{}' registered nothing", scriptPath);
+        reporter.warn("extension '{}' registered nothing", scriptPath);
     }
 
     return loaded;

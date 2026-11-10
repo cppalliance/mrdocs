@@ -15,7 +15,7 @@
 #include "Support/CMakeExecution.hpp"
 #include "Support/Filesystem/Temp.hpp"
 #include <mrdocs/Support/Container/Algorithm.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/Support/MemoryBuffer.h>
 #include <optional>
 
@@ -36,6 +36,7 @@ namespace {
     @param cmakeArgs Extra arguments passed to the CMake invocation.
     @param buildDir The directory CMake configures into.
     @param workingDir The working directory for the CMake invocation.
+    @param reporter The reporter that prints each command run.
     @return The path to the generated `compile_commands.json`, or an error.
 */
 Expected<std::string>
@@ -43,12 +44,13 @@ generateCompileCommandsFileWithCmake(
     llvm::StringRef cmakeListsPath,
     llvm::StringRef cmakeArgs,
     llvm::StringRef buildDir,
-    llvm::StringRef workingDir)
+    llvm::StringRef workingDir,
+    report::Reporter& reporter)
 {
     MRDOCS_ASSERT(files::getFileName(cmakeListsPath) == "CMakeLists.txt");
     std::string const cmakeSourceDir(files::getParentDir(cmakeListsPath));
     return executeCmakeExportCompileCommands(
-        cmakeSourceDir, cmakeArgs, buildDir, workingDir);
+        cmakeSourceDir, cmakeArgs, buildDir, workingDir, reporter);
 }
 
 /** Determine which path describes the compilation database.
@@ -101,7 +103,7 @@ resolveCompilationDatabasePath(Config const& settings)
         }
         auto filename = files::getFileName(dbPath);
         MRDOCS_CHECK_OR(
-            is_one_of(filename, { "compile_commands.json", "CMakeLists.txt" }),
+            isOneOf(filename, {"compile_commands.json", "CMakeLists.txt"}),
             Unexpected(formatError(
                 "Invalid compilation database path: '{}'", dbPath)));
         MRDOCS_CHECK_OR(files::isRegularFile(dbPath),
@@ -137,16 +139,18 @@ resolveCompilationDatabasePath(Config const& settings)
 */
 MrDocsCompilationDatabase
 synthesizeCompilationDatabase(
-    Config const& config)
+    Config const& config,
+    report::Reporter& reporter)
 {
     MrDocsSettingsDB settingsDB{config};
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        settingsDB, config.useSystemStdlib, config.useSystemLibc);
+        settingsDB, config.sourceRoot, config.useSystemStdlib, config.useSystemLibc, reporter);
     return MrDocsCompilationDatabase(
         config.sourceRoot,
         settingsDB,
         config,
-        defaultIncludePaths);
+        defaultIncludePaths,
+        reporter);
 }
 
 /** Where CMake builds while generating the database, plus its owner.
@@ -230,7 +234,8 @@ readCompileCommands(
 Expected<MrDocsCompilationDatabase>
 readCompilationDatabase(
     Config const& config,
-    std::string compileCommandsPath)
+    std::string compileCommandsPath,
+    report::Reporter& reporter)
 {
     compileCommandsPath = files::normalizePath(compileCommandsPath);
     MRDOCS_TRY(compileCommandsPath, files::makeAbsolute(compileCommandsPath));
@@ -252,12 +257,13 @@ readCompilationDatabase(
     }
 
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        *jsonDatabase, config.useSystemStdlib, config.useSystemLibc);
+        *jsonDatabase, files::getParentDir(compileCommandsPath), config.useSystemStdlib, config.useSystemLibc, reporter);
     return MrDocsCompilationDatabase(
         files::getParentDir(compileCommandsPath),
         *jsonDatabase,
         config,
-        defaultIncludePaths);
+        defaultIncludePaths,
+        reporter);
 }
 
 /** Generate a database by running CMake, then read it.
@@ -271,7 +277,8 @@ readCompilationDatabase(
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabaseWithCMake(
     Config const& config,
-    std::string const& projectPath)
+    std::string const& projectPath,
+    report::Reporter& reporter)
 {
     auto& settings = config;
 
@@ -279,10 +286,11 @@ generateCompilationDatabaseWithCMake(
 
     Expected<std::string> const compileCommandsPathExp =
         generateCompileCommandsFileWithCmake(
-            projectPath, settings.cmake, build.buildPath, settings.configDir());
+            projectPath, settings.cmake, build.buildPath, settings.configDir(),
+            reporter);
     if (!compileCommandsPathExp)
     {
-        report::error(
+        reporter.error(
             "Failed to generate compile_commands.json file: {}",
             compileCommandsPathExp.error());
         return Unexpected(compileCommandsPathExp.error());
@@ -290,7 +298,7 @@ generateCompilationDatabaseWithCMake(
 
     MRDOCS_TRY(
         MrDocsCompilationDatabase database,
-        readCompilationDatabase(config, *compileCommandsPathExp));
+        readCompilationDatabase(config, *compileCommandsPathExp, reporter));
 
     // The compile commands point into the scratch build tree, so the
     // database owns it and keeps it alive through extraction.
@@ -305,7 +313,8 @@ generateCompilationDatabaseWithCMake(
 
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabase(
-    Config const& config)
+    Config const& config,
+    report::Reporter& reporter)
 {
     // Find and validate the path that describes the compilation database.
     MRDOCS_TRY(
@@ -315,7 +324,7 @@ generateCompilationDatabase(
     // Without a path, synthesize a database from the configuration values.
     if (dbPath.empty())
     {
-        return synthesizeCompilationDatabase(config);
+        return synthesizeCompilationDatabase(config, reporter);
     }
 
     // resolveCompilationDatabasePath only ever returns an existing regular
@@ -326,13 +335,13 @@ generateCompilationDatabase(
     auto filename = files::getFileName(dbPath);
     if (filename == "compile_commands.json")
     {
-        return readCompilationDatabase(config, dbPath);
+        return readCompilationDatabase(config, dbPath, reporter);
     }
 
     // A CMakeLists.txt is configured: run CMake to
     // generate a compile_commands.json, then read it
     MRDOCS_ASSERT(filename == "CMakeLists.txt");
-    return generateCompilationDatabaseWithCMake(config, dbPath);
+    return generateCompilationDatabaseWithCMake(config, dbPath, reporter);
 }
 
 } // mrdocs

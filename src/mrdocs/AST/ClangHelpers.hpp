@@ -817,7 +817,7 @@ isDefinition(DeclTy* D)
 }
 
 #ifdef NDEBUG
-#define MRDOCS_SYMBOL_TRACE(D, C)
+#define MRDOCS_SYMBOL_TRACE(D, V)
 #else
 namespace detail {
     // concept to check if ID->printQualifiedName(
@@ -953,10 +953,10 @@ namespace detail {
 #    define MRDOCS_SYMBOL_TRACE_MERGE_(a, b) a##b
 #    define MRDOCS_SYMBOL_TRACE_LABEL_(a)    MRDOCS_SYMBOL_TRACE_MERGE_(symbol_name_, a)
 #    define MRDOCS_SYMBOL_TRACE_UNIQUE_NAME  MRDOCS_SYMBOL_TRACE_LABEL_(__LINE__)
-#define MRDOCS_SYMBOL_TRACE(D, C) \
-    std::string MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
-    detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
-    report::trace("{}", MRDOCS_SYMBOL_TRACE_UNIQUE_NAME)
+#define MRDOCS_SYMBOL_TRACE(D, V) \
+    std::string MRDOCS_SYMBOL_TRACE_UNIQUE_NAME; \
+    detail::printTraceName(D, (V).context_, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
+    (V).reporter_.trace("{}", MRDOCS_SYMBOL_TRACE_UNIQUE_NAME)
 #endif
 
 /** Determine whether the driver mode is ClangCL.

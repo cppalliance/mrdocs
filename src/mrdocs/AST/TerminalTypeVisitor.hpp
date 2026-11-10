@@ -124,10 +124,10 @@ public:
     bool
     Visit(clang::QualType const QT)
     {
-        MRDOCS_SYMBOL_TRACE(QT, Visitor_.context_);
+        MRDOCS_SYMBOL_TRACE(QT, Visitor_);
         Quals_ |= QT.getLocalFastQualifiers();
         clang::Type const* T = QT.getTypePtrOrNull();
-        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
+        MRDOCS_SYMBOL_TRACE(T, Visitor_);
         return Visit(T);
     }
 
@@ -560,7 +560,7 @@ private:
     VisitTemplateSpecializationType(
         clang::TemplateSpecializationType const* T)
     {
-        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
+        MRDOCS_SYMBOL_TRACE(T, Visitor_);
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
             Constraints = SFINAE->Constraints;
@@ -573,7 +573,7 @@ private:
         // Template names can also refer to function templates,
         // C++0x template aliases, etc...
         clang::TemplateName const TN = T->getTemplateName();
-        MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
+        MRDOCS_SYMBOL_TRACE(TN, Visitor_);
         MRDOCS_ASSERT(! TN.isNull());
 
         // The list of template parameters and a reference to
@@ -582,9 +582,9 @@ private:
         if (auto* CT = dyn_cast<clang::TagType>(T->getCanonicalTypeInternal());
             !T->isTypeAlias() && CT)
         {
-            MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
+            MRDOCS_SYMBOL_TRACE(CT, Visitor_);
             D = CT->getDecl()->getDefinitionOrSelf();
-            MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
+            MRDOCS_SYMBOL_TRACE(D, Visitor_);
         }
         else
         {
@@ -667,11 +667,11 @@ private:
     VisitTemplateTypeParmType(
         clang::TemplateTypeParmType const* T)
     {
-        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
+        MRDOCS_SYMBOL_TRACE(T, Visitor_);
         clang::IdentifierInfo const* II = nullptr;
         if (clang::TemplateTypeParmDecl const* D = T->getDecl())
         {
-            MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
+            MRDOCS_SYMBOL_TRACE(D, Visitor_);
             if(D->isImplicit())
             {
                 // special case for implicit template parameters

@@ -28,7 +28,7 @@
 #include "Metadata/Finalizers/SpecializationFinalizer.hpp"
 #include <mrdocs/Support/Chrono.hpp>
 #include "Support/Debug.hpp"
-#include "Support/ReportImpl.hpp"
+#include "Support/ReporterImpl.hpp"
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
@@ -184,12 +184,12 @@ namespace {
 
 Expected<Corpus>
 Corpus::
-build(Config const& config)
+build(Config const& config, report::Reporter& reporter)
 {
     MRDOCS_TRY(
         MrDocsCompilationDatabase compilations,
-        generateCompilationDatabase(config));
-    return build(config, compilations);
+        generateCompilationDatabase(config, reporter));
+    return build(config, compilations, reporter);
 }
 
 //------------------------------------------------
@@ -197,7 +197,8 @@ build(Config const& config)
 mrdocs::Expected<Corpus>
 Corpus::build(
     Config const& config,
-    MrDocsCompilationDatabase const& compilations)
+    MrDocsCompilationDatabase const& compilations,
+    report::Reporter& reporter)
 {
     using clock_type = std::chrono::steady_clock;
     auto start_time = clock_type::now();
@@ -214,7 +215,7 @@ Corpus::build(
     // results of the AST traversal.
     // Any new Info objects will be added to the
     // detail::SymbolSet in the execution context.
-    ExecutionContext context(config);
+    ExecutionContext context(config, reporter);
 
     // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
     // for options.
@@ -315,7 +316,7 @@ Corpus::build(
 
         if (rc != 0)
         {
-            formatError("Failed to run action on {}", path).Throw();
+            formatError("Failed to run action on {}", path).throwError();
         }
     };
 
@@ -324,7 +325,7 @@ Corpus::build(
     // ------------------------------------------
     // Traverse the AST for all translation units.
     // This operation happens on a thread pool.
-    report::info("Extracting declarations");
+    reporter.info("Extracting declarations");
 
     // Get a copy of the filename strings
     std::vector<std::string> files = compilations.getAllFiles();
@@ -353,11 +354,11 @@ Corpus::build(
         for (std::string& file : files)
         {
             taskGroup.async(
-            [&, idx = ++index, path = std::move(file)]()
-            {
-                report::debug("[{}/{}] \"{}\"", idx, files.size(), path);
-                processFile(path);
-            });
+                [&, idx = ++index, path = std::move(file)]()
+                {
+                    reporter.debug("[{}/{}] \"{}\"", idx, files.size(), path);
+                    processFile(path);
+                });
         }
         errors = taskGroup.wait();
     }
@@ -374,7 +375,7 @@ Corpus::build(
         {
             return Unexpected(err);
         }
-        report::warn(
+        reporter.warn(
             "Warning: mapping failed because ", err);
     }
 
@@ -386,13 +387,13 @@ Corpus::build(
     // ------------------------------------------
     // Finalize corpus
     // ------------------------------------------
-    corpus.finalize(config);
+    corpus.finalize(config, reporter);
 
-    report::info(
+    reporter.info(
         "Extracted {} declarations in {}",
         corpus.info_.size(),
-        format_duration(clock_type::now() - start_time));
-    if (report::getMinimumLevel() <= report::Level::info)
+        formatDuration(clock_type::now() - start_time));
+    if (reporter.getMinimumLevel() <= report::Level::info)
     {
         for (ExtractionMode m:
              { ExtractionMode::Regular,
@@ -405,7 +406,7 @@ Corpus::build(
                 return info && info->Extraction == m;
             });
             MRDOCS_CHECK_OR_CONTINUE(count);
-            report::info(
+            reporter.info(
                 "  - {} symbols: {}",
                 toString(m),
                 count);
@@ -529,7 +530,7 @@ qualifiedName(
     }
 
     if (I.Parent &&
-        !is_one_of(I.Parent, {SymbolID::global, context}) &&
+        !isOneOf(I.Parent, {SymbolID::global, context}) &&
         I.id != context)
     {
         if (Symbol const* PI = find(I.Parent))
@@ -561,46 +562,46 @@ qualifiedName(
 }
 
 void
-Corpus::finalize(Config const& config)
+Corpus::finalize(Config const& config, report::Reporter& reporter)
 {
-    report::info("Finalizing corpus");
+    reporter.info("Finalizing corpus");
 
     {
-        report::debug("  - Finalizing namespaces");
-        NamespacesFinalizer finalizer(*this, config);
+        reporter.debug("  - Finalizing namespaces");
+        NamespacesFinalizer finalizer(*this, config, reporter);
         finalizer.build();
     }
 
     {
-        report::debug("  - Finalizing function objects");
-        FunctionObjectFinalizer finalizer(*this, config);
+        reporter.debug("  - Finalizing function objects");
+        FunctionObjectFinalizer finalizer(*this, config, reporter);
         finalizer.build();
     }
 
     if (config.inheritBaseMembers != ConfigSchema::BaseMemberInheritance::Never)
     {
-        report::debug("  - Finalizing base members");
-        BaseMembersFinalizer finalizer(*this, config);
+        reporter.debug("  - Finalizing base members");
+        BaseMembersFinalizer finalizer(*this, config, reporter);
         finalizer.build();
     }
 
     if (config.inheritHiddenFriends != ConfigSchema::BaseMemberInheritance::Never)
     {
-        report::debug("  - Finalizing hidden friends");
-        HiddenFriendsFinalizer finalizer(*this, config);
+        reporter.debug("  - Finalizing hidden friends");
+        HiddenFriendsFinalizer finalizer(*this, config, reporter);
         finalizer.build();
     }
 
     if (config.overloads)
     {
-        report::debug("  - Finalizing overloads");
+        reporter.debug("  - Finalizing overloads");
         OverloadsFinalizer finalizer(*this, config);
         finalizer.build();
     }
 
     // Add auto relates for member functions
     {
-        report::debug("  - Finalizing auto-relates");
+        reporter.debug("  - Finalizing auto-relates");
         DerivedFinalizer finalizer(*this, config);
         finalizer.build();
     }
@@ -608,7 +609,7 @@ Corpus::finalize(Config const& config)
     // Populate primary -> specialization back-pointers
     // and the deduction-guide lists on deduced records.
     {
-        report::debug("  - Finalizing specializations");
+        reporter.debug("  - Finalizing specializations");
         SpecializationFinalizer finalizer(*this, config);
         finalizer.build();
     }
@@ -616,21 +617,21 @@ Corpus::finalize(Config const& config)
     // Sort members: this runs unconditionally because
     // the members of some symbol types are always sorted.
     {
-        report::debug("  - Finalizing sorted members");
+        reporter.debug("  - Finalizing sorted members");
         SortMembersFinalizer finalizer(*this, config);
         finalizer.build();
     }
 
     // Finalize documentation comments
     {
-        report::debug("  - Finalizing documentation comments");
-        DocCommentFinalizer finalizer(*this, config);
+        reporter.debug("  - Finalizing documentation comments");
+        DocCommentFinalizer finalizer(*this, config, reporter);
         finalizer.build();
     }
 
     // Populate the legible anchor name of every symbol.
     {
-        report::debug("  - Finalizing symbol anchors");
+        reporter.debug("  - Finalizing symbol anchors");
         AnchorFinalizer finalizer(*this, config);
         finalizer.build();
     }
@@ -661,7 +662,6 @@ Expected<Symbol const&>
 Corpus::
 lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
 {
-    report::trace("Looking up '{}'", name);
     if (name.starts_with("::"))
     {
         return lookupImpl(self, SymbolID::global, name.substr(2));
@@ -669,7 +669,6 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
     // Skip contexts that can't have members
     SymbolID const contextId = findFirstParentInfo(self.info_, contextId0);
     MRDOCS_CHECK(contextId != SymbolID::invalid, formatError("Failed to find '{}'", contextId0));
-    report::trace("    Context: '{}'", contextId);
     if (auto [info, found] = self.lookupCacheGet(contextId, name);
         found)
     {
@@ -714,7 +713,6 @@ lookupImpl(
     std::string_view name,
     bool const cache)
 {
-    report::trace("Looking up parsed '{}'", name);
     if (cache)
     {
         if (auto [info, found] = self.lookupCacheGet(contextId, name); found)
@@ -725,7 +723,6 @@ lookupImpl(
 
     Symbol const* contextPtr = self.find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
-    report::trace("    Context: '{}'", contextPtr->Name);
 
     // Check the current contextId
     Symbol const* curContext = contextPtr;
@@ -760,11 +757,9 @@ lookupImpl(
     ParsedRef const& ref,
     bool const checkParameters) const
 {
-    report::trace("Looking up component '{}'", component.Name);
     // 1. Find context
     Symbol const* contextPtr = this->find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
-    report::trace("    Context: '{}'", contextPtr->Name);
 
     // If context is a typedef, lookup in the resolved type
     if (auto* TI = contextPtr->asTypedefPtr())
@@ -778,7 +773,6 @@ lookupImpl(
     Symbol const& context = *contextPtr;
 
     // 2. Get a list of members
-    report::trace("    Finding members of context '{}'", contextPtr->Name);
     llvm::SmallVector<SymbolID, 128> memberIDs;
     auto pushAllMembersOf = [&](Symbol const& I)
     {
@@ -833,7 +827,6 @@ lookupImpl(
         Symbol const* memberPtr = find(memberID);
         MRDOCS_CHECK_OR_CONTINUE(memberPtr);
         Symbol const& member = *memberPtr;
-        report::trace("    Attempting to match {} '{}'", toString(member.Kind), member.Name);
         MatchLevel const memberMatchLevel =
             visit(member, [&]<typename MInfoTy>(MInfoTy const& M)
                 -> MatchLevel
@@ -963,7 +956,6 @@ lookupImpl(
     }
 
     // Else, fallback to transparent contexts
-    report::trace("    Looking up in transparent contexts");
     for (SymbolID const& memberID : memberIDs)
     {
         Symbol const* memberPtr = find(memberID);
@@ -1008,6 +1000,13 @@ lookupCacheSet(
     Symbol const* info)
 {
     lookupCache_[contextId][std::string(name)] = info;
+}
+
+void
+Corpus::
+invalidateLookupCache() noexcept
+{
+    lookupCache_.clear();
 }
 
 std::vector<SymbolID>

@@ -16,7 +16,7 @@
 #include <unordered_map>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/detail/Corpus.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <format>
 #include <set>
@@ -35,6 +35,7 @@ namespace mrdocs {
 class DocCommentFinalizer {
     Corpus& corpus_;
     Config const& config_;
+    report::Reporter& reporter_;
 
     /* Broken references for which we have already emitted
        a warning.
@@ -100,15 +101,19 @@ class DocCommentFinalizer {
     bool
     warningBudgetRemaining() const noexcept
     {
-        return !config_.warnAsError
+        return !reporter_.warnAsError()
             || config_.maxErrors == 0
             || warningCount_ < config_.maxErrors;
     }
 
 public:
-    DocCommentFinalizer(Corpus& corpus, Config const& config)
+    DocCommentFinalizer(
+        Corpus& corpus,
+        Config const& config,
+        report::Reporter& reporter)
         : corpus_(corpus)
         , config_(config)
+        , reporter_(reporter)
     {
     }
 
@@ -313,7 +318,7 @@ private:
             std::vformat(format.value, std::make_format_args(args...));
         warnings_[loc].push_back(str);
         ++warningCount_;
-        if (config_.warnAsError
+        if (reporter_.warnAsError()
             && config_.maxErrors > 0
             && warningCount_ >= config_.maxErrors)
         {

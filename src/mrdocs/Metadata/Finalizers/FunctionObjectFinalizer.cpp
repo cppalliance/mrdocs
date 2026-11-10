@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
+// Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -20,7 +21,7 @@
 #include <mrdocs/Metadata/Symbol/SymbolBase.hpp>
 #include <mrdocs/Metadata/Symbol/Variable.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <algorithm>
 #include <format>
 
@@ -229,7 +230,7 @@ processVariable(
         if (docMarked)
         {
             auto loc = getPrimaryLocation(V);
-            report::warn(
+            reporter_.warn(
                 "{}:{}:{}: '{}': @functionobject/@functor command used "
                 "but type has no operator() overloads",
                 loc ? loc->SourcePath : "<unknown>",

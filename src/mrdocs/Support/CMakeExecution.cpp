@@ -25,7 +25,7 @@ namespace mrdocs {
 namespace {
 
 Expected<std::string>
-getCmakePath()
+getCmakePath(report::Reporter& reporter)
 {
     // `CMAKE_ROOT` is an explicit user override and wins over whatever
     // `cmake` happens to be on the `PATH`. Falling back to `PATH` only
@@ -44,13 +44,13 @@ getCmakePath()
     MRDOCS_CHECK(path, "CMake executable not found");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
     std::vector<llvm::StringRef> const args = {*path, "--version"};
-    int const result = ExecuteAndWaitWithLogging(*path, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, *path, args, std::nullopt, redirects);
     MRDOCS_CHECK(result == 0, "CMake execution failed when checking version");
     return *path;
 }
 
 Expected<std::string>
-executeCmakeHelp(llvm::StringRef cmakePath)
+executeCmakeHelp(llvm::StringRef cmakePath, report::Reporter& reporter)
 {
     ScopedTempFile const outputPath("cmake-help", "txt");
     MRDOCS_CHECK(outputPath, "Failed to create temporary file");
@@ -58,7 +58,7 @@ executeCmakeHelp(llvm::StringRef cmakePath)
     MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--help"};
-    int const result = ExecuteAndWaitWithLogging(cmakePath, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, cmakePath, args, std::nullopt, redirects);
     if (result != 0)
     {
         auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
@@ -88,7 +88,9 @@ executeCmakeHelp(llvm::StringRef cmakePath)
 
 
 Expected<std::string>
-executeCmakeSystemInformation(llvm::StringRef cmakePath)
+executeCmakeSystemInformation(
+    llvm::StringRef cmakePath,
+    report::Reporter& reporter)
 {
     ScopedTempFile const outputPath("cmake-system-information-out", "txt");
     MRDOCS_CHECK(outputPath, "Failed to create temporary file");
@@ -96,7 +98,7 @@ executeCmakeSystemInformation(llvm::StringRef cmakePath)
     MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--system-information"};
-    int const result = ExecuteAndWaitWithLogging(cmakePath, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, cmakePath, args, std::nullopt, redirects);
     if (result != 0)
     {
         auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
@@ -171,9 +173,11 @@ parseCmakeSystemInformationOutput(std::string const& cmakeSystemInformation)
 }
 
 Expected<std::string>
-getCmakeDefaultGenerator(llvm::StringRef cmakePath)
+getCmakeDefaultGenerator(
+    llvm::StringRef cmakePath,
+    report::Reporter& reporter)
 {
-    Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath);
+    Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath, reporter);
     if (cmakeHelpExp)
     {
         std::string const cmakeHelp = *std::move(cmakeHelpExp);
@@ -184,7 +188,7 @@ getCmakeDefaultGenerator(llvm::StringRef cmakePath)
         }
     }
 
-    Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath);
+    Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath, reporter);
     if (cmakeSystemInformationExp)
     {
         std::string const cmakeSystemInformation = *std::move(cmakeSystemInformationExp);
@@ -203,9 +207,11 @@ getCmakeDefaultGenerator(llvm::StringRef cmakePath)
 }
 
 Expected<bool>
-cmakeDefaultGeneratorIsVisualStudio(llvm::StringRef cmakePath)
+cmakeDefaultGeneratorIsVisualStudio(
+    llvm::StringRef cmakePath,
+    report::Reporter& reporter)
 {
-    MRDOCS_TRY(auto const defaultGenerator, getCmakeDefaultGenerator(cmakePath));
+    MRDOCS_TRY(auto const defaultGenerator, getCmakeDefaultGenerator(cmakePath, reporter));
     return defaultGenerator.starts_with("Visual Studio");
 }
 
@@ -465,7 +471,8 @@ generateCMakeArgs(
     llvm::StringRef cmakeArgs,
     llvm::StringRef projectPath,
     llvm::StringRef buildDir,
-    llvm::StringRef configDir)
+    llvm::StringRef configDir,
+    report::Reporter& reporter)
 {
     auto const userArgs = parseBashArgs(cmakeArgs.str());
     llvm::SmallVector<llvm::SmallString<128>, 50> res;
@@ -587,7 +594,7 @@ generateCMakeArgs(
     {
         MRDOCS_TRY(
             bool const cmakeDefaultGeneratorIsVisualStudio,
-            cmakeDefaultGeneratorIsVisualStudio(cmakePath));
+            cmakeDefaultGeneratorIsVisualStudio(cmakePath, reporter));
         if (cmakeDefaultGeneratorIsVisualStudio)
         {
             res.emplace_back("-G");
@@ -605,14 +612,15 @@ executeCmakeExportCompileCommands(
     llvm::StringRef projectPath,
     llvm::StringRef cmakeArgs,
     llvm::StringRef buildDir,
-    llvm::StringRef workingDir)
+    llvm::StringRef workingDir,
+    report::Reporter& reporter)
 {
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
-    MRDOCS_TRY(auto const cmakePath, getCmakePath());
+    MRDOCS_TRY(auto const cmakePath, getCmakePath(reporter));
 
     constexpr std::array<std::optional<llvm::StringRef>, 3>
         redirects = {std::nullopt, std::nullopt, std::nullopt};
-    MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir, workingDir));
+    MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir, workingDir, reporter));
     std::vector<llvm::StringRef> argsRef(args.begin(), args.end());
 
     // Switch to the requested working directory so CMake resolves
@@ -643,7 +651,7 @@ executeCmakeExportCompileCommands(
         }
     });
 
-    int const result = ExecuteAndWaitWithLogging(cmakePath, argsRef, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(reporter, cmakePath, argsRef, std::nullopt, redirects);
     if (result != 0) {
         return Unexpected(Error("CMake execution failed"));
     }

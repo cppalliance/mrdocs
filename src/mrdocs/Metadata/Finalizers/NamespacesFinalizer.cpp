@@ -9,7 +9,7 @@
 //
 
 #include "NamespacesFinalizer.hpp"
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/SmallVector.h>
 
 namespace mrdocs {
@@ -18,7 +18,7 @@ NamespacesFinalizer::FinalizerResult
 NamespacesFinalizer::
 operator()(NamespaceSymbol& I)
 {
-    report::trace(
+    reporter_.trace(
         "Finalizing namespace '{}'",
         corpus_.Corpus::qualifiedName(I));
 

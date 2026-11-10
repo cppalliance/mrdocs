@@ -43,7 +43,10 @@ struct XMLGenerator : Generator
     }
 
     Expected<void>
-    build(Corpus const& corpus, Config const& config) const override;
+    build(
+        Corpus const& corpus,
+        Config const& config,
+        report::Reporter& reporter) const override;
 };
 
 } // mrdocs::xml

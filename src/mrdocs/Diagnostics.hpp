@@ -12,7 +12,7 @@
 #ifndef MRDOCS_LIB_DIAGNOSTICS_HPP
 #define MRDOCS_LIB_DIAGNOSTICS_HPP
 
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/Support/raw_ostream.h>
 #include <format>
 #include <string>
@@ -73,11 +73,11 @@ public:
         It will print a summary of the number of errors
         and warnings.
 
+        @param reporter The reporter to print to.
         @param level The level of the report.
-        @param os The output stream to write to.
     */
     void
-    reportTotals(report::Level level)
+    reportTotals(report::Reporter& reporter, report::Level level)
     {
         if (messages_.empty())
         {
@@ -101,7 +101,7 @@ public:
                            warnCount > 1 ? "s" : "");
         }
         std::format_to(std::back_inserter(s), " total.");
-        report::print(level, s);
+        reporter.print(level, s);
     }
 
     /** Merge diagnostics from another object and print new messages.
@@ -113,10 +113,12 @@ public:
         to the output stream if it's a new message.
 
         @param other The other diagnostics to merge.
+        @param reporter The reporter to print new messages to.
     */
     void
     mergeAndReport(
-        Diagnostics&& other)
+        Diagnostics&& other,
+        report::Reporter& reporter)
     {
         for(auto&& m : other.messages_)
         {
@@ -131,7 +133,7 @@ public:
                 auto const level = is_error
                     ? report::Level::error
                     : report::Level::warn;
-                report::print(level, msg);
+                reporter.print(level, msg);
             }
         }
         other.messages_.clear();

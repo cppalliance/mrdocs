@@ -12,6 +12,7 @@
 #ifndef MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP
 #define MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP
 
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/Support/Program.h>
 
 namespace mrdocs {
@@ -21,12 +22,14 @@ namespace mrdocs {
  * being run (with its arguments).
  * 
  * This function has the same parameters, with the same meaning, as
- * llvm::sys::ExecuteAndWait().
+ * llvm::sys::ExecuteAndWait(), after the reporter that prints the
+ * command.
  * 
  * \par Preconditions
  * `args.size() >= 1`.
 */
 int ExecuteAndWaitWithLogging(
+    report::Reporter& reporter,
     llvm::StringRef program,
     llvm::ArrayRef<llvm::StringRef> args,
     std::optional<llvm::ArrayRef<llvm::StringRef>> env = std::nullopt,

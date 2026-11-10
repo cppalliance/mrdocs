@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_SUPPORT_REPORTIMPL_HPP
-#define MRDOCS_LIB_SUPPORT_REPORTIMPL_HPP
+#ifndef MRDOCS_LIB_SUPPORT_REPORTERIMPL_HPP
+#define MRDOCS_LIB_SUPPORT_REPORTERIMPL_HPP
 
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -101,32 +101,6 @@ Level
 getLevel(
     unsigned level) noexcept;
 
-/** Formatted reporting to a live stream.
-
-    A trailing newline will be added automatically.
-*/
-MRDOCS_DECL
-void
-call_impl(
-    Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const* loc,
-    Error const* e = nullptr);
-
-/** Formatted reporting to a live stream.
-
-    A trailing newline will be added automatically.
-*/
-inline void
-call(
-    Level level,
-    std::function<void(llvm::raw_ostream&)> f,
-    source_location const& loc =
-        source_location::current())
-{
-    call_impl(level, std::move(f), &loc);
-}
-
 } // report
 
 } // mrdocs
@@ -150,4 +124,4 @@ struct std::formatter<llvm::SmallString<InternalLen>>
   }
 };
 
-#endif // MRDOCS_LIB_SUPPORT_REPORTIMPL_HPP
+#endif // MRDOCS_LIB_SUPPORT_REPORTERIMPL_HPP

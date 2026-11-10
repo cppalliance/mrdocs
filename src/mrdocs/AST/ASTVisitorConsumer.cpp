@@ -26,6 +26,7 @@ HandleTranslationUnit(clang::ASTContext& Context)
     ASTVisitor visitor(
         config_,
         diags,
+        ex_.reporter(),
         compiler_,
         Context,
         *sema_,

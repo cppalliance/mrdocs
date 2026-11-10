@@ -12,6 +12,7 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <memory>
 #include <string>
 
@@ -22,12 +23,13 @@ namespace mrdocs::example {
 // Reads the YAML into a Config, normalizes it against `dirs`, and calls
 // Corpus::build with it. The compilation database is resolved from the
 // configuration (a compile_commands.json, a CMakeLists.txt, or synthesized
-// from source-root + input).
+// from source-root + input). The build reports through `reporter`.
 Expected<Corpus>
 loadCorpusFromConfig(
     std::string const& configPath,
     ReferenceDirectories const& dirs,
-    char const** argv = nullptr);
+    char const** argv,
+    report::Reporter& reporter);
 
 } // namespace mrdocs::example
 

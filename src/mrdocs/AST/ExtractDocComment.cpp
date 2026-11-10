@@ -50,7 +50,7 @@
 #endif
 
 #ifdef NDEBUG
-#    define MRDOCS_COMMENT_TRACE(D, Ctx)
+#define MRDOCS_COMMENT_TRACE(D, Ctx, R)
 #else
 #    define MRDOCS_COMMENT_TRACE_MERGE_(a, b) a##b
 #    define MRDOCS_COMMENT_TRACE_LABEL_(a) \
@@ -93,12 +93,12 @@ dumpCommentContent(
 }
 } // namespace detail
 
-#    define MRDOCS_COMMENT_TRACE(D, Ctx)                                        \
-        llvm::SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME;               \
-        ::detail::dumpCommentContent(D, Ctx, MRDOCS_COMMENT_TRACE_UNIQUE_NAME); \
-        report::trace(                                                          \
-            "{}",                                                               \
-            std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
+#define MRDOCS_COMMENT_TRACE(D, Ctx, R) \
+    llvm::SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME; \
+    ::detail::dumpCommentContent(D, Ctx, MRDOCS_COMMENT_TRACE_UNIQUE_NAME); \
+    (R).trace( \
+        "{}", \
+        std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
 #endif
 
 namespace mrdocs {
@@ -188,7 +188,9 @@ convertStyle(clang::comments::InlineCommandRenderKind k)
 }
 
 static doc::ParamDirection
-convertDirection(clang::comments::ParamCommandPassDirection d)
+convertDirection(
+    clang::comments::ParamCommandPassDirection d,
+    report::Reporter& reporter)
 {
     using D = clang::comments::ParamCommandPassDirection;
     switch (d)
@@ -200,14 +202,14 @@ convertDirection(clang::comments::ParamCommandPassDirection d)
     case D::InOut:
         return doc::ParamDirection::inout;
     }
-    report::error(
+    reporter.error(
         "error: unsupported ParamCommandPassDirection <{}>",
         static_cast<int>(d));
     MRDOCS_UNREACHABLE();
 }
 
 static doc::Parts
-convertCopydoc(unsigned id)
+convertCopydoc(unsigned id, report::Reporter& reporter)
 {
     using T = clang::comments::CommandTraits;
     switch (id)
@@ -219,7 +221,7 @@ convertCopydoc(unsigned id)
     case T::KCI_copydetails:
         return doc::Parts::description;
     default:
-        report::error("error: unsupported CommandTrait id <{}>", id);
+        reporter.error("error: unsupported CommandTrait id <{}>", id);
         MRDOCS_UNREACHABLE();
     }
 }
@@ -292,6 +294,7 @@ class DocCommentVisitor
     clang::SourceManager const& sm_;
     clang::comments::FullComment const* FC_;
     Diagnostics& diags_;
+    report::Reporter& reporter_;
 
     DocComment jd_;
     doc::InlineContainer* curInlines_{ nullptr };
@@ -318,13 +321,14 @@ class DocCommentVisitor
         MRDOCS_ASSERT(curInlines_ != nullptr);
         auto& vec = curInlines_->children;
 
-        auto mergeable = [](doc::InlineKind k) {
-            return is_one_of(
+        auto mergeable = [](doc::InlineKind k)
+        {
+            return isOneOf(
                 k,
-                { doc::InlineKind::Text,
-                  doc::InlineKind::Emph,
-                  doc::InlineKind::Strong,
-                  doc::InlineKind::Code });
+                {doc::InlineKind::Text,
+                    doc::InlineKind::Emph,
+                    doc::InlineKind::Strong,
+                    doc::InlineKind::Code});
         };
 
         InlineTy elem(std::forward<Args>(args)...);
@@ -518,12 +522,12 @@ class DocCommentVisitor
     void
     visitChildrenWithCursor(clang::comments::Comment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         Cursor cur(C);
         while (!cur.done())
         {
             auto* n = cur.cur();
-            MRDOCS_COMMENT_TRACE(n, ctx_);
+            MRDOCS_COMMENT_TRACE(n, ctx_, reporter_);
             visitNode(n, cur); // may advance/consume
             cur.advance();
         }
@@ -660,7 +664,7 @@ class DocCommentVisitor
     {
         if (!warnings_)
         {
-            report::debug("{} at {} ({})", message, filename, line);
+            reporter_.debug("{} at {} ({})", message, filename, line);
             return;
         }
         static std::mutex mutex;
@@ -672,7 +676,7 @@ class DocCommentVisitor
                 return;
             }
         }
-        report::warn("{} at {} ({})", message, filename, line);
+        reporter_.warn("{} at {} ({})", message, filename, line);
     }
 
     // Small predicates on Clang comment children.
@@ -1127,7 +1131,7 @@ class DocCommentVisitor
     void
     visitText(clang::comments::TextComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         llvm::StringRef s = C->getText();
         if (curInlines_ && curInlines_->children.empty())
         {
@@ -1143,7 +1147,7 @@ class DocCommentVisitor
     void
     visitHTMLStart(clang::comments::HTMLStartTagComment const* C, Cursor& cur)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         MRDOCS_ASSERT(C->child_begin() == C->child_end());
 
         auto loc = sm_.getPresumedLoc(C->getBeginLoc());
@@ -1312,7 +1316,7 @@ class DocCommentVisitor
         while (!inner.done())
         {
             auto* c = inner.cur();
-            MRDOCS_COMMENT_TRACE(c, ctx_);
+            MRDOCS_COMMENT_TRACE(c, ctx_, reporter_);
             visitNode(c, inner);
             inner.advance();
         }
@@ -1403,7 +1407,7 @@ class DocCommentVisitor
         while (!inner.done())
         {
             auto* c = inner.cur();
-            MRDOCS_COMMENT_TRACE(c, ctx_);
+            MRDOCS_COMMENT_TRACE(c, ctx_, reporter_);
             visitNode(c, inner);
             inner.advance();
         }
@@ -1415,7 +1419,7 @@ class DocCommentVisitor
         clang::comments::InlineCommandComment const* C,
         Cursor& cur)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         auto const* cmd = ctx_.getCommentCommandTraits().getCommandInfo(
             C->getCommandID());
         MRDOCS_ASSERT(cmd != nullptr);
@@ -1451,7 +1455,7 @@ class DocCommentVisitor
             std::string leftover = fixReference(ref, cur);
             bool hasExtra = !leftover.empty();
 
-            doc::Parts parts = convertCopydoc(ID);
+            doc::Parts parts = convertCopydoc(ID, reporter_);
             bool copyBrief = parts == doc::Parts::brief
                              || parts == doc::Parts::all;
             bool copyDetails = parts == doc::Parts::description
@@ -1573,7 +1577,7 @@ class DocCommentVisitor
     void
     visitParagraph(clang::comments::ParagraphComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         if (curInlines_)
         {
             visitChildrenWithCursor(C);
@@ -1605,7 +1609,7 @@ class DocCommentVisitor
     void
     visitBlockCommand(clang::comments::BlockCommandComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         auto const* cmd = ctx_.getCommentCommandTraits().getCommandInfo(
             C->getCommandID());
         if (!cmd)
@@ -1761,7 +1765,7 @@ class DocCommentVisitor
         case T::KCI_copybrief:
         case T::KCI_copydetails:
         case T::KCI_copydoc:
-            report::error(
+            reporter_.error(
                 "error: inline command {} should be handled elsewhere",
                 cmd->Name);
             MRDOCS_UNREACHABLE();
@@ -1810,7 +1814,7 @@ class DocCommentVisitor
     void
     visitParam(clang::comments::ParamCommandComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         doc::ParamBlock param;
         if (C->hasParamName())
         {
@@ -1824,7 +1828,7 @@ class DocCommentVisitor
 
         if (C->isDirectionExplicit())
         {
-            param.direction = convertDirection(C->getDirection());
+            param.direction = convertDirection(C->getDirection(), reporter_);
         }
 
         if (auto* P = C->getParagraph())
@@ -1858,7 +1862,7 @@ class DocCommentVisitor
     void
     visitTParam(clang::comments::TParamCommandComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         doc::TParamBlock tparam;
         if (C->hasParamName())
         {
@@ -1891,7 +1895,7 @@ class DocCommentVisitor
         {
             if (warnings_)
             {
-                report::warn(
+                reporter_.warn(
                     "{}: Duplicate @tparam for argument {}",
                     C->getBeginLoc().printToString(sm_),
                     tparam.name);
@@ -1904,7 +1908,7 @@ class DocCommentVisitor
     void
     visitVerbatimBlock(clang::comments::VerbatimBlockComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         std::string payload;
         unsigned n = C->getNumLines();
         for (unsigned i = 0; i < n; ++i)
@@ -2016,7 +2020,7 @@ class DocCommentVisitor
     void
     visitVerbatimBlockLine(clang::comments::VerbatimBlockLineComment const* C)
     {
-        MRDOCS_COMMENT_TRACE(C, ctx_);
+        MRDOCS_COMMENT_TRACE(C, ctx_, reporter_);
         emplaceInline<doc::TextInline>(true, C->getText().str());
     }
 
@@ -2026,19 +2030,21 @@ public:
         clang::ASTContext const& ctx,
         Config const& config,
         Diagnostics& diags,
+        report::Reporter& reporter,
         bool warnings)
         : config_(config)
         , ctx_(ctx)
         , sm_(ctx_.getSourceManager())
         , FC_(FC)
         , diags_(diags)
+        , reporter_(reporter)
         , warnings_(warnings)
     {}
 
     DocComment
     build()
     {
-        MRDOCS_COMMENT_TRACE(FC_, ctx_);
+        MRDOCS_COMMENT_TRACE(FC_, ctx_, reporter_);
         visitChildrenWithCursor(FC_);
         return std::move(jd_);
     }
@@ -2068,10 +2074,11 @@ populateDocComment(
     clang::ASTContext const& ctx,
     Config const& config,
     Diagnostics& diags,
+    report::Reporter& reporter,
     bool warnings)
 {
-    MRDOCS_COMMENT_TRACE(FC, ctx);
-    DocCommentVisitor visitor(FC, ctx, config, diags, warnings);
+    MRDOCS_COMMENT_TRACE(FC, ctx, reporter);
+    DocCommentVisitor visitor(FC, ctx, config, diags, reporter, warnings);
     auto result = visitor.build();
     if (!result.empty())
     {

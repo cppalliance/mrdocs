@@ -14,7 +14,7 @@
 #include <mrdocs/Engines/Lua.hpp>
 #include <mrdocs/Handlebars.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/Support/raw_ostream.h>
 #include <format>
 #include <print>

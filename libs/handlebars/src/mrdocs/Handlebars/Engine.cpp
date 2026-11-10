@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Dom/OverlayObject.hpp>
 #include <mrdocs/Handlebars.hpp>
 #include <cassert>
 #include <algorithm>
@@ -45,186 +46,16 @@ isEmpty(dom::Value const& arg)
     return !arg.isTruthy();
 }
 
-class OverlayObjectImpl : public dom::ObjectImpl
-{
-    std::vector<dom::Object> grandParents_;
-    dom::Object parent_;
-    dom::Object child_;
-
-public:
-    ~OverlayObjectImpl() override = default;
-
-    OverlayObjectImpl(dom::Object parent)
-    {
-        auto* parImpl = parent.impl().get();
-        auto* parOverlay = dynamic_cast<OverlayObjectImpl*>(parImpl);
-        if (parOverlay == nullptr)
-        {
-            parent_ = std::move(parent);
-        }
-        else if (parOverlay->child_.empty())
-        {
-            grandParents_ = parOverlay->grandParents_;
-            parent_ = parOverlay->parent_;
-        }
-        else
-        {
-            grandParents_.push_back(parOverlay->parent_);
-            grandParents_.insert(
-                grandParents_.end(),
-                parOverlay->grandParents_.begin(),
-                parOverlay->grandParents_.end());
-            parent_ = parOverlay->child_;
-        }
-    }
-
-    OverlayObjectImpl(dom::Object child, dom::Object parent)
-        : OverlayObjectImpl(std::move(parent))
-    {
-        child_ = std::move(child);
-        auto* childOverlay = dynamic_cast<OverlayObjectImpl*>(child_.impl().get());
-        if (childOverlay != nullptr)
-        {
-            grandParents_.insert(
-                grandParents_.begin(),
-                parent_);
-            grandParents_.insert(
-                grandParents_.end(),
-                childOverlay->grandParents_.begin(),
-                childOverlay->grandParents_.end());
-            parent_ = childOverlay->parent_;
-            child_ = childOverlay->child_;
-        }
-    }
-
-    std::size_t size() const override
-    {
-        std::size_t n = parent_.size() + child_.size();
-        child_.visit([&](dom::String const& key, dom::Value const&)
-        {
-            if (parent_.exists(key))
-            {
-                --n;
-            }
-            else
-            {
-                for (auto const& grandParent : grandParents_)
-                {
-                    if (grandParent.exists(key))
-                    {
-                        --n;
-                        break;
-                    }
-                }
-            }
-        });
-        return n;
-    };
-
-    dom::Value get(std::string_view key) const override
-    {
-        if (child_.exists(key))
-        {
-            return child_.get(key);
-        }
-        if (parent_.exists(key))
-        {
-            return parent_.get(key);
-        }
-        for (auto const& grandParent : grandParents_)
-        {
-            if (grandParent.exists(key))
-            {
-                return grandParent.get(key);
-            }
-        }
-        return dom::Kind::Undefined;
-    }
-
-    void set(dom::String key, dom::Value value) override
-    {
-        child_.set(key, std::move(value));
-    };
-
-    bool visit(std::function<bool(dom::String, dom::Value)> fn) const override
-    {
-        if (!child_.visit(fn))
-        {
-            return false;
-        }
-        auto visit_if_not_inchild = [&](
-            dom::String const& key, dom::Value const& value)
-        {
-            if (!child_.exists(key))
-            {
-                return fn(key, value);
-            }
-            return true;
-        };
-        if (!parent_.visit(visit_if_not_inchild))
-        {
-            return false;
-        }
-
-        for (std::size_t i = 0; i < grandParents_.size(); ++i)
-        {
-            auto visit_if_not_in_prev = [&](
-                dom::String const& key, dom::Value const& value)
-            {
-                if (child_.exists(key))
-                {
-                    return true;
-                }
-                if (parent_.exists(key))
-                {
-                    return true;
-                }
-                for (std::size_t j = 0; j < i; ++j)
-                {
-                    if (grandParents_[j].exists(key))
-                    {
-                        return true;
-                    }
-                }
-                return fn(key, value);
-            };
-            if (!grandParents_[i].visit(visit_if_not_in_prev))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    bool exists(std::string_view key) const override
-    {
-        if (child_.exists(key))
-        {
-            return true;
-        }
-        if (parent_.exists(key))
-        {
-            return true;
-        }
-        return std::ranges::any_of(
-            grandParents_,
-            [&](dom::Object const& grandParent)
-            {
-                return grandParent.exists(key);
-            });
-    }
-};
-
 dom::Object
 createFrame(dom::Object const& parent)
 {
-    return dom::newObject<OverlayObjectImpl>(parent);
+    return dom::overlayObject(parent);
 }
 
 dom::Object
 createFrame(dom::Object const& child, dom::Object const& parent)
 {
-    return dom::newObject<OverlayObjectImpl>(child, parent);
+    return dom::overlayObject(child, parent);
 }
 
 dom::Object
@@ -1371,7 +1202,7 @@ parseTag(
 
 Expected<void, Error>
 Handlebars::
-try_render_to(
+tryRenderTo(
     OutputRef& out,
     std::string_view templateText,
     dom::Value const& context,
@@ -1386,12 +1217,12 @@ try_render_to(
     state.inlinePartials.emplace_back();
     state.rootContext = context;
     state.contextStack.emplace_back(state.context);
-    return try_render_to_impl(out, context, options, state);
+    return tryRenderToImpl(out, context, options, state);
 }
 
 Expected<void, Error>
 Handlebars::
-try_render_to_impl(
+tryRenderToImpl(
     OutputRef& out,
     dom::Value const& context,
     HandlebarsOptions const& opt,
@@ -1605,7 +1436,7 @@ public:
     ~HbsHelperObjectImpl() override = default;
 
     char const*
-    type_key() const noexcept override
+    typeKey() const noexcept override
     {
         return "handlebarsHelperObject";
     }
@@ -2745,7 +2576,7 @@ renderPartial(
         OutputRef dumb{};
         std::string_view templateText = state.templateText;
         state.templateText = fnBlock;
-        { auto _hbs_try15 = this->try_render_to_impl(dumb, context, opt, state); if (!_hbs_try15) return Unexpected(_hbs_try15.error()); }
+        { auto _hbs_try15 = this->tryRenderToImpl(dumb, context, opt, state); if (!_hbs_try15) return Unexpected(_hbs_try15.error()); }
         state.templateText = templateText;
 
         // ==========================================================
@@ -2903,7 +2734,7 @@ renderPartial(
     // ==========================================
     // Render partial
     // ==========================================
-    { auto _hbs_try18 = this->try_render_to_impl(out, partialCtx, opt, state); if (!_hbs_try18) return Unexpected(_hbs_try18.error()); }
+    { auto _hbs_try18 = this->tryRenderToImpl(out, partialCtx, opt, state); if (!_hbs_try18) return Unexpected(_hbs_try18.error()); }
 
     // ==========================================
     // Restore state
@@ -3142,7 +2973,7 @@ renderBlock(
         // ==========================================
         // Render
         // ==========================================
-        { auto _hbs_try21 = try_render_to_impl(out, newContext, opt, state); if (!_hbs_try21) return Unexpected(_hbs_try21.error()); }
+        { auto _hbs_try21 = tryRenderToImpl(out, newContext, opt, state); if (!_hbs_try21) return Unexpected(_hbs_try21.error()); }
 
         // ==========================================
         // Restore state
@@ -3255,7 +3086,7 @@ renderBlock(
                     state.templateText.remove_prefix(2);
                 }
             }
-            { auto _hbs_try22 = try_render_to_impl(out, newContext, opt, state); if (!_hbs_try22) return Unexpected(_hbs_try22.error()); }
+            { auto _hbs_try22 = tryRenderToImpl(out, newContext, opt, state); if (!_hbs_try22) return Unexpected(_hbs_try22.error()); }
         }
         else
         {
@@ -3454,14 +3285,14 @@ unregisterHelper(std::string_view name) {
         registerHelper(
             "helperMissing",
             dom::makeVariadicInvocable(
-                helpers::helper_missing_fn));
+                helpers::helperMissingFn));
     }
     else if (name == "blockHelperMissing")
     {
         registerHelper(
             "blockHelperMissing",
             dom::makeInvocable(
-                helpers::block_helper_missing_fn));
+                helpers::blockHelperMissingFn));
     }
 }
 

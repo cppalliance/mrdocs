@@ -13,10 +13,13 @@
 #ifndef MRDOCS_TEST_GOLDEN_TESTRUNNER_HPP
 #define MRDOCS_TEST_GOLDEN_TESTRUNNER_HPP
 
-#include <mrdocs/MrDocsCompilationDatabase.hpp>
 #include <mrdocs/Config.hpp>
+#include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/MrDocsCompilationDatabase.hpp>
+#include <mrdocs/Session.hpp>
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/ErrorOr.h>
@@ -52,11 +55,28 @@ class TestRunner
 {
     ThreadPool threadPool_;
 
+    // The reporter of the runner: the settings it loads and the fixtures
+    // that fail report here.
+    report::Reporter& reporter_;
+
+    // The native libraries the fixtures load, shared by every session of
+    // the runner and by the threads that run them: a library is loaded and
+    // its entry point run once per process.
+    std::shared_ptr<ExtensionRegistry::LibraryRegistry> libraries_ =
+        std::make_shared<ExtensionRegistry::LibraryRegistry>();
+
 public:
     TestResults results;
 
-    /// Construct a runner.
-    TestRunner() = default;
+    /** Construct a runner.
+
+        @param reporter The reporter of the runner. Each fixture runs in
+        sessions of its own, which take the level of this reporter.
+    */
+    explicit TestRunner(report::Reporter& reporter)
+        : reporter_(reporter)
+    {
+    }
 
     /** Check a single file, or a directory recursively.
 
@@ -80,6 +100,16 @@ private:
         llvm::StringRef filePath,
         Config const& dirSettings,
         ReferenceDirectories const& dirs);
+
+    /** Give a session of a fixture the settings of the runner's reporter. */
+    void
+    configureLog(Session& session) const;
+
+    /** Fail a fixture whose session reported an error, as the tool fails
+        a run that does.
+    */
+    static Expected<void>
+    checkReported(Session const& session);
 
     /** Execute a compilation/database run for one test input. */
     Expected<void>

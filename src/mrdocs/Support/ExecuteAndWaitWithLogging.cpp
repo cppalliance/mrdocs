@@ -10,12 +10,14 @@
 //
 
 #include "ExecuteAndWaitWithLogging.hpp"
-#include "ReportImpl.hpp"
+#include "ReporterImpl.hpp"
 #include <mrdocs/Support/Error/Assert.hpp>
 
 namespace mrdocs {
 
-int ExecuteAndWaitWithLogging(
+int
+ExecuteAndWaitWithLogging(
+    report::Reporter& reporter,
     llvm::StringRef program,
     llvm::ArrayRef<llvm::StringRef> args,
     std::optional<llvm::ArrayRef<llvm::StringRef>> env,
@@ -33,7 +35,7 @@ int ExecuteAndWaitWithLogging(
         command += ' ';
         command += args[i];
     }
-    report::info("{}", command);
+    reporter.info("{}", command);
     return llvm::sys::ExecuteAndWait(program, args, env, redirects, secondsToWait, memoryLimit, errMsg, executionFailed, procStat, affinityMask);
 }
 
