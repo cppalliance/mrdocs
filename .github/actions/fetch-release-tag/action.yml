@@ -1,0 +1,22 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2026 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+
+name: Fetch the nearest release tag
+description: Deepens a shallow clone until git describe finds a calendar tag
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        git fetch --depth=1 origin '+refs/tags/20*:refs/tags/20*' || true
+        for _ in 1 2 3 4 5 6 7 8 9 10; do
+          git describe --tags --match '20*' --exclude '*[!0-9.+]*' HEAD >/dev/null 2>&1 && break
+          git fetch --deepen=100 origin "$GITHUB_SHA" || break
+        done

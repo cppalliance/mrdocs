@@ -47,6 +47,26 @@ jobs:
       - name: Container Bootstrap
         uses: alandefreitas/cpp-actions/container-bootstrap@v1.9.5
 
+      # Adds the apt source that publishes the release GCC for ubuntu:20.04, so that Setup C++ finds it.
+      - name: Add The Release GCC Source
+        if: ${{ matrix.container == 'ubuntu:20.04' }}
+        run: |
+          set -eux
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl
+          mkdir -p /etc/apt/keyrings
+          curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60C317803A41BA51845E371A1E9377A2BA9EF27F' \
+            -o /etc/apt/keyrings/ubuntu-toolchain-r-test.asc
+          echo 'deb [signed-by=/etc/apt/keyrings/ubuntu-toolchain-r-test.asc] https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu focal main' \
+            > /etc/apt/sources.list.d/ubuntu-toolchain-r-test.list
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.5
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.9.5
         with:
@@ -62,12 +82,18 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.9.5
-        id: setup-cpp
+      # ubuntu:20.04 has Python 3.8, and the scripts need 3.9.
+      - name: Setup Python
+        uses: astral-sh/setup-uv@v7
         with:
-          compiler: ${{ matrix.compiler }}
-          version: ${{ matrix.version }}
+          python-version: '3.11'
+          activate-environment: true
+          enable-cache: false
+
+      - name: Setup CMake
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.9.5
+        with:
+          version: '>=3.26'
 
       # Same dual-source pattern as ci-releases.yml: fresh-build artifact
       # when we built this run, develop-release fallback otherwise.
@@ -116,12 +142,26 @@ jobs:
           npx gulp lint
           npx gulp
 
+      # Generates the documentation site with Antora.
       - name: Generate Local Documentation
         working-directory: docs
+        env:
+          CC: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          CXX: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
         run: |
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           export GH_TOKEN
           set -x
+          # The C++ reference extension searches PATH for g++ before it reads
+          # CXX, so put the selected GCC's g++ and gcc first.
+          # https://github.com/cppalliance/antora-cpp-reference-extension/issues/2
+          if [[ "$RUNNER_OS" == 'Linux' ]]; then
+            shim="$RUNNER_TEMP/compiler-shim"
+            mkdir -p "$shim"
+            ln -sf "$(command -v "$CC")" "$shim/gcc"
+            ln -sf "$(command -v "$CXX")" "$shim/g++"
+            export PATH="$shim:$PATH"
+          fi
           npm ci
           npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace --log-level=debug
           mkdir -p ../build/docs-local

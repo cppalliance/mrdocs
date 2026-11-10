@@ -16,8 +16,6 @@ import {
     expectedBodyLength,
     isCodeChange,
     parseCommitSummary,
-    parsePrTemplateSections,
-    prTemplateInfos,
     basicChecks,
     scopesTouched,
     summarizeScopes,
@@ -25,24 +23,6 @@ import {
     type CommitInfo,
     type DangerInputs,
 } from "./logic";
-
-const sampleTemplate = [
-    "<!-- Fill this in yourself. -->",
-    "",
-    "_What this PR does and why._",
-    "",
-    "## Changes",
-    "",
-    "_Replace the lines that apply._",
-    "",
-    "## Testing",
-    "",
-    "_How this change stays tested._",
-    "",
-    "## Documentation",
-    "",
-    "_What was updated._",
-].join("\n");
 
 describe("parseCommitSummary", () => {
     // Ensures we correctly extract type, scope, and subject when format is valid.
@@ -180,6 +160,22 @@ describe("scopesTouched", () => {
         expect(scopesTouched([])).toEqual(new Set());
     });
 
+    // The plugin tests, the consumer project and the list that registers
+    // them are tests, so a change to only them still builds and runs them.
+    it("classifies the plugin tests and the consumer project as the tests scope", () => {
+        const paths = [
+            "tests/integration/plugin-api/exports/CheckExports.cmake",
+            "tests/integration/plugin-api/refused/MainError.cpp",
+            "tests/integration/plugin-api/CMakeLists.txt",
+            "tests/integration/cmake/CMakeLists.txt",
+            "tests/CMakeLists.txt",
+        ];
+        for (const path of paths) {
+            expect(scopesTouched([path])).toEqual(new Set(["tests"]));
+        }
+        expect(isCodeChange(scopesTouched(paths))).toBe(true);
+    });
+
     // examples/** is its own scope; it does not get rolled into source.
     it("classifies paths under examples/ as the examples scope", () => {
         const scopes = scopesTouched([
@@ -265,6 +261,12 @@ describe("affectsBuildPipeline", () => {
     it("flags build / install / demo scripts", () => {
         expect(affectsBuildPipeline([".github/scripts/install-mrdocs-package.sh"])).toBe(true);
         expect(affectsBuildPipeline([".github/scripts/generate-demos.sh"])).toBe(true);
+        expect(affectsBuildPipeline([".github/actions/fetch-release-tag/action.yml"])).toBe(true);
+    });
+
+    it("flags the release CMake files and the package checks", () => {
+        expect(affectsBuildPipeline(["utils/cmake/release-linux.cmake"])).toBe(true);
+        expect(affectsBuildPipeline([".github/scripts/linux-portability/check-linux-portability.sh"])).toBe(true);
     });
 
     it("flags bootstrap entry and sources", () => {
@@ -278,9 +280,8 @@ describe("affectsBuildPipeline", () => {
         expect(affectsBuildPipeline([".github/workflows/pr-target-checks.yml"])).toBe(false);
     });
 
-    // PR template, gitignore, license: meta files with no build effect.
-    it("does not flag PR template or meta files", () => {
-        expect(affectsBuildPipeline([".github/pull_request_template.md"])).toBe(false);
+    // gitignore, license: meta files with no build effect.
+    it("does not flag meta files", () => {
         expect(affectsBuildPipeline([".gitignore"])).toBe(false);
         expect(affectsBuildPipeline(["LICENSE.txt"])).toBe(false);
     });
@@ -311,123 +312,6 @@ describe("affectsBuildPipeline", () => {
     // Normalizes Windows-style separators so backslashes don't bypass the gate.
     it("normalizes backslashes", () => {
         expect(affectsBuildPipeline([".github\\workflows\\ci-build.yml"])).toBe(true);
-    });
-});
-
-describe("parsePrTemplateSections", () => {
-    // Pulls H2 headers in document order; ignores intro paragraphs and comments.
-    it("extracts H2 headers from the template", () => {
-        expect(parsePrTemplateSections(sampleTemplate)).toEqual(["Changes", "Testing", "Documentation"]);
-    });
-
-    // No headers means no sections to enforce.
-    it("returns an empty array when there are no headers", () => {
-        expect(parsePrTemplateSections("just a paragraph\n\nno headers here")).toEqual([]);
-    });
-
-    // Handles any ATX heading level so future templates can mix H1/H2/H3.
-    it("extracts headings of any ATX level", () => {
-        const template = [
-            "# Summary",
-            "## Changes",
-            "### Subsection",
-            "#### Detail",
-            "##### Deeper",
-            "###### Deepest",
-        ].join("\n");
-        expect(parsePrTemplateSections(template)).toEqual([
-            "Summary",
-            "Changes",
-            "Subsection",
-            "Detail",
-            "Deeper",
-            "Deepest",
-        ]);
-    });
-
-    // Strips the optional ATX closing run of `#` characters.
-    it("strips trailing closing hashes from ATX headers", () => {
-        expect(parsePrTemplateSections("## Changes ##\n### Testing ###")).toEqual(["Changes", "Testing"]);
-    });
-
-    // Dedupes by title (case-insensitive) so cross-level repeats don't double-flag.
-    it("dedupes repeated titles across levels", () => {
-        const template = ["## Notes", "### notes", "#### NOTES"].join("\n");
-        expect(parsePrTemplateSections(template)).toEqual(["Notes"]);
-    });
-});
-
-describe("prTemplateInfos", () => {
-    // A body that includes every template header produces no info.
-    it("stays quiet when all template sections are present", () => {
-        const body = [
-            "Rationale for the change.",
-            "",
-            "## Changes",
-            "- Source: tweak.",
-            "",
-            "## Testing",
-            "Ran the suite.",
-            "",
-            "## Documentation",
-            "No user-facing change.",
-        ].join("\n");
-        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
-    });
-
-    // Missing sections are listed in the single info message.
-    it("lists missing sections", () => {
-        const body = ["Rationale.", "", "## Changes", "- Source: tweak."].join("\n");
-        const infos = prTemplateInfos(body, ["Changes", "Testing", "Documentation"]);
-        expect(infos).toHaveLength(1);
-        expect(infos[0]).toContain("**Testing**");
-        expect(infos[0]).toContain("**Documentation**");
-        expect(infos[0]).not.toContain("**Changes**");
-    });
-
-    // Header matching is case-insensitive so contributors don't trip over capitalization.
-    it("matches headers case-insensitively", () => {
-        const body = ["## changes", "## testing", "## documentation"].join("\n");
-        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
-    });
-
-    // The body can use a different heading level than the template — title alone is what matters.
-    it("matches sections regardless of heading level", () => {
-        const body = ["# Changes", "### Testing", "###### Documentation"].join("\n");
-        expect(prTemplateInfos(body, ["Changes", "Testing", "Documentation"])).toEqual([]);
-    });
-
-    // An empty body is already covered by the empty-description warning — skip to avoid noise.
-    it("skips when the PR body is empty", () => {
-        expect(prTemplateInfos("", ["Changes", "Testing"])).toEqual([]);
-        expect(prTemplateInfos("   \n\n  ", ["Changes", "Testing"])).toEqual([]);
-    });
-
-    // A template with no headers produces no info.
-    it("skips when the template has no headers", () => {
-        expect(prTemplateInfos("some body", [])).toEqual([]);
-    });
-
-    // Singular wording when exactly one section is missing.
-    it("uses singular wording for a single missing section", () => {
-        const body = ["## Changes", "## Testing"].join("\n");
-        const infos = prTemplateInfos(body, ["Changes", "Testing", "Documentation"]);
-        expect(infos[0]).toContain("missing template section:");
-    });
-});
-
-describe("evaluateDanger pr-template info", () => {
-    // The new check is wired into the infos channel so it renders as [!NOTE].
-    it("surfaces missing template sections via infos", () => {
-        const result = evaluateDanger({
-            files: [{ filename: "src/lib/x.cpp", additions: 10, deletions: 1 }],
-            commits: [{ sha: "ab", message: "fix: small change" }],
-            prBody: "A short rationale that explains what is going on, with no template structure at all.",
-            prTitle: "fix: small change",
-            labels: [],
-            prTemplate: sampleTemplate,
-        });
-        expect(result.infos.some((m) => m.includes("missing template sections"))).toBe(true);
     });
 });
 
@@ -544,11 +428,11 @@ describe("starterChecks", () => {
         expect(warnings.some((m) => m.includes("PR description looks empty"))).toBe(false);
     });
 
-    // An unfilled PR template (italic placeholders + headers, no real content) must still trip
+    // A body of only headers and italic placeholders (no real content) must still trip
     // the empty-description warning and must not satisfy the testing-mention check via the
     // "## Testing" header.
-    it("treats an unfilled PR template as empty after cleaning", () => {
-        const unfilledTemplate = [
+    it("treats headers and placeholders as empty after cleaning", () => {
+        const unfilledBody = [
             "<!-- Fill this in yourself, or have your favorite AI agent draft it from the diff. -->",
             "",
             "## Summary",
@@ -574,7 +458,7 @@ describe("starterChecks", () => {
         const inputs: DangerInputs = {
             files: [],
             commits: [],
-            prBody: unfilledTemplate,
+            prBody: unfilledBody,
             prTitle: "feat: something",
             labels: [],
         };
@@ -589,13 +473,13 @@ describe("starterChecks", () => {
         expect(warnings.some((m) => m.includes("Source changed"))).toBe(true);
     });
 
-    // Strips HTML comments before measuring length so PR-template scaffolding cannot game the check.
+    // Strips HTML comments before measuring length so scaffolding cannot game the check.
     it("ignores HTML comments when measuring description length", () => {
         const inputs: DangerInputs = {
             files: [],
             commits: [],
             prBody:
-                "<!-- This is a long template comment that should not count toward the body length. -->\n" +
+                "<!-- This is a long comment that should not count toward the body length. -->\n" +
                 "<!-- More scaffolding here that adds many characters but conveys nothing useful. -->\n" +
                 "Fix.",
             prTitle: "fix: tiny",
