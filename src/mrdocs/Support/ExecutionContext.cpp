@@ -17,7 +17,7 @@
 #include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Reflection/MergeReflectedType.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <ranges>
 
 
@@ -81,7 +81,7 @@ report(
     }
 
     // Merge diagnostics and report any new messages.
-    diags_.mergeAndReport(std::move(diags));
+    diags_.mergeAndReport(std::move(diags), reporter_);
 
     // Merge undocumented symbols and remove any symbols
     // from undocumented that we can find in info_ with
@@ -113,7 +113,7 @@ report(
     // Only symbols certain to produce a warning count toward the budget;
     // symbols that finalization may still fold or document are recorded but
     // must not stop extraction, or the run could halt with nothing to report.
-    if (config_.warnAsError
+    if (reporter_.warnAsError()
         && config_.maxErrors > 0
         && certainCount >= config_.maxErrors
         && !stopExtraction_.exchange(true, std::memory_order_relaxed))
@@ -122,7 +122,7 @@ report(
         // the run has at least max-errors documentation errors, so the
         // message is itself an error: it marks the run as failed even if the
         // individual diagnostics are pruned before they are emitted.
-        report::error(
+        reporter_.error(
             "max-errors={}: found enough documentation problems; "
             "translation units not yet started will be skipped",
             config_.maxErrors);
@@ -133,7 +133,7 @@ void
 ExecutionContext::
 reportEnd(report::Level level)
 {
-    diags_.reportTotals(level);
+    diags_.reportTotals(reporter_, level);
 }
 
 Expected<detail::SymbolSet>

@@ -19,10 +19,15 @@
 namespace mrdocs {
 
 /** Build the compilation database described by the configuration.
+
+    @param config The configuration that describes the database.
+    @param reporter The reporter that prints the commands run to build it.
+    @return The database, or an error.
 */
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabase(
-    Config const& config);
+    Config const& config,
+    report::Reporter& reporter);
 
 } // mrdocs
 

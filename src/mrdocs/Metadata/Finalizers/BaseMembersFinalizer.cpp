@@ -11,7 +11,7 @@
 
 #include "BaseMembersFinalizer.hpp"
 #include <mrdocs/Support/Container/Algorithm.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <format>
 #include <tuple>
 
@@ -148,9 +148,8 @@ inheritBaseMembers(
 
         // Check if we're not attempt to copy a special member function
         if (auto const *funcPtr = otherInfoPtr->asFunctionPtr()) {
-          MRDOCS_CHECK_OR_CONTINUE(
-              !is_one_of(funcPtr->FuncClass, {FunctionClass::Constructor,
-                                              FunctionClass::Destructor}));
+            MRDOCS_CHECK_OR_CONTINUE(
+                !isOneOf(funcPtr->FuncClass, {FunctionClass::Constructor, FunctionClass::Destructor}));
         }
 
         // A using-declaration re-exports a name rather than a signature,
@@ -363,7 +362,7 @@ BaseMembersFinalizer::
 operator()(RecordSymbol& I)
 {
     MRDOCS_CHECK_OR(I.Extraction == ExtractionMode::Regular);
-    report::trace(
+    reporter_.trace(
         "Extracting base members for record '{}'",
         corpus_.Corpus::qualifiedName(I));
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));

@@ -24,7 +24,10 @@ namespace xml {
 
 Expected<void>
 XMLGenerator::
-build(Corpus const& corpus, Config const& config) const
+build(
+    Corpus const& corpus,
+    Config const& config,
+    report::Reporter&) const
 {
     // The XML generator emits a single file. Resolve the output location
     // from the config and write the document into it (or into

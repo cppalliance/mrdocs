@@ -31,3 +31,9 @@ Context::~Context()
         impl_->cleanup();
     }
 }
+
+void
+Context::setReporter(report::Reporter* reporter) noexcept
+{
+    impl_->reporter = reporter;
+}

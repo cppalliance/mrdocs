@@ -12,7 +12,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ConfigSchema.hpp>
 #include <mrdocs/Support/Debug.hpp>
-#include <mrdocs/Support/ReportImpl.hpp>
+#include <mrdocs/Support/ReporterImpl.hpp>
 #include "TestCliArgs.hpp"
 #include "TestRunner.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
@@ -31,7 +31,8 @@ int main(int argc, char const** argv);
 
 namespace mrdocs {
 
-void DoTestAction(char const** argv)
+void
+DoTestAction(char const** argv, report::Reporter& reporter)
 {
     using namespace mrdocs;
 
@@ -42,16 +43,16 @@ void DoTestAction(char const** argv)
     {
         if (!files::exists(inputPath))
         {
-            report::warn("Path does not exist: \"{}\"", inputPath);
+            reporter.warn("Path does not exist: \"{}\"", inputPath);
         }
     }
 
-    TestRunner runner;
+    TestRunner runner(reporter);
     for (auto const& inputPath: testPaths)
     {
         if (auto r = runner.checkPath(inputPath, argv); !r)
         {
-            report::error("{}: \"{}\"", r.error(), inputPath);
+            reporter.error("{}: \"{}\"", r.error(), inputPath);
         }
     }
     auto const& results = runner.results;
@@ -84,7 +85,7 @@ void DoTestAction(char const** argv)
         os << ", " << report::numberOf(n, "file", "files") << " written";
     }
     os << ".\n";
-    report::print(os.str());
+    reporter.print(os.str());
 }
 
 int test_main(int argc, char const** argv)
@@ -120,16 +121,17 @@ accepted and applied like the mrdocs tool.
     // Apply log-level
     auto ll = ConfigSchema::LogLevel::Info;
     ConfigSchema::fromString(testCliArgs.logLevel, ll);
-    report::setMinimumLevel(static_cast<report::Level>(ll));
-    report::setSourceLocationWarnings(false);
+    report::Reporter reporter(static_cast<report::Level>(ll));
+    reporter.setSourceLocationWarnings(false);
 
     if (!testCliArgs.inputs.empty())
     {
-        DoTestAction(argv);
+        DoTestAction(argv, reporter);
     }
 
-    if (report::results.errorCount > 0 ||
-        report::results.fatalCount > 0)
+    report::Results const results = reporter.results();
+    if (results.errorCount > 0 ||
+        results.fatalCount > 0)
     {
         return EXIT_FAILURE;
     }
@@ -142,7 +144,8 @@ static void reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    report::error("Unhandled exception: {}\n", ex.what());
+    report::Reporter reporter;
+    reporter.error("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 #endif

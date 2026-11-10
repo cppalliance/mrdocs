@@ -30,6 +30,7 @@ class BaseMembersFinalizer
 {
     Corpus& corpus_;
     Config const& config_;
+    report::Reporter& reporter_;
     std::unordered_set<SymbolID> finalized_;
 
     // `baseId` is the base as written in the base-specifier: the primary
@@ -75,9 +76,12 @@ class BaseMembersFinalizer
 
 public:
     BaseMembersFinalizer(
-        Corpus& corpus, Config const& config)
+        Corpus& corpus,
+        Config const& config,
+        report::Reporter& reporter)
         : corpus_(corpus)
         , config_(config)
+        , reporter_(reporter)
     {}
 
     /** A base of a record, resolved for inheriting from it.

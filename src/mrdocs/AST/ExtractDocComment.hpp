@@ -49,6 +49,7 @@ initCustomCommentCommands(
     @param ctx The ASTContext owning the comment
     @param config The MrDocs configuration object
     @param diags The diagnostics object
+    @param reporter The reporter of the run
     @param warnings Whether findings in this comment are reported as
     warnings. Pass false for symbols outside the configured inputs, whose
     comments are not the user's to fix; their findings go to the debug log.
@@ -60,6 +61,7 @@ populateDocComment(
     clang::ASTContext const& ctx,
     Config const& config,
     Diagnostics& diags,
+    report::Reporter& reporter,
     bool warnings = true);
 
 } // mrdocs

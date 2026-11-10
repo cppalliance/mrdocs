@@ -13,7 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/ExecutionContext.hpp>
-#include <mrdocs/Support/ReportImpl.hpp>
+#include <mrdocs/Support/ReporterImpl.hpp>
 #include <mrdocs/Config.hpp>
 #include <clang/Basic/Diagnostic.h>
 #include <clang/Basic/DiagnosticSema.h>

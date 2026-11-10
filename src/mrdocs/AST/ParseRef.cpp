@@ -13,7 +13,7 @@
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <mrdocs/Support/String/String.hpp>
 #include <llvm/ADT/StringExtras.h>
 #include <format>

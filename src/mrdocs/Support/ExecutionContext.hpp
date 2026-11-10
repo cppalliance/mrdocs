@@ -48,6 +48,7 @@ namespace mrdocs {
 class ExecutionContext
 {
     Config const& config_;
+    report::Reporter& reporter_;
     std::shared_mutex mutex_;
     Diagnostics diags_;
     detail::SymbolSet info_;
@@ -61,14 +62,25 @@ public:
     /** Initializes a context
 
        This function does not take ownership of
-       `Config`.
+       `Config` or of the reporter.
 
         @param config The configuration to use.
+        @param reporter The reporter of the run.
     */
     ExecutionContext(
-        Config const& config)
+        Config const& config,
+        report::Reporter& reporter)
         : config_(config)
+        , reporter_(reporter)
     {
+    }
+
+    /** Return the reporter of the run.
+    */
+    report::Reporter&
+    reporter() const noexcept
+    {
+        return reporter_;
     }
 
     /** Adds symbols and diagnostics to the context.

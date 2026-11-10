@@ -17,11 +17,13 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Config.hpp>
+#include <mrdocs/detail/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/detail/Corpus.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <algorithm>
 #include <map>
+#include <memory>
 #include <set>
 #include <string>
 #include <string_view>
@@ -46,10 +48,16 @@ class MrDocsCompilationDatabase;
     build, and again to whatever consumes the corpus (for example a
     @ref Generator). Use @ref build to produce one from a @ref Config.
 */
-class MRDOCS_VISIBLE
+class MRDOCS_DECL
     Corpus
 {
 public:
+    // A corpus moves but is not copied: its symbols are unique pointers.
+    Corpus(Corpus const&) = delete;
+    Corpus& operator=(Corpus const&) = delete;
+    Corpus(Corpus&&) = default;
+    Corpus& operator=(Corpus&&) = default;
+
     /** Build a Corpus from a configuration.
 
         Drives extraction over the translation units described by the
@@ -59,25 +67,29 @@ public:
         from `source-root` and `input`).
 
         @param config The Config used for extraction.
+        @param reporter The reporter of the run, usually @ref Session::log.
+        The extraction and the finalizers report through it. The corpus does
+        not keep it.
         @return The populated Corpus on success, otherwise an Error.
     */
-    MRDOCS_DECL
-    static
-    Expected<Corpus>
-    build(Config const& config);
+    static Expected<Corpus>
+    build(
+        Config const& config,
+        report::Reporter& reporter);
 
     /** Build a Corpus from a configuration and a compilation database.
 
         @param config The Config used for extraction.
         @param compilations The compilation database for the input files.
+        @param reporter The reporter of the run, used as for
+        @ref build(Config const&, report::Reporter&).
         @return The populated Corpus on success, otherwise an Error.
     */
-    MRDOCS_DECL
-    static
-    Expected<Corpus>
+    static Expected<Corpus>
     build(
         Config const& config,
-        MrDocsCompilationDatabase const& compilations);
+        MrDocsCompilationDatabase const& compilations,
+        report::Reporter& reporter);
 
     /** The iterator type for the index of all symbols.
 
@@ -92,13 +104,11 @@ public:
 
     /** Return the begin iterator for the index of all symbols.
     */
-    MRDOCS_DECL
     iterator
     begin() const noexcept;
 
     /** Return the end iterator for the index.
     */
-    MRDOCS_DECL
     iterator
     end() const noexcept;
 
@@ -111,7 +121,6 @@ public:
 
         @return true if the corpus is empty, otherwise false.
     */
-    MRDOCS_DECL
     bool
     empty() const noexcept;
 
@@ -135,13 +144,11 @@ public:
         @return The matching Symbol, or an error if not found. If multiple
             symbols match, one is returned arbitrarily.
     */
-    MRDOCS_DECL
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const;
 
     /** Return the Symbol with the matching ID, or nullptr.
     */
-    MRDOCS_DECL
     Symbol const*
     find(SymbolID const& id) const noexcept;
 
@@ -177,7 +184,6 @@ public:
 
     /** Return the metadata for the global namespace.
     */
-    MRDOCS_DECL
     NamespaceSymbol const&
     globalNamespace() const noexcept;
 
@@ -204,7 +210,7 @@ public:
 
     /** Options to traverse the members of a Symbol.
     */
-    struct TraverseOptions
+    struct MRDOCS_VISIBLE TraverseOptions
     {
         /// Whether to traverse in a stable order
         bool ordered = false;
@@ -282,7 +288,7 @@ public:
                         {
                             return std::is_lt(cmp);
                         }
-                        return std::is_lt(CompareDerived(lhsSymbol, rhsSymbol));
+                        return std::is_lt(compareDerived(lhsSymbol, rhsSymbol));
                     });
                 if (!opts.skipInherited)
                 {
@@ -342,7 +348,6 @@ public:
         @param I The Symbol to get the qualified name for.
         @param temp The string to store the result in.
     */
-    MRDOCS_DECL
     void
     qualifiedName(
         Symbol const& I,
@@ -363,7 +368,6 @@ public:
         @param context The context used to qualify the name.
         @param result Output string receiving the name.
     */
-    MRDOCS_DECL
     void
     qualifiedName(
         Symbol const& I,
@@ -382,9 +386,18 @@ public:
 
     /** Finalize the corpus.
     */
-    MRDOCS_DECL
     void
-    finalize(Config const& config);
+    finalize(Config const& config, report::Reporter& reporter);
+
+    /** Forget the results of earlier name lookups.
+
+        A lookup by name remembers what it found. Code that renames
+        symbols or changes their scope after the corpus is finalized, such
+        as a corpus transform, must call this afterwards so that later
+        lookups see the new names instead of the remembered results.
+    */
+    void
+    invalidateLookupCache() noexcept;
 
 private:
     Corpus() noexcept = default;
@@ -412,7 +425,6 @@ public:
 
     /** Return the Symbol with the specified symbol ID, or nullptr.
     */
-    MRDOCS_DECL
     Symbol*
     find(SymbolID const& id) noexcept;
 
@@ -472,7 +484,6 @@ public:
 
     /// @copydoc lookup(SymbolID const&, std::string_view) const
 
-    MRDOCS_DECL
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name);
 

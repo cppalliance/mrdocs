@@ -7,14 +7,15 @@
 //
 
 #include "Comparison.hpp"
-#include <mrdocs/Support/Filesystem/Temp.hpp>
-#include <mrdocs/Support/Generator.hpp>
-#include <mrdocs/Support/ReportImpl.hpp>
 #include "../Action.hpp"
 #include "../TestRunner.hpp"
 #include "TextNormalization.hpp"
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Session.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Temp.hpp>
+#include <mrdocs/Support/Generator.hpp>
+#include <mrdocs/Support/ReporterImpl.hpp>
 #include <test_suite/diff.hpp>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
@@ -35,7 +36,8 @@ namespace {
 bool
 collectFiles(
     std::string const& root,
-    std::map<std::string, std::filesystem::path>& files)
+    std::map<std::string, std::filesystem::path>& files,
+    report::Reporter& reporter)
 {
     namespace fs = std::filesystem;
 
@@ -45,7 +47,7 @@ collectFiles(
     {
         if (ec)
         {
-            report::error("{}: \"{}\"", Error(ec), root);
+            reporter.error("{}: \"{}\"", Error(ec), root);
             return false;
         }
 
@@ -55,7 +57,7 @@ collectFiles(
         auto rel = fs::relative(it->path(), rootPath, ec);
         if (ec)
         {
-            report::error("{}: \"{}\"", Error(ec), it->path().string());
+            reporter.error("{}: \"{}\"", Error(ec), it->path().string());
             return false;
         }
 
@@ -80,7 +82,8 @@ collectFiles(
 bool
 copyDirectoryTree(
     std::string const& from,
-    std::string const& to)
+    std::string const& to,
+    report::Reporter& reporter)
 {
     namespace fs = std::filesystem;
 
@@ -95,7 +98,7 @@ copyDirectoryTree(
         ec);
     if (ec)
     {
-        report::error("{}: \"{}\"", Error(ec), to);
+        reporter.error("{}: \"{}\"", Error(ec), to);
         return false;
     }
     return true;
@@ -108,6 +111,7 @@ generateAndCompareOutput(CompareArgs const& args)
 {
     namespace fs = std::filesystem;
     namespace path = llvm::sys::path;
+    report::Reporter& reporter = args.session.log();
 
     // The generator's output directory: where it writes, and where we read
     // it back. Single-page vs multipage follows the config that drove the
@@ -133,8 +137,8 @@ generateAndCompareOutput(CompareArgs const& args)
         return Unexpected(Error(ec));
     }
 
-    report::debug("Generating documentation", args.filePath);
-    if (auto exp = args.gen.build(args.corpus, args.config); !exp)
+    reporter.debug("Generating documentation", args.filePath);
+    if (auto exp = args.session.build(args.gen, args.corpus); !exp)
     {
         return Unexpected(exp.error());
     }
@@ -166,12 +170,12 @@ generateAndCompareOutput(CompareArgs const& args)
     {
         fixturePath = multipageFormatRoot;
         expectedExists = files::isDirectory(multipageFormatRoot);
-        if (!collectFiles(outputDir, generatedFiles))
+        if (!collectFiles(outputDir, generatedFiles, reporter))
         {
             return Unexpected(Error("failed to read generated output"));
         }
         if (expectedExists &&
-            !collectFiles(multipageFormatRoot, expectedFiles))
+            !collectFiles(multipageFormatRoot, expectedFiles, reporter))
         {
             return Unexpected(Error("failed to read expected snapshot"));
         }
@@ -192,13 +196,13 @@ generateAndCompareOutput(CompareArgs const& args)
                 fs::copy_options::overwrite_existing, copyEc);
             if (copyEc)
             {
-                report::error("{}: \"{}\"", Error(copyEc), expectedSinglePath);
+                reporter.error("{}: \"{}\"", Error(copyEc), expectedSinglePath);
                 return false;
             }
             return true;
         }
         return copyDirectoryTree(
-            outputDir, multipageFormatRoot);
+            outputDir, multipageFormatRoot, reporter);
     };
 
     // A missing fixture is an error under --action=test, otherwise it is
@@ -213,7 +217,7 @@ generateAndCompareOutput(CompareArgs const& args)
         }
         if (writeFixture())
         {
-            report::info("\"{}\" created", fixturePath);
+            reporter.info("\"{}\" created", fixturePath);
             ++args.results.expectedDocsWritten;
         }
         return {};
@@ -242,13 +246,13 @@ generateAndCompareOutput(CompareArgs const& args)
         auto expectedBuf = llvm::MemoryBuffer::getFile(it->second.string(), false, true, true);
         if (!expectedBuf)
         {
-            report::error("{}: \"{}\"", expectedBuf.getError(), it->second.string());
+            reporter.error("{}: \"{}\"", expectedBuf.getError(), it->second.string());
             continue;
         }
         auto generatedBuf = llvm::MemoryBuffer::getFile(generatedPath.string(), false, true, true);
         if (!generatedBuf)
         {
-            report::error("{}: \"{}\"", generatedBuf.getError(), generatedPath.string());
+            reporter.error("{}: \"{}\"", generatedBuf.getError(), generatedPath.string());
             continue;
         }
 
@@ -271,13 +275,13 @@ generateAndCompareOutput(CompareArgs const& args)
     {
         if (!hasDiff && !args.forceUpdate)
         {
-            report::info("\"{}\" unchanged", fixturePath);
+            reporter.info("\"{}\" unchanged", fixturePath);
             ++args.results.expectedDocsMatching;
             return {};
         }
         if (writeFixture())
         {
-            report::info("\"{}\" {}", fixturePath, hasDiff ? "updated" : "rewritten");
+            reporter.info("\"{}\" {}", fixturePath, hasDiff ? "updated" : "rewritten");
             ++args.results.expectedDocsWritten;
         }
         return {};
@@ -285,7 +289,7 @@ generateAndCompareOutput(CompareArgs const& args)
 
     if (!hasDiff)
     {
-        report::info("\"{}\" passed", args.filePath);
+        reporter.info("\"{}\" passed", args.filePath);
         ++args.results.expectedDocsMatching;
         return {};
     }
@@ -294,21 +298,21 @@ generateAndCompareOutput(CompareArgs const& args)
     // untouched (create only writes a fixture that was missing).
     for (auto const& rel : missing)
     {
-        report::error("{}: \"{}\"", Error("missing expected file"),
+        reporter.error("{}: \"{}\"", Error("missing expected file"),
             files::appendPath(fixturePath, rel));
     }
     for (auto const& rel : unexpected)
     {
-        report::error("{}: \"{}\"", Error("unexpected generated file"),
+        reporter.error("{}: \"{}\"", Error("unexpected generated file"),
             files::appendPath(outputDir, rel));
     }
     for (auto const& [rel, diff] : changed)
     {
-        report::error("{}: \"{}\"", Error("Incorrect results"),
+        reporter.error("{}: \"{}\"", Error("Incorrect results"),
             singlePage ? fixturePath : files::appendPath(fixturePath, rel));
-        report::error("{} lines added", diff.added);
-        report::error("{} lines removed", diff.removed);
-        report::error("Diff:\n{}", diff.diff);
+        reporter.error("{} lines added", diff.added);
+        reporter.error("{} lines removed", diff.removed);
+        reporter.error("Diff:\n{}", diff.diff);
     }
 
     // Write the generated document beside the fixture for inspection
@@ -325,7 +329,7 @@ generateAndCompareOutput(CompareArgs const& args)
         {
             return Unexpected(Error(copyEc));
         }
-        report::info("\"{}\" written", badPath);
+        reporter.info("\"{}\" written", badPath);
     }
 
     return {};

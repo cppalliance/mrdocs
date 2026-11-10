@@ -67,6 +67,9 @@ class ASTVisitor
     // MrDocs diagnostics
     Diagnostics diags_;
 
+    // The reporter of the run
+    report::Reporter& reporter_;
+
     // The compiler instance
     clang::CompilerInstance& compiler_;
 
@@ -299,6 +302,7 @@ public:
 
         @param config The configuration object.
         @param diags The diagnostics object.
+        @param reporter The reporter of the run.
         @param compiler The compiler instance.
         @param context The AST context.
         @param sema The clang::Sema object.
@@ -307,6 +311,7 @@ public:
     ASTVisitor(
         Config const& config,
         Diagnostics const& diags,
+        report::Reporter& reporter,
         clang::CompilerInstance& compiler,
         clang::ASTContext& context,
         clang::Sema& sema,

@@ -11,20 +11,20 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/MrDocsCompilationDatabase.hpp>
-#include <mrdocs/SingleFileDB.hpp>
-#include <mrdocs/Support/Filesystem/Temp.hpp>
-#include <mrdocs/Support/ReportImpl.hpp>
 #include "Support/Comparison.hpp"
 #include "Support/TextNormalization.hpp"
 #include "TestCliArgs.hpp"
 #include "TestRunner.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Extensions/ExtensionRegistry.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/MrDocsCompilationDatabase.hpp>
+#include <mrdocs/Session.hpp>
+#include <mrdocs/SingleFileDB.hpp>
 #include <mrdocs/Support/Container/Algorithm.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
+#include <mrdocs/Support/Filesystem/Temp.hpp>
+#include <mrdocs/Support/ReporterImpl.hpp>
 #include <test_suite/diff.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -45,7 +45,8 @@ Expected<Config>
 loadDirConfig(
     std::string const& dirPath,
     Config dirConfig,
-    ReferenceDirectories const& dirs)
+    ReferenceDirectories const& dirs,
+    report::Reporter& reporter)
 {
     // Load YML on top of dirConfig
     dirConfig.sourceRoot = dirPath;
@@ -54,11 +55,11 @@ loadDirConfig(
     bool const hasTagfileOverride = !dirConfig.tagfile.empty();
     if (files::exists(configPath))
     {
-        MRDOCS_TRY(Config::load_file(dirConfig, configPath));
+        MRDOCS_TRY(Config::loadFile(dirConfig, configPath));
     }
 
     // Normalize settings with base paths
-    MRDOCS_TRY(dirConfig.normalize(dirs));
+    MRDOCS_TRY(dirConfig.normalize(dirs, reporter));
 
     // Golden tests shouldn't emit tagfiles unless a test explicitly requests one.
     if (!hasTagfileOverride)
@@ -90,11 +91,13 @@ constexpr std::string_view testRootMarker = ".mrdocs-test-root";
     @param inputDir The input's directory (the input itself if a directory,
         or its parent if a single file).
     @param argv The command line, applied as the lowest-priority layer.
+    @param reporter The reporter of the warnings about the settings.
 */
 Expected<std::pair<Config, ReferenceDirectories>>
 makeBaseSettings(
     std::string_view inputDir,
-    char const** argv)
+    char const** argv,
+    report::Reporter& reporter)
 {
     // Walk from the input dir to the marked suite root.
     std::string_view root = inputDir;
@@ -119,7 +122,7 @@ makeBaseSettings(
     MRDOCS_TRY(Config::load(settings, "", argv));
     for (std::string_view dir = root; dir != inputDir; )
     {
-        MRDOCS_TRY(settings, loadDirConfig(std::string(dir), std::move(settings), dirs));
+        MRDOCS_TRY(settings, loadDirConfig(std::string(dir), std::move(settings), dirs, reporter));
         std::size_t const slash = inputDir.find('/', dir.size() + 1);
         dir = inputDir.substr(
             0, slash == std::string_view::npos ? inputDir.size() : slash);
@@ -159,7 +162,7 @@ loadTestSettings(
     result.hasFileConfig = files::exists(configPath);
     if (result.hasFileConfig)
     {
-        MRDOCS_TRY(Config::load_file(result.settings, configPath));
+        MRDOCS_TRY(Config::loadFile(result.settings, configPath));
     }
     return result;
 }
@@ -177,7 +180,8 @@ buildTestLayout(
     LoadedTestSettings loaded,
     llvm::StringRef generatorExtension,
     ReferenceDirectories const& dirs,
-    Action action)
+    Action action,
+    report::Reporter& reporter)
 {
     bool const dirMultipage = loaded.dirMultipage;
     bool const hasFileConfig = loaded.hasFileConfig;
@@ -188,7 +192,7 @@ buildTestLayout(
     // scratch directory.
     if (generatorExtension.empty())
     {
-        MRDOCS_TRY(settings.normalize(dirs));
+        MRDOCS_TRY(settings.normalize(dirs, reporter));
         if (!hasTagfileOverride)
             settings.tagfile.clear();
         return std::pair{std::move(settings), std::optional<ScopedTempDirectory>{}};
@@ -202,7 +206,7 @@ buildTestLayout(
     if (!settings.tagfile.empty() &&
         !llvm::sys::path::is_absolute(settings.tagfile))
         settings.tagfile = files::appendPath(scratch->path(), settings.tagfile);
-    MRDOCS_TRY(settings.normalize(dirs));
+    MRDOCS_TRY(settings.normalize(dirs, reporter));
     if (!hasTagfileOverride)
         settings.tagfile.clear();
 
@@ -258,7 +262,7 @@ checkPath(
     inputPath = files::normalizePath(inputPath);
     MRDOCS_TRY(auto const fileType, files::getFileType(inputPath));
     MRDOCS_CHECK(
-        is_one_of(fileType, {files::FileType::directory, files::FileType::regular}),
+        isOneOf(fileType, {files::FileType::directory, files::FileType::regular}),
         Error("input path must be a directory or a regular file"));
     bool isDirectory = fileType == files::FileType::directory;
     MRDOCS_CHECK(
@@ -271,7 +275,7 @@ checkPath(
     // resolved. The runner keeps neither: both are threaded down from here.
     std::string const inputDir =
         isDirectory ? inputPath : std::string(files::getParentDir(inputPath));
-    MRDOCS_TRY_BIND((base, dirs), makeBaseSettings(inputDir, argv));
+    MRDOCS_TRY_BIND((base, dirs), makeBaseSettings(inputDir, argv, reporter_));
 
     if (isDirectory)
     {
@@ -282,7 +286,7 @@ checkPath(
         // Load the file's directory settings and call handleFile directly
         MRDOCS_TRY(
             Config dirConfig,
-            loadDirConfig(inputDir, std::move(base), dirs));
+            loadDirConfig(inputDir, std::move(base), dirs, reporter_));
         MRDOCS_TRY(handleFile(inputPath, dirConfig, dirs));
     }
 
@@ -297,7 +301,7 @@ handleDir(
     Config const& parentSettings,
     ReferenceDirectories const& dirs)
 {
-    report::debug("Visiting directory: \"{}\"", dirPath);
+    reporter_.debug("Visiting directory: \"{}\"", dirPath);
 
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -307,7 +311,7 @@ handleDir(
     // and the starting directory needs no special handling.
     MRDOCS_TRY(
         Config dirConfig,
-        loadDirConfig(dirPath, parentSettings, dirs));
+        loadDirConfig(dirPath, parentSettings, dirs, reporter_));
 
     ++results.numberOfDirs;
 
@@ -341,7 +345,7 @@ handleDir(
                 {
                 if (auto exp = handleFile(filePath, settings, dirs); !exp)
                 {
-                    report::error("{}: \"{}\"", exp.error(), filePath);
+                    reporter_.error("{}: \"{}\"", exp.error(), filePath);
                 }
             });
         }
@@ -358,7 +362,7 @@ handleFile(
     Config const& dirConfig,
     ReferenceDirectories const& dirs)
 {
-    report::debug("Handling {}", filePath);
+    reporter_.debug("Handling {}", filePath);
 
     MRDOCS_ASSERT(
         llvm::sys::path::extension(filePath).compare_insensitive(".cpp") == 0);
@@ -370,16 +374,26 @@ handleFile(
     // contributed via addons-supplemental are visible to discovery
     // before the chosen generator is looked up.
     //
-    // The generator registry is process-global and persists across
-    // tests. `discoverDataDrivenGenerators` is idempotent (it skips ids
-    // already installed), so re-running it per fixture is safe; but
-    // it also means the first fixture that registers a given id
-    // wins, and a later fixture that ships a generator directory
-    // with the same id will see its own contents quietly ignored.
+    // Each fixture has one session for the lookup of its generators: the
+    // extensions of the fixture are loaded into it, then its data-driven
+    // generators are discovered, as the tool does, and the generator is
+    // looked up in it. What a fixture ships is visible to that fixture
+    // only. Transforms run in sessions of their own (see
+    // handleCompilationDatabase).
     MRDOCS_TRY(
         LoadedTestSettings loaded,
         loadTestSettings(filePath, dirConfig, dirs));
-    MRDOCS_TRY(hbs::discoverDataDrivenGenerators(loaded.settings));
+    // The addon roots of a fixture are relative to its configuration file,
+    // so extensions and data-driven generators are found through a
+    // normalized copy of the settings.
+    Config extensionSettings = loaded.settings;
+    MRDOCS_TRY(extensionSettings.normalize(dirs, reporter_));
+    // What loading prints uses the level of the runner.
+    extensionSettings.logLevel =
+        static_cast<ConfigSchema::LogLevel>(reporter_.getMinimumLevel());
+    MRDOCS_TRY(
+        Session session, Session::create(extensionSettings, libraries_));
+    configureLog(session);
 
     // The generator(s) come from the test's merged configuration (the
     // directory chain supplies a default), in single, list, or
@@ -389,7 +403,7 @@ handleFile(
 
     for (std::string const& genId : genList.values)
     {
-        Generator const* gen = findGenerator(genId);
+        Generator const* gen = session.generators().find(genId);
         MRDOCS_CHECK(
             gen, formatError("the Generator \"{}\" was not found", genId));
         // scratch owns the temp output directory across this generator's
@@ -397,7 +411,8 @@ handleFile(
         MRDOCS_TRY_BIND(
             (fileSettings, scratch),
             buildTestLayout(
-                filePath, loaded, gen->fileExtension(), dirs, testCliArgs.action));
+                filePath, loaded, gen->fileExtension(), dirs,
+                testCliArgs.action, reporter_));
 
         // Run this iteration as a single-generator configuration so that
         // it doesn't write into a per-id subdirectory.
@@ -421,7 +436,8 @@ handleFile(
                 llvm::StringRef(files::getParentDir(filePath)),
                 db,
                 config,
-                defaultIncludePaths);
+                defaultIncludePaths,
+                session.log());
             return handleCompilationDatabase(
                 filePath, *gen, compilations, config);
         };
@@ -429,6 +445,24 @@ handleFile(
         MRDOCS_TRY(runWith({ "clang", "-std=c++23" }));
         MRDOCS_TRY(runWith({ "clang-cl", "/std:c++23preview" }));
     }
+    return checkReported(session);
+}
+
+void
+TestRunner::
+configureLog(Session& session) const
+{
+    session.log().setMinimumLevel(reporter_.getMinimumLevel());
+    session.log().setSourceLocationWarnings(false);
+}
+
+Expected<void>
+TestRunner::
+checkReported(Session const& session)
+{
+    report::Results const reported = session.log().results();
+    std::size_t const errors = reported.errorCount + reported.fatalCount;
+    MRDOCS_CHECK(errors == 0, formatError("{} {} reported", errors, errors == 1 ? "error was" : "errors were"));
     return {};
 }
 
@@ -439,35 +473,49 @@ TestRunner::handleCompilationDatabase(
     MrDocsCompilationDatabase const& compilations,
     Config const& config)
 {
-    report::debug("Building Corpus", filePath);
-    MRDOCS_TRY(auto corpus, Corpus::build(config, compilations));
+    // Extensions live outside the corpus: load the fixture's extensions into
+    // a session, and apply their transforms after the build, before generating. Each
+    // corpus has a session of its own, so a script's state does not carry
+    // from one run to the next; the library registry keeps a plugin from
+    // running its entry point again. A no-op when the fixture declares no
+    // extensions. The corpus reports through the session.
+    // The corpus is declared before the session, so it is destroyed after
+    // it. What loading prints uses the level of the runner.
+    std::optional<Corpus> corpusStorage;
+    Config sessionSettings = config;
+    sessionSettings.logLevel =
+        static_cast<ConfigSchema::LogLevel>(reporter_.getMinimumLevel());
+    MRDOCS_TRY(Session session, Session::create(sessionSettings, libraries_));
+    configureLog(session);
+    session.log().debug("Building Corpus", filePath);
+    MRDOCS_TRY(Corpus built, Corpus::build(config, compilations, session.log()));
+    Corpus& corpus = corpusStorage.emplace(std::move(built));
+    MRDOCS_TRY(session.applyTransforms(corpus));
 
-    // Extensions live outside the corpus: load the config's scripts and
-    // apply their transforms after the build, before generating. Empty and
-    // a no-op when the fixture declares no extensions.
-    MRDOCS_TRY(ExtensionRegistry extensions, ExtensionRegistry::load(config));
-    MRDOCS_TRY(extensions.applyTransforms(corpus, config));
+    // A generator a script registered under the id runs in the engine that
+    // saw this corpus.
+    Generator const* const own = session.generators().find(gen.id());
+    Generator const& generator = own ? *own : gen;
 
-    if (gen.fileExtension().empty())
+    if (generator.fileExtension().empty())
     {
         // No-op generator: extraction succeeded and any diagnostics have
         // already been reported. There is no expected output to compare.
-        report::info("\"{}\" extracted", filePath);
+        session.log().info("\"{}\" extracted", filePath);
         ++results.expectedDocsMatching;
-        return {};
+        return checkReported(session);
     }
 
-    MRDOCS_TRY(test_support::generateAndCompareOutput({
-        .gen = gen,
+    MRDOCS_TRY(test_support::generateAndCompareOutput({.gen = generator,
         .corpus = corpus,
         .config = config,
         .filePath = filePath,
+        .session = session,
         .action = testCliArgs.action,
         .writeBad = testCliArgs.bad,
         .forceUpdate = testCliArgs.force,
-        .results = results
-    }));
-    return {};
+        .results = results}));
+    return checkReported(session);
 }
 
 } // mrdocs

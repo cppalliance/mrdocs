@@ -13,6 +13,7 @@
 #define MRDOCS_LIB_SUPPORT_CMAKEEXECUTION_HPP
 
 #include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <string>
 
@@ -35,6 +36,7 @@ namespace mrdocs {
  *                   `mrdocs.yml` directory here makes those relative paths
  *                   behave like the other path-bearing fields in the config.
  *                   The previous working directory is restored on return.
+ * @param reporter The reporter that prints each command run.
  * @return An `Expected` object containing the path to the generated `compile_commands.json` file if successful.
  *         Returns `Unexpected` if the project path is not found or if CMake execution fails.
 */
@@ -43,7 +45,8 @@ executeCmakeExportCompileCommands(
     llvm::StringRef projectPath,
     llvm::StringRef cmakeArgs,
     llvm::StringRef tempDir,
-    llvm::StringRef workingDir = llvm::StringRef());
+    llvm::StringRef workingDir,
+    report::Reporter& reporter);
 
 } // mrdocs
 

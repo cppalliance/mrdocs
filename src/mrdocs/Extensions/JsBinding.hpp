@@ -15,11 +15,10 @@
 #include "LoadedExtensions.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Error/Expected.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <string>
 
 namespace mrdocs {
-
-class Config;
 
 /** Load the extensions declared by one JavaScript script file.
 
@@ -30,12 +29,12 @@ class Config;
     transforms are returned for the host to invoke later, and the
     generators are returned as self-contained @ref Generator objects. The
     returned engine handle keeps the VM alive for both. A script that
-    registers nothing warns and returns an empty result. The run's
-    `warn-as-error` setting is read from @p config so `mrdocs.report.warn`
-    escalates like any other Mr.Docs warning.
+    registers nothing warns through @p reporter and returns an empty
+    result. The engine reports the values it cannot create to
+    @p reporter too, which must outlive the engine.
 */
 Expected<LoadedExtensions>
-loadJsExtensions(std::string const& scriptPath, Config const& config);
+loadJsExtensions(std::string const& scriptPath, report::Reporter& reporter);
 
 } // mrdocs
 

@@ -21,6 +21,7 @@ struct TestResults;
 class Generator;
 class Corpus;
 class Config;
+class Session;
 
 namespace test_support {
 
@@ -56,6 +57,10 @@ struct CompareArgs
     /// The test's input `.cpp` path, used for log messages and to locate the
     /// expected fixture (input path + the generator's extension).
     std::string_view filePath;
+
+    /// The session of the fixture. It runs the generator, so a script or a
+    /// plugin generator reports through the session's reporter.
+    Session const& session;
 
     /// Whether to compare against the fixture, create it, or update it.
     Action action;

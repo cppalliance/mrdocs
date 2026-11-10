@@ -22,7 +22,7 @@
 #include "TagfileWriter.hpp"
 #include <mrdocs/Support/Error/Error.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -110,42 +110,50 @@ HandlebarsGenerator(
     std::string const& fileExtension,
     std::string const& displayName,
     EscapeMap escapeMap,
-    std::string extends)
+    std::string extends,
+    std::vector<std::string> formatChain)
     : id_(id)
     , fileExtension_(fileExtension)
     , displayName_(displayName)
     , extends_(std::move(extends))
+    , formatChain_(std::move(formatChain))
     , escapeMap_(std::move(escapeMap))
 {
+    if (formatChain_.empty())
+    {
+        formatChain_.push_back(id_);
+    }
 }
 
 /** Whether the generator renders a tree of pages rather than a single page.
 
-    @param config The configuration to read the flag from.
-    @param generatorId The id of the generator being rendered.
+    The generator's own `multipage` option wins over the global one.
+
+    @param config The configuration holding the global flag.
+    @param params The generator's own options block.
 */
 bool
-rendersMultiPage(Config const& config, std::string_view generatorId)
+rendersMultiPage(Config const& config, dom::Object const& params)
 {
-    auto const& genOpts = config.generatorOptions;
-    if (auto const it = genOpts.find(std::string(generatorId));
-        it != genOpts.end())
+    if (dom::Value const m = params.get("multipage"); m.isBoolean())
     {
-        if (dom::Value const m = it->second.get("multipage"); m.isBoolean())
-        {
-            return m.getBool();
-        }
+        return m.getBool();
     }
     return config.multipage;
 }
 
 Expected<void>
 HandlebarsGenerator::
-build(Corpus const& corpus, Config const& config) const
+build(
+    Corpus const& corpus,
+    Config const& config,
+    report::Reporter& reporter) const
 {
     // Resolve where this generator writes (a directory for a multi-page
     // render, a file or directory for a single document) from the config.
     std::string const outputPath = getGeneratorOutputPath(*this, config);
+    dom::Object const params = getGeneratorParams(*this, config);
+    bool const multipage = rendersMultiPage(config, params);
     std::string_view const configuredTagfile = config.tagfile;
 
     // The tagfile and the copied stylesheets land in the same directory as
@@ -155,10 +163,11 @@ build(Corpus const& corpus, Config const& config) const
         MRDOCS_CHECK_OR(!configuredTagfile.empty(), {});
         std::string const tagfilePath = files::appendPath(
             dir, files::getFileName(configuredTagfile));
-        return buildTagfile(tagfilePath, corpus, config);
+        return buildTagfile(
+            tagfilePath, corpus, config, reporter, params, multipage);
     };
 
-    if (!rendersMultiPage(config, id()))
+    if (!multipage)
     {
         // Single document: write it to the resolved file (a directory
         // output becomes reference.<ext>), then the stylesheets and tagfile
@@ -168,17 +177,16 @@ build(Corpus const& corpus, Config const& config) const
             getSinglePageFullPath(outputPath, fileExtension()));
         std::string const outDir(files::getParentDir(file));
         MRDOCS_TRY(writeToFile(file, [&](std::ostream& os) -> Expected<void>
-        {
-            return renderSinglePage(os, corpus, config);
-        }));
-        MRDOCS_TRY(copyStylesheets(config, outDir));
+            { return renderSinglePage(os, corpus, config, reporter, params); }));
+        MRDOCS_TRY(copyStylesheets(config, outDir, reporter));
         MRDOCS_TRY(writeTagfile(outDir));
         return {};
     }
 
     // Multi-page: one file per symbol inside the output directory.
-    HandlebarsCorpus domCorpus{corpus, config, fileExtension()};
-    prepareCorpus(domCorpus);
+    HandlebarsCorpus domCorpus{
+        corpus, config, params, fileExtension(), formatChain()};
+    prepareCorpus(domCorpus, reporter);
     ThreadPool threadPool(config.concurrency);
     MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus, threadPool));
     MultiPageVisitor visitor(ex, outputPath, corpus, config);
@@ -186,9 +194,9 @@ build(Corpus const& corpus, Config const& config) const
 
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
-    report::info("Generated {} pages", visitor.count());
+    reporter.info("Generated {} pages", visitor.count());
 
-    MRDOCS_TRY(copyStylesheets(config, outputPath));
+    MRDOCS_TRY(copyStylesheets(config, outputPath, reporter));
     MRDOCS_TRY(writeTagfile(outputPath));
     return {};
 }
@@ -198,12 +206,44 @@ HandlebarsGenerator::
 buildTagfile(
     std::ostream& os,
     Corpus const& corpus,
-    Config const& config) const
+    Config const& config,
+    report::Reporter& reporter) const
 {
-    HandlebarsCorpus domCorpus{corpus, config, fileExtension()};
-    prepareCorpus(domCorpus);
+    dom::Object const params = getGeneratorParams(*this, config);
+    return buildTagfile(
+        os, corpus, config, reporter, params,
+        rendersMultiPage(config, params));
+}
+
+Expected<void>
+HandlebarsGenerator::
+buildTagfile(
+    std::string_view const fileName,
+    Corpus const& corpus,
+    Config const& config,
+    report::Reporter& reporter) const
+{
+    dom::Object const params = getGeneratorParams(*this, config);
+    return buildTagfile(
+        fileName, corpus, config, reporter, params,
+        rendersMultiPage(config, params));
+}
+
+Expected<void>
+HandlebarsGenerator::
+buildTagfile(
+    std::ostream& os,
+    Corpus const& corpus,
+    Config const& config,
+    report::Reporter& reporter,
+    dom::Object const& params,
+    bool const multipage) const
+{
+    HandlebarsCorpus domCorpus{
+        corpus, config, params, fileExtension(), formatChain()};
+    prepareCorpus(domCorpus, reporter);
     RawOstream raw_os(os);
-    if (rendersMultiPage(config, id()))
+    if (multipage)
     {
         MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
                         domCorpus,
@@ -231,7 +271,10 @@ HandlebarsGenerator::
 buildTagfile(
     std::string_view const fileName,
     Corpus const& corpus,
-    Config const& config) const
+    Config const& config,
+    report::Reporter& reporter,
+    dom::Object const& params,
+    bool const multipage) const
 {
     std::string const dir(files::getParentDir(fileName));
     MRDOCS_TRY(files::createDirectory(dir));
@@ -250,7 +293,7 @@ buildTagfile(
     }
     try
     {
-        return buildTagfile(os, corpus, config);
+        return buildTagfile(os, corpus, config, reporter, params, multipage);
     }
     catch(std::exception const& ex)
     {
@@ -263,11 +306,14 @@ HandlebarsGenerator::
 renderSinglePage(
     std::ostream& os,
     Corpus const& corpus,
-    Config const& config) const
+    Config const& config,
+    report::Reporter& reporter,
+    dom::Object const& params) const
 {
     // Create corpus and executors
-    HandlebarsCorpus domCorpus{corpus, config, fileExtension()};
-    prepareCorpus(domCorpus);
+    HandlebarsCorpus domCorpus{
+        corpus, config, params, fileExtension(), formatChain()};
+    prepareCorpus(domCorpus, reporter);
     ThreadPool threadPool(config.concurrency);
     MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus, threadPool));
 
@@ -466,7 +512,9 @@ isRemote(std::string_view path)
 */
 Expected<HandlebarsGenerator::StylesData>
 HandlebarsGenerator::
-prepareStylesheets(Config const& config) const
+prepareStylesheets(
+    Config const& config,
+    report::Reporter& reporter) const
 {
     StylesData data;
     bool const linkMode = config.linkcss;
@@ -502,7 +550,7 @@ prepareStylesheets(Config const& config) const
         {
             if (auto r = linkOrInline(source, output); !r)
             {
-                report::warn("Failed to read default stylesheet: {}", r.error());
+                reporter.warn("Failed to read default stylesheet: {}", r.error());
             }
         }
         auto const hlSource = defaultHighlightStylesheetSource(config);
@@ -512,7 +560,7 @@ prepareStylesheets(Config const& config) const
             auto const rel = files::appendPath(config.stylesdir, hlOutput);
             if (auto r = linkOrInline(hlSource, rel); !r)
             {
-                report::warn("Failed to read highlight stylesheet: {}", r.error());
+                reporter.warn("Failed to read highlight stylesheet: {}", r.error());
             }
         }
         data.inlineScripts.push_back(defaultHighlightScript());
@@ -558,7 +606,10 @@ prepareStylesheets(Config const& config) const
 
 Expected<void>
 HandlebarsGenerator::
-copyStylesheets(Config const& config, std::string_view outputDir) const
+copyStylesheets(
+    Config const& config,
+    std::string_view outputDir,
+    report::Reporter& reporter) const
 {
     // Only linked-and-copied CSS lands on disk, and only when we have a
     // directory to copy it into (the stream/embedded paths do not).
@@ -566,7 +617,7 @@ copyStylesheets(Config const& config, std::string_view outputDir) const
     {
         return {};
     }
-    MRDOCS_TRY(StylesData const data, prepareStylesheets(config));
+    MRDOCS_TRY(StylesData const data, prepareStylesheets(config, reporter));
     for (auto const& sheet : data.stylesheets)
     {
         if (sheet.external)
@@ -595,9 +646,11 @@ copyStylesheets(Config const& config, std::string_view outputDir) const
 
 void
 HandlebarsGenerator::
-prepareCorpus(HandlebarsCorpus& domCorpus) const
+prepareCorpus(
+    HandlebarsCorpus& domCorpus,
+    report::Reporter& reporter) const
 {
-    if (auto res = prepareStylesheets(domCorpus.config()); res)
+    if (auto res = prepareStylesheets(domCorpus.config(), reporter); res)
     {
         auto const& data = *res;
         domCorpus.stylesheets = [&]() {
@@ -625,7 +678,7 @@ prepareCorpus(HandlebarsCorpus& domCorpus) const
     }
     else
     {
-        report::warn(
+        reporter.warn(
             "Failed to prepare stylesheets for corpus: {}",
             res.error());
     }

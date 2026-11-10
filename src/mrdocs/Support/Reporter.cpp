@@ -10,12 +10,12 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include "ReportImpl.hpp"
+#include "ReporterImpl.hpp"
+#include <mrdocs/Support/Error/Assert.hpp>
 #include <mrdocs/Support/Filesystem/Path.hpp>
 #include <mrdocs/Version.hpp>
-#include <llvm/Support/Mutex.h>
-#include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/Signals.h>
 #include <cstdlib>
 #include <format>
 #include <mutex>
@@ -53,34 +53,83 @@ SourceLocation(
 
 namespace report {
 
-static llvm::sys::Mutex mutex_;
-static Level level_ = Level::debug;
-static bool sourceLocationWarnings_ = true;
+namespace {
 
-constinit Results results{};
+// The console is one for the whole process, so the reporters of every run
+// write to it under one lock. The lock holds no setting and no count.
+std::mutex&
+consoleMutex() noexcept
+{
+    static std::mutex m;
+    return m;
+}
+
+} // (anon)
+
+Reporter::
+Reporter() noexcept
+    : Reporter(Level::debug)
+{
+}
+
+Reporter::
+Reporter(Level const minimumLevel) noexcept
+    : level_(minimumLevel)
+{
+}
+
+Reporter::
+~Reporter() = default;
 
 void
+Reporter::
 setMinimumLevel(Level const level) noexcept
 {
     level_ = level;
 }
 
 Level
-getMinimumLevel() noexcept
+Reporter::
+getMinimumLevel() const noexcept
 {
     return level_;
 }
 
 void
-setSourceLocationWarnings(bool b) noexcept
+Reporter::
+setSourceLocationWarnings(bool const b) noexcept
 {
     sourceLocationWarnings_ = b;
 }
 
 void
+Reporter::
+setWarnAsError(bool const b) noexcept
+{
+    warnAsError_ = b;
+}
+
+bool
+Reporter::
+warnAsError() const noexcept
+{
+    return warnAsError_;
+}
+
+Results
+Reporter::
+results() const
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+    return results_;
+}
+
+void
+Reporter::
 print(
     std::string const& s)
 {
+    std::lock_guard<std::mutex> lock(consoleMutex());
     llvm::outs() << s << '\n';
 #ifdef _MSC_VER
     if(::IsDebuggerPresent() != 0)
@@ -89,20 +138,6 @@ print(
         ::OutputDebugStringA("\n");
     }
 #endif
-}
-
-void
-print(
-    Level level,
-    std::string const& text,
-    source_location const* loc,
-    Error const* e)
-{
-    call_impl(level,
-        [&](llvm::raw_ostream& os)
-        {
-            os << text;
-        }, loc, e);
 }
 
 //------------------------------------------------
@@ -120,6 +155,8 @@ getLevel(unsigned level) noexcept
         return Level::fatal;
     }
 }
+
+namespace {
 
 constexpr
 llvm::raw_ostream::Colors
@@ -144,11 +181,13 @@ getLevelColor(Level level)
     }
 }
 
+} // (anon)
 
 void
-call_impl(
-    Level level,
-    std::function<void(llvm::raw_ostream&)> f,
+Reporter::
+print(
+    Level const level,
+    std::string const& text,
     source_location const* loc,
     Error const* e)
 {
@@ -156,7 +195,7 @@ call_impl(
     if(level >= level_)
     {
         llvm::raw_string_ostream os(s);
-        f(os);
+        os << text;
         using LT = std::underlying_type_t<Level>;
         if(sourceLocationWarnings_ &&
            loc &&
@@ -187,10 +226,9 @@ call_impl(
         os << '\n';
     }
 
-    // Update counters
-    std::lock_guard<llvm::sys::Mutex> lock(mutex_);
     if (!s.empty())
     {
+        std::lock_guard<std::mutex> lock(consoleMutex());
         if (level >= Level::error)
         {
             llvm::errs() << s;
@@ -201,25 +239,28 @@ call_impl(
             llvm::outs().flush();
         }
     }
+
+    // Update counters
+    std::lock_guard<std::mutex> lock(mutex_);
     switch(level)
     {
     case Level::trace:
-        ++results.traceCount;
+        ++results_.traceCount;
         break;
     case Level::debug:
-        ++results.debugCount;
+        ++results_.debugCount;
         break;
     case Level::info:
-        ++results.infoCount;
+        ++results_.infoCount;
         break;
     case Level::warn:
-        ++results.warnCount;
+        ++results_.warnCount;
         break;
     case Level::error:
-        ++results.errorCount;
+        ++results_.errorCount;
         break;
     case Level::fatal:
-        ++results.fatalCount;
+        ++results_.fatalCount;
         break;
     default:
         MRDOCS_UNREACHABLE();

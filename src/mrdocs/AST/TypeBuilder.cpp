@@ -162,7 +162,7 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
-    MRDOCS_SYMBOL_TRACE(T, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(T, getASTVisitor());
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<NamedType>);
     (*Inner)->Constraints = this->Constraints;
@@ -232,14 +232,14 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
-    MRDOCS_SYMBOL_TRACE(NNS, getASTVisitor().context_);
-    MRDOCS_SYMBOL_TRACE(D, getASTVisitor().context_);
-    MRDOCS_SYMBOL_TRACE(TArgs, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(NNS, getASTVisitor());
+    MRDOCS_SYMBOL_TRACE(D, getASTVisitor());
+    MRDOCS_SYMBOL_TRACE(TArgs, getASTVisitor());
 
     // Look for the Info type. If this is a template specialization,
     // we look for the Info of the specialized record.
     clang::Decl const* ID = decayToPrimaryTemplate(D);
-    MRDOCS_SYMBOL_TRACE(ID, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(ID, getASTVisitor());
 
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<Type>(std::in_place_type<NamedType>);

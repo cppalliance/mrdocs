@@ -9,7 +9,7 @@
 //
 
 #include <mrdocs/Support/Filesystem/Glob.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <llvm/ADT/BitVector.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Support/GlobPattern.h>

@@ -9,9 +9,9 @@
 //
 // Loads two corpora described by two `mrdocs.yml` configurations
 // (one baseline, one candidate), constructs a custom Generator
-// subclass that owns the report's output format, installs it into
-// the process-global registry, looks it back up by id, and asks
-// it to render the diff to stdout.
+// subclass that owns the report's output format, adds it to the
+// generators of a Session, looks it back up by id, and asks it to render
+// the diff to stdout.
 //
 // Removed public symbols and function-signature changes are
 // flagged as major; added public symbols as minor; doc-only
@@ -24,8 +24,9 @@
 #include "BreakingChangesGenerator.hpp"
 #include "Corpus.hpp"
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Session.hpp>
 #include <mrdocs/Support/Error/Error.hpp>
-#include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Reporter.hpp>
 #include <mrdocs/Support/Concurrency/ThreadPool.hpp>
 #include <cstdio>
 #include <cstdlib>
@@ -45,8 +46,6 @@ int main(int argc, char const** argv)
         return 2;
     }
 
-    report::setMinimumLevel(report::Level::error);
-
     // A default-constructed ReferenceDirectories points at MrDocs's installed
     // root (linking mrdocs-core bakes it in), so the built-in resources resolve
     // with no configuration. Any arguments after the two configs are option
@@ -54,38 +53,52 @@ int main(int argc, char const** argv)
     // the in-tree test forwards the built-in directory flags.
     ReferenceDirectories dirs;
     char const** overrides = argv + 3;
-    auto v1Corpus = example::loadCorpusFromConfig(argv[1], dirs, overrides);
+
+    // tag::install-and-run[]
+    // The session owns the reporter of the run, so it comes first: both
+    // corpora report through session.log(), which prints errors only
+    Expected<Session> created = Session::create(Config());
+    if (!created)
+    {
+        std::println(stderr, "Session::create: {}", created.error().reason());
+        return 1;
+    }
+    Session& session = *created;
+    session.log().setMinimumLevel(report::Level::error);
+    auto v1Corpus = example::loadCorpusFromConfig(
+        argv[1], dirs, overrides, session.log());
     if (!v1Corpus)
     {
         std::println(stderr, "v1: {}", v1Corpus.error().reason());
         return 1;
     }
-    auto v2Corpus = example::loadCorpusFromConfig(argv[2], dirs, overrides);
+    auto v2Corpus = example::loadCorpusFromConfig(
+        argv[2], dirs, overrides, session.log());
     if (!v2Corpus)
     {
         std::println(stderr, "v2: {}", v2Corpus.error().reason());
         return 1;
     }
 
-    // tag::install-and-run[]
-    auto installed = installGenerator(
+    auto installed = session.generators().install(
         std::make_unique<example::BreakingChangesGenerator>(*v1Corpus));
     if (!installed)
     {
         std::println(stderr,
-            "installGenerator: {}", installed.error().reason());
+            "install: {}", installed.error().reason());
         return 1;
     }
 
-    Generator const* gen = findGenerator("breaking-changes");
+    Generator const* gen =
+        session.generators().find("breaking-changes");
     if (!gen)
     {
         std::println(stderr,
-            "findGenerator: breaking-changes not installed");
+            "find: breaking-changes not installed");
         return 1;
     }
 
-    auto wrote = gen->build(*v2Corpus, Config{});
+    auto wrote = session.build(*gen, *v2Corpus);
     if (!wrote)
     {
         std::println(stderr,
