@@ -169,8 +169,6 @@ def generate_visual_studio_run_configs(
                 new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"], source_dir)
             elif new_task["taskLabel"] == "Generate DOM Schemas":
                 new_task["appliesTo"] = "docs/mrdocs/extensions/schema.js"
-            elif new_task["taskLabel"] == "XML Lint with RelaxNG Schema":
-                new_task["appliesTo"] = "docs/modules/ROOT/attachments/schemas/generators/mrdocs.rng"
 
             vs_tasks_by_name[new_task["taskLabel"]] = new_task
 

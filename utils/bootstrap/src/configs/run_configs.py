@@ -24,6 +24,30 @@ from ..core.platform import is_windows
 from ..core.filesystem import load_json_file
 from ..core.ui import TextUI, get_default_ui
 from ..core.options import InstallOptions
+from .cmake_file_api import CMakeReplyError, target_artifact
+
+
+def resolve_target_programs(configs: List[Dict[str, Any]], build_dir: str,
+                            build_type: Optional[str] = None,
+                            dry_run: bool = False) -> None:
+    """Set ``program`` on every target entry from CMake's file API reply.
+
+    The path is the one CMake reports for the executable of the entry's
+    ``target`` in ``build_dir``. An entry whose target has no reply raises a
+    ``ValueError`` naming the entry, so a missing program is an error when the
+    configs are generated and never a recipe that fails to start. A dry run
+    writes nothing, so a missing reply leaves the entry without a program.
+    """
+    for cfg in configs:
+        if "target" not in cfg:
+            continue
+        try:
+            cfg["program"] = os.path.join(
+                build_dir, target_artifact(build_dir, cfg["target"], build_type))
+        except CMakeReplyError as e:
+            if dry_run:
+                continue
+            raise ValueError(f"run config {cfg.get('name')!r}: {e}") from e
 
 
 def _cli_flag_for_dest() -> Dict[str, str]:
@@ -67,6 +91,23 @@ def is_stale_preset_entry(name, generated_bases, valid_presets) -> bool:
         return False
     base, token = m.group(1), m.group(2)
     return base in generated_bases and token not in valid_presets
+
+
+def is_stale_generated_entry(name, marked, current_names, generated_bases, valid_presets) -> bool:
+    """True when ``name`` is an entry the generator wrote earlier that the
+    current run no longer produces.
+
+    Only ``marked`` entries (those carrying the generator's own marker) are
+    candidates, so an entry the user wrote or edited by hand survives whatever
+    its name. A marked entry stays when this run produced it (``current_names``)
+    or when it is the per-preset entry of another preset still present.
+    """
+    if not marked or name in current_names:
+        return False
+    m = _PRESET_SUFFIX.match(name or "")
+    if m and m.group(1) in generated_bases and m.group(2) in valid_presets:
+        return False
+    return True
 
 
 def load_preset_names(source_dir: str) -> list:
@@ -125,23 +166,85 @@ def format_values(obj, tokens: Dict[str, Any]):
     return obj
 
 
+_PATH_FLAGS_FOR_SAVED_ARGS = ("--preset", "--build-dir", "--install-dir")
+
+
+def load_saved_bootstrap_args(source_dir: str) -> Dict[str, List[str]]:
+    """
+    Read the arguments saved in the IDE launch files for the bootstrap entries.
+
+    Looks at `.vscode/launch.json` first and `.vs/launch.vs.json` second and
+    returns a mapping from entry name (`Bootstrap Update (<preset>)` and
+    `Bootstrap Refresh (<preset>)`) to its argument list, with
+    `${workspaceFolder}` expanded to `source_dir`.
+    """
+    import json
+    import shlex
+
+    saved: Dict[str, List[str]] = {}
+    vscode_path = os.path.join(source_dir, ".vscode", "launch.json")
+    vs_path = os.path.join(source_dir, ".vs", "launch.vs.json")
+    for path, is_vscode in ((vs_path, False), (vscode_path, True)):
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except (OSError, ValueError):
+            continue
+        for cfg in data.get("configurations", []):
+            name = cfg.get("name", "")
+            if not (name.startswith("Bootstrap Update (") or name.startswith("Bootstrap Refresh (")):
+                continue
+            if not name.endswith(")"):
+                continue
+            if is_vscode:
+                raw = cfg.get("args")
+                if not isinstance(raw, list):
+                    continue
+                args = [str(a).replace("${workspaceFolder}", source_dir) for a in raw]
+            else:
+                text = cfg.get("scriptArguments")
+                if not isinstance(text, str):
+                    continue
+                args = shlex.split(text)
+            saved[name] = args
+    return saved
+
+
+def _merge_saved_args(saved: List[str], generated: List[str]) -> List[str]:
+    """Reuse the saved arguments, adding --preset/--build-dir/--install-dir only when missing."""
+    merged = list(saved)
+    for flag in _PATH_FLAGS_FOR_SAVED_ARGS:
+        if flag in merged:
+            continue
+        for i, arg in enumerate(generated[:-1]):
+            if arg == flag:
+                merged.extend([flag, generated[i + 1]])
+                break
+    return merged
+
+
 def get_dynamic_run_configs(
     options: InstallOptions,
     default_options: InstallOptions,
     java_path: str = "",
-    libxml2_root: Optional[str] = None,
+    saved_args: Optional[Dict[str, List[str]]] = None,
 ) -> List[Dict[str, Any]]:
     """
     Generate dynamic run configuration data.
 
     Creates configuration entries for bootstrap helpers, Boost documentation
-    targets, and XML/RelaxNG validation tasks.
+    targets, and the schema generation task.
 
     Args:
         options: Current install options.
         default_options: Default install options (for comparison).
         java_path: Path to Java executable.
-        libxml2_root: Path to libxml2 installation root.
+        saved_args: Arguments already saved in the IDE files for the
+            `Bootstrap Update (...)` and `Bootstrap Refresh (...)` entries,
+            keyed by entry name. When an entry is present its arguments are
+            reused instead of the ones derived from `options`.
 
     Returns:
         List of run configuration dictionaries.
@@ -185,6 +288,17 @@ def get_dynamic_run_configs(
             raise TypeError(f"Unsupported type {field.type} for field '{field.name}' in InstallOptions.")
 
     bootstrap_refresh_config_name = options.preset or options.build_type or "debug"
+    update_name = f"Bootstrap Update ({bootstrap_refresh_config_name})"
+    refresh_name = f"Bootstrap Refresh ({bootstrap_refresh_config_name})"
+    update_args = list(bootstrap_args)
+    refresh_args = bootstrap_args + ["--non-interactive"]
+    if saved_args:
+        if update_name in saved_args:
+            update_args = _merge_saved_args(saved_args[update_name], bootstrap_args)
+        if refresh_name in saved_args:
+            refresh_args = _merge_saved_args(saved_args[refresh_name], bootstrap_args)
+            if "--non-interactive" not in refresh_args:
+                refresh_args.append("--non-interactive")
 
     configs.extend([
         {
@@ -195,19 +309,19 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": f"Bootstrap Update ({bootstrap_refresh_config_name})",
+            "name": update_name,
             "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
             "folder": "Bootstrap Update",
-            "args": bootstrap_args,
+            "args": update_args,
             "cwd": options.source_dir
         },
         {
-            "name": f"Bootstrap Refresh ({bootstrap_refresh_config_name})",
+            "name": refresh_name,
             "group": "Bootstrap",
             "script": os.path.join(options.source_dir, "bootstrap.py"),
             "folder": "Bootstrap Refresh",
-            "args": bootstrap_args + ["--non-interactive"],
+            "args": refresh_args,
             "cwd": options.source_dir
         },
         {
@@ -248,9 +362,10 @@ def get_dynamic_run_configs(
             "cwd": options.source_dir
         },
         {
-            "name": "Reformat Source Files",
+            "name": "Format",
+            "id": "format",
             "group": "Develop",
-            "script": os.path.join(options.source_dir, "utils", "linting", "reformat.py"),
+            "script": os.path.join(options.source_dir, "utils", "format", "format.py"),
             "args": [],
             "cwd": options.source_dir
         },
@@ -331,14 +446,13 @@ def get_dynamic_run_configs(
                         "group": "Documentation",
                         "target": "mrdocs",
                         "folder": "Boost Documentation",
-                        "program": os.path.join(options.build_dir, "mrdocs"),
                         "args": [
                             "../CMakeLists.txt",
                             f"--config={mrdocs_config}",
                             f"--output={os.path.join(options.boost_src_dir, 'libs', lib, 'doc', 'modules', 'reference', 'pages')}",
                             "--generator=adoc",
-                            f"--addons={os.path.join(options.source_dir, 'share', 'mrdocs', 'addons')}",
-                            f"--libc-includes={os.path.join(options.source_dir, 'share', 'mrdocs', 'headers', 'libc-stubs')}",
+                            f"--addons={os.path.join(options.source_dir, 'data', 'mrdocs', 'addons')}",
+                            f"--libc-includes={os.path.join(options.source_dir, 'data', 'mrdocs', 'headers', 'libc-stubs')}",
                             "--tagfile=reference.tag.xml",
                             "--multipage=true",
                             f"--concurrency={num_cores}",
@@ -346,13 +460,9 @@ def get_dynamic_run_configs(
                         ],
                     })
 
-    # DOM schema regeneration and XML lint. The RELAX NG schema is reflected
-    # from MrDocs's own types by the `schema` generator and committed at
+    # DOM schema regeneration. The RELAX NG schema is reflected from MrDocs's
+    # own types by the `schema` generator and committed at
     # schemas/generators/mrdocs.rng, so there is no trang conversion step.
-    mrdocs_rng = os.path.join(
-        options.source_dir, "docs", "modules", "ROOT", "attachments",
-        "schemas", "generators", "mrdocs.rng")
-
     configs.append({
         "name": "Generate DOM Schemas",
         "group": "Codegen",
@@ -361,54 +471,9 @@ def get_dynamic_run_configs(
         "cwd": options.source_dir,
         "env": {
             "MRDOCS": os.path.join(options.install_dir, "bin", "mrdocs"),
-            "ADDONS": os.path.join(options.source_dir, "share", "mrdocs", "addons"),
+            "ADDONS": os.path.join(options.source_dir, "data", "mrdocs", "addons"),
         },
     })
-
-    if libxml2_root:
-        libxml2_xmllint_executable = os.path.join(libxml2_root, "bin", "xmllint")
-        xml_sources_dir = os.path.join(options.source_dir, "tests", "golden", "fixtures")
-
-        if is_windows():
-            xml_sources = []
-            for root, _, files in os.walk(xml_sources_dir):
-                for file in files:
-                    if file.endswith(".xml") and not file.endswith(".bad.xml"):
-                        xml_sources.append(os.path.join(root, file))
-            configs.append({
-                "name": "XML Lint with RelaxNG Schema",
-                "group": "Test",
-                "script": libxml2_xmllint_executable,
-                "args": [
-                    "--dropdtd",
-                    "--noout",
-                    "--relaxng",
-                    mrdocs_rng,
-                    *xml_sources,
-                ],
-                "cwd": options.source_dir,
-            })
-        else:
-            configs.append({
-                "name": "XML Lint with RelaxNG Schema",
-                "group": "Test",
-                "script": "find",
-                "args": [
-                    xml_sources_dir,
-                    "-type", "f",
-                    "-name", "*.xml",
-                    "!", "-name", "*.bad.xml",
-                    "-exec",
-                    libxml2_xmllint_executable,
-                    "--dropdtd",
-                    "--noout",
-                    "--relaxng",
-                    mrdocs_rng,
-                    "{}",
-                    "+",
-                ],
-                "cwd": options.source_dir,
-            })
 
     return configs
 
@@ -416,7 +481,6 @@ def get_dynamic_run_configs(
 def generate_run_configs(
     options: InstallOptions,
     default_options: InstallOptions,
-    package_roots: Optional[Dict[str, str]] = None,
     compiler_info: Optional[Dict[str, str]] = None,
     generate_clion: bool = True,
     generate_vscode: bool = True,
@@ -424,6 +488,7 @@ def generate_run_configs(
     generate_justfile: bool = True,
     dry_run: bool = False,
     ui: Optional[TextUI] = None,
+    saved_args: Optional[Dict[str, List[str]]] = None,
 ):
     """
     Generate run configurations for all enabled IDEs.
@@ -436,7 +501,6 @@ def generate_run_configs(
     Args:
         options: Current install options.
         default_options: Default install options (for comparison).
-        package_roots: Dictionary mapping package names to their root paths.
         compiler_info: Dictionary with compiler info (CMAKE_CXX_COMPILER_ID, etc.).
         generate_clion: If True, generate CLion configurations.
         generate_vscode: If True, generate VSCode configurations.
@@ -444,12 +508,12 @@ def generate_run_configs(
         generate_justfile: If True, generate a justfile.
         dry_run: If True, only print what would be done.
         ui: TextUI instance for output.
+        saved_args: Saved arguments of the bootstrap entries to preserve
+            (see `get_dynamic_run_configs`). The refresh-only script passes
+            them; the full bootstrap run leaves this unset.
     """
     if ui is None:
         ui = get_default_ui()
-
-    if package_roots is None:
-        package_roots = {}
 
     if compiler_info is None:
         compiler_info = {}
@@ -498,22 +562,30 @@ def generate_run_configs(
             filtered.append(cfg)
     configs = filtered
 
-    # Find libxml2 root from package_roots
-    libxml2_root = None
-    for key, path in package_roots.items():
-        if "libxml2" in key.lower():
-            libxml2_root = path
-            break
+    # A CTest entry is also a script entry for the IDE generators, which run
+    # `ctest` against the active build directory. The justfile generator reads
+    # the `ctest` selection itself, to name each preset's build directory.
+    from .justfile import CTEST_FLAGS
+    for cfg in configs:
+        if "ctest" in cfg:
+            cfg["script"] = "ctest"
+            cfg["args"] = ["--test-dir", options.build_dir, *cfg["ctest"], *CTEST_FLAGS]
+            cfg["cwd"] = options.source_dir
 
     # Append dynamic configs that must be computed
-    # (bootstrap helpers, boost docs, schema lint)
+    # (bootstrap helpers, boost docs, schema generation)
     dynamic_configs = get_dynamic_run_configs(
         options=options,
         default_options=default_options,
         java_path=options.java_path,
-        libxml2_root=libxml2_root,
+        saved_args=saved_args,
     )
     configs.extend(dynamic_configs)
+
+    # Every program path is what CMake reports for the entry's target.
+    resolve_target_programs(
+        configs, options.build_dir, getattr(options, "build_type", None),
+        dry_run=dry_run)
 
     # Which IDEs/tools to generate for is a bootstrap option, not part of the
     # run-configuration data, so it comes from the generate_* flags (which are
@@ -575,6 +647,7 @@ def generate_run_configs(
             build_dir=options.build_dir,
             preset=options.preset,
             all_presets=all_presets,
+            build_type=getattr(options, "build_type", None),
             dry_run=dry_run,
             ui=ui,
         )

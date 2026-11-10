@@ -112,7 +112,7 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         self.assertTrue(any("Bootstrap Help" in n for n in names))
         self.assertTrue(any("Bootstrap Update" in n for n in names))
         self.assertTrue(any("Bootstrap Refresh" in n for n in names))
-        self.assertTrue(any("Reformat" in n for n in names))
+        self.assertTrue(any(n.endswith("Format") for n in names))
 
     def test_preset_in_config_name(self):
         opts = _make_options(preset="debug-linux-gcc")
@@ -146,46 +146,6 @@ class TestGetDynamicRunConfigs(unittest.TestCase):
         configs = get_dynamic_run_configs(opts, defaults)
         schema_configs = [c for c in configs if c.get("name") == "Generate DOM Schemas"]
         self.assertEqual(len(schema_configs), 1)
-
-    @patch("src.configs.run_configs.is_windows", return_value=False)
-    def test_java_and_libxml2_unix(self, _mock_win):
-        opts = _make_options()
-        defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java", libxml2_root="/opt/libxml2")
-        lint_configs = [c for c in configs if "XML Lint" in c.get("name", "")]
-        self.assertEqual(len(lint_configs), 1)
-        # Unix uses find command
-        self.assertEqual(lint_configs[0]["script"], "find")
-
-    @patch("src.configs.run_configs.is_windows", return_value=True)
-    @patch("src.configs.run_configs.os.walk", return_value=[
-        ("/golden", [], ["a.xml", "b.bad.xml", "c.xml"])
-    ])
-    def test_java_and_libxml2_windows(self, _mock_walk, _mock_win):
-        opts = _make_options()
-        defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="/usr/bin/java", libxml2_root="/opt/libxml2")
-        lint_configs = [c for c in configs if "XML Lint" in c.get("name", "")]
-        self.assertEqual(len(lint_configs), 1)
-        # Windows enumerates XML files directly; bad.xml excluded
-        args = lint_configs[0]["args"]
-        xml_files = [a for a in args if a.endswith(".xml") and "rng" not in a]
-        self.assertEqual(len(xml_files), 2)  # a.xml and c.xml, not b.bad.xml
-
-    @patch("src.configs.run_configs.is_windows", return_value=False)
-    def test_lint_without_java(self, _mock_win):
-        opts = _make_options()
-        defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="", libxml2_root="/opt/libxml2")
-        lint = [c for c in configs if "XML Lint" in c.get("name", "")]
-        self.assertEqual(len(lint), 1)
-
-    def test_no_lint_without_libxml2(self):
-        opts = _make_options()
-        defaults = _make_options()
-        configs = get_dynamic_run_configs(opts, defaults, java_path="", libxml2_root=None)
-        lint = [c for c in configs if "XML Lint" in c.get("name", "")]
-        self.assertEqual(len(lint), 0)
 
     def test_bootstrap_args_include_non_default_options(self):
         """Options differing from defaults appear in bootstrap args."""
@@ -256,6 +216,27 @@ class TestGenerateRunConfigs(unittest.TestCase):
         }
         data.update(overrides)
         return data
+
+    @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
+    @patch("src.configs.run_configs.load_json_file")
+    def test_ctest_entry_is_a_script_entry_for_the_ides(self, mock_load, _mock_dyn):
+        mock_load.return_value = {"configs": [
+            {"name": "XML Lint", "id": "xml-lint", "ctest": ["-R", "^xml-lint$"]}]}
+        mock_vscode_fn = MagicMock()
+        mock_mod = MagicMock()
+        mock_mod.generate_vscode_run_configs = mock_vscode_fn
+        with patch.dict("sys.modules", {"src.configs.vscode": mock_mod}):
+            generate_run_configs(
+                self.opts, self.defaults,
+                generate_clion=False, generate_vscode=True, generate_vs=False,
+                generate_justfile=False,
+                ui=self.ui,
+            )
+        cfg = mock_vscode_fn.call_args.kwargs["configs"][0]
+        self.assertEqual(cfg["script"], "ctest")
+        self.assertEqual(cfg["args"], [
+            "--test-dir", self.opts.build_dir, "-R", "^xml-lint$",
+            "--output-on-failure", "--no-tests=error"])
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
@@ -353,16 +334,16 @@ class TestGenerateRunConfigs(unittest.TestCase):
             )
         self.assertIn("/src/test.py", captured["configs"][0]["script"])
 
+    @patch("src.configs.run_configs.target_artifact", return_value="tools/mrdocs/mrdocs")
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
-    def test_mrdocs_prefixed_tokens_expand(self, mock_load, _mock_dyn):
+    def test_mrdocs_prefixed_tokens_expand(self, mock_load, _mock_dyn, _mock_artifact):
         """The mrdocs_* placeholders used in run_configs.json expand
         to real paths rather than passing through literally."""
         data = self._base_json()
         data["configs"] = [{
             "name": "Tokened",
             "target": "mrdocs",
-            "program": "${mrdocs_build_dir}/mrdocs",
             "args": [
                 "${mrdocs_src_dir}/tests/golden/fixtures",
                 "--output=${mrdocs_install_dir}/out",
@@ -382,7 +363,7 @@ class TestGenerateRunConfigs(unittest.TestCase):
                 ui=self.ui,
             )
         cfg = captured["configs"][0]
-        self.assertEqual(cfg["program"], "/src/build/release/mrdocs")
+        self.assertEqual(cfg["program"], "/src/build/release/tools/mrdocs/mrdocs")
         self.assertEqual(cfg["args"][0], "/src/tests/golden/fixtures")
         self.assertEqual(cfg["args"][1], "--output=/src/install/release/out")
         for value in [cfg["program"], *cfg["args"]]:
@@ -434,31 +415,13 @@ class TestGenerateRunConfigs(unittest.TestCase):
 
     @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
     @patch("src.configs.run_configs.load_json_file")
-    def test_libxml2_extracted_from_package_roots(self, mock_load, _mock_dyn):
-        mock_load.return_value = self._base_json()
-        pkg_roots = {"LibXml2": "/opt/libxml2"}
-        with patch("src.configs.run_configs.get_dynamic_run_configs") as mock_dyn:
-            mock_dyn.return_value = []
-            generate_run_configs(
-                self.opts, self.defaults,
-                package_roots=pkg_roots,
-                generate_clion=False, generate_vscode=False, generate_vs=False,
-                generate_justfile=False,
-                ui=self.ui,
-            )
-            # get_dynamic_run_configs should receive libxml2_root
-            _, kwargs = mock_dyn.call_args
-            self.assertEqual(kwargs.get("libxml2_root"), "/opt/libxml2")
-
-    @patch("src.configs.run_configs.get_dynamic_run_configs", return_value=[])
-    @patch("src.configs.run_configs.load_json_file")
     def test_defaults_none_params(self, mock_load, _mock_dyn):
-        """package_roots, compiler_info default to empty dicts when None."""
+        """compiler_info defaults to an empty dict when None."""
         mock_load.return_value = self._base_json()
         # Should not raise
         generate_run_configs(
             self.opts, self.defaults,
-            package_roots=None, compiler_info=None,
+            compiler_info=None,
             generate_clion=False, generate_vscode=False, generate_vs=False,
             generate_justfile=False,
             ui=self.ui,

@@ -31,6 +31,7 @@ import shutil
 from ..core.platform import is_windows
 from ..core.filesystem import write_text
 from ..core.ui import get_default_ui
+from .cmake_file_api import CMakeReplyError, multi_config_name, target_artifact
 
 # just recipe names are NAME = [a-zA-Z_][a-zA-Z0-9_-]*
 _VALID_RECIPE_ID = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_-]*$")
@@ -191,17 +192,36 @@ def _script_invocation(config: dict) -> str:
     return " ".join(_q(p) for p in parts)
 
 
-def _target_program(config: dict, build_dir: str) -> str:
-    """Resolve the program path for a target config under ``build_dir``.
+def _target_program(config: dict, build_dir: str, dry_run=False,
+                    build_type=None) -> str:
+    """The program path of a target config in ``build_dir``, from CMake.
 
-    CMake places target binaries in ``<build_dir>/bin`` (CMAKE_RUNTIME_OUTPUT_
-    DIRECTORY), so the program is rebased there. Recomputing from ``build_dir``
-    (rather than trusting the config's baked-in active-preset path) keeps the
-    per-preset variants correct.
+    The path is what the file API reply of ``build_dir`` reports for the
+    config's ``target``, so each preset's recipe names the program of its own
+    build directory. A target without a reply raises ``ValueError`` naming the
+    entry. A dry run writes nothing, so a missing reply gives the target name.
+    ``build_type`` picks the configuration of a multi-configuration generator.
     """
-    program = config.get("program")
-    base = os.path.basename(program) if program else config["target"]
-    return os.path.join(build_dir, "bin", base)
+    try:
+        return os.path.join(
+            build_dir, target_artifact(build_dir, config["target"], build_type))
+    except CMakeReplyError as e:
+        if dry_run:
+            return os.path.join(build_dir, config["target"])
+        raise ValueError(f"run config {config.get('name')!r}: {e}") from e
+
+
+def _build_type_for(bdir, active_build_dir, build_type):
+    """The build type of a preset's variant: the active preset's own, and
+    none (the first configuration) for another preset, whose build type
+    bootstrap does not know."""
+    return build_type if os.path.normpath(bdir) == os.path.normpath(active_build_dir) else None
+
+
+def _config_flag(bdir, build_dir, build_type) -> str:
+    """`` --config <name>`` for the build of a multi-configuration generator."""
+    name = multi_config_name(bdir, _build_type_for(bdir, build_dir, build_type))
+    return f" --config {_q(name)}" if name else ""
 
 
 def _build_recipe_id(target: str, preset_slug: str) -> str:
@@ -209,7 +229,27 @@ def _build_recipe_id(target: str, preset_slug: str) -> str:
     return f"build-{slugify_token(target)}-{preset_slug}"
 
 
-def _recipe_body(config: dict, source_dir: str, build_dir: str) -> list:
+# Flags every generated ctest line ends with: print the output of a failed
+# test, and fail when the selection matches no test.
+CTEST_FLAGS = ["--output-on-failure", "--no-tests=error"]
+
+
+def _ctest_command(config: dict, build_dir: str, build_type=None) -> str:
+    """The ``ctest`` line of a config that runs CTest tests in ``build_dir``.
+
+    ``ctest`` entries list the selection arguments (``-R <name>``, ``-L
+    <label>``); the line adds the build directory, the configuration of a
+    multi-configuration generator and ``CTEST_FLAGS``.
+    """
+    name = multi_config_name(build_dir, build_type)
+    config_args = ["-C", name] if name else []
+    parts = ["ctest", "--test-dir", build_dir, *config_args,
+             *config["ctest"], *CTEST_FLAGS]
+    return " ".join(_q(p) for p in parts)
+
+
+def _recipe_body(config: dict, source_dir: str, build_dir: str,
+                 dry_run=False, build_type=None) -> list:
     """Return the indented body lines (without the leading indent) for a config.
 
     The build prerequisite is a just dependency in the recipe header (see
@@ -217,8 +257,10 @@ def _recipe_body(config: dict, source_dir: str, build_dir: str) -> list:
     via an incremental `cmake --build` instead of a one-time existence check.
     """
     cwd = config.get("cwd")
+    if "ctest" in config:
+        return [_ctest_command(config, build_dir, build_type)]
     if "target" in config:
-        program = _target_program(config, build_dir)
+        program = _target_program(config, build_dir, dry_run, build_type)
         # IDE target launches run with cwd = build_dir, so relative args
         # (e.g. the self-reference "../CMakeLists.txt") resolve the same way.
         run_cwd = cwd or build_dir
@@ -246,7 +288,7 @@ def _attrs(config: dict) -> list:
 
 
 def _render_recipe(rid: str, config: dict, source_dir: str, build_dir: str,
-                   deps=()) -> list:
+                   deps=(), dry_run=False, build_type=None) -> list:
     """Render a full generated recipe block (attributes, header, body).
 
     ``deps`` are recipe ids placed in the header as just dependencies (e.g. the
@@ -255,7 +297,8 @@ def _render_recipe(rid: str, config: dict, source_dir: str, build_dir: str,
     lines = _attrs(config)
     header = f"{rid}:" + ((" " + " ".join(deps)) if deps else "")
     lines.append(header)
-    for body_line in _recipe_body(config, source_dir, build_dir):
+    for body_line in _recipe_body(config, source_dir, build_dir, dry_run,
+                                  build_type):
         lines.append(f"    {body_line}")
     return lines
 
@@ -473,7 +516,7 @@ _BUILD_GROUP = "Build"
 
 
 def _build_generated_recipes(configs, source_dir, build_dir, active_preset,
-                             default_preset):
+                             default_preset, dry_run=False, build_type=None):
     """Build the fresh recipes and the set of generated bases.
 
     Returns ``(recipes, generated_bases)`` where each recipe is a dict with
@@ -534,12 +577,33 @@ def _build_generated_recipes(configs, source_dir, build_dir, active_preset,
             dep_ids = [name_to_id[d] for d in config["depends"] if d in name_to_id]
             header = f"{base_id}:" + ((" " + " ".join(dep_ids)) if dep_ids else "")
             add(base_id, _attrs(config) + [header], group, dep_ids)
+        elif "ctest" in config:
+            # CTest tests run from each preset's build directory, after a
+            # build of what they exercise: the whole tree (`build_all`), the
+            # `needs_target` target, or nothing.
+            generated_bases.add(base_id)
+            for preset_name, pslug, bdir in preset_variants:
+                rid = f"{base_id}-{pslug}"
+                if config.get("build_all"):
+                    deps = [f"build-{pslug}"]
+                elif config.get("needs_target"):
+                    deps = [_build_recipe_id(config["needs_target"], pslug)]
+                else:
+                    deps = []
+                add(rid, _render_recipe(rid, config, source_dir, bdir, deps=deps,
+                                   dry_run=dry_run,
+                                   build_type=_build_type_for(bdir, build_dir, build_type)),
+                    group, deps)
+            add(base_id, _render_delegating_recipe(base_id, f"{base_id}-{default_slug}", config),
+                group, [f"{base_id}-{default_slug}"])
         elif "target" in config:
             generated_bases.add(base_id)
             for preset_name, pslug, bdir in preset_variants:
                 rid = f"{base_id}-{pslug}"
                 build_dep = _build_recipe_id(config["target"], pslug)
-                add(rid, _render_recipe(rid, config, source_dir, bdir, deps=[build_dep]),
+                add(rid, _render_recipe(rid, config, source_dir, bdir, deps=[build_dep],
+                                   dry_run=dry_run,
+                                   build_type=_build_type_for(bdir, build_dir, build_type)),
                     group, [build_dep])
             add(base_id, _render_delegating_recipe(base_id, f"{base_id}-{default_slug}", config),
                 group, [f"{base_id}-{default_slug}"])
@@ -549,7 +613,10 @@ def _build_generated_recipes(configs, source_dir, build_dir, active_preset,
             deps = []
             if config.get("needs_target"):
                 deps = [_build_recipe_id(config["needs_target"], default_slug)]
-            add(base_id, _render_recipe(base_id, config, source_dir, default_build_dir, deps=deps),
+            add(base_id, _render_recipe(base_id, config, source_dir, default_build_dir, deps=deps,
+                                        dry_run=dry_run,
+                                        build_type=_build_type_for(
+                                            default_build_dir, build_dir, build_type)),
                 group, deps)
 
     # CMake recipes last, so the Build group sorts after the config groups:
@@ -567,14 +634,15 @@ def _build_generated_recipes(configs, source_dir, build_dir, active_preset,
             _doc_attr(f"CMake Build ({preset_name})"), _group_attr(_BUILD_GROUP),
             f"build-{pslug}:",
             f"    {_configure_if_unconfigured(bdir, pslug)}",
-            f"    cmake --build {_q(bdir)}"], _BUILD_GROUP, [f"configure-{pslug}"])
+            f"    cmake --build {_q(bdir)}{_config_flag(bdir, build_dir, build_type)}"],
+            _BUILD_GROUP, [f"configure-{pslug}"])
         for t in targets:
             bid = _build_recipe_id(t, pslug)
             add(bid, [
                 _doc_attr(f"CMake Build {t} ({preset_name})"), _group_attr(_BUILD_GROUP),
                 f"{bid}:",
                 f"    {_configure_if_unconfigured(bdir, pslug)}",
-                f"    cmake --build {_q(bdir)} --target {t}"],
+                f"    cmake --build {_q(bdir)} --target {t}{_config_flag(bdir, build_dir, build_type)}"],
                 _BUILD_GROUP, [f"configure-{pslug}"])
     add("configure", [
         _doc_attr("CMake Configure"), _group_attr(_BUILD_GROUP),
@@ -653,6 +721,7 @@ def generate_justfile_run_configs(
     default_preset=None,
     group_order=None,
     justfile_path=None,
+    build_type=None,
 ):
     """
     Generate (or merge into) a per-machine ``justfile`` at the repo root.
@@ -682,9 +751,20 @@ def generate_justfile_run_configs(
     # active preset is the safe choice.
     if slugify_token(default_preset) not in valid_slugs:
         default_preset = preset
+    # The delegation target also needs a build directory whose reply names
+    # every target the configs run, since its recipes name those programs.
+    if default_preset != preset:
+        default_dir = build_dir_for(source_dir, preset, build_dir, default_preset)
+        try:
+            for config in configs:
+                if "target" in config:
+                    target_artifact(default_dir, config["target"])
+        except CMakeReplyError:
+            default_preset = preset
 
     recipes, generated_bases = _build_generated_recipes(
-        configs, source_dir, build_dir, preset, default_preset)
+        configs, source_dir, build_dir, preset, default_preset, dry_run,
+        build_type)
     fresh_by_id = {r["id"]: r["block"] for r in recipes}
 
     existing = ""

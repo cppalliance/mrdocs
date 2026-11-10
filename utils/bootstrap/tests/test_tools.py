@@ -101,6 +101,20 @@ class TestIsToolExecutable(unittest.TestCase):
 
 class TestFindTool(unittest.TestCase):
 
+    def setUp(self):
+        # find_tool reads <TOOL>_<SUFFIX> variables such as CMAKE_ROOT before
+        # PATH, so a variable set by the machine running the tests would win.
+        tools = ("cmake", "nonexistent_tool_xyz", "python", "java")
+        suffixes = ("ROOT", "DIR", "PATH", "HOME", "INSTALL_DIR", "EXECUTABLE")
+        leaking = {f"{prefix}_{suffix}"
+                   for tool in tools
+                   for prefix in (tool.upper(), tool.lower(), tool.title())
+                   for suffix in suffixes}
+        clean = {k: v for k, v in os.environ.items() if k not in leaking}
+        patcher = patch.dict(os.environ, clean, clear=True)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     @patch("src.tools.detection.shutil.which", return_value="/usr/bin/cmake")
     def test_found_in_path(self, mock_which):
         result = find_tool("cmake")

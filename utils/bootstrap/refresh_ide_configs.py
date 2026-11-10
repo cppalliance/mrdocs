@@ -14,13 +14,21 @@ Calls `generate_run_configs` directly, without running the full bootstrap
 pipeline. Useful when `utils/bootstrap/src/configs/run_configs.py` gains a
 new entry and you want it in your IDE without rebuilding dependencies.
 
+The program of every target entry is read from CMake's file API reply in the
+preset's build directory. The script writes the query, and CMake answers it the
+next time it configures (the top-level CMakeLists.txt writes it too), so a
+preset that CMake has not configured since fails with a message naming
+`cmake --preset <preset>`.
+
 Usage:
 
     python3 utils/bootstrap/refresh_ide_configs.py [--preset NAME]
 
 If `--preset` is omitted the script picks the most-recently-modified preset
-under `build/`. Reads no flags from the saved bootstrap state, so it skips
-the stale-cache traps that `bootstrap.py --refresh-all` hits.
+under `build/`. The saved arguments of the `Bootstrap Refresh (<preset>)` and
+`Bootstrap Update (<preset>)` entries are kept as they are (only missing
+`--preset`, `--build-dir` and `--install-dir` are added), so a later
+`bootstrap.py --refresh-all` still replays the flags of the full run.
 """
 
 import argparse
@@ -32,6 +40,8 @@ sys.path.insert(0, os.path.join(ROOT, "utils"))
 
 from bootstrap.src.installer import MrDocsInstaller  # noqa: E402
 from bootstrap.src.configs import generate_run_configs  # noqa: E402
+from bootstrap.src.configs.cmake_file_api import write_query  # noqa: E402
+from bootstrap.src.configs.run_configs import load_saved_bootstrap_args  # noqa: E402
 
 
 def _pick_preset(source_dir: str) -> str:
@@ -51,6 +61,23 @@ def _pick_preset(source_dir: str) -> str:
         return "release"
     candidates.sort(reverse=True)
     return candidates[0][1]
+
+
+def refresh(installer: MrDocsInstaller) -> None:
+    """Regenerate the run configurations, keeping the saved bootstrap arguments."""
+    saved_args = load_saved_bootstrap_args(installer.options.source_dir)
+    generate_run_configs(
+        options=installer.options,
+        default_options=installer.default_options,
+        compiler_info=installer.compiler_info,
+        generate_clion=installer.options.generate_clion_run_configs,
+        generate_vscode=installer.options.generate_vscode_run_configs,
+        generate_vs=installer.options.generate_vs_run_configs,
+        generate_justfile=installer.options.generate_justfile_run_configs,
+        dry_run=installer.options.dry_run,
+        ui=installer.ui,
+        saved_args=saved_args,
+    )
 
 
 def main() -> int:
@@ -81,18 +108,19 @@ def main() -> int:
     installer.options.dry_run = False
 
     print(f"Refreshing IDE run configurations for preset {installer.options.preset!r}")
-    generate_run_configs(
-        options=installer.options,
-        default_options=installer.default_options,
-        package_roots=installer.package_roots,
-        compiler_info=installer.compiler_info,
-        generate_clion=installer.options.generate_clion_run_configs,
-        generate_vscode=installer.options.generate_vscode_run_configs,
-        generate_vs=installer.options.generate_vs_run_configs,
-        generate_justfile=installer.options.generate_justfile_run_configs,
-        dry_run=installer.options.dry_run,
-        ui=installer.ui,
-    )
+    if os.path.isdir(installer.options.build_dir):
+        write_query(installer.options.build_dir)
+    try:
+        refresh(installer)
+    except ValueError as e:
+        print(f"error: {e}", file=sys.stderr)
+        print(
+            f"The program paths come from CMake's file API reply of "
+            f"{installer.options.build_dir!r}. This run wrote the query; "
+            f"configure the preset once with "
+            f"`cmake --preset {installer.options.preset}` and run it again.",
+            file=sys.stderr)
+        return 1
     print("Done.")
     return 0
 

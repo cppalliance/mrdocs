@@ -30,14 +30,23 @@ from src.configs.justfile import (
     _is_stale_variant,
 )
 from src.core.ui import TextUI
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from file_api_fixture import write_reply  # noqa: E402
 
 _VALID = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_-]*$")
 
 
 def _gen(configs, preset="release-macos", all_presets=None,
-         default_preset="release-macos", existing=None, group_order=None):
+         default_preset="release-macos", existing=None, group_order=None,
+         d=None, extra_programs=None):
     """Generate a justfile in a temp dir and return its contents."""
-    d = tempfile.mkdtemp()
+    d = d or tempfile.mkdtemp()
+    active = os.path.join(d, "build", "release-macos")
+    for build in {active, os.path.join(d, "build", "debug-macos")}:
+        if not os.path.isdir(os.path.join(build, ".cmake")):
+            targets = {c["target"]: f"tools/mrdocs/{c['target']}" for c in configs if "target" in c}
+            targets.update(extra_programs or {})
+            write_reply(build, targets)
     jf = os.path.join(d, "justfile")
     if existing is not None:
         with open(jf, "w", encoding="utf-8") as f:
@@ -171,9 +180,9 @@ class TestRecipeEmission(unittest.TestCase):
         self.assertIn("version: version-release-macos", content)
 
     def test_script_single_recipe(self):
-        content = _gen([{"name": "MrDocs Reformat Source Files", "script": "/d/util/linting/reformat.py"}])
-        self.assertIn("reformat-source-files:", content)
-        self.assertNotIn("reformat-source-files-release-macos", content)
+        content = _gen([{"name": "MrDocs Format", "script": "/d/utils/format/format.py"}])
+        self.assertIn("format:", content)
+        self.assertNotIn("format-release-macos", content)
 
     def test_default_recipe_present(self):
         content = _gen([{"name": "MrDocs Version", "target": "mrdocs"}])
@@ -219,6 +228,31 @@ class TestRecipeEmission(unittest.TestCase):
         self.assertIn("cd ", block)
         self.assertIn("build/release-macos", block)
 
+    def test_target_program_comes_from_each_presets_reply(self):
+        d = tempfile.mkdtemp()
+        write_reply(os.path.join(d, "build", "release-macos"),
+                    {"mrdocs-unit-tests": "tests/unit/mrdocs-unit-tests"})
+        write_reply(os.path.join(d, "build", "debug-macos"),
+                    {"mrdocs-unit-tests": "tests/unit/Debug/mrdocs-unit-tests"})
+        content = _gen([{"name": "Unit Tests", "target": "mrdocs-unit-tests"}], d=d,
+                       all_presets=["release-macos", "debug-macos"],
+                       default_preset="debug-macos")
+        self.assertIn(os.path.join("{{mrdocs}}", "build", "release-macos", "tests", "unit", "mrdocs-unit-tests"),
+                      _recipe_block(content, "unit-tests-release-macos"))
+        self.assertIn(os.path.join("{{mrdocs}}", "build", "debug-macos", "tests", "unit", "Debug", "mrdocs-unit-tests"),
+                      _recipe_block(content, "unit-tests-debug-macos"))
+        self.assertNotIn("/bin/", content)
+
+    def test_target_without_a_reply_fails_loudly(self):
+        d = tempfile.mkdtemp()
+        with self.assertRaisesRegex(ValueError, "Unit Tests"):
+            generate_justfile_run_configs(
+                [{"name": "Unit Tests", "target": "t"}],
+                source_dir=d, build_dir=os.path.join(d, "build", "release-macos"),
+                preset="release-macos", dry_run=False, ui=TextUI(),
+                all_presets=["release-macos"], default_preset="release-macos",
+                justfile_path=os.path.join(d, "justfile"))
+
     def test_configure_and_build_recipes_present(self):
         content = _gen([{"name": "MrDocs Version", "target": "mrdocs"}])
         self.assertIn("configure:", content)
@@ -236,6 +270,45 @@ class TestRecipeEmission(unittest.TestCase):
         # The colliding script recipe still exists under a suffixed id.
         self.assertIn("/d/x.sh", content)
         self.assertNotIn("/d/x.sh", _recipe_block(content, "build"))
+
+
+# ── CTest recipes ────────────────────────────────────────────────────
+
+class TestCTestRecipes(unittest.TestCase):
+    def setUp(self):
+        self.content = _gen([{"name": "XML Lint", "id": "xml-lint", "group": "Test",
+                              "ctest": ["-R", "^xml-lint$"]}])
+
+    def test_per_preset_recipe_runs_ctest_in_the_build_dir(self):
+        block = _recipe_block(self.content, "xml-lint-release-macos")
+        self.assertIn("ctest --test-dir {{mrdocs}}/build/release-macos -R '^xml-lint$' --output-on-failure --no-tests=error", block)
+
+    def test_recipe_without_a_build_need_has_no_dependency(self):
+        block = _recipe_block(self.content, "xml-lint-release-macos")
+        self.assertIn("xml-lint-release-macos:\n", block)
+
+    def test_needs_target_builds_that_target(self):
+        content = _gen([{"name": "Self-Documentation", "id": "self-doc",
+                         "ctest": ["-R", "^mrdocs-self-doc$"], "needs_target": "mrdocs"}],
+                       extra_programs={"mrdocs": "tools/mrdocs/mrdocs"})
+        block = _recipe_block(content, "self-doc-release-macos")
+        self.assertIn("self-doc-release-macos: build-mrdocs-release-macos", block)
+
+    def test_build_all_builds_everything(self):
+        content = _gen([{"name": "Integration Tests", "id": "integration-tests",
+                         "ctest": ["-L", "integration"], "build_all": True}])
+        block = _recipe_block(content, "integration-tests-release-macos")
+        self.assertIn("integration-tests-release-macos: build-release-macos", block)
+
+    def test_preset_agnostic_recipe_delegates(self):
+        block = _recipe_block(self.content, "xml-lint")
+        self.assertIn("xml-lint: xml-lint-release-macos", block)
+
+    def test_label_selection(self):
+        content = _gen([{"name": "Integration Tests", "id": "integration-tests",
+                         "ctest": ["-L", "integration"]}])
+        block = _recipe_block(content, "integration-tests-release-macos")
+        self.assertIn("-L integration --output-on-failure", block)
 
 
 # ── build-if-missing precondition (US-009) ───────────────────────────
@@ -263,11 +336,11 @@ class TestBuildDependency(unittest.TestCase):
         self.assertNotIn("cmake --build", block)
 
     def test_script_without_needs_target_has_no_build_dep(self):
-        content = _gen([{"name": "Reformat", "script": "/d/util/linting/reformat.py"}])
-        block = _recipe_block(content, "reformat")
+        content = _gen([{"name": "Format", "script": "/d/utils/format/format.py"}])
+        block = _recipe_block(content, "format")
         self.assertNotIn("cmake --build", block)
-        header = next(l for l in block.splitlines() if l.startswith("reformat:"))
-        self.assertEqual(header, "reformat:")
+        header = next(l for l in block.splitlines() if l.startswith("format:"))
+        self.assertEqual(header, "format:")
 
 
 # ── merge-in-place (US-006) ──────────────────────────────────────────
@@ -336,6 +409,7 @@ class TestInstallHint(unittest.TestCase):
     @patch("src.configs.justfile.shutil.which", return_value=None)
     def test_hint_printed_when_just_missing(self, _mock_which):
         d = tempfile.mkdtemp()
+        write_reply(os.path.join(d, "build", "release-macos"))
         ui = MagicMock()
         generate_justfile_run_configs(
             [{"name": "MrDocs Version", "target": "mrdocs"}],
@@ -351,6 +425,7 @@ class TestInstallHint(unittest.TestCase):
     @patch("src.configs.justfile.shutil.which", return_value="/opt/just")
     def test_no_hint_when_just_present(self, _mock_which):
         d = tempfile.mkdtemp()
+        write_reply(os.path.join(d, "build", "release-macos"))
         ui = MagicMock()
         generate_justfile_run_configs(
             [{"name": "MrDocs Version", "target": "mrdocs"}],
@@ -490,6 +565,38 @@ class TestBuildRecipes(unittest.TestCase):
         content = _gen([{"name": "Unit Tests", "target": "mrdocs-test"}])
         self.assertIn("cmake --preset release-macos",
                       _recipe_block(content, "configure-release-macos"))
+
+
+class TestManifestRecipes(unittest.TestCase):
+    """The recipes the shipped run_configs.json generates for the test and lint scripts."""
+
+    @staticmethod
+    def _manifest():
+        import json
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "src", "configs", "run_configs.json")
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)["configs"]
+
+    def test_run_all_tests_runs_the_test_runner_from_the_root(self):
+        (config,) = [c for c in self._manifest() if c["name"] == "Run All Tests"]
+        self.assertEqual(config["script"], "${mrdocs_src_dir}/utils/testing/run_all_tests.py")
+        self.assertEqual(config["cwd"], "${mrdocs_src_dir}")
+        content = _gen([config])
+        block = _recipe_block(content, "run-all-tests")
+        self.assertIn("run_all_tests.py", block)
+
+    def test_the_linter_tests_cover_lint_and_format(self):
+        configs = {c["name"]: c for c in self._manifest()}
+        self.assertEqual(configs["Test the Linters"]["depends"],
+                         ["Test the Lint Scripts", "Test the Format Script"])
+        self.assertIn("utils/lint/tests", " ".join(configs["Test the Lint Scripts"]["args"]))
+        self.assertIn("utils/format/tests", " ".join(configs["Test the Format Script"]["args"]))
+
+    def test_manifest_paths_are_under_utils_lint_and_utils_format(self):
+        text = repr(self._manifest())
+        self.assertNotIn("utils/linting", text)
+        self.assertNotIn("reformat", text)
 
 
 if __name__ == "__main__":

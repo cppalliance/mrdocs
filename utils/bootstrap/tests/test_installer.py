@@ -782,10 +782,67 @@ class TestInstallMrdocs(unittest.TestCase):
         mock_workflow.assert_called_once()
         mock_git.assert_called_once()
 
-    def test_install_mrdocs_skip_build(self):
-        inst = _make_installer(skip_build=True)
-        # Should not raise or call cmake_workflow
+    @patch.object(MrDocsInstaller, "cmake_workflow")
+    def test_install_mrdocs_skip_build_without_run_configs(self, mock_workflow):
+        inst = _make_installer(skip_build=True, generate_run_configs=False)
         inst.install_mrdocs()
+        mock_workflow.assert_not_called()
+
+    @patch.object(MrDocsInstaller, "print_mrdocs_summary")
+    @patch.object(MrDocsInstaller, "cmake_workflow")
+    @patch("src.installer.check_git_symlinks")
+    @patch("src.installer.write_file_api_query")
+    def test_install_mrdocs_skip_build_configures_for_run_configs(
+            self, mock_query, mock_git, mock_workflow, mock_summary):
+        inst = _make_installer(skip_build=True, generate_run_configs=True)
+        inst.install_mrdocs()
+        mock_query.assert_called_once()
+        kwargs = mock_workflow.call_args.kwargs
+        self.assertTrue(kwargs["configure_only"])
+        self.assertEqual(kwargs["after_configure"], inst.generate_configs_after_configure)
+        mock_summary.assert_not_called()
+
+    @patch.object(MrDocsInstaller, "print_mrdocs_summary")
+    @patch.object(MrDocsInstaller, "cmake_workflow")
+    @patch("src.installer.check_git_symlinks")
+    @patch("src.installer.write_file_api_query")
+    def test_install_mrdocs_writes_no_query_without_run_configs(
+            self, mock_query, mock_git, mock_workflow, mock_summary):
+        inst = _make_installer(
+            generate_justfile_run_configs=False,
+            generate_clion_run_configs=False,
+            generate_vscode_run_configs=False,
+            generate_vs_run_configs=False)
+        inst.options.preset = "release-linux"
+        inst.install_mrdocs()
+        mock_query.assert_not_called()
+
+    @patch.object(MrDocsInstaller, "print_mrdocs_summary")
+    @patch.object(MrDocsInstaller, "cmake_workflow")
+    @patch("src.installer.check_git_symlinks")
+    @patch("src.installer.write_file_api_query")
+    def test_install_mrdocs_writes_query_with_one_run_config(
+            self, mock_query, mock_git, mock_workflow, mock_summary):
+        inst = _make_installer(
+            generate_justfile_run_configs=False,
+            generate_clion_run_configs=False,
+            generate_vscode_run_configs=True,
+            generate_vs_run_configs=False)
+        inst.options.preset = "release-linux"
+        inst.install_mrdocs()
+        mock_query.assert_called_once()
+
+    def test_generate_configs_with_no_ide_flags_needs_no_query(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            inst = _make_installer(
+                generate_justfile_run_configs=False,
+                generate_clion_run_configs=False,
+                generate_vscode_run_configs=False,
+                generate_vs_run_configs=False,
+                generate_pretty_printer_configs=False)
+            inst.options.build_dir = os.path.join(tmp, "build")
+            inst.generate_configs()
+            inst.generate_configs_after_configure()
 
     @patch.object(MrDocsInstaller, "print_mrdocs_summary")
     @patch.object(MrDocsInstaller, "cmake_workflow")
