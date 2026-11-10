@@ -390,12 +390,16 @@ assignFromDom(T& dest, std::string_view fieldName, dom::Value const& src)
             "field '{}' expects an object (this type is not "
             "string-assignable)", fieldName));
     }
-    if (!src.isObject())
+    // An empty Lua table `{}` reaches this point as an empty array, because
+    // an empty table is both an empty array and an empty object. This field
+    // expects an object, so it is the empty object.
+    bool const emptyAsObject = src.isArray() && src.getArray().empty();
+    if (!src.isObject() && !emptyAsObject)
     {
         return Unexpected(formatError(
             "field '{}' expects an object", fieldName));
     }
-    dom::Object const obj = src.getObject();
+    dom::Object const obj = emptyAsObject ? dom::Object() : src.getObject();
     Expected<void> outerResult;
     obj.visit(
         [&](dom::String key, dom::Value value) -> bool
