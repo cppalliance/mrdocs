@@ -1,0 +1,439 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#AliasDerived[`AliasDerived`] 
+| Inherit the constructors of a base named through a member alias&period;
+| link:#Base[`Base`] 
+| A base with constructors to inherit&period;
+| link:#BaseTemplate[`BaseTemplate`] 
+| A base template with constructors to inherit&period;
+| link:#DependentDerived[`DependentDerived`] 
+| Inherit the constructors of link:#BaseTemplate[`BaseTemplate`]&period;
+| link:#Derived[`Derived`] 
+| Inherit the constructors of link:#Base[`Base`]&period;
+|===
+
+
+[#AliasDerived]
+== AliasDerived
+
+Inherit the constructors of a base named through a member alias&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct AliasDerived
+    : link:#BaseTemplate[BaseTemplate&lt;T&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#BaseTemplate[BaseTemplate&lt;T&gt;]`
+| A base template with constructors to inherit&period;
+|===
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#AliasDerived-base_type-097[`base&lowbar;type`] 
+| The base class&period;
+|===
+
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#AliasDerived-h[`h`] 
+| The base class&period;
+|===
+
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#AliasDerived-base_type-09c[`base&lowbar;type`] 
+| The constructors of `base&lowbar;type`&period;
+|===
+
+
+[#AliasDerived-base_type-097]
+== link:#AliasDerived[AliasDerived]::base&lowbar;type
+
+The base class&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using base&lowbar;type = link:#BaseTemplate[BaseTemplate&lt;T&gt;];
+----
+
+[#AliasDerived-h]
+== link:#AliasDerived[AliasDerived]::h
+
+The base class&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h();
+----
+
+[#AliasDerived-base_type-09c]
+== link:#AliasDerived[AliasDerived]::base&lowbar;type
+
+The constructors of `base&lowbar;type`&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using base&lowbar;type::base&lowbar;type;
+----
+
+[#Base]
+== Base
+
+A base with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-2constructor-00[`Base`]         [.small]#[constructor]#
+| Constructors
+|===
+
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Derived[`Derived`] 
+| Inherit the constructors of `Base`&period;
+|===
+
+[#Base-2constructor-00]
+== link:#Base[Base]::Base
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+A base with constructors to inherit&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+link:#Base[Base](link:#Base[Base] const&) = default;
+----
+
+[.small]#link:#Base[_» more&period;&period;&period;_]#
+
+A base with constructors to inherit&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+link:#Base[Base](link:#Base[Base]&&) = default;
+----
+
+[.small]#link:#Base[_» more&period;&period;&period;_]#
+
+Construct from a count&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+link:#Base-2constructor-09[Base](int value);
+----
+
+[.small]#link:#Base-2constructor-09[_» more&period;&period;&period;_]#
+
+[#Base-2constructor-09]
+== link:#Base[Base]::Base
+
+Construct from a count&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Base(int value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The value to construct from
+|===
+
+[#BaseTemplate]
+== BaseTemplate
+
+A base template with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct BaseTemplate;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#BaseTemplate-2constructor[`BaseTemplate`]         [.small]#[constructor]#
+| Construct from a value&period;
+|===
+
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#AliasDerived[`AliasDerived`] 
+| Inherit the constructors of a base named through a member alias&period;
+| link:#DependentDerived[`DependentDerived`] 
+| Inherit the constructors of `BaseTemplate`&period;
+|===
+
+[#BaseTemplate-2constructor]
+== link:#BaseTemplate[BaseTemplate]::BaseTemplate
+
+Construct from a value&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+BaseTemplate(T value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The object to construct from
+|===
+
+[#DependentDerived]
+== DependentDerived
+
+Inherit the constructors of link:#BaseTemplate[`BaseTemplate`]&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct DependentDerived
+    : link:#BaseTemplate[BaseTemplate&lt;T&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#BaseTemplate[BaseTemplate&lt;T&gt;]`
+| A base template with constructors to inherit&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#DependentDerived-g[`g`] 
+| A base template with constructors to inherit&period;
+|===
+
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#DependentDerived-BaseTemplate[`BaseTemplate`] 
+| The constructors of `BaseTemplate`&period;
+|===
+
+
+[#DependentDerived-g]
+== link:#DependentDerived[DependentDerived]::g
+
+A base template with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g();
+----
+
+[#DependentDerived-BaseTemplate]
+== link:#DependentDerived[DependentDerived]::BaseTemplate
+
+The constructors of `BaseTemplate`&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BaseTemplate&lt;T&gt;::BaseTemplate;
+----
+
+[#Derived]
+== Derived
+
+Inherit the constructors of link:#Base[`Base`]&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Derived
+    : link:#Base[Base]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#Base[Base]`
+| A base with constructors to inherit&period;
+|===
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Derived-f[`f`] 
+| A base with constructors to inherit&period;
+|===
+
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Derived-2constructor[`Base`] 
+| The constructors of `Base`&period;
+|===
+
+
+[#Derived-f]
+== link:#Derived[Derived]::f
+
+A base with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+[#Derived-2constructor]
+== link:#Derived[Derived]::Base
+
+The constructors of `Base`&period;
+
+=== Synopsis
+
+Declared in `&lt;inheriting&hyphen;constructor&hyphen;base&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Base::Base;
+----
+
+=== Introduced Symbols
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-2constructor-09[`Base`]         [.small]#[constructor]#
+| Construct from a count&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
