@@ -1,0 +1,3 @@
+# Exclude the vendored headers, which api/api.hpp reaches through "..".
+exclude:
+  - include/vendor

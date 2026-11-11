@@ -1,0 +1,4 @@
+# Document only the API headers, not the vendored ones they reach
+# through "..".
+input:
+  - include/api
