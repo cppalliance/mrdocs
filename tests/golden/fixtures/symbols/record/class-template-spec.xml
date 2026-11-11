@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -76,7 +76,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-00</anchor>
+  <anchor>A-1-int</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -152,7 +152,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-0c</anchor>
+  <anchor>A-1-long</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -228,7 +228,7 @@
 </function>
 <record>
   <name>B</name>
-  <anchor>B-00</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -293,7 +293,7 @@
 </function>
 <record>
   <name>B</name>
-  <anchor>B-06</anchor>
+  <anchor>B-1-T-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -380,7 +380,7 @@
 </function>
 <record>
   <name>B</name>
-  <anchor>B-07</anchor>
+  <anchor>B-1-T-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -467,7 +467,7 @@
 </function>
 <record>
   <name>C</name>
-  <anchor>C-0f</anchor>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -537,7 +537,7 @@
 </function>
 <record>
   <name>C</name>
-  <anchor>C-0a</anchor>
+  <anchor>C-2-int-int</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>
@@ -628,7 +628,7 @@
 </function>
 <record>
   <name>C</name>
-  <anchor>C-0e</anchor>
+  <anchor>C-2-T-ptr-int</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-spec.cpp</shortPath>

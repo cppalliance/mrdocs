@@ -1,7 +1,7 @@
 = Reference
 :mrdocs:
 
-[#abs-043]
+[#abs]
 == abs
 
 Compute the absolute value of an integer&period;
@@ -16,10 +16,10 @@ Compute the absolute value of an integer&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-link:#abs-04b[abs](int x);
+link:#abs-1-int[abs](int x);
 ----
 
-[.small]#link:#abs-04b[_» more&period;&period;&period;_]#
+[.small]#link:#abs-1-int[_» more&period;&period;&period;_]#
 
 Compute the absolute value of an integer&period;
 
@@ -27,12 +27,12 @@ Compute the absolute value of an integer&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 long
-link:#abs-01[abs](long x);
+link:#abs-1-long[abs](long x);
 ----
 
-[.small]#link:#abs-01[_» more&period;&period;&period;_]#
+[.small]#link:#abs-1-long[_» more&period;&period;&period;_]#
 
-[#abs-04b]
+[#abs-1-int]
 == abs
 
 Compute the absolute value of an integer&period;
@@ -51,7 +51,7 @@ abs(int x);
 
 One overload takes `int` and the other `long`, so the documentation page lists both side by side&period;
 
-[#abs-01]
+[#abs-1-long]
 == abs
 
 Compute the absolute value of an integer&period;

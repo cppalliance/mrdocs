@@ -131,7 +131,7 @@
 </record>
 <record>
   <name>Manager</name>
-  <anchor>Manager-06</anchor>
+  <anchor>Manager</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-specialization-dependency.cpp</shortPath>
@@ -357,7 +357,7 @@
 </function>
 <record>
   <name>Manager</name>
-  <anchor>Manager-0a</anchor>
+  <anchor>Manager-1-Kernel</anchor>
   <loc>
     <defLoc>
       <shortPath>implicit-specialization-dependency.cpp</shortPath>

@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>Z</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -83,7 +83,7 @@
 </overloads>
 <function>
   <name>Z</name>
-  <anchor>2constructor-05</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -127,7 +127,7 @@
 </function>
 <function>
   <name>Z</name>
-  <anchor>2constructor-06</anchor>
+  <anchor>2constructor-1</anchor>
   <loc>
     <loc>
       <location>
@@ -321,7 +321,7 @@
 </function>
 <function>
   <name>operator bool</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-bool</anchor>
   <loc>
     <loc>
       <location>

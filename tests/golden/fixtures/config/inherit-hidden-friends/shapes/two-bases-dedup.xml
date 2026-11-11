@@ -114,7 +114,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-01</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>two-bases-dedup.cpp</shortPath>
@@ -158,7 +158,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0b</anchor>
+  <anchor>operator_eq-2-left-left</anchor>
   <loc>
     <defLoc>
       <shortPath>two-bases-dedup.cpp</shortPath>
@@ -302,7 +302,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0d</anchor>
+  <anchor>operator_eq-2-right-right</anchor>
   <loc>
     <defLoc>
       <shortPath>two-bases-dedup.cpp</shortPath>

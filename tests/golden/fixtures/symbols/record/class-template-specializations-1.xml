@@ -8006,7 +8006,7 @@
 </record>
 <record>
   <name>S0</name>
-  <anchor>S0-0cf</anchor>
+  <anchor>S0</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -8824,7 +8824,7 @@
 </function>
 <record>
   <name>S0</name>
-  <anchor>S0-0be</anchor>
+  <anchor>S0-1-0</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -8852,7 +8852,7 @@
 </record>
 <record>
   <name>S0</name>
-  <anchor>S0-07a</anchor>
+  <anchor>S0-1-18</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -8905,7 +8905,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-07</anchor>
+  <anchor>S5</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9007,7 +9007,7 @@
 </function>
 <record>
   <name>S0</name>
-  <anchor>S0-0a7</anchor>
+  <anchor>S0-1-19</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9060,7 +9060,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-03</anchor>
+  <anchor>S5</anchor>
   <loc>
     <loc>
       <location>
@@ -9122,7 +9122,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-07</anchor>
+  <anchor>S5-1</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9184,7 +9184,7 @@
 </function>
 <record>
   <name>S0</name>
-  <anchor>S0-09c</anchor>
+  <anchor>S0-1-2</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9339,7 +9339,7 @@
 </function>
 <record>
   <name>S0</name>
-  <anchor>S0-0314</anchor>
+  <anchor>S0-1-21</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9392,7 +9392,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-07</anchor>
+  <anchor>S5</anchor>
   <loc>
     <loc>
       <location>
@@ -9455,7 +9455,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-03</anchor>
+  <anchor>S5-2-22-int-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9504,7 +9504,7 @@
 </record>
 <record>
   <name>S5</name>
-  <anchor>S5-0b</anchor>
+  <anchor>S5-2-22-T-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9591,7 +9591,7 @@
 </function>
 <record>
   <name>S0</name>
-  <anchor>S0-020a</anchor>
+  <anchor>S0-2-1-int-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>
@@ -9639,7 +9639,7 @@
 </record>
 <record>
   <name>S0</name>
-  <anchor>S0-0c4</anchor>
+  <anchor>S0-2-1-T-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-specializations-1.cpp</shortPath>

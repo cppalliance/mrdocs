@@ -352,7 +352,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-04</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>shared-base.cpp</shortPath>
@@ -395,7 +395,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0d</anchor>
+  <anchor>operator_eq-2-derived_a-derived_a</anchor>
   <loc>
     <defLoc>
       <shortPath>shared-base.cpp</shortPath>
@@ -533,7 +533,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-03</anchor>
+  <anchor>operator_eq-2-derived_b-derived_b</anchor>
   <loc>
     <defLoc>
       <shortPath>shared-base.cpp</shortPath>

@@ -510,7 +510,7 @@
 </enum>
 <overloads>
   <name>f</name>
-  <anchor>f-0c7</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -638,7 +638,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-0b3</anchor>
+  <anchor>f-0</anchor>
   <loc>
     <loc>
       <location>
@@ -692,7 +692,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-00</anchor>
+  <anchor>f-1-paramType-0</anchor>
   <loc>
     <loc>
       <location>
@@ -800,7 +800,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-08c</anchor>
+  <anchor>f-1-paramType-1</anchor>
   <loc>
     <loc>
       <location>
@@ -921,7 +921,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-012</anchor>
+  <anchor>f-1-paramType-2</anchor>
   <loc>
     <loc>
       <location>
@@ -1042,7 +1042,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0c1</anchor>
+  <anchor>f-1-paramType-3</anchor>
   <loc>
     <loc>
       <location>
@@ -1163,7 +1163,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-03</anchor>
+  <anchor>f-1-paramType-5</anchor>
   <loc>
     <loc>
       <location>
@@ -1284,7 +1284,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-04</anchor>
+  <anchor>f-1-paramType-6</anchor>
   <loc>
     <loc>
       <location>
@@ -1418,7 +1418,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0b5</anchor>
+  <anchor>f-1-paramType-7</anchor>
   <loc>
     <loc>
       <location>
@@ -1539,7 +1539,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-010</anchor>
+  <anchor>f-1-paramType-8</anchor>
   <loc>
     <loc>
       <location>
@@ -1660,7 +1660,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-081</anchor>
+  <anchor>f-1-paramType-9</anchor>
   <loc>
     <loc>
       <location>
@@ -1781,7 +1781,7 @@
 </function>
 <overloads>
   <name>g</name>
-  <anchor>g-0f</anchor>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -1898,7 +1898,7 @@
 </overloads>
 <function>
   <name>g</name>
-  <anchor>g-05</anchor>
+  <anchor>g-1-A</anchor>
   <loc>
     <loc>
       <location>
@@ -1988,7 +1988,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-09c</anchor>
+  <anchor>g-1-N-M-Q</anchor>
   <loc>
     <loc>
       <location>
@@ -2092,7 +2092,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-0b</anchor>
+  <anchor>g-1-auto</anchor>
   <loc>
     <loc>
       <location>
@@ -2187,7 +2187,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-096</anchor>
+  <anchor>g-1-int-variadic</anchor>
   <loc>
     <loc>
       <location>
@@ -2271,7 +2271,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-04a</anchor>
+  <anchor>g-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -2354,7 +2354,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-04c</anchor>
+  <anchor>g-1-testEnum</anchor>
   <loc>
     <loc>
       <location>
@@ -2444,7 +2444,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-0c</anchor>
+  <anchor>g-2</anchor>
   <loc>
     <loc>
       <location>

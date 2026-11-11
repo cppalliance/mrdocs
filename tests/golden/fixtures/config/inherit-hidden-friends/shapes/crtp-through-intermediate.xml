@@ -56,7 +56,7 @@
 </namespace>
 <record>
   <name>equality_comparable</name>
-  <anchor>equality_comparable-09</anchor>
+  <anchor>equality_comparable</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-through-intermediate.cpp</shortPath>
@@ -165,7 +165,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-01</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-through-intermediate.cpp</shortPath>
@@ -218,7 +218,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-03</anchor>
+  <anchor>operator_eq-2-const-Derived-ref-const-Derived-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>crtp-through-intermediate.cpp</shortPath>
@@ -359,7 +359,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-06</anchor>
+  <anchor>operator_eq-2-const-mid-ref-const-mid-ref</anchor>
   <loc>
     <loc>
       <location>

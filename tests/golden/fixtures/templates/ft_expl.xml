@@ -11,7 +11,7 @@
 </namespace>
 <overloads>
   <name>f</name>
-  <anchor>f-0c7</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>ft_expl.cpp</shortPath>
@@ -41,7 +41,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-03</anchor>
+  <anchor>f-0-t1</anchor>
   <loc>
     <defLoc>
       <shortPath>ft_expl.cpp</shortPath>
@@ -80,7 +80,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0ca</anchor>
+  <anchor>f-0-t0</anchor>
   <loc>
     <defLoc>
       <shortPath>ft_expl.cpp</shortPath>

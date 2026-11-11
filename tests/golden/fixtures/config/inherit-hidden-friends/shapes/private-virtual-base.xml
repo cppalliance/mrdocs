@@ -56,7 +56,7 @@
 </namespace>
 <record>
   <name>counter</name>
-  <anchor>counter-04</anchor>
+  <anchor>counter</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -152,7 +152,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-01</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -205,7 +205,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-06</anchor>
+  <anchor>operator_eq-2-private_base-private_base</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -336,7 +336,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-03</anchor>
+  <anchor>operator_eq-2-const-Derived-ref-const-Derived-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -477,7 +477,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0f</anchor>
+  <anchor>operator_eq-2-const-counted-ref-const-counted-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -622,7 +622,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-07</anchor>
+  <anchor>operator_eq-2-virtual_base-virtual_base</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -968,7 +968,7 @@
 </record>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-04</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -1011,7 +1011,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0d</anchor>
+  <anchor>operator_eq-2-const-counted-ref-const-counted-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>
@@ -1161,7 +1161,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-08</anchor>
+  <anchor>operator_eq-2-virtual_derived-virtual_derived</anchor>
   <loc>
     <defLoc>
       <shortPath>private-virtual-base.cpp</shortPath>

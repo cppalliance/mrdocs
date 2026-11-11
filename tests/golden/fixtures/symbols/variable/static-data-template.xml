@@ -42,7 +42,7 @@
 </record>
 <variable>
   <name>x</name>
-  <anchor>x-05</anchor>
+  <anchor>x</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-template.cpp</shortPath>
@@ -88,7 +88,7 @@
 </variable>
 <variable>
   <name>x</name>
-  <anchor>x-07</anchor>
+  <anchor>x-2-T-long</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-template.cpp</shortPath>
@@ -154,7 +154,7 @@
 </variable>
 <variable>
   <name>x</name>
-  <anchor>x-0a</anchor>
+  <anchor>x-2-U-ptr-T</anchor>
   <loc>
     <defLoc>
       <shortPath>static-data-template.cpp</shortPath>

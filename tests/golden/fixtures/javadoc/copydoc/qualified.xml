@@ -74,7 +74,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-05</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -183,7 +183,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-0a</anchor>
+  <anchor>f-1-param_t-0</anchor>
   <loc>
     <loc>
       <location>
@@ -277,7 +277,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0b</anchor>
+  <anchor>f-1-param_t-1</anchor>
   <loc>
     <loc>
       <location>
@@ -371,7 +371,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0e</anchor>
+  <anchor>f-1-param_t-2</anchor>
   <loc>
     <loc>
       <location>
@@ -465,7 +465,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-00</anchor>
+  <anchor>f-1-param_t-3</anchor>
   <loc>
     <loc>
       <location>
@@ -559,7 +559,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-02</anchor>
+  <anchor>f-1-param_t-4</anchor>
   <loc>
     <loc>
       <location>
@@ -653,7 +653,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-092</anchor>
+  <anchor>f-1-param_t-5</anchor>
   <loc>
     <loc>
       <location>
@@ -747,7 +747,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-097</anchor>
+  <anchor>f-1-param_t-6</anchor>
   <loc>
     <loc>
       <location>
@@ -841,7 +841,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f-1-param_t-7</anchor>
   <loc>
     <loc>
       <location>
@@ -935,7 +935,7 @@
 </function>
 <overloads>
   <name>g</name>
-  <anchor>g-06e</anchor>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -1008,7 +1008,7 @@
 </overloads>
 <function>
   <name>g</name>
-  <anchor>g-0a</anchor>
+  <anchor>g-1-B</anchor>
   <loc>
     <loc>
       <location>
@@ -1093,7 +1093,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-06c</anchor>
+  <anchor>g-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -1178,7 +1178,7 @@
 </function>
 <overloads>
   <name>h</name>
-  <anchor>h-05</anchor>
+  <anchor>h</anchor>
   <loc>
     <loc>
       <location>
@@ -1251,7 +1251,7 @@
 </overloads>
 <function>
   <name>h</name>
-  <anchor>h-0f</anchor>
+  <anchor>h-1-N-A-B</anchor>
   <loc>
     <loc>
       <location>
@@ -1350,7 +1350,7 @@
 </function>
 <function>
   <name>h</name>
-  <anchor>h-06</anchor>
+  <anchor>h-1-int</anchor>
   <loc>
     <loc>
       <location>

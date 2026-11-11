@@ -43,7 +43,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -76,7 +76,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-08</anchor>
+  <anchor>f-0</anchor>
   <loc>
     <loc>
       <location>
@@ -109,7 +109,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0e</anchor>
+  <anchor>f-1</anchor>
   <loc>
     <loc>
       <location>
@@ -158,7 +158,7 @@
 </function>
 <overloads>
   <name>g</name>
-  <anchor>g-0d</anchor>
+  <anchor>g</anchor>
   <loc>
     <loc>
       <location>
@@ -191,7 +191,7 @@
 </overloads>
 <function>
   <name>g</name>
-  <anchor>g-0a</anchor>
+  <anchor>g-0</anchor>
   <loc>
     <loc>
       <location>
@@ -225,7 +225,7 @@
 </function>
 <function>
   <name>g</name>
-  <anchor>g-01</anchor>
+  <anchor>g-1</anchor>
   <loc>
     <loc>
       <location>
@@ -306,7 +306,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-0c</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -338,7 +338,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-0b</anchor>
+  <anchor>f-0</anchor>
   <loc>
     <loc>
       <location>
@@ -369,7 +369,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-06</anchor>
+  <anchor>f-1</anchor>
   <loc>
     <loc>
       <location>
@@ -416,7 +416,7 @@
 </function>
 <overloads>
   <name>operator==</name>
-  <anchor>operator_eq-073</anchor>
+  <anchor>operator_eq</anchor>
   <loc>
     <loc>
       <location>
@@ -479,7 +479,7 @@
 </overloads>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0e</anchor>
+  <anchor>operator_eq-2-A-int</anchor>
   <loc>
     <loc>
       <location>
@@ -611,7 +611,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-0a</anchor>
+  <anchor>operator_eq-2-A-A</anchor>
   <loc>
     <loc>
       <location>
@@ -743,7 +743,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-08</anchor>
+  <anchor>operator_eq-2-B-B</anchor>
   <loc>
     <loc>
       <location>
@@ -880,7 +880,7 @@
 </function>
 <function>
   <name>operator==</name>
-  <anchor>operator_eq-071</anchor>
+  <anchor>operator_eq-2-B-int</anchor>
   <loc>
     <loc>
       <location>

@@ -503,7 +503,7 @@
 </typedef>
 <record>
   <name>B</name>
-  <anchor>B-08</anchor>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -587,7 +587,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-09</anchor>
+  <anchor>B-1</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -637,7 +637,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0c</anchor>
+  <anchor>B-2</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -691,7 +691,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-05</anchor>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -775,7 +775,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-0f</anchor>
+  <anchor>C-2-D-true</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>
@@ -829,7 +829,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-0c</anchor>
+  <anchor>C-2-int-true</anchor>
   <loc>
     <defLoc>
       <shortPath>template-arguments.cpp</shortPath>

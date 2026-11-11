@@ -42,7 +42,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-0a</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-partial-spec.cpp</shortPath>
@@ -75,7 +75,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-04</anchor>
+  <anchor>B-2-T-long</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-partial-spec.cpp</shortPath>
@@ -128,7 +128,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-06</anchor>
+  <anchor>B-2-U-ptr-T</anchor>
   <loc>
     <defLoc>
       <shortPath>class-template-partial-spec.cpp</shortPath>
