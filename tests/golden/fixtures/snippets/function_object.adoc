@@ -21,10 +21,6 @@ abs(double x) noexcept;
 This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
 ====
 
-=== Return Value
-
-The absolute value of x&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -33,6 +29,10 @@ The absolute value of x&period;
 | *x*
 | The input value&period;
 |===
+
+=== Return Value
+
+The absolute value of x&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

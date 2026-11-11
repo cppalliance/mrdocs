@@ -20,10 +20,6 @@ is&lowbar;prime(unsigned long long n) noexcept;
 
 Linear in n&period;
 
-=== Return Value
-
-Whether `n` is prime&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -32,6 +28,10 @@ Whether `n` is prime&period;
 | *n*
 | The number to test
 |===
+
+=== Return Value
+
+Whether `n` is prime&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

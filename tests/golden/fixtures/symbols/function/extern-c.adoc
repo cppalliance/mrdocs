@@ -90,10 +90,6 @@ c&lowbar;add(
     int b);
 ----
 
-=== Return Value
-
-The sum&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -104,6 +100,10 @@ The sum&period;
 | *b*
 | Second operand&period;
 |===
+
+=== Return Value
+
+The sum&period;
 
 [#c_reset]
 == c&lowbar;reset

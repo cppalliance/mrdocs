@@ -73,10 +73,6 @@ link:#widget[widget]&
 operator&equals;(link:#widget[widget] const& other);
 ----
 
-=== Return Value
-
-Reference to the current object
-
 === Parameters
 
 [cols="1,4"]
@@ -85,6 +81,10 @@ Reference to the current object
 | *other*
 | The object to copy assign from
 |===
+
+=== Return Value
+
+Reference to the current object
 
 [#widget-operator_assign-03]
 == link:#widget[widget]::operator&equals;
@@ -101,10 +101,6 @@ link:#widget[widget]&
 operator&equals;(link:#widget[widget]&& other);
 ----
 
-=== Return Value
-
-Reference to the current object
-
 === Parameters
 
 [cols="1,4"]
@@ -113,6 +109,10 @@ Reference to the current object
 | *other*
 | The object to move assign from
 |===
+
+=== Return Value
+
+Reference to the current object
 
 [#widget-refresh]
 == link:#widget[widget]::refresh

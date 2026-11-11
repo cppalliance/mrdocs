@@ -22,19 +22,6 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 
 This function calculates the square root of a given integral value using bit manipulation, in stem:[O(\log value)] time&period;
 
-=== Exceptions
-
-[cols="1,4"]
-|===
-| Name| Thrown on
-| `std&colon;&colon;invalid&lowbar;argument`
-| If the input value is negative&period;
-|===
-
-=== Return Value
-
-The square root of the input value&period;
-
 === Template Parameters
 
 [cols="1,4"]
@@ -52,6 +39,19 @@ The square root of the input value&period;
 | *value*
 | The integral value to compute the square root of&period;
 |===
+
+=== Exceptions
+
+[cols="1,4"]
+|===
+| Name| Thrown on
+| `std&colon;&colon;invalid&lowbar;argument`
+| If the input value is negative&period;
+|===
+
+=== Return Value
+
+The square root of the input value&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

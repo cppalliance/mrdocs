@@ -40,10 +40,6 @@ scoped&lowbar;context(
 
 The context stays attached until the returned token is destroyed&period; Hold it in `auto`&semi; nested contexts stack and unwind in reverse order&period;
 
-=== Return Value
-
-An opaque RAII token whose lifetime governs how long the pair stays attached&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -54,6 +50,10 @@ An opaque RAII token whose lifetime governs how long the pair stays attached&per
 | *value*
 | The context value surfaced on each log line&period;
 |===
+
+=== Return Value
+
+An opaque RAII token whose lifetime governs how long the pair stays attached&period;
 
 [#logr-set_encoder]
 == logr::set&lowbar;encoder
