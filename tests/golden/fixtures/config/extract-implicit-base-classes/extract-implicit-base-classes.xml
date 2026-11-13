@@ -114,7 +114,7 @@
 </function>
 <record>
   <name>B</name>
-  <anchor>B-00</anchor>
+  <anchor>B</anchor>
   <loc>
     <defLoc>
       <shortPath>extract-implicit-base-classes.cpp</shortPath>

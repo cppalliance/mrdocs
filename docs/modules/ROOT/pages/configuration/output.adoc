@@ -102,6 +102,29 @@ NOTE: When `show-enum-constants` is off (the default), enumerators are folded in
 
 xref:configuration/reference.adoc#global-namespace-index_option[`global-namespace-index`] turns the global-namespace page into a project-wide index of every top-level symbol. xref:configuration/reference.adoc#legible-names_option[`legible-names`] uses readable symbol names in file names and URLs (the alternative is short opaque hashes).
 
+When members of a scope share a name, ignoring case, at most one of them keeps the plain name, and each of the others adds the words that tell it apart. In the example below, the class keeps `quantity` and the concept adds its kind (`Quantity-concept`). The overload set keeps `at`, and its functions add the number of their parameters, then, since both take one, the parameter types and the qualifiers of the function: `at-1-int` for `at(int)` and `at-1-int-const` for `at(int) const`. The primary template keeps `pair`, and its specialization adds the number of its template arguments (`pair-2`).
+
+A specialization adds its arguments as well when another specialization has as many: if the example also specialized `pair<char, char>`, the two specializations would be `pair-2-int-comma-int` and `pair-2-char-comma-char`, with `comma` between two arguments as between two parameters. A specialization of a function template adds its template arguments when nothing else tells it apart (`make-0-t0-int`). A parameter's type is spelled as the function's type holds it: without a top-level `const` or `volatile`, since `at(int const)` declares the same function as `at(int)`, and an array or a function as the pointer it is adjusted to. In the spelling of a type, each punctuation character becomes a word, such as `ptr` for `*`, `scope` for `::`, and `lt` and `gt` for `<` and `>`, so a parameter of type `std::vector<int>&` adds `std-scope-vector-lt-int-gt-ref`.
+
+When a class splits the functions of one name by access, the most accessible of them keeps the plain name, an overload set before a lone function. Each of the other overload sets adds its access, followed by `static` when its functions are static, and each other lone function adds the parts of its signature it needs, as an overload does. Using-declarations add `using` and the class they name the member in. A conversion function is named after the type it converts to, such as `2conversion-int`, so only conversions to one type share a name. When the words that spell the parameters and qualifiers of a function, the arguments of a specialization, the type a conversion function converts to or the scope a using-declaration names its member in would take more than 64 characters, they are replaced by `h` and the first eight hex digits of their xxh3 hash. Two classes whose names differ only in case have nothing else to tell them apart: neither keeps the plain name, and each ends with a few characters of its symbol ID.
+
+.Example
+[source,cpp]
+----
+include::example$snippets/options/legible-names/legible-names.cpp[]
+----
+
+.`mrdocs.yml`
+[source,yaml]
+----
+include::example$snippets/options/legible-names/legible-names.yml[tags=!test-only]
+----
+
+[.adoc-preview]
+========
+include::example$snippets/options/legible-names/legible-names.adoc[tags=!footer]
+========
+
 == Source links
 
 xref:configuration/reference.adoc#base-url_option[`base-url`] is the prefix MrDocs joins with each source file's path to build the "Declared in" link. Set it to your repository's blob URL so every symbol page links to the code that defines it:

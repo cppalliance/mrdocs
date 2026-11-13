@@ -82,7 +82,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-0c</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>friend-explicit-specialization.cpp</shortPath>
@@ -142,7 +142,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-0b</anchor>
+  <anchor>f-1-T</anchor>
   <loc>
     <defLoc>
       <shortPath>friend-explicit-specialization.cpp</shortPath>
@@ -208,7 +208,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-04</anchor>
+  <anchor>f-1-X</anchor>
   <loc>
     <loc>
       <location>

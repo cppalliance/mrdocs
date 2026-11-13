@@ -22,9 +22,9 @@ struct value;
 | Name| Description
 | link:#value-get[`get`] 
 | Read the underlying integer&period;
-| link:#value-2conversion-08[`operator bool`] 
+| link:#value-2conversion-bool[`operator bool`] 
 | Convert to `bool` for use in conditions&period;
-| link:#value-2conversion-09[`operator int`] 
+| link:#value-2conversion-int[`operator int`] 
 | Convert to `int` for arithmetic contexts&period;
 |===
 
@@ -44,7 +44,7 @@ int
 get() const;
 ----
 
-[#value-2conversion-08]
+[#value-2conversion-bool]
 == link:#value[value]::operator bool
 
 Convert to `bool` for use in conditions&period;
@@ -63,7 +63,7 @@ operator bool() const;
 
 The object converted to `bool`
 
-[#value-2conversion-09]
+[#value-2conversion-int]
 == link:#value[value]::operator int
 
 Convert to `int` for arithmetic contexts&period;

@@ -74,7 +74,7 @@
 </record>
 <overloads>
   <name>X</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -142,7 +142,7 @@
 </overloads>
 <function>
   <name>X</name>
-  <anchor>2constructor-0e</anchor>
+  <anchor>2constructor-1-const-X-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -221,7 +221,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-06</anchor>
+  <anchor>2constructor-1-X-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -299,7 +299,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -381,7 +381,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-0b</anchor>
+  <anchor>2constructor-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -469,7 +469,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor-1-A-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -556,7 +556,7 @@
 </function>
 <overloads>
   <name>operator=</name>
-  <anchor>operator_assign-0a</anchor>
+  <anchor>operator_assign</anchor>
   <loc>
     <loc>
       <location>
@@ -630,7 +630,7 @@
 </overloads>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-06</anchor>
+  <anchor>operator_assign-1-const-X-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -726,7 +726,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-0e</anchor>
+  <anchor>operator_assign-1-X-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -821,7 +821,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-07f</anchor>
+  <anchor>operator_assign-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -911,7 +911,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-0d</anchor>
+  <anchor>operator_assign-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -1007,7 +1007,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-07e</anchor>
+  <anchor>operator_assign-1-A-rref</anchor>
   <loc>
     <loc>
       <location>

@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>operator()</name>
-  <anchor>operator_call-08</anchor>
+  <anchor>operator_call</anchor>
   <loc>
     <loc>
       <location>
@@ -112,7 +112,7 @@
 </overloads>
 <function>
   <name>operator()</name>
-  <anchor>operator_call-0f</anchor>
+  <anchor>operator_call-1-char-const</anchor>
   <loc>
     <loc>
       <location>
@@ -214,7 +214,7 @@
 </function>
 <function>
   <name>operator()</name>
-  <anchor>operator_call-0b</anchor>
+  <anchor>operator_call-1-unsigned-char-const</anchor>
   <loc>
     <loc>
       <location>

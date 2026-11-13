@@ -39,7 +39,7 @@
 </namespace>
 <record>
   <name>hash</name>
-  <anchor>hash-03</anchor>
+  <anchor>hash</anchor>
   <loc>
     <loc>
       <location>
@@ -68,7 +68,7 @@
 </record>
 <record>
   <name>hash</name>
-  <anchor>hash-08</anchor>
+  <anchor>hash-1</anchor>
   <loc>
     <defLoc>
       <shortPath>extract-friends.cpp</shortPath>

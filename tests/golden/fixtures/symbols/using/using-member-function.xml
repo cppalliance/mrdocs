@@ -909,7 +909,7 @@
 </function>
 <using>
   <name>U</name>
-  <anchor>U-0a</anchor>
+  <anchor>U-using-A</anchor>
   <loc>
     <loc>
       <location>
@@ -954,7 +954,7 @@
 </using>
 <using>
   <name>U</name>
-  <anchor>U-01b</anchor>
+  <anchor>U-using-B</anchor>
   <loc>
     <loc>
       <location>
@@ -999,7 +999,7 @@
 </using>
 <using>
   <name>U</name>
-  <anchor>U-01d</anchor>
+  <anchor>U-using-C</anchor>
   <loc>
     <loc>
       <location>
@@ -1044,7 +1044,7 @@
 </using>
 <using>
   <name>U</name>
-  <anchor>U-0c</anchor>
+  <anchor>U-using-D</anchor>
   <loc>
     <loc>
       <location>
@@ -1089,7 +1089,7 @@
 </using>
 <using>
   <name>U</name>
-  <anchor>U-04</anchor>
+  <anchor>U-using-E</anchor>
   <loc>
     <loc>
       <location>
@@ -1134,7 +1134,7 @@
 </using>
 <using>
   <name>U</name>
-  <anchor>U-06</anchor>
+  <anchor>U-using-F</anchor>
   <loc>
     <loc>
       <location>
@@ -1179,7 +1179,7 @@
 </using>
 <using>
   <name>f</name>
-  <anchor>f-00c</anchor>
+  <anchor>f-using-A</anchor>
   <loc>
     <loc>
       <location>
@@ -1303,7 +1303,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-0be</anchor>
+  <anchor>f-using-B</anchor>
   <loc>
     <loc>
       <location>
@@ -1416,7 +1416,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-0f</anchor>
+  <anchor>f-using-C</anchor>
   <loc>
     <loc>
       <location>
@@ -1529,7 +1529,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-009</anchor>
+  <anchor>f-using-D</anchor>
   <loc>
     <loc>
       <location>
@@ -1642,7 +1642,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-0bd</anchor>
+  <anchor>f-using-E</anchor>
   <loc>
     <loc>
       <location>
@@ -1755,7 +1755,7 @@
 </function>
 <using>
   <name>f</name>
-  <anchor>f-02</anchor>
+  <anchor>f-using-F</anchor>
   <loc>
     <loc>
       <location>
@@ -1868,7 +1868,7 @@
 </function>
 <overloads>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>

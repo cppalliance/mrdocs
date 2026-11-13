@@ -42,7 +42,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-00</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_inline.cpp</shortPath>
@@ -73,7 +73,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f-0-t1</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_inline.cpp</shortPath>
@@ -114,7 +114,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-04</anchor>
+  <anchor>f-0-t0</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mft_expl_inline.cpp</shortPath>

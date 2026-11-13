@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mc_expl_outside.cpp</shortPath>
@@ -97,7 +97,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-00</anchor>
+  <anchor>A-1</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mc_expl_outside.cpp</shortPath>
