@@ -4,8 +4,12 @@
 .breadcrumbs {
   display: block;
   flex: 1 1;
-  /* The 40px inset now lives on .toolbar, which is full-bleed. */
-  padding: 0;
+  /* Lets the crumbs shrink below their text width, so a long path collapses
+     instead of pushing the version chip out of the bar. */
+  min-width: 0;
+  /* The 40px inset now lives on .toolbar, which is full-bleed. The right
+     padding keeps the crumbs off the version chip. */
+  padding: 0 0.75rem 0 0;
   line-height: var(--nav-line-height);
 }
 
@@ -18,17 +22,58 @@ a + .breadcrumbs {
   color: var(--text-strong);
 }
 
+/* One line inside the fixed-height toolbar. When the path is too long,
+   12-breadcrumbs.js hides middle crumbs behind a "…" button; whatever still
+   doesn't fit ends in an ellipsis on the current page. */
 .breadcrumbs ul {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin: 0;
+  overflow: hidden;
   padding: 0;
   list-style: none;
 }
 
 .breadcrumbs li {
   display: inline;
+  flex: none;
   margin: 0;
+  white-space: nowrap;
+}
+
+.breadcrumbs li:last-child {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumbs li.is-hidden {
+  display: none;
+}
+
+.breadcrumbs .crumb-more button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0 0.2rem;
+}
+
+/* After "…": the whole path, wrapping in a taller bar. */
+.toolbar.is-expanded {
+  height: auto;
+  min-height: var(--toolbar-height);
+  padding-block: 0.5rem;
+}
+
+.toolbar.is-expanded .breadcrumbs ul {
+  flex-wrap: wrap;
+}
+
+.toolbar.is-expanded .crumb-more {
+  display: none;
 }
 
 .breadcrumbs li::after {
