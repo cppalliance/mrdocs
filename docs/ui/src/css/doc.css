@@ -181,6 +181,31 @@ html {
   text-align: center;
 }
 
+/* Bangers has no lowercase, so symbol titles read as all caps (#1339).
+   Reference titles use the code face, bold italic plus a small skew so they
+   lean like the display headings. Kept after the :first-child size rule
+   above: same specificity, so source order decides. */
+.mrdocs-reference .doc > h1.page {
+  font-family: var(--monospace-font-family);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.6rem, 1rem + 2.8vw, 3rem);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  transform: skewX(-6deg);
+
+  --doc-heading-stroke: 6px;
+  --doc-heading-drop: drop-shadow(3px 3px 0 var(--outline));
+}
+
+/* Namespace links are atomic, so a long title breaks at :: rather than
+   mid-name. */
+.mrdocs-reference .doc > h1.page > a {
+  display: inline-block;
+}
+
 .doc > h2#name + .sectionbody {
   margin-top: 1rem;
 }

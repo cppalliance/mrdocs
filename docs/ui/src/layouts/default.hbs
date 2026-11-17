@@ -3,7 +3,8 @@
   <head>
 {{> head defaultPageTitle='Untitled'}}
   </head>
-  <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+  <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}
+  {{~#if (includes page.url '/reference/')}} mrdocs-reference{{/if}}">
 {{> header}}
 {{> body}}
 {{> footer}}
