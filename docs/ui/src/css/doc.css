@@ -189,7 +189,9 @@ html {
   font-family: var(--monospace-font-family);
   font-weight: 700;
   font-style: italic;
-  letter-spacing: -0.02em;
+  /* Positive tracking so the 6px outlines of neighbouring letters don't run
+     into each other. */
+  letter-spacing: 0.02em;
   font-size: clamp(1.6rem, 1rem + 2.8vw, 3rem);
   line-height: 1.1;
   overflow-wrap: anywhere;
@@ -204,6 +206,14 @@ html {
    mid-name. */
 .mrdocs-reference .doc > h1.page > a {
   display: inline-block;
+}
+
+/* "::" wrapped by 11-reference-title.js. Monospace colons sit in full-width
+   cells; the negative tracking closes the gap between the two, and the margin
+   gives back the space after the pair. */
+.mrdocs-reference .doc > h1.page .scope-sep {
+  letter-spacing: -0.35em;
+  margin-right: 0.3em;
 }
 
 .doc > h2#name + .sectionbody {
