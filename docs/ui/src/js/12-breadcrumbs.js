@@ -45,13 +45,16 @@
   }
 
   // The button disappears once the path is shown, so keyboard focus moves to
-  // the first crumb it revealed (or the first crumb) instead of being lost.
+  // the first revealed crumb that is a link (group crumbs like "Getting
+  // Started" are plain text), else the first link in the trail.
   button.addEventListener('click', function () {
-    var revealed = items.filter(function (item) { return item.classList.contains('is-hidden') })[0]
+    var revealed = items.filter(function (item) {
+      return item.classList.contains('is-hidden') && item.querySelector('a')
+    })[0]
     opened = true
     toolbar.classList.add('is-expanded')
     items.forEach(function (item) { item.classList.remove('is-hidden') })
-    var target = (revealed || items[0]).querySelector('a')
+    var target = (revealed || list).querySelector('a')
     if (target) target.focus()
   })
 
