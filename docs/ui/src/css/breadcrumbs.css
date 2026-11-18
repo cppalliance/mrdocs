@@ -52,10 +52,12 @@ a + .breadcrumbs {
   display: none;
 }
 
+/* The links' colour, not the faded one the row inherits, so "…" reads as
+   something to press and keeps AA contrast in both themes. */
 .breadcrumbs .crumb-more button {
   background: none;
   border: 0;
-  color: inherit;
+  color: var(--text-strong);
   cursor: pointer;
   font: inherit;
   padding: 0 0.2rem;
