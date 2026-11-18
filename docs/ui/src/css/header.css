@@ -592,3 +592,17 @@ body {
   display: block;
   fill: currentColor;
 }
+
+/* iOS Safari zooms the page into any focused field under 16px. Touch screens
+   type at 16px; the placeholder keeps the Figma 14 so "Search the docs..."
+   still fits the field, and iOS only checks the input's own size. Last in the
+   file so it outranks the sized `.navbar #search-input` rules above. */
+@media (hover: none) and (pointer: coarse) {
+  .navbar #search-input {
+    font-size: 16px;
+  }
+
+  .navbar #search-input::placeholder {
+    font-size: calc(14 / var(--rem-base) * 1rem);
+  }
+}
