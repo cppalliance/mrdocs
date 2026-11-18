@@ -70,6 +70,19 @@ a + .breadcrumbs {
 
 .toolbar.is-expanded .breadcrumbs ul {
   flex-wrap: wrap;
+  overflow: visible;
+}
+
+/* A crumb wider than the bar wraps inside itself too, breaking long
+   identifiers anywhere, so expanding never leaves a name cut off. */
+.toolbar.is-expanded .breadcrumbs li {
+  flex: 0 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .toolbar.is-expanded .crumb-more {

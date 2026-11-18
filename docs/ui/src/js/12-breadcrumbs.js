@@ -4,12 +4,14 @@
   // The toolbar is one fixed-height line, so a path that doesn't fit used to
   // wrap out of it. Hide middle crumbs behind a "…" button until the path fits:
   // the first crumb and the current page always stay, the parent goes last.
-  // The button shows the whole path, wrapping in a taller bar.
+  // The button shows the whole path, wrapping in a taller bar. It appears
+  // whenever the path doesn't fit, even with no middle crumbs to hide, since
+  // the current page may still end in an ellipsis.
   var toolbar = document.querySelector('.toolbar')
   var list = toolbar && toolbar.querySelector('.breadcrumbs ul')
   if (!list) return
   var items = Array.prototype.slice.call(list.children)
-  if (items.length < 3) return
+  if (items.length < 2) return
   var last = items[items.length - 1]
 
   var more = document.createElement('li')
