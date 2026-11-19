@@ -154,9 +154,9 @@ function libraryLink(library) {
     } else if (library === 'boost-scope') {
         return 'https://github.com/boostorg/scope[Boost.Scope,window=_blank]';
     } else if (library === 'nlohmann-json') {
-        return 'https://www.github.com/nlohmann/json[Nlohmann.JSON,window=_blank]';
+        return 'https://github.com/nlohmann/json[Nlohmann.JSON,window=_blank]';
     } else if (library === 'beman-optional') {
-        return 'https://www.github.com/steve-downey/optional[Beman.Optional,window=_blank]';
+        return 'https://github.com/steve-downey/optional[Beman.Optional,window=_blank]';
     } else if (library === 'fmt') {
         return 'https://github.com/fmtlib/fmt[fmt,window=_blank]';
     } else if (library === 'mp-units') {

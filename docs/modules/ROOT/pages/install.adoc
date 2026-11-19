@@ -68,7 +68,7 @@ If any of those are missing, pass `--install-system-deps` to the bootstrap scrip
 
 [source,bash]
 ----
-git clone https://www.github.com/cppalliance/mrdocs.git
+git clone https://github.com/cppalliance/mrdocs.git
 cd mrdocs
 python bootstrap.py
 ----
