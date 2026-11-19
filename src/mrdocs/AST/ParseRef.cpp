@@ -610,6 +610,11 @@ private:
             return false;
         }
         skipWhitespace();
+        if (parseLiteral('>'))
+        {
+            // `<>` holds no argument, so no slot is left empty
+            return true;
+        }
         // Add an empty slot for the first template argument
         TemplateArguments.emplace_back(nullable_traits<Polymorphic<TArg>>::null());
         while (parseTemplateArgument(TemplateArguments.back()))

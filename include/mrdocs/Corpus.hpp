@@ -7,6 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+// Copyright (c) 2026 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -21,6 +22,7 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Reporter.hpp>
+#include <mrdocs/detail/TagfileIndex.hpp>
 #include <algorithm>
 #include <map>
 #include <memory>
@@ -146,6 +148,23 @@ public:
     */
     Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const;
+
+    /** Return where a name this corpus does not hold is documented.
+
+        The name, without any template arguments or parameter list, is
+        looked up qualified by each scope enclosing the context, innermost
+        first, and finally on its own. A name written with a leading `::`
+        is looked up only as written.
+
+        @param context The context the name is written in.
+        @param name The name of the symbol to look up.
+        @return The tagfile's configured location joined with the page,
+            which is a URL or a path, as described for
+            `doc::ReferenceInline::href`, or an error if no tagfile
+            documents the name.
+    */
+    Expected<std::string>
+    externalUrl(SymbolID const& context, std::string_view name) const;
 
     /** Return the Symbol with the matching ID, or nullptr.
     */
@@ -407,6 +426,9 @@ private:
 
     // Undocumented symbols.
     detail::UndocumentedSymbolSet undocumented_;
+
+    // Symbols documented elsewhere, read from the configured tagfiles.
+    detail::TagfileIndex externalSymbols_;
 
     // Lookup cache: context Symbol ID -> (name -> Info).
     std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;

@@ -302,6 +302,17 @@ testTemplateArguments()
     ok("A::B<int, true>");
     ok("A::B<C, true>");
     ok("A::B<Args..., true>");
+
+    // an empty list, which holds no argument at all
+    ok("A::B<>");
+    ok("A::B< >");
+    Expected<ParsedRef> const empty = parse<ParsedRef>("A::B<>");
+    BOOST_TEST(empty.has_value());
+    BOOST_TEST(empty->Components.back().TemplateArguments.empty());
+    Expected<ParsedRef> const conversion =
+        parse<ParsedRef>("A::operator B<>");
+    BOOST_TEST(conversion.has_value());
+    BOOST_TEST(toString(**conversion->Components.back().ConversionType) == "B<>");
 }
 
 void

@@ -1,0 +1,3 @@
+multipage: true
+generator: html
+output-tagfile: reference.tag.xml

@@ -52,7 +52,7 @@ loadDirConfig(
     dirConfig.sourceRoot = dirPath;
     dirConfig.input = {dirPath};
     std::string const& configPath = files::appendPath(dirPath, "mrdocs.yml");
-    bool const hasTagfileOverride = !dirConfig.tagfile.empty();
+    bool const hasTagfileOverride = !dirConfig.outputTagfile.empty();
     if (files::exists(configPath))
     {
         MRDOCS_TRY(Config::loadFile(dirConfig, configPath));
@@ -64,7 +64,7 @@ loadDirConfig(
     // Golden tests shouldn't emit tagfiles unless a test explicitly requests one.
     if (!hasTagfileOverride)
     {
-        dirConfig.tagfile.clear();
+        dirConfig.outputTagfile.clear();
     }
     return dirConfig;
 }
@@ -186,7 +186,7 @@ buildTestLayout(
     bool const dirMultipage = loaded.dirMultipage;
     bool const hasFileConfig = loaded.hasFileConfig;
     Config settings = std::move(loaded.settings);
-    bool const hasTagfileOverride = !settings.tagfile.empty();
+    bool const hasTagfileOverride = !settings.outputTagfile.empty();
 
     // The no-op generator produces no output: normalize and return without a
     // scratch directory.
@@ -194,7 +194,7 @@ buildTestLayout(
     {
         MRDOCS_TRY(settings.normalize(dirs, reporter));
         if (!hasTagfileOverride)
-            settings.tagfile.clear();
+            settings.outputTagfile.clear();
         return std::pair{std::move(settings), std::optional<ScopedTempDirectory>{}};
     }
 
@@ -203,12 +203,12 @@ buildTestLayout(
     std::optional<ScopedTempDirectory> scratch(std::in_place, "mrdocs-test-output");
     MRDOCS_CHECK_OR(!scratch->failed(), Unexpected(scratch->error()));
     settings.output = std::string(scratch->path());
-    if (!settings.tagfile.empty() &&
-        !llvm::sys::path::is_absolute(settings.tagfile))
-        settings.tagfile = files::appendPath(scratch->path(), settings.tagfile);
+    if (!settings.outputTagfile.empty() &&
+        !llvm::sys::path::is_absolute(settings.outputTagfile))
+        settings.outputTagfile = files::appendPath(scratch->path(), settings.outputTagfile);
     MRDOCS_TRY(settings.normalize(dirs, reporter));
     if (!hasTagfileOverride)
-        settings.tagfile.clear();
+        settings.outputTagfile.clear();
 
     // Validate that the on-disk fixtures match the configured mode. The
     // comparison recomputes these paths the same way.

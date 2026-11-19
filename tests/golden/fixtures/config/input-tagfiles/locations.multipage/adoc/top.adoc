@@ -1,0 +1,21 @@
+[#top]
+= top
+:mrdocs:
+
+A page at the top of the output&period;
+
+== Synopsis
+
+Declared in `&lt;locations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct top;
+----
+
+== Description
+
+It refers to link:../other/html/other/socket.html[`other&colon;&colon;socket`], link:/libs/geom/classgeom_1_1circle.html[`geom&colon;&colon;circle`] and link:https://ns.example/docs/ns/response_factory.html[`ns&colon;&colon;response&lowbar;factory`]&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
