@@ -1,0 +1,4 @@
+# Reach the headers through an include directory, so the compiler records
+# them by absolute paths.
+includes:
+  - include
