@@ -32,10 +32,6 @@ swap(
     T& b) noexcept(&sol;&ast; see-below &ast;&sol;);
 ----
 
-=== Exception specification
-
-This function is potentially-throwing unless `sizeof(T) &gt; sizeof(int)`.
-
 === Parameters
 
 [cols="1,4"]
@@ -46,6 +42,10 @@ This function is potentially-throwing unless `sizeof(T) &gt; sizeof(int)`.
 | *b*
 | second value
 |===
+
+=== Exception specification
+
+This function is potentially-throwing unless `sizeof(T) &gt; sizeof(int)`.
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

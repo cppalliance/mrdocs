@@ -19,10 +19,6 @@ max&lowbar;of(
     T const& b);
 ----
 
-=== Return Value
-
-the larger of two values&period;
-
 === Template Parameters
 
 [cols="1,4"]
@@ -31,6 +27,10 @@ the larger of two values&period;
 | *T*
 | A type that supports `operator&lt;`&period;
 |===
+
+=== Return Value
+
+the larger of two values&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

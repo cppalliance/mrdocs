@@ -38,10 +38,6 @@ first&lowbar;packet(link:#netz-buffer_view[buffer&lowbar;view] input);
 
 Scans `input` for a frame boundary&period; The returned view aliases the same memory as `input`, so the storage behind `input` must outlive the returned view&period;
 
-=== Return Value
-
-A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -50,6 +46,10 @@ A view of the bytes belonging to the first packet, or an empty view if no comple
 | *input*
 | Bytes received from the stream, up to the caller&apos;s current fill mark&period;
 |===
+
+=== Return Value
+
+A view of the bytes belonging to the first packet, or an empty view if no complete packet is present yet&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

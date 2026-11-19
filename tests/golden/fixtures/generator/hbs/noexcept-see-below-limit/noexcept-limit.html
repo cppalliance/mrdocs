@@ -36,10 +36,6 @@ swap(
     T& a,
     T& b) noexcept(/* see-below */);</code></pre>
 </div><!-- /synopsis -->
-<div class="noexcept-specification">
-<h3>Exception specification</h3>
-<p>This function is potentially-throwing unless <code>sizeof(T) &gt; sizeof(int)</code>.</p>
-</div><!-- /noexcept-specification -->
 <div class="parameters">
 <h3>Parameters</h3>
 <table style="table-layout: fixed; width: 100%;">
@@ -52,6 +48,10 @@ swap(
 </tbody>
 </table>
 </div><!-- /parameters -->
+<div class="noexcept-specification">
+<h3>Exception specification</h3>
+<p>This function is potentially-throwing unless <code>sizeof(T) &gt; sizeof(int)</code>.</p>
+</div><!-- /noexcept-specification -->
 </div><!-- /symbol -->
 
 </div>

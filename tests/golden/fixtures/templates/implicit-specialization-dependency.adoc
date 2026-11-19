@@ -97,6 +97,15 @@ template&lt;typename IRUnitT&gt;
 struct Manager;
 ----
 
+=== Template Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *IRUnitT*
+| IR unit type&period;
+|===
+
 === Types
 
 [cols="1,4"]
@@ -126,15 +135,6 @@ struct Manager;
 | A manager&period;
 |===
 
-
-=== Template Parameters
-
-[cols="1,4"]
-|===
-| Name| Description
-| *IRUnitT*
-| IR unit type&period;
-|===
 
 [#Manager-06-Invalidator]
 == link:#Manager-06[Manager]::Invalidator
@@ -175,10 +175,6 @@ bool
 invalidate(IRUnitT& IR);
 ----
 
-=== Return Value
-
-Whether anything was invalidated&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -187,6 +183,10 @@ Whether anything was invalidated&period;
 | *IR*
 | The IR unit&period;
 |===
+
+=== Return Value
+
+Whether anything was invalidated&period;
 
 [#Manager-06-clear]
 == link:#Manager-06[Manager]::clear
@@ -218,6 +218,15 @@ template&lt;&gt;
 struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
 ----
 
+=== Template Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *IRUnitT*
+| IR unit type&period;
+|===
+
 === Types
 
 [cols="1,4"]
@@ -237,15 +246,6 @@ struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
 | The kernel manager clears differently&period;
 |===
 
-
-=== Template Parameters
-
-[cols="1,4"]
-|===
-| Name| Description
-| *IRUnitT*
-| IR unit type&period;
-|===
 
 [#Manager-0a-Invalidator]
 == link:#Manager-0a[Manager&lt;Kernel&gt;]::Invalidator

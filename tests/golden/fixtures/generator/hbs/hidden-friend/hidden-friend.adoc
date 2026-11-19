@@ -393,10 +393,6 @@ operator&equals;&equals;(
 This function is a https://en.cppreference.com/w/cpp/language/friend[hidden friend] of link:#point[point], declared only inside that class: it can be found only through argument-dependent lookup.
 ====
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -407,6 +403,10 @@ This function is a https://en.cppreference.com/w/cpp/language/friend[hidden frie
 | *b*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 [#operator_eq-05]
 == operator&equals;&equals;
@@ -425,10 +425,6 @@ operator&equals;&equals;(
     link:#label[label] b);
 ----
 
-=== Return Value
-
-`true` if the objects are equal, `false` otherwise
-
 === Parameters
 
 [cols="1,4"]
@@ -439,6 +435,10 @@ operator&equals;&equals;(
 | *b*
 | The right operand
 |===
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

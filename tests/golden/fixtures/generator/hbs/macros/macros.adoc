@@ -48,10 +48,6 @@ Declared in `&lt;macros&period;cpp&gt;`
 
 ----
 
-=== Return Value
-
-`x` clamped to the range&period;
-
 === Parameters
 
 [cols="1,4"]
@@ -64,6 +60,10 @@ Declared in `&lt;macros&period;cpp&gt;`
 | *hi*
 | The upper bound&period;
 |===
+
+=== Return Value
+
+`x` clamped to the range&period;
 
 [#EXAMPLE_LOG]
 == EXAMPLE&lowbar;LOG
