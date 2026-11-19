@@ -11,7 +11,7 @@
 </namespace>
 <overloads>
   <name>all_nodiscard</name>
-  <anchor>all_nodiscard-0f</anchor>
+  <anchor>all_nodiscard</anchor>
   <loc>
     <loc>
       <location>
@@ -77,7 +77,7 @@
 </overloads>
 <function>
   <name>all_nodiscard</name>
-  <anchor>all_nodiscard-02</anchor>
+  <anchor>all_nodiscard-0</anchor>
   <loc>
     <loc>
       <location>
@@ -126,7 +126,7 @@
 </function>
 <function>
   <name>all_nodiscard</name>
-  <anchor>all_nodiscard-0e</anchor>
+  <anchor>all_nodiscard-1</anchor>
   <loc>
     <loc>
       <location>
@@ -191,7 +191,7 @@
 </function>
 <overloads>
   <name>diff_message</name>
-  <anchor>diff_message-04</anchor>
+  <anchor>diff_message</anchor>
   <loc>
     <loc>
       <location>
@@ -257,7 +257,7 @@
 </overloads>
 <function>
   <name>diff_message</name>
-  <anchor>diff_message-06</anchor>
+  <anchor>diff_message-0</anchor>
   <loc>
     <loc>
       <location>
@@ -310,7 +310,7 @@
 </function>
 <function>
   <name>diff_message</name>
-  <anchor>diff_message-0a</anchor>
+  <anchor>diff_message-1</anchor>
   <loc>
     <loc>
       <location>
@@ -379,7 +379,7 @@
 </function>
 <overloads>
   <name>same_message</name>
-  <anchor>same_message-0d</anchor>
+  <anchor>same_message</anchor>
   <loc>
     <loc>
       <location>
@@ -449,7 +449,7 @@
 </overloads>
 <function>
   <name>same_message</name>
-  <anchor>same_message-04</anchor>
+  <anchor>same_message-0</anchor>
   <loc>
     <loc>
       <location>
@@ -502,7 +502,7 @@
 </function>
 <function>
   <name>same_message</name>
-  <anchor>same_message-01</anchor>
+  <anchor>same_message-1</anchor>
   <loc>
     <loc>
       <location>
@@ -571,7 +571,7 @@
 </function>
 <overloads>
   <name>some_nodiscard</name>
-  <anchor>some_nodiscard-0b</anchor>
+  <anchor>some_nodiscard</anchor>
   <loc>
     <loc>
       <location>
@@ -631,7 +631,7 @@
 </overloads>
 <function>
   <name>some_nodiscard</name>
-  <anchor>some_nodiscard-01</anchor>
+  <anchor>some_nodiscard-0</anchor>
   <loc>
     <loc>
       <location>
@@ -680,7 +680,7 @@
 </function>
 <function>
   <name>some_nodiscard</name>
-  <anchor>some_nodiscard-04</anchor>
+  <anchor>some_nodiscard-1</anchor>
   <loc>
     <loc>
       <location>

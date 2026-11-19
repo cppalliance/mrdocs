@@ -42,7 +42,7 @@
 </record>
 <overloads>
   <name>~A</name>
-  <anchor>2destructor-02</anchor>
+  <anchor>2destructor</anchor>
   <loc>
     <loc>
       <location>
@@ -92,7 +92,7 @@
 </overloads>
 <function>
   <name>~A</name>
-  <anchor>2destructor-0d</anchor>
+  <anchor>2destructor-0-0d</anchor>
   <loc>
     <loc>
       <location>
@@ -137,7 +137,7 @@
 </function>
 <function>
   <name>~A</name>
-  <anchor>2destructor-00</anchor>
+  <anchor>2destructor-0-00</anchor>
   <loc>
     <loc>
       <location>

@@ -100,7 +100,7 @@
 </record>
 <function>
   <name>operator fun_ptr</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-fun_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -217,7 +217,7 @@
 </record>
 <function>
   <name>operator fun_ptr</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-fun_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -274,7 +274,7 @@
 </function>
 <using>
   <name>operator fun_ptr</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-fun_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -320,7 +320,7 @@
 </using>
 <function>
   <name>operator fun_ptr</name>
-  <anchor>2conversion</anchor>
+  <anchor>2conversion-fun_ptr</anchor>
   <loc>
     <loc>
       <location>

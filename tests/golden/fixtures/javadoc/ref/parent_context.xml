@@ -143,7 +143,7 @@
 </record>
 <overloads>
   <name>final_virtual_ptr</name>
-  <anchor>final_virtual_ptr-04</anchor>
+  <anchor>final_virtual_ptr</anchor>
   <loc>
     <loc>
       <location>
@@ -175,7 +175,7 @@
 </overloads>
 <function>
   <name>final_virtual_ptr</name>
-  <anchor>final_virtual_ptr-08</anchor>
+  <anchor>final_virtual_ptr-1-Arg-rref-t1</anchor>
   <loc>
     <loc>
       <location>
@@ -230,7 +230,7 @@
 </function>
 <function>
   <name>final_virtual_ptr</name>
-  <anchor>final_virtual_ptr-03</anchor>
+  <anchor>final_virtual_ptr-1-Arg-rref-t2</anchor>
   <loc>
     <loc>
       <location>

@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>f</name>
-  <anchor>f-07</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>c_mft_expl_outside.cpp</shortPath>
@@ -64,7 +64,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-0e</anchor>
+  <anchor>f-0-t1</anchor>
   <loc>
     <defLoc>
       <shortPath>c_mft_expl_outside.cpp</shortPath>
@@ -105,7 +105,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-0b</anchor>
+  <anchor>f-0-t0</anchor>
   <loc>
     <defLoc>
       <shortPath>c_mft_expl_outside.cpp</shortPath>

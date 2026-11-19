@@ -134,7 +134,7 @@
 </record>
 <overloads>
   <name>operator=</name>
-  <anchor>operator_assign-0a</anchor>
+  <anchor>operator_assign</anchor>
   <loc>
     <loc>
       <location>
@@ -179,7 +179,7 @@
 </overloads>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-0d</anchor>
+  <anchor>operator_assign-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -275,7 +275,7 @@
 </function>
 <function>
   <name>operator=</name>
-  <anchor>operator_assign-07</anchor>
+  <anchor>operator_assign-1-A-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -523,7 +523,7 @@
 </function>
 <function>
   <name>operator A</name>
-  <anchor>2conversion-00</anchor>
+  <anchor>2conversion-A</anchor>
   <loc>
     <loc>
       <location>
@@ -588,7 +588,7 @@
 </function>
 <function>
   <name>operator Undoc</name>
-  <anchor>2conversion-03</anchor>
+  <anchor>2conversion-Undoc</anchor>
   <loc>
     <loc>
       <location>

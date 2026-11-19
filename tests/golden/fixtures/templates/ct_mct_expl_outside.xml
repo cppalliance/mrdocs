@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_outside.cpp</shortPath>
@@ -107,7 +107,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-00</anchor>
+  <anchor>A-1</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_outside.cpp</shortPath>
@@ -150,7 +150,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-03</anchor>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -179,7 +179,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-02</anchor>
+  <anchor>B-1</anchor>
   <loc>
     <defLoc>
       <shortPath>ct_mct_expl_outside.cpp</shortPath>

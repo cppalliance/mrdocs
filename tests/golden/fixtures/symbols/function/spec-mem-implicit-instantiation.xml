@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>A</name>
-  <anchor>A-0e</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -203,7 +203,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-0f</anchor>
+  <anchor>A-1-bool</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -276,7 +276,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-00</anchor>
+  <anchor>C</anchor>
   <loc>
     <loc>
       <location>
@@ -305,7 +305,7 @@
 </record>
 <record>
   <name>C</name>
-  <anchor>C-01</anchor>
+  <anchor>C-1-double-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -393,7 +393,7 @@
 </function>
 <record>
   <name>C</name>
-  <anchor>C-0c</anchor>
+  <anchor>C-1-U-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -512,7 +512,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-000</anchor>
+  <anchor>A-1-int</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -556,7 +556,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-03</anchor>
+  <anchor>B</anchor>
   <loc>
     <loc>
       <location>
@@ -585,7 +585,7 @@
 </record>
 <record>
   <name>B</name>
-  <anchor>B-09</anchor>
+  <anchor>B-1</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -736,7 +736,7 @@
 </function>
 <record>
   <name>A</name>
-  <anchor>A-00b</anchor>
+  <anchor>A-1-short</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -935,7 +935,7 @@
 </record>
 <record>
   <name>E</name>
-  <anchor>E-0e</anchor>
+  <anchor>E</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>
@@ -999,7 +999,7 @@
 </function>
 <record>
   <name>E</name>
-  <anchor>E-0d</anchor>
+  <anchor>E-1</anchor>
   <loc>
     <defLoc>
       <shortPath>spec-mem-implicit-instantiation.cpp</shortPath>

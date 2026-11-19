@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>X</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -101,7 +101,7 @@
 </overloads>
 <function>
   <name>X</name>
-  <anchor>2constructor-0e8</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -145,7 +145,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-0e0</anchor>
+  <anchor>2constructor-1-const-X-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -224,7 +224,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-069</anchor>
+  <anchor>2constructor-1-X-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -302,7 +302,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-06f</anchor>
+  <anchor>2constructor-1-double</anchor>
   <loc>
     <loc>
       <location>
@@ -384,7 +384,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor-1-int</anchor>
   <loc>
     <loc>
       <location>
