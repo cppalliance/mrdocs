@@ -1,0 +1,867 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "additionalProperties": false,
+  "properties": {
+    "addons": {
+      "default": "<mrdocs-root>/share/mrdocs/addons",
+      "description": "The directory of template files the generators use to build the documentation. Leave it unset to use the defaults that ship at `share/mrdocs/addons` in the MrDocs installation. To customize the output, copy those defaults to your own directory and point this option at it.",
+      "title": "Path to the Addons directory",
+      "type": "string"
+    },
+    "addons-supplemental": {
+      "default": [],
+      "description": "Optional list of supplemental addons directories that are loaded after the base addons (built-in or replacement). Files in later supplemental directories override files from earlier ones and from the base addons. Use this to add or override a few templates/helpers without copying the entire addons tree.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Additional addons layered on top of the base addons",
+      "type": "array"
+    },
+    "auto-brief": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the first line of the comment as the brief",
+      "type": "boolean"
+    },
+    "auto-function-metadata": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Automatically provide missing documentation for special functions and trivial metadata",
+      "type": "boolean"
+    },
+    "auto-function-objects": {
+      "default": true,
+      "description": "When true, Mr.Docs automatically detects algorithm function objects (informally known as niebloids): variables whose type is a record whose only public non-special members are operator() overloads. Set to false to disable auto-detection and rely solely on the @functionobject/@functor doc command. The @functionobject command is still useful when auto-detection is enabled, to force treatment of types that fail auto-detection (e.g. because they have extra public members); it may be placed on the variable or on the function-object record. When a variable is treated as an algorithm function object, its documentation comes from the record's operator() overloads, falling back to the variable's own doc comment when operator() is undocumented; the record's own doc comment is not used.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Automatically detect algorithm function objects",
+      "type": "boolean"
+    },
+    "auto-relates": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Automatically find non-member functions",
+      "type": "boolean"
+    },
+    "base-url": {
+      "default": "",
+      "description": "The prefix for links to the source code. MrDocs joins it with the path of each source file to build the link.",
+      "title": "Base URL for links to source code",
+      "type": "string"
+    },
+    "clang-resource-dir": {
+      "default": "<mrdocs-root>/share/mrdocs/headers/clang",
+      "description": "Directory holding Clang's builtin headers (`stddef.h`, `stdarg.h`, and the other compiler intrinsics) in its `include/` subdirectory. MrDocs bundles the resource directory that matches its embedded Clang and passes it as `-resource-dir`, so parsing does not depend on a Clang installation on the host. Leave empty to let Clang locate its own resource directory.",
+      "title": "Clang resource directory",
+      "type": "string"
+    },
+    "cmake": {
+      "default": "",
+      "description": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
+      "title": "CMake arguments when generating the compilation database from CMakeLists.txt",
+      "type": "string"
+    },
+    "cmake-build-dir": {
+      "default": "",
+      "description": "When the compilation database is generated from a CMakeLists.txt file, MrDocs runs CMake in a scratch directory and removes it afterward. Set this option to run that build in a fixed directory instead: it is used as given, reused across runs, and never removed, so you can inspect or reuse the generated build files. When unset, MrDocs picks a writable scratch directory automatically (honoring the `MRDOCS_TEMP_DIR` environment variable, then the user cache and system temporary directories).",
+      "title": "Directory for the CMake build that generates the compilation database",
+      "type": "string"
+    },
+    "compilation-database": {
+      "default": "",
+      "description": "The path to a compilation database, or to a build script that generates one. A compilation database is a JSON file of the compiler commands that build the source; MrDocs reads the compiler flags and source files from it to extract symbols. You can also pass a build script such as `CMakeLists.txt`: MrDocs then looks for CMake on `PATH` or in `CMAKE_ROOT`, runs the script, and uses the database it produces.",
+      "title": "Path to the compilation database",
+      "type": "string"
+    },
+    "concurrency": {
+      "default": 0,
+      "description": "The desired level of concurrency: 0 for hardware-suggested.",
+      "minimum": 0,
+      "title": "Number of threads to use",
+      "type": "integer"
+    },
+    "copycss": {
+      "default": true,
+      "description": "When `linkcss` is true, copy bundled and local stylesheet files into the output under `stylesdir`. Remote URLs are not copied. Set to false to skip copying.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Copy local stylesheets when linking",
+      "type": "boolean"
+    },
+    "defines": {
+      "default": [],
+      "description": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Additional defines passed to the compiler",
+      "type": "array"
+    },
+    "embedded": {
+      "default": false,
+      "description": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Output an embeddable document",
+      "type": "boolean"
+    },
+    "error-on-empty-corpus": {
+      "default": true,
+      "description": "When set to `true`, MrDocs treats an empty corpus as a hard error and exits with a failure status instead of emitting a warning and succeeding. A corpus counts as empty when no symbols are extracted; because the global namespace is always present in the model, a corpus that contains only the global namespace and no other declaration is also treated as empty. This usually means nothing was extracted, which is rarely intended in CI, so this turns that silent success into a detectable failure. This escalation applies regardless of the `warn-as-error` option.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Treat an empty corpus as an error",
+      "type": "boolean"
+    },
+    "exclude": {
+      "default": [],
+      "description": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`. Exclusion is strict about symlinks: it matches the file path only as written and does not resolve symlinks.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Input directories to exclude",
+      "type": "array"
+    },
+    "exclude-macros": {
+      "default": [],
+      "description": "A macro whose name matches one of these patterns, or one of `exclude-symbols`, is not extracted even if it would otherwise be included. See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Macro patterns to exclude",
+      "type": "array"
+    },
+    "exclude-patterns": {
+      "default": [],
+      "description": "Files matching these glob patterns are skipped, even when they sit inside an included directory. The patterns are relative to the configuration file. A single `*` matches everything in a directory; `**` matches everything in a directory and its subdirectories.",
+      "items": {
+        "type": "string"
+      },
+      "title": "File patterns to exclude",
+      "type": "array"
+    },
+    "exclude-symbols": {
+      "default": [],
+      "description": "A symbol that matches one of these patterns is not extracted even if whitelisted by \"include-symbols\". See the documentation for \"include-symbols\" for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol patterns to exclude",
+      "type": "array"
+    },
+    "extract-all": {
+      "default": true,
+      "description": "When set to `true`, MrDocs extracts all symbols from the source code, even if no documentation is provided. MrDocs can only identify whether a symbol is ultimated documented after extracting information from all translation units. For this reason, when this option is set to `false`, it's still recommendable to provide file and symbol filters so that only the desired symbols are traversed and stored by MrDocs.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extract all symbols",
+      "type": "boolean"
+    },
+    "extract-all-macros": {
+      "default": false,
+      "description": "Like `extract-all`, but for preprocessor macros. When `false` (the default), MrDocs extracts only macros that carry a documentation comment, on the assumption that an undocumented macro is an implementation detail while a documented one is public API meant to be shown. When `true`, every macro that passes the macro filters is extracted whether documented or not. This is independent of `extract-all`, which does not apply to macros.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extract all macros",
+      "type": "boolean"
+    },
+    "extract-anonymous-namespaces": {
+      "default": true,
+      "description": "Determine whether symbols in anonymous namespaces should be extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for anonymous namespaces",
+      "type": "boolean"
+    },
+    "extract-empty-namespaces": {
+      "default": false,
+      "description": "Determine whether empty namespaces without documentation should be extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for empty namespaces",
+      "type": "boolean"
+    },
+    "extract-friends": {
+      "default": true,
+      "description": "Determine whether friend functions and classes should be extracted. When set to `true`, MrDocs extracts friend functions and classes. When set to `false`, friend functions and classes are not extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for friend functions and classes",
+      "type": "boolean"
+    },
+    "extract-implicit-specializations": {
+      "default": true,
+      "description": "When set to `true`, MrDocs extracts implicit template specializations that appear as base classes, treating them as dependencies. This gives it the metadata it needs to resolve the derived class's inherited members, as controlled by the `inherit-base-members` option.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Implicit template specializations used as base classes are extracted as dependencies",
+      "type": "boolean"
+    },
+    "extract-local-classes": {
+      "default": true,
+      "description": "Determine whether records only defined locally in source files should be extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for records defined locally in source files",
+      "type": "boolean"
+    },
+    "extract-private": {
+      "default": false,
+      "description": "Determine whether private class members should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private class members",
+      "type": "boolean"
+    },
+    "extract-private-bases": {
+      "default": false,
+      "description": "Determine whether private base classes should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private base classes",
+      "type": "boolean"
+    },
+    "extract-private-virtual": {
+      "default": false,
+      "description": "Determine whether private virtual methods of a class should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private virtual methods of a class",
+      "type": "boolean"
+    },
+    "extract-static": {
+      "default": false,
+      "description": "Determine whether static members of a file should be extracted. This option does not refer to static members of a class.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for static members of a file",
+      "type": "boolean"
+    },
+    "file-patterns": {
+      "default": [
+        "*.hpp",
+        "*.h",
+        "*.hh",
+        "*.ipp",
+        "*.inc",
+        "*.cpp",
+        "*.cc",
+        "*.cxx",
+        "*.c",
+        "*.hxx"
+      ],
+      "description": "Only files whose names match these glob patterns are extracted. The patterns are relative to the input directories.",
+      "items": {
+        "type": "string"
+      },
+      "title": "File patterns to include",
+      "type": "array"
+    },
+    "generator": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ],
+      "default": [
+        "html"
+      ],
+      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The built-in generators include `adoc`, `html`, `xml`, and `noop` (which extracts but writes no output, useful for checking extraction warnings); data-driven generators can be added by dropping a template folder under <addon>/generator/<name>/; a script-driven generator is declared by an extension with `mrdocs.register_generator` and produces the output itself. This option accepts a single generator (`generator: xml`), a list (`generator: [xml, adoc]`), or a comma-separated string (`generator: \"xml,adoc\"`); when more than one is given the documentation is produced once per generator.",
+      "title": "Generator(s) used to create the documentation"
+    },
+    "generator-options": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "default": {},
+      "description": "An object whose keys are generator ids (for example, `adoc`, `html`, `xml`) and whose values are objects of settings for that generator. These settings typically take precedence over the top-level options for the same generator.",
+      "title": "Per-generator settings keyed by generator id",
+      "type": "object"
+    },
+    "global-namespace-index": {
+      "default": true,
+      "description": "When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the global namespace page as an index for all symbols",
+      "type": "boolean"
+    },
+    "ignore-failures": {
+      "default": false,
+      "description": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Whether AST visitation failures should not stop the program",
+      "type": "boolean"
+    },
+    "ignore-map-errors": {
+      "default": false,
+      "description": "When set to true, MrDocs continues to generate the documentation even if some files are not mapped correctly. Files are not mapped correctly when the source file is not found or the compilation database does not contain the compiler flags for the source file.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Continue if files are not mapped correctly",
+      "type": "boolean"
+    },
+    "implementation-defined": {
+      "default": [],
+      "description": "Symbols matching these filters, and symbols in scopes that match, are tagged \"implementation-defined\". Use it for symbols that belong to the project's private API. An \"implementation-defined\" symbol has no page of its own, and any reference to it renders as \"implementation-defined\". See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbols rendered as \"implementation-defined\"",
+      "type": "array"
+    },
+    "include-macros": {
+      "default": [],
+      "description": "If any patterns are defined here, only macros whose name matches one of them (or one of `include-symbols`) are extracted. When empty (the default), every macro is a candidate, so with `extract-all-macros` off the documented macros are shown and can then be narrowed with these patterns. Macro names are unqualified, so namespace-scoped `include-symbols` patterns never match a macro; use these patterns to scope macros by name (e.g. `MY_LIB_*`). A macro also listed in `include-symbols` is still included. See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Macro patterns to include",
+      "type": "array"
+    },
+    "include-symbols": {
+      "default": [],
+      "description": "If any patterns are defined here, only symbols that match one of these patterns are extracted. The patterns are applied to the fully qualified name of the symbol without any leading \"::\". A single \"*\" will match all symbols in the namespace. Double \"**\" will match all symbols in the namespace and its subnamespaces. The patterns also support \"?\" for any chars, \"[<chars>]\" for charsets, \"[^<chars>]\" for inverted charsets, and \"{<glob>,...}\" for alternatives.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol patterns to include",
+      "type": "array"
+    },
+    "includes": {
+      "default": [],
+      "description": "Directories added to the header search path. Headers found there are part of the project and are checked for warnings and errors. Reach for this option when MrDocs cannot find a header your code includes.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Include paths",
+      "type": "array"
+    },
+    "inherit-base-members": {
+      "default": "copy-dependencies",
+      "description": "Determine how derived classes inherit members of base classes. When set to `never`, derived classes do not inherit members of base classes and only the relationship is stored. When set to `reference`, derived classes list members of base classes but references are still linked to the base class. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency. When set to `copy-all`, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent.",
+      "enum": [
+        "never",
+        "reference",
+        "copy-dependencies",
+        "copy-all"
+      ],
+      "title": "Determine how derived classes inherit base members"
+    },
+    "input": {
+      "default": [
+        "<source-root>/."
+      ],
+      "description": "Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file. Inclusion is generous about symlinks: a file counts as being inside an input directory when its path matches the directory either as written or by its real (symlink-resolved) location.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Input directories to extract symbols from",
+      "type": "array"
+    },
+    "legible-names": {
+      "default": true,
+      "description": "Use legible names for IDs in the documentation. When set to true, MrDocs uses legible names for symbol anchors in the corpus. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID to avoid conflicts.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use legible names for anchors",
+      "type": "boolean"
+    },
+    "libc-includes": {
+      "default": [
+        "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+      ],
+      "description": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Standard Library include paths",
+      "type": "array"
+    },
+    "linkcss": {
+      "default": false,
+      "description": "When set to true, stylesheets are linked with `<link>` tags instead of being inlined. Links use `stylesdir` plus the stylesheet name (e.g. `css/custom.css`). Local styles are copied unless `copycss` is false; remote URLs are linked as-is.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Link stylesheets instead of embedding them",
+      "type": "boolean"
+    },
+    "log-level": {
+      "default": "info",
+      "description": "The reporting level determines the amount of information displayed during the generation of the documentation.",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "fatal"
+      ],
+      "title": "The minimum reporting level"
+    },
+    "max-errors": {
+      "default": 0,
+      "description": "Caps how many documentation errors MrDocs reports, like a compiler's `-fmax-errors`. This only takes effect together with `warn-as-error`: without it, documentation problems are plain warnings and the whole report is always shown. `0` means unlimited (the default). Once the cap is reached MrDocs stops looking for more problems: it suppresses further diagnostics, prints a short note so you know the report is truncated, and stops dispatching translation units that have not started yet (translation units already in flight finish, so the final count may run a little past the cap). Use this with `warn-as-error` and the `warn-*` family to bring up docs iteratively: keep `warn-if-undocumented` (and later `warn-no-paramdoc`, \u2026) on, set `max-errors` to your fix-loop batch size (for example `40`), fix that batch, and repeat. Full CI validation should leave this at `0`.",
+      "minimum": 0,
+      "title": "Stop after this many documentation errors",
+      "type": "integer"
+    },
+    "missing-include-prefixes": {
+      "default": [],
+      "description": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Include path prefixes allowed to be missing",
+      "type": "array"
+    },
+    "missing-include-shims": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "description": "Specifies a map of include file paths to shim contents. If a missing include file matches a forgiven prefix, MrDocs will use the shim content from this map as the file contents. If no shim is provided for a forgiven file, an empty file is used by default.",
+      "title": "Shims for forgiven missing include files",
+      "type": "object"
+    },
+    "multipage": {
+      "default": true,
+      "description": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Generate a multipage documentation",
+      "type": "boolean"
+    },
+    "no-default-styles": {
+      "default": false,
+      "description": "When set to true, the bundled stylesheet is not applied. Combine with an empty `stylesheets` list to emit no styles at all.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Disable the bundled default stylesheet",
+      "type": "boolean"
+    },
+    "non-standard-attributes": {
+      "default": true,
+      "description": "When set to `true`, Mr.Docs documents every attribute written on a declaration, including compiler-specific ones such as `[[gnu::...]]`, `[[clang::...]]`, or `__nonnull__`. When set to `false`, only the standard C++ attributes (`[[noreturn]]`, `[[carries_dependency]]`, `[[deprecated]]`, `[[fallthrough]]`, `[[maybe_unused]]`, `[[nodiscard]]`, `[[likely]]`, `[[unlikely]]`, `[[no_unique_address]]`, `[[assume]]`, `[[indeterminate]]`) are documented, so implementation-detail attributes do not clutter the output.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Include non-standard attributes in the documentation",
+      "type": "boolean"
+    },
+    "output": {
+      "default": "<config-dir>/reference-output",
+      "description": "The directory MrDocs generators write the documentation to, resolved relative to the configuration file. Each generator ultimately decides how to interpret this path. Multipage generators will typically use it as a directory. Single-page generators will typically also allow this to represent a file.",
+      "title": "Output directory for the generated documentation",
+      "type": "string"
+    },
+    "overloads": {
+      "default": true,
+      "description": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type. The documentation for this new symbol comes from the union of non-ambiguous metadata from the functions.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Detect and group function overloads",
+      "type": "boolean"
+    },
+    "recursive": {
+      "default": true,
+      "description": "Recursively include files. When set to true, Mr.Docs includes files in subdirectories of the input directories. When set to false, Mr.Docs includes only the files in the input directories.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Recursively include files from \"input\" paths",
+      "type": "boolean"
+    },
+    "report": {
+      "default": -1,
+      "description": "The reporting level determines the amount of information displayed during the generation of the documentation. The value `-1` delegates the decision to the `log-level` option.",
+      "maximum": 5,
+      "minimum": -1,
+      "title": "The minimum reporting level",
+      "type": "integer"
+    },
+    "see-below": {
+      "default": [],
+      "description": "Symbols matching these filters, and symbols in scopes that match, are tagged \"see-below\" in the documentation. Use it for symbols that belong to the project's private API but that users still interact with. On such a symbol's page the implementation synopsis is rendered as \"see-below\" and the members of a scope, such as a namespace or record, are not listed, while the rest of the documentation appears as usual. See `include-symbols` for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Exposition only symbols rendered as \"see-below\".",
+      "type": "array"
+    },
+    "sfinae": {
+      "default": true,
+      "description": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement. MrDocs uses an algorithm that extracts SFINAE infomation from types by identifying inspecting the primary template and specializations to detect the result type and the controlling expressions in a specialization.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Detect and reduce SFINAE expressions",
+      "type": "boolean"
+    },
+    "show-enum-constants": {
+      "default": false,
+      "description": "When set to true, MrDocs creates a page for each enum constant in the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Show enum constant pages in the documentation",
+      "type": "boolean"
+    },
+    "show-namespaces": {
+      "default": true,
+      "description": "When set to true, MrDocs creates a page for each namespace in the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Show namespace pages in the documentation",
+      "type": "boolean"
+    },
+    "sort-members": {
+      "default": true,
+      "description": "When set to `true`, sort the members of a record by the criterion determined in the `sort-members-by` option. When set to `false`, the members are included in the declaration order they are extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort the members of a record",
+      "type": "boolean"
+    },
+    "sort-members-assignment-1st": {
+      "default": true,
+      "description": "When set to `true`, assignment operators are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort assignment operators first",
+      "type": "boolean"
+    },
+    "sort-members-by": {
+      "default": "name",
+      "description": "If `sort-members` is set to `true`, determine how members of a record are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+      "enum": [
+        "name",
+        "location"
+      ],
+      "title": "Determine how members of a record are sorted"
+    },
+    "sort-members-conversion-last": {
+      "default": true,
+      "description": "When set to `true`, conversion operators are sorted last in the list of members of a record or namespace.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort conversion operators last",
+      "type": "boolean"
+    },
+    "sort-members-ctors-1st": {
+      "default": true,
+      "description": "When set to `true`, constructors are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort constructors first",
+      "type": "boolean"
+    },
+    "sort-members-dtors-1st": {
+      "default": true,
+      "description": "When set to `true`, destructors are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort destructors first",
+      "type": "boolean"
+    },
+    "sort-members-relational-last": {
+      "default": true,
+      "description": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort relational operators last",
+      "type": "boolean"
+    },
+    "sort-namespace-members-by": {
+      "default": "name",
+      "description": "Although members of namespaces are always sorted, determine how members of a namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+      "enum": [
+        "name",
+        "location"
+      ],
+      "title": "Determine how members of a namespace are sorted"
+    },
+    "source-root": {
+      "default": "<config-dir>",
+      "description": "The root directory of the source tree. It is the default location for input files and the base for the relative paths MrDocs forms from absolute ones. Set it to the root of the git project so those relative paths can link back to the source files in the repository; templates build those links from the `base-url` option.",
+      "title": "Path to the root directory of the source code",
+      "type": "string"
+    },
+    "stdlib-includes": {
+      "default": [
+        "<mrdocs-root>/share/mrdocs/headers/libcxx"
+      ],
+      "description": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
+      "items": {
+        "type": "string"
+      },
+      "title": "C++ Standard Library include paths",
+      "type": "array"
+    },
+    "stylesdir": {
+      "default": "css",
+      "description": "The directory MrDocs writes into the href of linked stylesheets when `linkcss` is true. Defaults to `css`. When local styles are copied, the directory is created under the output root, for example `css/mrdocs-default.css`.",
+      "title": "Directory for linked stylesheets",
+      "type": "string"
+    },
+    "stylesheets": {
+      "default": [],
+      "description": "Ordered list of stylesheet names or paths. If empty, the bundled stylesheet is used. Entries can be local paths or remote URLs; remote URLs are only linked when `linkcss` is true. Inline mode embeds local styles; link mode emits `<link>` tags for each entry and copies local files.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Ordered list of stylesheets to apply to HTML output",
+      "type": "array"
+    },
+    "system-includes": {
+      "default": [],
+      "description": "Directories added to the system header search path. Headers found there are treated as system headers: they come from outside the project and are not checked for warnings or errors. The standard library and other external headers usually live here.",
+      "items": {
+        "type": "string"
+      },
+      "title": "System include paths",
+      "type": "array"
+    },
+    "tagfile": {
+      "default": "<output-dir>/reference.tag.xml",
+      "description": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
+      "title": "Path for the tagfile",
+      "type": "string"
+    },
+    "transform-options": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "default": {},
+      "description": "An object whose keys are corpus-transform ids (the id a script passes to `mrdocs.register_transform`) and whose values are parameter objects for that transform. The transform registered under a given id receives its object as `ctx.params`.",
+      "title": "Per-transform parameters keyed by transform id",
+      "type": "object"
+    },
+    "use-system-libc": {
+      "default": true,
+      "description": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the system C standard library",
+      "type": "boolean"
+    },
+    "use-system-stdlib": {
+      "default": true,
+      "description": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the system C++ standard library",
+      "type": "boolean"
+    },
+    "verbose": {
+      "default": false,
+      "description": "When set to true, MrDocs prints extra information as it generates the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Verbose output",
+      "type": "boolean"
+    },
+    "warn-as-error": {
+      "default": false,
+      "description": "When set to `true`, MrDocs treats warnings as errors and stops the generation of the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Treat warnings as errors",
+      "type": "boolean"
+    },
+    "warn-broken-ref": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a reference in the documentation is broken.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if a documentation reference is broken",
+      "type": "boolean"
+    },
+    "warn-if-doc-error": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if the documentation of a symbol has errors such as duplicate parameters and parameters that don't exist.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if documentation has errors",
+      "type": "boolean"
+    },
+    "warn-if-undoc-enum-val": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if an enum value is not documented.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if enum values are not documented",
+      "type": "boolean"
+    },
+    "warn-if-undocumented": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if symbols are not documented",
+      "type": "boolean"
+    },
+    "warn-if-undocumented-namespace": {
+      "default": false,
+      "description": "When set to `true`, MrDocs also outputs a warning message for a named namespace that passes all filters and is not documented. This requires `warn-if-undocumented` to also be enabled. Inline and anonymous namespaces are transparent and do not require documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if namespaces are not documented",
+      "type": "boolean"
+    },
+    "warn-no-brief": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol has documentation but no brief once brief finalization (auto-brief and brief-copying commands) has run. A symbol with a description but no brief renders poorly because the brief is what parent contexts (such as member tables) display, so an empty brief is treated as missing documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if a documented symbol has no brief",
+      "type": "boolean"
+    },
+    "warn-no-paramdoc": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if parameters are not documented",
+      "type": "boolean"
+    },
+    "warn-unknown-config-keys": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning for each key in the configuration file that does not correspond to a known option. Unknown keys are otherwise ignored.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn about unrecognized configuration keys",
+      "type": "boolean"
+    },
+    "warn-unnamed-param": {
+      "default": false,
+      "description": "When set to `true`, MrDocs outputs a warning message if a documented function has a parameter that is not named.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if documented functions have unnamed parameters",
+      "type": "boolean"
+    },
+    "warnings": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs warning messages during the generation of the documentation. It is usually recommended to enable warnings while writing the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Enable warning messages",
+      "type": "boolean"
+    }
+  },
+  "required": [],
+  "title": "MrDocs Configuration",
+  "type": "object"
+}
