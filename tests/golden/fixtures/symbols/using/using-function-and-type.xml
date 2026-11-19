@@ -34,7 +34,7 @@
 </namespace>
 <record>
   <name>f</name>
-  <anchor>f-05</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>using-function-and-type.cpp</shortPath>
@@ -63,7 +63,7 @@
 </record>
 <function>
   <name>f</name>
-  <anchor>f-01</anchor>
+  <anchor>f-2function</anchor>
   <loc>
     <loc>
       <location>
@@ -167,7 +167,7 @@
 </using>
 <record>
   <name>f</name>
-  <anchor>f-05</anchor>
+  <anchor>f</anchor>
   <loc>
     <defLoc>
       <shortPath>using-function-and-type.cpp</shortPath>
@@ -196,7 +196,7 @@
 </record>
 <function>
   <name>f</name>
-  <anchor>f-01</anchor>
+  <anchor>f-2function</anchor>
   <loc>
     <loc>
       <location>

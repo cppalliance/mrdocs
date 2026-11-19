@@ -74,7 +74,7 @@
 </record>
 <overloads>
   <name>begin</name>
-  <anchor>begin-03</anchor>
+  <anchor>begin</anchor>
   <loc>
     <loc>
       <location>
@@ -149,7 +149,7 @@
 </overloads>
 <function>
   <name>begin</name>
-  <anchor>begin-06</anchor>
+  <anchor>begin-0</anchor>
   <loc>
     <loc>
       <location>
@@ -216,7 +216,7 @@
 </function>
 <function>
   <name>begin</name>
-  <anchor>begin-0c</anchor>
+  <anchor>begin-0-const</anchor>
   <loc>
     <loc>
       <location>
@@ -421,7 +421,7 @@
 </function>
 <overloads>
   <name>ref</name>
-  <anchor>ref-05f</anchor>
+  <anchor>ref</anchor>
   <loc>
     <loc>
       <location>
@@ -501,7 +501,7 @@
 </overloads>
 <function>
   <name>ref</name>
-  <anchor>ref-051</anchor>
+  <anchor>ref-0-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -563,7 +563,7 @@
 </function>
 <function>
   <name>ref</name>
-  <anchor>ref-0e</anchor>
+  <anchor>ref-0-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -625,7 +625,7 @@
 </function>
 <function>
   <name>ref</name>
-  <anchor>ref-04</anchor>
+  <anchor>ref-0-const-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -689,7 +689,7 @@
 </function>
 <function>
   <name>ref</name>
-  <anchor>ref-07</anchor>
+  <anchor>ref-0-const-rref</anchor>
   <loc>
     <loc>
       <location>

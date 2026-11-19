@@ -74,7 +74,7 @@
 </record>
 <overloads>
   <name>X</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <defLoc>
       <shortPath>brief-from-function-class.cpp</shortPath>
@@ -136,7 +136,7 @@
 </overloads>
 <function>
   <name>X</name>
-  <anchor>2constructor-0e8</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <defLoc>
       <shortPath>brief-from-function-class.cpp</shortPath>
@@ -181,7 +181,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-0e0</anchor>
+  <anchor>2constructor-1-const-X-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>brief-from-function-class.cpp</shortPath>
@@ -261,7 +261,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-06</anchor>
+  <anchor>2constructor-1-X-rref</anchor>
   <loc>
     <defLoc>
       <shortPath>brief-from-function-class.cpp</shortPath>
@@ -340,7 +340,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -422,7 +422,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-0b</anchor>
+  <anchor>2constructor-1-const-A-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -510,7 +510,7 @@
 </function>
 <function>
   <name>X</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor-1-A-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -641,7 +641,7 @@
 </function>
 <function>
   <name>operator A</name>
-  <anchor>2conversion-00</anchor>
+  <anchor>2conversion-A</anchor>
   <loc>
     <loc>
       <location>
@@ -706,7 +706,7 @@
 </function>
 <function>
   <name>operator int</name>
-  <anchor>2conversion-0b</anchor>
+  <anchor>2conversion-int</anchor>
   <loc>
     <loc>
       <location>

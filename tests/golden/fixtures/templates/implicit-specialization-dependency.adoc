@@ -13,7 +13,7 @@
 | A function&period;
 | link:#Kernel[`Kernel`] 
 | A kernel&period;
-| link:#Manager-06[`Manager`] 
+| link:#Manager[`Manager`] 
 | A manager&period;
 | link:#Module[`Module`] 
 | A module&period;
@@ -51,7 +51,7 @@ Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using FunctionManager = link:#Manager-06[Manager&lt;Function&gt;];
+using FunctionManager = link:#Manager[Manager&lt;Function&gt;];
 ----
 
 [#Function]
@@ -82,7 +82,7 @@ Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;
 struct Kernel;
 ----
 
-[#Manager-06]
+[#Manager]
 == Manager
 
 A manager&period;
@@ -102,7 +102,7 @@ struct Manager;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-06-Invalidator[`Invalidator`] 
+| link:#Manager-Invalidator[`Invalidator`] 
 | Invalidates analyses&period;
 |===
 
@@ -112,7 +112,7 @@ struct Manager;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-06-clear[`clear`] 
+| link:#Manager-clear[`clear`] 
 | Clear the cache&period;
 |===
 
@@ -122,7 +122,7 @@ struct Manager;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-0a[`Manager&lt;Kernel&gt;`] 
+| link:#Manager-1-Kernel[`Manager&lt;Kernel&gt;`] 
 | A manager&period;
 |===
 
@@ -136,8 +136,8 @@ struct Manager;
 | IR unit type&period;
 |===
 
-[#Manager-06-Invalidator]
-== link:#Manager-06[Manager]::Invalidator
+[#Manager-Invalidator]
+== link:#Manager[Manager]::Invalidator
 
 Invalidates analyses&period;
 
@@ -155,13 +155,13 @@ struct Invalidator;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-06-Invalidator-invalidate[`invalidate`] 
+| link:#Manager-Invalidator-invalidate[`invalidate`] 
 | Invalidate&period;
 |===
 
 
-[#Manager-06-Invalidator-invalidate]
-== link:#Manager-06[Manager]::link:#Manager-06-Invalidator[Invalidator]::invalidate
+[#Manager-Invalidator-invalidate]
+== link:#Manager[Manager]::link:#Manager-Invalidator[Invalidator]::invalidate
 
 Invalidate&period;
 
@@ -188,8 +188,8 @@ Whether anything was invalidated&period;
 | The IR unit&period;
 |===
 
-[#Manager-06-clear]
-== link:#Manager-06[Manager]::clear
+[#Manager-clear]
+== link:#Manager[Manager]::clear
 
 Clear the cache&period;
 
@@ -203,8 +203,8 @@ void
 clear();
 ----
 
-[#Manager-0a]
-== link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;
+[#Manager-1-Kernel]
+== link:#Manager[Manager]&lt;link:#Kernel[Kernel]&gt;
 
 A manager&period;
 
@@ -215,7 +215,7 @@ Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
+struct link:#Manager[Manager]&lt;link:#Kernel[Kernel]&gt;;
 ----
 
 === Types
@@ -223,7 +223,7 @@ struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-0a-Invalidator[`Invalidator`] 
+| link:#Manager-1-Kernel-Invalidator[`Invalidator`] 
 | Invalidates analyses&period;
 |===
 
@@ -233,7 +233,7 @@ struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#Manager-0a-clear[`clear`] 
+| link:#Manager-1-Kernel-clear[`clear`] 
 | The kernel manager clears differently&period;
 |===
 
@@ -247,8 +247,8 @@ struct link:#Manager-06[Manager]&lt;link:#Kernel[Kernel]&gt;;
 | IR unit type&period;
 |===
 
-[#Manager-0a-Invalidator]
-== link:#Manager-0a[Manager&lt;Kernel&gt;]::Invalidator
+[#Manager-1-Kernel-Invalidator]
+== link:#Manager-1-Kernel[Manager&lt;Kernel&gt;]::Invalidator
 
 Invalidates analyses&period;
 
@@ -261,8 +261,8 @@ Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;
 struct Invalidator;
 ----
 
-[#Manager-0a-clear]
-== link:#Manager-0a[Manager&lt;Kernel&gt;]::clear
+[#Manager-1-Kernel-clear]
+== link:#Manager-1-Kernel[Manager&lt;Kernel&gt;]::clear
 
 The kernel manager clears differently&period;
 
@@ -302,7 +302,7 @@ Declared in `&lt;implicit&hyphen;specialization&hyphen;dependency&period;cpp&gt;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-use(link:#Manager-06[Manager&lt;Module&gt;::Invalidator]& Inv);
+use(link:#Manager[Manager&lt;Module&gt;::Invalidator]& Inv);
 ----
 
 === Parameters

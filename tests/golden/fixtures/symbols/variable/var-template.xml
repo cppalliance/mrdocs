@@ -34,7 +34,7 @@
 </record>
 <variable>
   <name>C</name>
-  <anchor>C-09</anchor>
+  <anchor>C</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>
@@ -75,7 +75,7 @@
 </variable>
 <variable>
   <name>C</name>
-  <anchor>C-05</anchor>
+  <anchor>C-1-int</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>
@@ -126,7 +126,7 @@
 </variable>
 <variable>
   <name>C</name>
-  <anchor>C-0c</anchor>
+  <anchor>C-1-T-ptr</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>
@@ -188,7 +188,7 @@
 </variable>
 <variable>
   <name>A</name>
-  <anchor>A-0c</anchor>
+  <anchor>A</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>
@@ -226,7 +226,7 @@
 </variable>
 <variable>
   <name>A</name>
-  <anchor>A-08</anchor>
+  <anchor>A-1-void</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>
@@ -274,7 +274,7 @@
 </variable>
 <variable>
   <name>A</name>
-  <anchor>A-01</anchor>
+  <anchor>A-1-T-ref</anchor>
   <loc>
     <defLoc>
       <shortPath>var-template.cpp</shortPath>

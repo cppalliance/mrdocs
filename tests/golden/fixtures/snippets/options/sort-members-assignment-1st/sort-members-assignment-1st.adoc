@@ -20,14 +20,14 @@ struct widget;
 [cols="1,4"]
 |===
 | Name| Description
-| link:#widget-operator_assign-00[`operator&equals;`] 
+| link:#widget-operator_assign[`operator&equals;`] 
 | Assignment operators
 | link:#widget-refresh[`refresh`] 
 | Refresh the widget&period;
 |===
 
 
-[#widget-operator_assign-00]
+[#widget-operator_assign]
 == link:#widget[widget]::operator&equals;
 
 Assignment operators
@@ -42,10 +42,10 @@ Copy&hyphen;assign from another widget&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 link:#widget[widget]&
-link:#widget-operator_assign-0b[operator&equals;](link:#widget[widget] const& other);
+link:#widget-operator_assign-1-const-widget-ref[operator&equals;](link:#widget[widget] const& other);
 ----
 
-[.small]#link:#widget-operator_assign-0b[_» more&period;&period;&period;_]#
+[.small]#link:#widget-operator_assign-1-const-widget-ref[_» more&period;&period;&period;_]#
 
 Move&hyphen;assign from another widget&period;
 
@@ -53,12 +53,12 @@ Move&hyphen;assign from another widget&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 link:#widget[widget]&
-link:#widget-operator_assign-03[operator&equals;](link:#widget[widget]&& other);
+link:#widget-operator_assign-1-widget-rref[operator&equals;](link:#widget[widget]&& other);
 ----
 
-[.small]#link:#widget-operator_assign-03[_» more&period;&period;&period;_]#
+[.small]#link:#widget-operator_assign-1-widget-rref[_» more&period;&period;&period;_]#
 
-[#widget-operator_assign-0b]
+[#widget-operator_assign-1-const-widget-ref]
 == link:#widget[widget]::operator&equals;
 
 Copy&hyphen;assign from another widget&period;
@@ -86,7 +86,7 @@ Reference to the current object
 | The object to copy assign from
 |===
 
-[#widget-operator_assign-03]
+[#widget-operator_assign-1-widget-rref]
 == link:#widget[widget]::operator&equals;
 
 Move&hyphen;assign from another widget&period;

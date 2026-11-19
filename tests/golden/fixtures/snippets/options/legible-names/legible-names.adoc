@@ -1,0 +1,169 @@
+= Reference
+:mrdocs:
+
+[#buffer]
+== buffer
+
+A buffer of characters&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class buffer;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#buffer-at[`at`] 
+| Return the character at `i`&period;
+|===
+
+
+[#buffer-at]
+== link:#buffer[buffer]::at
+
+Return the character at `i`&period;
+
+=== Synopses
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+Return the character at `i`&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char&
+link:#buffer-at-1-int[at](int i);
+----
+
+[.small]#link:#buffer-at-1-int[_» more&period;&period;&period;_]#
+
+Return the character at `i`&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const&
+link:#buffer-at-1-int-const[at](int i) const;
+----
+
+[.small]#link:#buffer-at-1-int-const[_» more&period;&period;&period;_]#
+
+[#buffer-at-1-int]
+== link:#buffer[buffer]::at
+
+Return the character at `i`&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char&
+at(int i);
+----
+
+=== Return Value
+
+the character at `i`&period;
+
+[#buffer-at-1-int-const]
+== link:#buffer[buffer]::at
+
+Return the character at `i`&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const&
+at(int i) const;
+----
+
+=== Return Value
+
+the character at `i`&period;
+
+[#pair]
+== pair
+
+A pair of values&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class U&gt;
+struct pair;
+----
+
+=== Specializations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#pair-2[`pair&lt;int, int&gt;`] 
+| A pair of integers&period;
+|===
+
+
+[#pair-2]
+== link:#pair[pair]&lt;int, int&gt;
+
+A pair of integers&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct link:#pair[pair]&lt;int, int&gt;;
+----
+
+[#quantity]
+== quantity
+
+A physical quantity&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct quantity;
+----
+
+[#Quantity-concept]
+== Quantity
+
+Whether `T` is a physical quantity&period;
+
+=== Synopsis
+
+Declared in `&lt;legible&hyphen;names&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+concept Quantity = true;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

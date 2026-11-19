@@ -176,7 +176,7 @@
 </function>
 <overloads>
   <name>foo</name>
-  <anchor>foo-02</anchor>
+  <anchor>foo</anchor>
   <loc>
     <loc>
       <location>
@@ -259,7 +259,7 @@
 </overloads>
 <function>
   <name>foo</name>
-  <anchor>foo-0c</anchor>
+  <anchor>foo-0</anchor>
   <loc>
     <loc>
       <location>
@@ -334,7 +334,7 @@
 </function>
 <function>
   <name>foo</name>
-  <anchor>foo-0a</anchor>
+  <anchor>foo-1</anchor>
   <loc>
     <loc>
       <location>

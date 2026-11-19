@@ -33,7 +33,7 @@
 </record>
 <overloads>
   <name>Explicit</name>
-  <anchor>2constructor-04</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -95,7 +95,7 @@
 </overloads>
 <function>
   <name>Explicit</name>
-  <anchor>2constructor-02</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -139,7 +139,7 @@
 </function>
 <function>
   <name>Explicit</name>
-  <anchor>2constructor-00</anchor>
+  <anchor>2constructor-1-const-Explicit-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -218,7 +218,7 @@
 </function>
 <function>
   <name>Explicit</name>
-  <anchor>2constructor-0b</anchor>
+  <anchor>2constructor-1-Explicit-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -296,7 +296,7 @@
 </function>
 <function>
   <name>Explicit</name>
-  <anchor>2constructor-03</anchor>
+  <anchor>2constructor-2</anchor>
   <loc>
     <loc>
       <location>
@@ -412,7 +412,7 @@
 </record>
 <overloads>
   <name>ExplicitExpression</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -474,7 +474,7 @@
 </overloads>
 <function>
   <name>ExplicitExpression</name>
-  <anchor>2constructor-0b</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -518,7 +518,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <anchor>2constructor-04</anchor>
+  <anchor>2constructor-1-const-ExplicitExpression-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -597,7 +597,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor-1-ExplicitExpression-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -675,7 +675,7 @@
 </function>
 <function>
   <name>ExplicitExpression</name>
-  <anchor>2constructor-02</anchor>
+  <anchor>2constructor-2</anchor>
   <loc>
     <loc>
       <location>
@@ -771,7 +771,7 @@
 </record>
 <overloads>
   <name>ExplicitFalse</name>
-  <anchor>2constructor-07</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -833,7 +833,7 @@
 </overloads>
 <function>
   <name>ExplicitFalse</name>
-  <anchor>2constructor-01</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -877,7 +877,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor-1-const-ExplicitFalse-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -956,7 +956,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <anchor>2constructor-0a</anchor>
+  <anchor>2constructor-1-ExplicitFalse-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -1034,7 +1034,7 @@
 </function>
 <function>
   <name>ExplicitFalse</name>
-  <anchor>2constructor-04</anchor>
+  <anchor>2constructor-2</anchor>
   <loc>
     <loc>
       <location>
@@ -1130,7 +1130,7 @@
 </record>
 <overloads>
   <name>ExplicitTrue</name>
-  <anchor>2constructor-01</anchor>
+  <anchor>2constructor</anchor>
   <loc>
     <loc>
       <location>
@@ -1192,7 +1192,7 @@
 </overloads>
 <function>
   <name>ExplicitTrue</name>
-  <anchor>2constructor-0d</anchor>
+  <anchor>2constructor-0</anchor>
   <loc>
     <loc>
       <location>
@@ -1236,7 +1236,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <anchor>2constructor-04</anchor>
+  <anchor>2constructor-1-const-ExplicitTrue-ref</anchor>
   <loc>
     <loc>
       <location>
@@ -1315,7 +1315,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <anchor>2constructor-08</anchor>
+  <anchor>2constructor-1-ExplicitTrue-rref</anchor>
   <loc>
     <loc>
       <location>
@@ -1393,7 +1393,7 @@
 </function>
 <function>
   <name>ExplicitTrue</name>
-  <anchor>2constructor-05</anchor>
+  <anchor>2constructor-2</anchor>
   <loc>
     <loc>
       <location>

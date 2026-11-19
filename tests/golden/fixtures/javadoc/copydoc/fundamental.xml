@@ -11,7 +11,7 @@
 </namespace>
 <overloads>
   <name>f</name>
-  <anchor>f-0c</anchor>
+  <anchor>f</anchor>
   <loc>
     <loc>
       <location>
@@ -83,7 +83,7 @@
 </overloads>
 <function>
   <name>f</name>
-  <anchor>f-06</anchor>
+  <anchor>f-1-int</anchor>
   <loc>
     <loc>
       <location>
@@ -155,7 +155,7 @@
 </function>
 <function>
   <name>f</name>
-  <anchor>f-04</anchor>
+  <anchor>f-1-long</anchor>
   <loc>
     <loc>
       <location>

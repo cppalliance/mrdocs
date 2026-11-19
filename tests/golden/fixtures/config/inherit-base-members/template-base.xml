@@ -11,7 +11,7 @@
 </namespace>
 <record>
   <name>base</name>
-  <anchor>base-06</anchor>
+  <anchor>base</anchor>
   <loc>
     <defLoc>
       <shortPath>template-base.cpp</shortPath>
