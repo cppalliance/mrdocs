@@ -1,0 +1,619 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global index
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base[`Base`] 
+| A base with constructors to inherit&period;
+| link:#BaseTemplate[`BaseTemplate`] 
+| A base template with constructors to inherit&period;
+| link:#Concrete[`Concrete`] 
+| Inherit the constructors of a concrete base&period;
+| link:#Dependent[`Dependent`] 
+| Inherit the constructors of a base that depends on a template parameter&period;
+| link:#FromPack[`FromPack`] 
+| Inherit the constructors of every base in a pack&period;
+| link:#Mixin[`Mixin`] 
+| Inherit the constructors of a base that is a template parameter&period;
+| link:#ViaAlias[`ViaAlias`] 
+| Inherit the constructors of a base named through an alias&period;
+| link:#ViaMemberAlias[`ViaMemberAlias`] 
+| Inherit the constructors of a base named through a member alias&period;
+|===
+
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#BaseAlias[`BaseAlias`] 
+| An alias of the base&period;
+|===
+
+
+[#BaseAlias]
+== BaseAlias
+
+An alias of the base&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BaseAlias = link:#Base[Base];
+----
+
+[#Base]
+== Base
+
+A base with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-2constructor-00[`Base`]         [.small]#[constructor]#
+| Constructors
+|===
+
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Concrete[`Concrete`] 
+| Inherit the constructors of a concrete base&period;
+| link:#ViaAlias[`ViaAlias`] 
+| Inherit the constructors of a base named through an alias&period;
+|===
+
+[#Base-2constructor-00]
+== link:#Base[Base]::Base
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+Construct an empty base&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Base-2constructor-0a[Base]();
+----
+
+[.small]#link:#Base-2constructor-0a[_» more&period;&period;&period;_]#
+
+A base with constructors to inherit&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+link:#Base[Base](link:#Base[Base] const&) = default;
+----
+
+[.small]#link:#Base[_» more&period;&period;&period;_]#
+
+A base with constructors to inherit&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+link:#Base[Base](link:#Base[Base]&&) = default;
+----
+
+[.small]#link:#Base[_» more&period;&period;&period;_]#
+
+Construct from a count&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+link:#Base-2constructor-09[Base](int value);
+----
+
+[.small]#link:#Base-2constructor-09[_» more&period;&period;&period;_]#
+
+[#Base-2constructor-0a]
+== link:#Base[Base]::Base
+
+Construct an empty base&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Base();
+----
+
+[#Base-2constructor-09]
+== link:#Base[Base]::Base
+
+Construct from a count&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Base(int value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The value to construct from
+|===
+
+[#BaseTemplate]
+== BaseTemplate
+
+A base template with constructors to inherit&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct BaseTemplate;
+----
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#BaseTemplate-2constructor-0a[`BaseTemplate`]         [.small]#[constructor]#
+| Constructors
+|===
+
+
+=== Derived Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Dependent[`Dependent`] 
+| Inherit the constructors of a base that depends on a template parameter&period;
+| link:#ViaMemberAlias[`ViaMemberAlias`] 
+| Inherit the constructors of a base named through a member alias&period;
+|===
+
+[#BaseTemplate-2constructor-0a]
+== link:#BaseTemplate[BaseTemplate]::BaseTemplate
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+Construct an empty base&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#BaseTemplate-2constructor-01[BaseTemplate]();
+----
+
+[.small]#link:#BaseTemplate-2constructor-01[_» more&period;&period;&period;_]#
+
+Construct from a value&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+link:#BaseTemplate-2constructor-05[BaseTemplate](T value);
+----
+
+[.small]#link:#BaseTemplate-2constructor-05[_» more&period;&period;&period;_]#
+
+[#BaseTemplate-2constructor-01]
+== link:#BaseTemplate[BaseTemplate]::BaseTemplate
+
+Construct an empty base&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+BaseTemplate();
+----
+
+[#BaseTemplate-2constructor-05]
+== link:#BaseTemplate[BaseTemplate]::BaseTemplate
+
+Construct from a value&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+BaseTemplate(T value);
+----
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *value*
+| The object to construct from
+|===
+
+[#Concrete]
+== Concrete
+
+Inherit the constructors of a concrete base&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Concrete
+    : link:#Base[Base]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#Base[Base]`
+| A base with constructors to inherit&period;
+|===
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Concrete-2constructor[`Base`] 
+| The constructors of `Base`&period;
+|===
+
+
+[#Concrete-2constructor]
+== link:#Concrete[Concrete]::Base
+
+The constructors of `Base`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Base::Base;
+----
+
+=== Introduced Symbols
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-2constructor-09[`Base`]         [.small]#[constructor]#
+| Construct from a count&period;
+|===
+
+[#Dependent]
+== Dependent
+
+Inherit the constructors of a base that depends on a template parameter&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct Dependent
+    : link:#BaseTemplate[BaseTemplate&lt;T&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#BaseTemplate[BaseTemplate&lt;T&gt;]`
+| A base template with constructors to inherit&period;
+|===
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Dependent-BaseTemplate[`BaseTemplate`] 
+| The constructors of `BaseTemplate`&period;
+|===
+
+
+[#Dependent-BaseTemplate]
+== link:#Dependent[Dependent]::BaseTemplate
+
+The constructors of `BaseTemplate`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BaseTemplate&lt;T&gt;::BaseTemplate;
+----
+
+[#FromPack]
+== FromPack
+
+Inherit the constructors of every base in a pack&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class&period;&period;&period; Bases&gt;
+struct FromPack
+    : Bases&period;&period;&period;
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `Bases&period;&period;&period;`
+| 
+|===
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#FromPack-Bases[`Bases`] 
+| The constructors of each of `Bases`&period;
+|===
+
+
+[#FromPack-Bases]
+== link:#FromPack[FromPack]::Bases
+
+The constructors of each of `Bases`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Bases::Bases;
+----
+
+[#Mixin]
+== Mixin
+
+Inherit the constructors of a base that is a template parameter&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class B&gt;
+struct Mixin
+    : B
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `B`
+| 
+|===
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Mixin-B[`B`] 
+| The constructors of `B`&period;
+|===
+
+
+[#Mixin-B]
+== link:#Mixin[Mixin]::B
+
+The constructors of `B`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using B::B;
+----
+
+[#ViaAlias]
+== ViaAlias
+
+Inherit the constructors of a base named through an alias&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct ViaAlias
+    : link:#Base[Base]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#Base[Base]`
+| A base with constructors to inherit&period;
+|===
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#ViaAlias-2constructor[`BaseAlias`] 
+| The constructors of `BaseAlias`&period;
+|===
+
+
+[#ViaAlias-2constructor]
+== link:#ViaAlias[ViaAlias]::BaseAlias
+
+The constructors of `BaseAlias`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BaseAlias::BaseAlias;
+----
+
+=== Introduced Symbols
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#Base-2constructor-09[`Base`]         [.small]#[constructor]#
+| Construct from a count&period;
+|===
+
+[#ViaMemberAlias]
+== ViaMemberAlias
+
+Inherit the constructors of a base named through a member alias&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct ViaMemberAlias
+    : link:#BaseTemplate[BaseTemplate&lt;T&gt;]
+----
+
+=== Base Classes
+
+[cols="1,4"]
+|===
+| Name| Description
+| `link:#BaseTemplate[BaseTemplate&lt;T&gt;]`
+| A base template with constructors to inherit&period;
+|===
+
+=== Type Aliases
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#ViaMemberAlias-base_type-0c[`base&lowbar;type`] 
+| The base class&period;
+|===
+
+
+=== Using Declarations
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#ViaMemberAlias-base_type-06[`base&lowbar;type`] 
+| The constructors of `base&lowbar;type`&period;
+|===
+
+
+[#ViaMemberAlias-base_type-0c]
+== link:#ViaMemberAlias[ViaMemberAlias]::base&lowbar;type
+
+The base class&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using base&lowbar;type = link:#BaseTemplate[BaseTemplate&lt;T&gt;];
+----
+
+[#ViaMemberAlias-base_type-06]
+== link:#ViaMemberAlias[ViaMemberAlias]::base&lowbar;type
+
+The constructors of `base&lowbar;type`&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;inheriting&hyphen;constructor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using base&lowbar;type::base&lowbar;type;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

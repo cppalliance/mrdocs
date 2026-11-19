@@ -60,6 +60,17 @@ isTransparent(Symbol const& info)
     });
 }
 
+// Whether `U` inherits constructors: within a class, `using Base::Base;`
+// names the constructors of `Base`, because the name repeats the last
+// component of the qualifier.
+bool
+isInheritingConstructor(UsingSymbol const& U)
+{
+    Name const& introduced = *U.IntroducedName;
+    return introduced.Prefix &&
+           (*introduced.Prefix)->Identifier == introduced.Identifier;
+}
+
 SymbolID
 findFirstParentInfo(
     detail::SymbolSet const& info,
@@ -730,7 +741,10 @@ lookupImpl(
     {
         ParsedRefComponent const& component = ref.Components[i];
         bool const isLast = i == ref.Components.size() - 1;
-        curContext = self.lookupImpl(curContext->id, component, ref, isLast);
+        ParsedRefComponent const* const qualifier =
+            i == 0 ? nullptr : &ref.Components[i - 1];
+        curContext = self.lookupImpl(
+            curContext->id, component, qualifier, ref, isLast);
         if (!curContext)
         {
             break;
@@ -754,6 +768,7 @@ Corpus::
 lookupImpl(
     SymbolID const& contextId,
     ParsedRefComponent const& component,
+    ParsedRefComponent const* qualifier,
     ParsedRef const& ref,
     bool const checkParameters) const
 {
@@ -771,6 +786,14 @@ lookupImpl(
         MRDOCS_CHECK_OR(contextPtr, nullptr);
     }
     Symbol const& context = *contextPtr;
+
+    // A constructor has no name of its own: within `Widget`, `Widget` names
+    // the class. Only after a qualifier naming the class does a name refer
+    // to the constructors, when it is the name of the class or repeats the
+    // qualifier: `Widget::Widget`, or `Alias::Alias` for an alias of it.
+    bool const namesConstructor =
+        qualifier && context.isRecord() &&
+        (component.Name == context.Name || component.Name == qualifier->Name);
 
     // 2. Get a list of members
     llvm::SmallVector<SymbolID, 128> memberIDs;
@@ -847,6 +870,10 @@ lookupImpl(
                     MRDOCS_CHECK_OR(M.FuncClass == FunctionClass::Conversion, matchRes);
                     MRDOCS_CHECK_OR(component.ConversionType == M.ReturnType, matchRes);
                 }
+                else if (M.FuncClass == FunctionClass::Constructor)
+                {
+                    MRDOCS_CHECK_OR(namesConstructor, matchRes);
+                }
                 else
                 {
                     MRDOCS_CHECK_OR(member.Name == component.Name, matchRes);
@@ -854,6 +881,14 @@ lookupImpl(
             }
             else
             {
+                if constexpr (std::same_as<MInfoTy, UsingSymbol>)
+                {
+                    // An inheriting constructor is named after its base,
+                    // and the name still means the base class.
+                    MRDOCS_CHECK_OR(
+                        !(context.isRecord() && isInheritingConstructor(M)),
+                        matchRes);
+                }
                 MRDOCS_CHECK_OR(member.Name == component.Name, matchRes);
             }
             matchRes = MatchLevel::Name;
@@ -962,7 +997,7 @@ lookupImpl(
         MRDOCS_CHECK_OR_CONTINUE(memberPtr);
         Symbol const& member = *memberPtr;
         MRDOCS_CHECK_OR_CONTINUE(isTransparent(member));
-        if (Symbol const* r = lookupImpl(member.id, component, ref, checkParameters))
+        if (Symbol const* r = lookupImpl(member.id, component, qualifier, ref, checkParameters))
         {
             return r;
         }
