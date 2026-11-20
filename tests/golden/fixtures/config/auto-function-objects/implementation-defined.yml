@@ -1,0 +1,3 @@
+generator: [adoc, xml]
+implementation-defined:
+  - 'lib::detail'

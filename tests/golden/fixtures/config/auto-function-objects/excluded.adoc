@@ -1,0 +1,240 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+
+[#lib]
+== lib
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-norm[`norm`] 
+| The norm of a complex value
+| link:#lib-sqrt[`sqrt`] 
+| The square root of a value
+| link:#lib-to_double[`to&lowbar;double`] 
+| Convert a value to `double`
+| link:#lib-twice[`twice`] 
+| Double a value
+|===
+
+
+=== Variables
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-answer[`answer`] 
+| The answer
+| link:#lib-state[`state`] 
+| A state
+|===
+
+
+[#lib-norm]
+== link:#lib[lib]::norm
+
+The norm of a complex value
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+norm(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Its type matches `exclude&hyphen;symbols`&period;
+
+=== Return Value
+
+The norm&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-sqrt]
+== link:#lib[lib]::sqrt
+
+The square root of a value
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+sqrt(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Its type does not match `include&hyphen;symbols`&period;
+
+=== Return Value
+
+The square root&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-to_double]
+== link:#lib[lib]::to&lowbar;double
+
+Convert a value to `double`
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+to&lowbar;double(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Its type is a specialization of a class template that matches `exclude&hyphen;symbols`&period;
+
+=== Return Value
+
+The converted value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-twice]
+== link:#lib[lib]::twice
+
+Double a value
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+twice(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Its type is a specialization of a class template that matches `exclude&hyphen;symbols`, and it is declared in a linkage specification&period;
+
+=== Return Value
+
+The doubled value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-answer]
+== link:#lib[lib]::answer
+
+The answer
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+inline constexpr detail::identity&lt;int&gt; answer = 42;
+----
+
+=== Description
+
+Its type is a specialization of an alias template that matches `exclude&hyphen;symbols` and names no class, so it stays a variable&period;
+
+[#lib-state]
+== link:#lib[lib]::state
+
+A state
+
+=== Synopsis
+
+Declared in `&lt;excluded&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+inline detail::state&lowbar;t state = &lcub;&rcub;;
+----
+
+=== Description
+
+Its type matches `exclude&hyphen;symbols` and is not a function object, so it stays a variable&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

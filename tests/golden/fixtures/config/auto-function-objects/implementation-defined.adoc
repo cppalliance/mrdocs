@@ -1,0 +1,284 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+
+[#lib]
+== lib
+
+=== Types
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-complex_ops[`complex&lowbar;ops`] 
+| Operations on complex values
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-imag[`imag`] 
+| The imaginary part of a complex value
+| link:#lib-pick[`pick`] 
+| Pick a value
+| link:#lib-to_double[`to&lowbar;double`] 
+| Convert a value to `double`
+| link:#lib-to_real[`to&lowbar;real`] 
+| Convert a value to `double` with a given precision
+|===
+
+
+=== Variables
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-state[`state`] 
+| A state
+|===
+
+
+[#lib-complex_ops]
+== link:#lib[lib]::complex&lowbar;ops
+
+Operations on complex values
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct complex&lowbar;ops;
+----
+
+=== Static Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-complex_ops-norm[`norm`] 
+| The norm of a complex value
+|===
+
+
+[#lib-complex_ops-norm]
+== link:#lib[lib]::link:#lib-complex_ops[complex&lowbar;ops]::norm
+
+The norm of a complex value
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+norm(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+The norm&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-imag]
+== link:#lib[lib]::imag
+
+The imaginary part of a complex value
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+imag(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+The imaginary part&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-pick]
+== link:#lib[lib]::pick
+
+Pick a value
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+pick(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+The type of this function object is an explicit specialization of an implementation&hyphen;defined class template&period;
+
+=== Return Value
+
+The value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-to_double]
+== link:#lib[lib]::to&lowbar;double
+
+Convert a value to `double`
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+double
+to&lowbar;double(double x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+The type of this function object is a specialization of an implementation&hyphen;defined class template&period;
+
+=== Return Value
+
+The converted value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-to_real]
+== link:#lib[lib]::to&lowbar;real
+
+Convert a value to `double` with a given precision
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int Precision&gt;
+constexpr
+double
+to&lowbar;real(double x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+The type of this function object depends on the template parameter of the variable&period;
+
+=== Return Value
+
+The converted value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-state]
+== link:#lib[lib]::state
+
+A state
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+inline &sol;&ast; implementation-defined &ast;&sol; state = &lcub;&rcub;;
+----
+
+=== Description
+
+Its implementation&hyphen;defined type is not a function object, so it stays a variable&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

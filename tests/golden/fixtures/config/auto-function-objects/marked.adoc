@@ -1,0 +1,184 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+
+[#lib]
+== lib
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-abs[`abs`] 
+| The absolute value of a complex value
+| link:#lib-imag[`imag`] 
+| The imaginary part of a complex value
+| link:#lib-norm[`norm`] 
+| The norm of a complex value
+| link:#lib-real[`real`] 
+| The real part of a complex value
+|===
+
+
+[#lib-abs]
+== link:#lib[lib]::abs
+
+The absolute value of a complex value
+
+=== Synopsis
+
+Declared in `&lt;marked&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+abs(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+The type matches `exclude&hyphen;symbols`&period;
+
+=== Return Value
+
+The absolute value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-imag]
+== link:#lib[lib]::imag
+
+The imaginary part of a complex value
+
+=== Synopsis
+
+Declared in `&lt;marked&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+imag(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+With `auto&hyphen;function&hyphen;objects` off, the command alone documents this function object as a function, though its type is implementation&hyphen;defined&period;
+
+=== Return Value
+
+The imaginary part&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-norm]
+== link:#lib[lib]::norm
+
+The norm of a complex value
+
+=== Synopsis
+
+Declared in `&lt;marked&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+norm(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+The norm&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+[#lib-real]
+== link:#lib[lib]::real
+
+The real part of a complex value
+
+=== Synopsis
+
+Declared in `&lt;marked&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+real(T const& z);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+The real part&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *z*
+| The value&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

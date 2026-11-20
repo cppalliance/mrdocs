@@ -1,0 +1,6 @@
+generator: [adoc, xml]
+auto-function-objects: false
+implementation-defined:
+  - 'lib::detail'
+exclude-symbols:
+  - 'lib::excluded::**'
