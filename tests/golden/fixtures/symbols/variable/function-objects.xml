@@ -1934,8 +1934,8 @@
       <location>
         <shortPath>function-objects.cpp</shortPath>
         <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>144</lineNumber>
-        <columnNumber>9</columnNumber>
+        <lineNumber>149</lineNumber>
+        <columnNumber>5</columnNumber>
         <documented/>
       </location>
     </loc>
@@ -2223,8 +2223,8 @@
       <location>
         <shortPath>function-objects.cpp</shortPath>
         <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>397</lineNumber>
-        <columnNumber>9</columnNumber>
+        <lineNumber>403</lineNumber>
+        <columnNumber>5</columnNumber>
         <documented/>
       </location>
     </loc>
@@ -4254,15 +4254,12 @@
   <name>all_special_fo</name>
   <anchor>all_special_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>287</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>291</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>SNWgiKeEUdGKuKU61aWjodfNjwh</id>
@@ -4309,15 +4306,12 @@
   <name>by_value_assign_fo</name>
   <anchor>by_value_assign_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>321</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>325</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>386r2jd6P74jjaVxUvaC7AJSrN6u</id>
@@ -4364,15 +4358,13 @@
   <name>compare_double</name>
   <anchor>compare_double</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>176</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>184</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3JLQUJicTYDdKxs61ozLhHozJtKM</id>
@@ -4483,15 +4475,13 @@
   <name>compare_int</name>
   <anchor>compare_int</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>176</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>181</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>Aa6MZJgdo79EMvb39zZdpSB8x1F</id>
@@ -4602,15 +4592,12 @@
   <name>default_ctor_with_all_defaults_fo</name>
   <anchor>default_ctor_with_all_defaults_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>303</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>307</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>23EREwtysUctGGjwccdjGRjCzQm7</id>
@@ -4657,15 +4644,12 @@
   <name>detail_fo</name>
   <anchor>detail_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>105</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>111</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2ktyBRVJ58sqLwtVJ2gf5V1hYWWe</id>
@@ -4721,15 +4705,12 @@
   <name>doc_on_struct</name>
   <anchor>doc_on_struct</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>209</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>213</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3w224gjZH8JMoAfzcVGiNshBamwH</id>
@@ -4776,15 +4757,13 @@
   <name>doc_on_var</name>
   <anchor>doc_on_var</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>191</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>196</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2QStTPF3khzaqWffoALx4sAgtdpe</id>
@@ -4831,15 +4810,13 @@
   <name>explicit_fo</name>
   <anchor>explicit_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>123</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>134</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2ypJj9tUn71J1NUTHCepD4dZ1mp4</id>
@@ -4886,15 +4863,12 @@
   <name>marked_on_type</name>
   <anchor>marked_on_type</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>476</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>484</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>wi9SLpzGoJZDNpzzX1e6Frf56xa</id>
@@ -4941,15 +4915,13 @@
   <name>mixed</name>
   <anchor>mixed</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>252</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>266</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2AWg42U5qnir7SjTC8MrD3J8EhoF</id>
@@ -5025,22 +4997,12 @@
   <name>multi_overload</name>
   <anchor>multi_overload-06</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>39</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>47</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>51</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>overloads</kind>
   <id>2TSCwtfxKwVWZ1kbXntMKgF2FTvB</id>
@@ -5118,15 +5080,12 @@
   <name>multi_overload</name>
   <anchor>multi_overload-0d</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>39</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>51</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>427MHgZu2i6JpL74ZJErUcH6B3eF</id>
@@ -5173,15 +5132,12 @@
   <name>multi_overload</name>
   <anchor>multi_overload-00</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>47</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>51</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>1bE7XX1AhPGcgPrz2V3PHQHZhFL</id>
@@ -5294,15 +5250,12 @@
   <name>nested_record_fo</name>
   <anchor>nested_record_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>433</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>440</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>7yE5DobdkTff5WEgB1QfHPNH3C1</id>
@@ -5392,15 +5345,12 @@
   <name>single_overload</name>
   <anchor>single_overload</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>24</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>28</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2pZFYMftPbNdMKGuV81avByKQYZ2</id>
@@ -5447,15 +5397,12 @@
   <name>template_call_fo</name>
   <anchor>template_call_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>339</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>344</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3fmhEW63kZBqRhs6hKtqsB69KbRv</id>
@@ -5552,15 +5499,12 @@
   <name>template_fo</name>
   <anchor>template_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>85</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>89</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>4QcnjcMKTnGVBmBgr9GCtck6jiwx</id>
@@ -5650,14 +5594,12 @@
   <name>undocumented_both</name>
   <anchor>undocumented_both</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>460</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>464</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3bUsucJdVgGaFJA1m2g5nqFrLd1E</id>
@@ -5682,15 +5624,13 @@
   <name>unnamed_fo</name>
   <anchor>unnamed_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>158</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>153</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2PaJSP9eBXwdvNE2i6SJU1fVhcwA</id>
@@ -5737,15 +5677,13 @@
   <name>visible_fo</name>
   <anchor>visible_fo</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-objects.cpp</shortPath>
-        <sourcePath>function-objects.cpp</sourcePath>
-        <lineNumber>228</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-objects.cpp</shortPath>
+      <sourcePath>function-objects.cpp</sourcePath>
+      <lineNumber>235</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>2eaFco3NhJq57f2U1gukrM2VhY2T</id>

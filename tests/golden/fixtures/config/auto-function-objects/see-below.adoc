@@ -1,0 +1,122 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib[`lib`] 
+|===
+
+
+[#lib]
+== lib
+
+=== Namespaces
+
+[cols="1"]
+|===
+| Name
+| link:#lib-detail[`detail`] 
+|===
+
+
+=== Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-abs[`abs`] 
+| The absolute value of a value
+| link:#lib-sqrt[`sqrt`] 
+| The square root of a value
+|===
+
+
+[#lib-detail]
+== link:#lib[lib]::detail
+
+[#lib-abs]
+== link:#lib[lib]::abs
+
+The absolute value of a value
+
+=== Synopsis
+
+Declared in `&lt;see&hyphen;below&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+abs(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+Its type matches `see&hyphen;below`&period;
+
+=== Return Value
+
+The absolute value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+[#lib-sqrt]
+== link:#lib[lib]::sqrt
+
+The square root of a value
+
+=== Synopsis
+
+Declared in `&lt;see&hyphen;below&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+sqrt(T const& x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Description
+
+The variable matches `see&hyphen;below` and its type is implementation&hyphen;defined&period;
+
+=== Return Value
+
+The square root&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

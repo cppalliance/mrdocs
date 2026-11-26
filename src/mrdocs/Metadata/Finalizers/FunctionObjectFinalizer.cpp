@@ -168,8 +168,11 @@ processVariable(
     std::vector<SymbolID>& sourceList,
     std::vector<SymbolID>& targetList)
 {
-    // Resolve the variable's type to a record.
-    if (V.Type.valueless_after_move())
+    // Only a variable that is shown becomes a function, and its type must
+    // resolve to a record.
+    bool const isShown = V.Extraction == ExtractionMode::Regular ||
+        V.Extraction == ExtractionMode::SeeBelow;
+    if (!isShown || V.Type.valueless_after_move())
     {
         return false;
     }
@@ -241,6 +244,10 @@ processVariable(
         return false;
     }
 
+    // Marking the type also marks a variable that is one of its static
+    // members.
+    ExtractionMode const mode = V.Extraction;
+
     // For each operator() overload, create a synthetic
     // FunctionSymbol named after the variable. The OverloadsFinalizer
     // (which runs later) will naturally group same-named functions
@@ -262,7 +269,8 @@ processVariable(
         synth->Name       = V.Name;
         synth->Parent     = V.Parent;
         synth->Access     = V.Access;
-        synth->Extraction = ExtractionMode::Regular;
+        synth->Extraction = mode;
+        synth->Loc        = V.Loc;
         clearMethodQualifiers(*synth);
 
         // Template: use the variable's template info when the

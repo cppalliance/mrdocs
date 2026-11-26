@@ -113,15 +113,15 @@ class ASTVisitor
     detail::UndocumentedSymbolSet undocumented_;
 
     /*
-        A set of records already traversed for base class extraction
+        A set of records whose members were traversed in BaseClass mode
 
-        When traversing base classes in BaseClass traversal mode,
-        we need to avoid traversing the same record multiple times.
-        This set keeps track of records that have already been
-        traversed for base class extraction.
+        The members of a record that is not regular are traversed in
+        BaseClass traversal mode when it is a base class, or when it
+        is the type of a variable and declares an `operator()`. This
+        set keeps us from traversing the same record multiple times.
     */
     std::unordered_set<clang::CXXRecordDecl const*>
-        traversedRecordsForBaseClassExtraction_;
+        traversedHiddenRecords_;
 
     /* Struct to hold pre-processed file information.
 
@@ -677,6 +677,21 @@ private:
 
     void
     populate(VariableSymbol& I, clang::VarDecl const* D);
+
+    /*  Traverse the members of a variable's type when it is hidden
+
+        The members of a record that is implementation-defined,
+        see-below or a dependency are otherwise not extracted. A
+        variable whose type is such a record is how a customization
+        point object or a niebloid is usually declared, and the
+        `FunctionObjectFinalizer` needs the `operator()` members of
+        the type to document the variable as a function. Only a
+        record that declares an `operator()` is traversed, so that a
+        variable of a library type such as `std::string` doesn't
+        pull in the members of its type.
+    */
+    void
+    traverseHiddenType(clang::QualType QT);
 
     void
     populate(VariableSymbol& I, clang::VarTemplateDecl const* D);

@@ -1,0 +1,4 @@
+generator: [adoc, xml]
+implementation-defined:
+  - 'lib::detail'
+  - 'lib::hidden_tool'

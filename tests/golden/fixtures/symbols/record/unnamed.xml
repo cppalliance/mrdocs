@@ -148,14 +148,12 @@
   <name>F</name>
   <anchor>F</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>unnamed.cpp</shortPath>
-        <sourcePath>unnamed.cpp</sourcePath>
-        <lineNumber>3</lineNumber>
-        <columnNumber>5</columnNumber>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>unnamed.cpp</shortPath>
+      <sourcePath>unnamed.cpp</sourcePath>
+      <lineNumber>1</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3haGtL3WyD53oQR4xwEh8Ab67GMn</id>

@@ -117,6 +117,45 @@ gatherMacroParameters(clang::MacroInfo const* MI)
     return result;
 }
 
+// The declaration that MrDocs documents for the class a type refers to:
+// the class itself or, for a specialization other than an explicit one,
+// dependent or not, its class template. Aliases are looked through.
+clang::Decl const*
+documentedDecl(clang::QualType QT)
+{
+    clang::Decl const* D = QT->getAsCXXRecordDecl();
+    clang::TemplateSpecializationType const* TST =
+        QT->getAs<clang::TemplateSpecializationType>();
+    if (!D && TST)
+    {
+        D = TST->getTemplateName().getAsTemplateDecl();
+    }
+    return D ? decayToPrimaryTemplate(D) : nullptr;
+}
+
+// The class that a declaration defines: for a class template, the class
+// it declares along with the template, which holds the members; otherwise
+// the class itself.
+clang::CXXRecordDecl const*
+definedRecord(clang::Decl const* D)
+{
+    auto const* CTD = dyn_cast_or_null<clang::ClassTemplateDecl>(D);
+    return CTD ? CTD->getTemplatedDecl()
+               : dyn_cast_or_null<clang::CXXRecordDecl>(D);
+}
+
+// Whether a record declares an `operator()`. One inherited from a base
+// doesn't count, since `FunctionObjectFinalizer` runs before the members
+// of a base are added to a record.
+bool
+declaresCallOperator(clang::CXXRecordDecl const* RD)
+{
+    clang::DeclarationName const call =
+        RD->getASTContext().DeclarationNames.getCXXOperatorName(
+            clang::OO_Call);
+    return !RD->lookup(call).empty();
+}
+
 // The conversion function a declaration names, if it names one.
 clang::CXXConversionDecl const*
 underlyingConversion(clang::NamedDecl const* D)
@@ -808,7 +847,7 @@ populate(
                     if (auto* baseInfo = find(baseDecl);
                         !baseInfo
                         || (baseInfo->Extraction != ExtractionMode::Regular
-                            && traversedRecordsForBaseClassExtraction_
+                            && traversedHiddenRecords_
                                    .emplace(baseDecl)
                                    .second))
                     {
@@ -1279,6 +1318,25 @@ populate(
         QT.removeLocalConst();
     }
     I.Type = toType(QT);
+    traverseHiddenType(D->getType());
+}
+
+void
+ASTVisitor::
+traverseHiddenType(clang::QualType QT)
+{
+    clang::Decl const* TD = documentedDecl(QT);
+    clang::CXXRecordDecl const* RD = definedRecord(TD);
+    Symbol const* RI = TD ? find(TD) : nullptr;
+    if (RI &&
+        RI->Extraction != ExtractionMode::Regular &&
+        RD &&
+        declaresCallOperator(RD) &&
+        traversedHiddenRecords_.emplace(RD).second)
+    {
+        ScopeExitRestore s(mode_, TraversalMode::BaseClass);
+        traverse(TD);
+    }
 }
 
 void

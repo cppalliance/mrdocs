@@ -231,15 +231,13 @@
   <name>explicit_var</name>
   <anchor>explicit_var</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>no-auto-function-objects.cpp</shortPath>
-        <sourcePath>no-auto-function-objects.cpp</sourcePath>
-        <lineNumber>26</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>no-auto-function-objects.cpp</shortPath>
+      <sourcePath>no-auto-function-objects.cpp</sourcePath>
+      <lineNumber>33</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>cXen2CvrEKKAWVVzfuPzkc5YAk6</id>

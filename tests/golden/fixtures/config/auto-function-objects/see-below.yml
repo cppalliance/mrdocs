@@ -1,0 +1,6 @@
+generator: [adoc, xml]
+see-below:
+  - 'lib::detail'
+  - 'lib::sqrt'
+implementation-defined:
+  - 'lib::impl'

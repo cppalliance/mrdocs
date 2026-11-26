@@ -433,15 +433,12 @@
   <name>auto_detected</name>
   <anchor>auto_detected</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-object.cpp</shortPath>
-        <sourcePath>function-object.cpp</sourcePath>
-        <lineNumber>7</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>11</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>39kmQXVr1nrT4MBvy8WrabFYAp5b</id>
@@ -488,15 +485,12 @@
   <name>doc_on_struct</name>
   <anchor>doc_on_struct</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-object.cpp</shortPath>
-        <sourcePath>function-object.cpp</sourcePath>
-        <lineNumber>42</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>46</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3gYKqLCSchiJ4yaZ6xpmpYXtX9C7</id>
@@ -543,15 +537,13 @@
   <name>doc_on_variable</name>
   <anchor>doc_on_variable</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-object.cpp</shortPath>
-        <sourcePath>function-object.cpp</sourcePath>
-        <lineNumber>53</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>58</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3XDKdfdN6SHJfVZzehcyhgyxnLZ4</id>
@@ -598,15 +590,13 @@
   <name>forced</name>
   <anchor>forced</anchor>
   <loc>
-    <loc>
-      <location>
-        <shortPath>function-object.cpp</shortPath>
-        <sourcePath>function-object.cpp</sourcePath>
-        <lineNumber>21</lineNumber>
-        <columnNumber>5</columnNumber>
-        <documented/>
-      </location>
-    </loc>
+    <defLoc>
+      <shortPath>function-object.cpp</shortPath>
+      <sourcePath>function-object.cpp</sourcePath>
+      <lineNumber>32</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
   </loc>
   <kind>function</kind>
   <id>3TdPFVK1fg2MSgREruzJBBp8b35G</id>

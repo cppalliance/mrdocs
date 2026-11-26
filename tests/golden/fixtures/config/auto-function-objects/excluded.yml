@@ -1,0 +1,5 @@
+generator: [adoc, xml]
+include-symbols:
+  - 'lib::**'
+exclude-symbols:
+  - 'lib::detail::**'
