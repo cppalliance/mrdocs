@@ -23,6 +23,8 @@
 | Name| Description
 | link:#lib-complex_ops[`complex&lowbar;ops`] 
 | Operations on complex values
+| link:#lib-tool_t[`tool&lowbar;t`] 
+| A tool
 |===
 
 
@@ -108,6 +110,64 @@ The norm&period;
 |===
 | Name| Description
 | *z*
+| The value&period;
+|===
+
+[#lib-tool_t]
+== link:#lib[lib]::tool&lowbar;t
+
+A tool
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct tool&lowbar;t;
+----
+
+=== Description
+
+The only variable of this type matches `implementation&hyphen;defined`, so the type stays documented&period;
+
+=== Member Functions
+
+[cols="1,4"]
+|===
+| Name| Description
+| link:#lib-tool_t-operator_call[`operator()`] 
+| Use the tool
+|===
+
+
+[#lib-tool_t-operator_call]
+== link:#lib[lib]::link:#lib-tool_t[tool&lowbar;t]::operator()
+
+Use the tool
+
+=== Synopsis
+
+Declared in `&lt;implementation&hyphen;defined&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+constexpr
+double
+operator()(T const& x) const;
+----
+
+=== Return Value
+
+The value&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
 | The value&period;
 |===
 

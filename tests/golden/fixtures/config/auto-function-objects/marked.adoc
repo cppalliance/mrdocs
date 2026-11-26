@@ -32,6 +32,40 @@
 |===
 
 
+[#lib-counter_t-instance]
+== link:#lib[lib]::counter&lowbar;t::instance
+
+Count a value
+
+=== Synopsis
+
+Declared in `&lt;marked&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+int
+instance(int x);
+----
+
+[NOTE]
+====
+This function is defined as an https://en.cppreference.com/cpp/algorithm/ranges#Algorithm_function_objects[Algorithm Function Object (AFO)].
+====
+
+=== Return Value
+
+The count&period;
+
+=== Parameters
+
+[cols="1,4"]
+|===
+| Name| Description
+| *x*
+| The value&period;
+|===
+
 [#lib-abs]
 == link:#lib[lib]::abs
 

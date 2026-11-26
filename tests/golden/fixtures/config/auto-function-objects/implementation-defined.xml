@@ -28,9 +28,9 @@
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <members>
     <namespaces>9Pt3s3weLsnWDJ6nVhDfGhaXqv9</namespaces>
-    <records>3TAKNPeutp4YtwaMwptRYCYWK7sN</records>
+    <records>3TAKNPeutp4YtwaMwptRYCYWK7sN 3N6qpkErh9ZFr8YyoEhL17iVVt65</records>
     <functions>2MbAnjBQocfSq4VcRqwBGx96LfbS 2uDEN26bnWuYb3nqNfMYPfUy4enr 3CeooK4tpiVNnJkxagRwDiYq8nCH 7mRFFFDveK6S5vbpkKrbSdAsWLT</functions>
-    <variables>DyFg3G8hqmvdhn3mk9TX2Acay53</variables>
+    <variables>gCXNftQkNJhfpi8AfMSv14HP5Pt DyFg3G8hqmvdhn3mk9TX2Acay53</variables>
   </members>
 </namespace>
 <namespace>
@@ -41,13 +41,13 @@
       <location>
         <shortPath>implementation-defined.cpp</shortPath>
         <sourcePath>implementation-defined.cpp</sourcePath>
-        <lineNumber>3</lineNumber>
+        <lineNumber>23</lineNumber>
         <columnNumber>1</columnNumber>
       </location>
       <location>
         <shortPath>implementation-defined.cpp</shortPath>
         <sourcePath>implementation-defined.cpp</sourcePath>
-        <lineNumber>24</lineNumber>
+        <lineNumber>44</lineNumber>
         <columnNumber>1</columnNumber>
       </location>
     </loc>
@@ -69,7 +69,7 @@
       <location>
         <shortPath>implementation-defined.cpp</shortPath>
         <sourcePath>implementation-defined.cpp</sourcePath>
-        <lineNumber>3</lineNumber>
+        <lineNumber>23</lineNumber>
         <columnNumber>17</columnNumber>
       </location>
     </loc>
@@ -89,7 +89,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>5</lineNumber>
+      <lineNumber>25</lineNumber>
       <columnNumber>1</columnNumber>
     </defLoc>
   </loc>
@@ -111,7 +111,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>7</lineNumber>
+      <lineNumber>27</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -176,7 +176,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>26</lineNumber>
+      <lineNumber>46</lineNumber>
       <columnNumber>1</columnNumber>
     </defLoc>
   </loc>
@@ -218,7 +218,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>29</lineNumber>
+      <lineNumber>49</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -269,7 +269,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>55</lineNumber>
+      <lineNumber>75</lineNumber>
       <columnNumber>1</columnNumber>
     </defLoc>
   </loc>
@@ -291,7 +291,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>57</lineNumber>
+      <lineNumber>77</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -356,7 +356,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>40</lineNumber>
+      <lineNumber>60</lineNumber>
       <columnNumber>1</columnNumber>
     </defLoc>
   </loc>
@@ -386,7 +386,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>42</lineNumber>
+      <lineNumber>62</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -451,7 +451,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>50</lineNumber>
+      <lineNumber>70</lineNumber>
       <columnNumber>1</columnNumber>
     </defLoc>
   </loc>
@@ -468,7 +468,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>100</lineNumber>
+      <lineNumber>122</lineNumber>
       <columnNumber>1</columnNumber>
       <documented/>
     </defLoc>
@@ -502,7 +502,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>57</lineNumber>
+      <lineNumber>77</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -592,6 +592,164 @@
   <constexpr>constexpr</constexpr>
   <functionObjectImpl>bYMErcoNmdjtkDpswTcNgHtC5tD</functionObjectImpl>
 </function>
+<record>
+  <name>tool_t</name>
+  <anchor>tool_t</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>implementation-defined.cpp</shortPath>
+      <sourcePath>implementation-defined.cpp</sourcePath>
+      <lineNumber>8</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>3N6qpkErh9ZFr8YyoEhL17iVVt65</id>
+  <extraction>regular</extraction>
+  <parent>3qdKhKhuYsvERYG8cY8KoqdRtpz6</parent>
+  <doc>
+    <document>
+      <paragraph>
+        <kind>paragraph</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The only variable of this type matches </literal>
+          </text>
+          <code>
+            <kind>code</kind>
+            <children>
+              <text>
+                <kind>text</kind>
+                <literal>implementation-defined</literal>
+              </text>
+            </children>
+          </code>
+          <text>
+            <kind>text</kind>
+            <literal>, so the type stays documented.</literal>
+          </text>
+        </children>
+      </paragraph>
+    </document>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A tool</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>xz3B5f7tk754WdE8YBTzECpZbW6</functions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>operator()</name>
+  <anchor>operator_call</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>implementation-defined.cpp</shortPath>
+      <sourcePath>implementation-defined.cpp</sourcePath>
+      <lineNumber>15</lineNumber>
+      <columnNumber>5</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>xz3B5f7tk754WdE8YBTzECpZbW6</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>3N6qpkErh9ZFr8YyoEhL17iVVt65</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Use the tool</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>double</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>double</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <lValueReference>
+          <kind>lvalue-reference</kind>
+          <pointeeType>
+            <named>
+              <kind>named</kind>
+              <isConst/>
+              <name>
+                <identifier>
+                  <kind>identifier</kind>
+                  <identifier>T</identifier>
+                </identifier>
+              </name>
+            </named>
+          </pointeeType>
+        </lValueReference>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
+  <template>
+    <params>
+      <type>
+        <kind>type</kind>
+        <name>T</name>
+        <keyKind>typename</keyKind>
+      </type>
+    </params>
+  </template>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
+</function>
 <function>
   <name>imag</name>
   <anchor>imag</anchor>
@@ -599,7 +757,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>7</lineNumber>
+      <lineNumber>27</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -695,7 +853,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>42</lineNumber>
+      <lineNumber>62</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -802,7 +960,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>29</lineNumber>
+      <lineNumber>49</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -904,7 +1062,7 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>29</lineNumber>
+      <lineNumber>49</lineNumber>
       <columnNumber>5</columnNumber>
     </defLoc>
   </loc>
@@ -1024,13 +1182,44 @@
   <functionObjectImpl>PftYssUXJCvk38A4FevhRJyG2kf</functionObjectImpl>
 </function>
 <variable>
+  <name>hidden_tool</name>
+  <anchor>hidden_tool</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>implementation-defined.cpp</shortPath>
+      <sourcePath>implementation-defined.cpp</sourcePath>
+      <lineNumber>118</lineNumber>
+      <columnNumber>1</columnNumber>
+    </defLoc>
+  </loc>
+  <kind>variable</kind>
+  <id>gCXNftQkNJhfpi8AfMSv14HP5Pt</id>
+  <extraction>implementation-defined</extraction>
+  <parent>3qdKhKhuYsvERYG8cY8KoqdRtpz6</parent>
+  <type>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <id>3N6qpkErh9ZFr8YyoEhL17iVVt65</id>
+          <identifier>tool_t</identifier>
+        </identifier>
+      </name>
+    </named>
+  </type>
+  <initializer>{}</initializer>
+  <isInline/>
+  <isConstexpr/>
+</variable>
+<variable>
   <name>state</name>
   <anchor>state</anchor>
   <loc>
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>115</lineNumber>
+      <lineNumber>137</lineNumber>
       <columnNumber>1</columnNumber>
       <documented/>
     </defLoc>

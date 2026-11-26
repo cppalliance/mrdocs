@@ -1,5 +1,25 @@
 namespace lib {
 
+/** A tool
+
+    The only variable of this type matches `implementation-defined`,
+    so the type stays documented.
+*/
+struct tool_t
+{
+    /** Use the tool
+
+        @param x The value.
+        @return The value.
+    */
+    template<typename T>
+    constexpr double
+    operator()(T const& x) const
+    {
+        return x;
+    }
+};
+
 namespace detail::imag_impl {
 
 struct imag_t
@@ -94,6 +114,8 @@ inline constexpr detail::convert_t<64> to_double{};
     @return The value.
 */
 inline constexpr detail::pick_t<0> pick{};
+
+inline constexpr tool_t hidden_tool{};
 
 /** Operations on complex values
 */

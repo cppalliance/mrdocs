@@ -100,4 +100,28 @@ inline constexpr excluded::abs_t abs{};
 */
 inline constexpr excluded::norm_t norm{};
 
+/** A counter
+
+    @functionobject
+*/
+struct counter_t
+{
+    /** Count a value
+
+        @param x The value.
+        @return The count.
+    */
+    constexpr int
+    operator()(int x) const
+    {
+        return x;
+    }
+
+    /** The counter
+
+        A static member of its own type, which stays shown.
+    */
+    static counter_t const instance;
+};
+
 } // namespace lib

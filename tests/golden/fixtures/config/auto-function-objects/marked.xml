@@ -28,6 +28,7 @@
   <parent>4ZrjxJnU1LA5xSyrWMNuXTvSYKwt</parent>
   <members>
     <namespaces>9Pt3s3weLsnWDJ6nVhDfGhaXqv9 49cH3WtL7KeCbF7MD2pFkEe7y2jq</namespaces>
+    <records>4WCLmEzArnDdJH36My4H5CwNg9QG</records>
     <functions>497jMvaHoRKKKqEakX1RaxttfpwC 2Np8XC9AnCTpiTZQqQZKSuyhtSq3 24yPR2CtnDJbnwXPt3EUgRon8GHT 2oA7euMdRLiy7hj7jtLQ7wiMEL4D</functions>
   </members>
 </namespace>
@@ -281,6 +282,211 @@
   <overloadedOperator>()</overloadedOperator>
   <isRecordMethod/>
   <isConst/>
+</function>
+<record>
+  <name>counter_t</name>
+  <anchor>counter_t</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>marked.cpp</shortPath>
+      <sourcePath>marked.cpp</sourcePath>
+      <lineNumber>107</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>record</kind>
+  <id>4WCLmEzArnDdJH36My4H5CwNg9QG</id>
+  <extraction>implementation-defined</extraction>
+  <parent>3qdKhKhuYsvERYG8cY8KoqdRtpz6</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>A counter</literal>
+        </text>
+      </children>
+    </brief>
+  </doc>
+  <keyKind>struct</keyKind>
+  <interface>
+    <public>
+      <functions>2oFN1HcoQeNKipEChASg2A1N8E62</functions>
+      <staticFunctions>3S8Mtc3bKQNvjhiTuVHXQSfvmvJy</staticFunctions>
+    </public>
+  </interface>
+</record>
+<function>
+  <name>operator()</name>
+  <anchor>operator_call</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>marked.cpp</shortPath>
+      <sourcePath>marked.cpp</sourcePath>
+      <lineNumber>114</lineNumber>
+      <columnNumber>5</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>2oFN1HcoQeNKipEChASg2A1N8E62</id>
+  <access>public</access>
+  <extraction>implementation-defined</extraction>
+  <parent>4WCLmEzArnDdJH36My4H5CwNg9QG</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Count a value</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The count.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
+  <overloadedOperator>()</overloadedOperator>
+  <isRecordMethod/>
+  <isConst/>
+</function>
+<function>
+  <name>instance</name>
+  <anchor>instance</anchor>
+  <loc>
+    <defLoc>
+      <shortPath>marked.cpp</shortPath>
+      <sourcePath>marked.cpp</sourcePath>
+      <lineNumber>114</lineNumber>
+      <columnNumber>5</columnNumber>
+      <documented/>
+    </defLoc>
+  </loc>
+  <kind>function</kind>
+  <id>3S8Mtc3bKQNvjhiTuVHXQSfvmvJy</id>
+  <access>public</access>
+  <extraction>regular</extraction>
+  <parent>4WCLmEzArnDdJH36My4H5CwNg9QG</parent>
+  <doc>
+    <brief>
+      <kind>brief</kind>
+      <children>
+        <text>
+          <kind>text</kind>
+          <literal>Count a value</literal>
+        </text>
+      </children>
+    </brief>
+    <returns>
+      <returns>
+        <kind>returns</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The count.</literal>
+          </text>
+        </children>
+      </returns>
+    </returns>
+    <params>
+      <param>
+        <kind>param</kind>
+        <children>
+          <text>
+            <kind>text</kind>
+            <literal>The value.</literal>
+          </text>
+        </children>
+        <name>x</name>
+      </param>
+    </params>
+  </doc>
+  <returnType>
+    <named>
+      <kind>named</kind>
+      <name>
+        <identifier>
+          <kind>identifier</kind>
+          <identifier>int</identifier>
+        </identifier>
+      </name>
+      <fundamentalType>int</fundamentalType>
+    </named>
+  </returnType>
+  <params>
+    <param>
+      <type>
+        <named>
+          <kind>named</kind>
+          <name>
+            <identifier>
+              <kind>identifier</kind>
+              <identifier>int</identifier>
+            </identifier>
+          </name>
+          <fundamentalType>int</fundamentalType>
+        </named>
+      </type>
+      <name>x</name>
+    </param>
+  </params>
+  <funcClass>normal</funcClass>
+  <constexpr>constexpr</constexpr>
+  <functionObjectImpl>4WCLmEzArnDdJH36My4H5CwNg9QG</functionObjectImpl>
 </function>
 <function>
   <name>abs</name>
