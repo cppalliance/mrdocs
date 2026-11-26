@@ -270,6 +270,7 @@ processVariable(
         synth->Parent     = V.Parent;
         synth->Access     = V.Access;
         synth->Extraction = mode;
+        synth->Loc        = V.Loc;
         clearMethodQualifiers(*synth);
 
         // Template: use the variable's template info when the

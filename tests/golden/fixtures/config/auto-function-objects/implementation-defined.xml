@@ -502,8 +502,9 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>77</lineNumber>
+      <lineNumber>129</lineNumber>
       <columnNumber>5</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -757,8 +758,9 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>27</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>42</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -853,8 +855,9 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>62</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>116</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -960,8 +963,9 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>49</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>106</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -1062,8 +1066,9 @@
     <defLoc>
       <shortPath>implementation-defined.cpp</shortPath>
       <sourcePath>implementation-defined.cpp</sourcePath>
-      <lineNumber>49</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>95</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>

@@ -254,8 +254,9 @@
     <defLoc>
       <shortPath>see-below.cpp</shortPath>
       <sourcePath>see-below.cpp</sourcePath>
-      <lineNumber>7</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>38</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -374,8 +375,9 @@
     <defLoc>
       <shortPath>see-below.cpp</shortPath>
       <sourcePath>see-below.cpp</sourcePath>
-      <lineNumber>21</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>48</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>

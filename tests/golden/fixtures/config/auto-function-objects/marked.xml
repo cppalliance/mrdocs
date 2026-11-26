@@ -408,13 +408,15 @@
   <name>instance</name>
   <anchor>instance</anchor>
   <loc>
-    <defLoc>
-      <shortPath>marked.cpp</shortPath>
-      <sourcePath>marked.cpp</sourcePath>
-      <lineNumber>114</lineNumber>
-      <columnNumber>5</columnNumber>
-      <documented/>
-    </defLoc>
+    <loc>
+      <location>
+        <shortPath>marked.cpp</shortPath>
+        <sourcePath>marked.cpp</sourcePath>
+        <lineNumber>124</lineNumber>
+        <columnNumber>5</columnNumber>
+        <documented/>
+      </location>
+    </loc>
   </loc>
   <kind>function</kind>
   <id>3S8Mtc3bKQNvjhiTuVHXQSfvmvJy</id>
@@ -495,8 +497,9 @@
     <defLoc>
       <shortPath>marked.cpp</shortPath>
       <sourcePath>marked.cpp</sourcePath>
-      <lineNumber>40</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>95</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -615,8 +618,9 @@
     <defLoc>
       <shortPath>marked.cpp</shortPath>
       <sourcePath>marked.cpp</sourcePath>
-      <lineNumber>7</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>79</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -735,8 +739,8 @@
     <defLoc>
       <shortPath>marked.cpp</shortPath>
       <sourcePath>marked.cpp</sourcePath>
-      <lineNumber>59</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>101</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
     </defLoc>
   </loc>
@@ -832,8 +836,8 @@
     <defLoc>
       <shortPath>marked.cpp</shortPath>
       <sourcePath>marked.cpp</sourcePath>
-      <lineNumber>26</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>85</lineNumber>
+      <columnNumber>1</columnNumber>
       <documented/>
     </defLoc>
   </loc>

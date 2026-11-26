@@ -39,8 +39,9 @@
     <defLoc>
       <shortPath>excluded.cpp</shortPath>
       <sourcePath>excluded.cpp</sourcePath>
-      <lineNumber>21</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>68</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -159,8 +160,9 @@
     <defLoc>
       <shortPath>excluded.cpp</shortPath>
       <sourcePath>excluded.cpp</sourcePath>
-      <lineNumber>5</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>101</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -279,8 +281,9 @@
     <defLoc>
       <shortPath>excluded.cpp</shortPath>
       <sourcePath>excluded.cpp</sourcePath>
-      <lineNumber>32</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>78</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
@@ -408,8 +411,9 @@
     <defLoc>
       <shortPath>excluded.cpp</shortPath>
       <sourcePath>excluded.cpp</sourcePath>
-      <lineNumber>43</lineNumber>
-      <columnNumber>5</columnNumber>
+      <lineNumber>90</lineNumber>
+      <columnNumber>1</columnNumber>
+      <documented/>
     </defLoc>
   </loc>
   <kind>function</kind>
